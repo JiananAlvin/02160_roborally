@@ -2,8 +2,8 @@
 
 
 
-> Group: 10
-> Member: Anna, Durdija, Ion, Jianan, Simona, Wenjie
+> Group 10  
+> Members: Anna, Durdija, Ion, Jianan, Simona, Wenjie
 
 
 
