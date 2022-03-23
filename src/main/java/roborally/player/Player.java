@@ -1,8 +1,12 @@
 package roborally.player;
 
+import model.Robot;
+
 public class Player {
     String name;
     boolean isPlaying;
+    boolean hasRobot;
+    Robot robot;
 
 
     public void setName(String name) {
@@ -19,12 +23,9 @@ public class Player {
 
     public Player() {
         this.setPlaying(true);
+        this.setHasRobot(false);
     }
 
-    public Player(String name, boolean isPlaying) {
-        this.name = name;
-        this.isPlaying = isPlaying;
-    }
 
     public String getName() {
         return this.name;
@@ -38,4 +39,24 @@ public class Player {
         }
         return false;
     }
+
+	public boolean hasRobot() {
+		return this.hasRobot;
+	}
+
+	public void setRobot(Robot robot) {
+		
+		this.robot = robot;
+		
+	}
+
+	public Robot getRobot() {
+		return this.robot;
+	}
+
+	public void setHasRobot(boolean b) {
+		
+		this.hasRobot= b;
+		
+	}
 }

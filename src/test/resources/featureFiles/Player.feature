@@ -29,7 +29,7 @@ Feature:
 
 
 ####################################BEGIN#######################################
-# [Đurđija]
+# [Dj]
 #  scenarios for user stories for robo rally (single player)
 
   Scenario Outline: Getting a name
@@ -56,26 +56,27 @@ Feature:
       | Alice  | map999  | ERROR_MAP_NUM     |
 
 
-#  Scenario Outline: Choose a robot character
-#    Given a player has a name "<name>"
-#    And having-a-robot status is false
-#    When choose a robot "<robot-name>"
-#    Then  "<robot-name>" is assigned to this player
-#    Examples:
-#      | name       | robot-name |
-#      | test1_user | Alice      |
+  Scenario Outline: Choose a robot character
+    Given a player has a name "<name>"
+    And having-a-robot status is false
+    When choose a robot "<robot-name>"
+    Then  "<robot-name>" is assigned to this player
+    Examples:
+      | name       | robot-name |
+      | test1_user | Alice      |
 
-#  Scenario Outline: Initial position
-#    Given a player has a name "<name>"
-#    And having-a-robot status is true
-#    And robot-on-the-board status is false
-#    When get initial position randomly
-#    Then Player is now at a position "<position_x>" and "<position_y>"
-#
-#    Examples:
-#      | name  | position_x | position_y |
-#      | test1 | 1          | 1          |
-#
+  Scenario Outline: Initial position
+    Given a player has a name "<name>"
+    And choose a robot "<robot-name>"
+    And having-a-robot status is true
+    And robot-on-the-board status is false
+    When get initial position randomly
+    Then Player is now at a position "<position_x>" and "<position_y>"
+
+    Examples:
+      | name  | position_x | position_y | robot-name|
+      | test1 | 0          | 0          | jianan|
+
 #  Scenario: Getting a programming cards
 #    Given a Player "name"
 #    And no-prog_cards status is false
