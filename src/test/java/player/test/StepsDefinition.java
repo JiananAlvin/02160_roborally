@@ -1,55 +1,56 @@
 package player.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-
 import GlobalInformationManager.InfoManager;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
+import model.Map;
 import roborally.player.Player;
 import roborally.player.Room;
 
+import static org.junit.Assert.*;
+
 public class StepsDefinition {
-	String name;
-	InfoManager IM;
-	Player p;
-	Room r;
-	@Before
-	public void initialize() {
-		IM = new InfoManager();
-	}
-	@Given("I input my name {string}")
-	public void i_input_my_name(String string) {
-		p = new Player(string);
-		IM.storePlayer(p);
-	}
-	@Then("I validate the name stored in InfoManager")
-	public void i_validate_the_name_stored_in_info_manager() {
-		assertEquals(IM.getPlayer(), this.p);
-	}
+    Player player;
+    Map map;
 
-	@Given("that I do not want to join a room")
-	public void that_i_do_not_want_to_join_a_room() {
-		
-	}
-	@Then("I create a room")
-	public void i_create_a_room() {
-		r = new Room();
-		IM.setRoom(r);
-	}
-	
-	@Given("that I am not in a room")
-	public void that_i_am_not_in_a_room() {
-		assertNull(IM.getRoom());
-	}
+    @Before
+    public void init() {
+        this.player = new Player();
 
-	@Then("I join a room with room number {string}")
-	public void i_join_a_room_with_room_number(String string) {
-		IM.setRoom(string);
-		assertNotNull(IM.getRoom());
-	}
+    }
 
+    @Given("a player started the game")
+    public void aPlayerStartedTheGame() {
+        assertTrue(this.player.isPlaying());
+    }
 
+    @When("player inputs a name {string}")
+    public void playerInputsAName(String arg0) {
+        this.player.setName(arg0);
+    }
+
+    @Then("this name is assigned to this player")
+    public void thisNameIsAssignedToThisPlayer() {
+        assertNotNull(this.player.getName());
+    }
+
+    @Given("a player has a name {string}")
+    public void aPlayerHasAName(String arg0) {
+//        this.player.setName(arg0);
+        System.out.println(this.player.getName());
+        assertNotNull(this.player.getName());
+
+    }
+
+    @When("the player chooses a map {string}")
+    public void thePlayerChoosesAMap(String arg0) {
+        this.map = new Map(arg0);
+    }
+
+    @Then("this map {string} is displayed")
+    public void thisMapIsDisplayed(String arg0) {
+        assertEquals(arg0, this.map.getContent());
+    }
 }
