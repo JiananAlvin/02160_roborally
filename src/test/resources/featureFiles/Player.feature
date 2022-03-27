@@ -56,14 +56,14 @@ Feature:
       | Alice  | map999  | ERROR_MAP_NUM     |
 
 
-#  Scenario Outline: Choose a robot character
-#    Given a player has a name "<name>"
-#    And having-a-robot status is false
-#    When choose a robot "<robot-name>"
-#    Then  "<robot-name>" is assigned to this player
-#    Examples:
-#      | name       | robot-name |
-#      | test1_user | Alice      |
+  Scenario Outline: Choose a robot character
+    Given a player has a name "<name>"
+    And having-a-robot status is false
+    When choose a robot "<robot-name>"
+    Then  "<robot-name>" is assigned to this player
+    Examples:
+      | name       | robot-name |
+      | test1_user | Alice      |
 
 #  Scenario Outline: Initial position
 #    Given a player has a name "<name>"

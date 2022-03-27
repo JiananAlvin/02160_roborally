@@ -1,4 +1,4 @@
-package model;
+package model.game.element.board;
 
 public class Map {
     public static final String MAP1_NAME = "map1";

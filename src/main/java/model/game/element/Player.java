@@ -1,6 +1,8 @@
-package roborally.player;
+package model.game.element;
 
 public class Player {
+
+//    final static int MAX_PLAYER_NUMBER = 6;
     String name;
     boolean isPlaying;
 

@@ -1,13 +1,11 @@
 package player.test;
 
-import GlobalInformationManager.InfoManager;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import model.Map;
-import roborally.player.Player;
-import roborally.player.Room;
+import model.game.element.board.Map;
+import model.game.element.Player;
 
 import static org.junit.Assert.*;
 
@@ -18,7 +16,6 @@ public class StepsDefinition {
     @Before
     public void init() {
         this.player = new Player();
-
     }
 
     @Given("a player started the game")
