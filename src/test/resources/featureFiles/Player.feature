@@ -78,12 +78,12 @@ Feature:
       | name  | position_x | position_y | robot-name|
       | test1 | 0          | 0          | jianan|
 
-#  Scenario: Getting a programming cards
-#    Given a Player "name"
-#    And no-prog_cards status is false
-#    When get programming cards
-#    Then Player gets cards and chooses 5
-#
+  Scenario: Getting a programming cards
+    Given a player has a name "<name>"
+    And prog_cards status is false
+    When get programming cards
+    Then Player gets 9 cards
+
 #  	#//user stories (feautures mandatory)
 #
 #  Scenario: Choosing a map

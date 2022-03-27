@@ -1,16 +1,26 @@
 package model.game.element;
 
 
+import java.util.ArrayList;
+
+import model.game.element.board.DiscardPile;
+import model.game.element.board.ProgrammingDeck;
 import model.game.element.board.map.element.Robot;
+import model.game.element.card.Card;
 
 public class Player {
 
 //    final static int MAX_PLAYER_NUMBER = 6;
-    String name;
-    boolean isPlaying;
-    boolean hasRobot;
-    Robot robot;
-
+    private String name;
+    private boolean isPlaying;
+    private boolean hasRobot;
+    private Robot robot;
+	private boolean progCardsStatus;
+	
+	ProgrammingDeck deck = new ProgrammingDeck(this);
+	DiscardPile discard = new DiscardPile(this);
+	ArrayList<Card> progCards;
+	
 
     public void setName(String name) {
         this.name = name;
@@ -61,5 +71,18 @@ public class Player {
 		
 		this.hasRobot= b;
 		
+	}
+
+	public boolean progCardsStatus() {
+		return this.progCardsStatus;
+	}
+
+	public ArrayList<Card> getProgCards() {
+		this.progCards = deck.getNRandomCards(9);
+		return this.progCards;
+	}
+
+	public ArrayList<Card> getDiscard(){
+		return this.discard.getDiscard();
 	}
 }

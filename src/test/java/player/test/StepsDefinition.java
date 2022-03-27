@@ -8,14 +8,17 @@ import io.cucumber.java.en.When;
 import model.game.element.board.Map;
 import model.game.element.Player;
 import model.game.element.board.map.element.Robot;
-
+import model.game.element.card.Card;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+
 public class StepsDefinition {
-    Player player;
-    Robot robot;
-    Map map;
+    private Player player;
+    private Robot robot;
+    private Map map;
+    private ArrayList<Card> register;
 
     @Before
     public void init() {
@@ -90,5 +93,21 @@ public class StepsDefinition {
     public void player_is_now_at_a_position_and(String string, String string2) {
         assertTrue(this.robot.getCoordx() == Integer.parseInt(string) && this.robot.getCoordy() == Integer.parseInt(string2));
     }
+    
+    @Given("prog_cards status is false")
+    public void prog_cards_status_is_false() {
+    	assertFalse(this.player.progCardsStatus());
+    }
 
+
+    @When("get programming cards")
+    public void get_programming_cards() {
+    	this.register = this.player.getProgCards();
+    }
+    @Then("Player gets {int} cards")
+    public void player_gets_cards(Integer int1) {
+    	assertTrue(this.register.size()==int1);
+
+    }
+  
 }
