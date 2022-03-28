@@ -1,9 +1,15 @@
 import gui.GUIAdaptor;
+import gui.view.map.TileType;
+import model.game.board.map.Map;
+import utils.MapReader;
+
+import java.util.ArrayList;
 
 /**
  * This class is an entrance for our user application
  */
 public class Application {
+
     GUIAdaptor adaptor;
 
     public Application() {
@@ -16,8 +22,12 @@ public class Application {
 
     public static void main(String[] args) {
 //        new Application().run();
-        String a = null;
-        System.out.println("test".equals(a));
-        System.out.println(a.equals("test"));
+        TileType[][] mapMatrix = MapReader.txt2matrix(new Map("map1"));
+        for (int i = 0; i < mapMatrix.length; i++) {
+            for (int j = 0; j < mapMatrix[0].length; j++) {
+                System.out.print("   " + mapMatrix[i][j].getClass());
+            }
+            System.out.println();
+        }
     }
 }

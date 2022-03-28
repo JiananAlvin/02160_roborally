@@ -1,6 +1,6 @@
 package model;
 
-import model.game.element.Player;
+import model.game.Player;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -17,5 +17,4 @@ public class Room {
     public Room(String roomNumber) {
         this.roomNumber = roomNumber;
     }
-
 }

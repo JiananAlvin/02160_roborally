@@ -5,10 +5,10 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
-import model.game.element.board.Map;
-import model.game.element.Player;
-import model.game.element.board.map.element.Robot;
-import model.game.element.card.Card;
+import model.game.board.map.Map;
+import model.game.Player;
+import model.game.board.map.element.Robot;
+import model.game.card.Card;
 
 import static org.junit.Assert.*;
 
