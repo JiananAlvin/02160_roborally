@@ -1,14 +1,14 @@
 package model.game.board.map.element;
 
-public class Robot implements Unpassable {
+import java.lang.Math;
 
-    String name;
-    boolean onBoard;
-    int coordx;
-    int coordy;
+public class Robot extends Unpassable {
+
+    private String name;
+    private boolean onBoard;
 
     public Robot(String name) {
-
+        super();
         this.name = name;
         this.onBoard = false;
     }
@@ -21,30 +21,29 @@ public class Robot implements Unpassable {
         return this.name;
     }
 
-    public void setPosition(int i, int j) {
-        this.coordx = i;
-        this.coordy = j;
-    }
-
-    public int getCoordx() {
-        return this.coordx;
-    }
-
-    public int getCoordy() {
-        return this.coordy;
-    }
-
     public void setOnBoard(boolean b) {
         this.onBoard = b;
     }
 
-    @Override
-    public boolean hasVerticalLaser() {
-        return false;
+    public void setPosition(Position position) {
+        super.setPosition(position);
+    }
+
+    public void setPosition(int x, int y) {
+        super.setPosition(x, y);
+    }
+
+    public Position getPosition() {
+        return super.getPosition();
+    }
+
+    public int distanceToAntenna() {
+        return Math.abs(super.getPosition().getXcoord() - Antenna.getInstance().getPosition().getXcoord()) + Math.abs(super.getPosition().getYcoord() - Antenna.getInstance().getPosition().getYcoord());
     }
 
     @Override
-    public boolean hasHorizontalLaser() {
-        return false;
+    public String toString() {
+        return this.name;
     }
 }
+

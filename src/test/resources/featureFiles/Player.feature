@@ -44,16 +44,16 @@ Feature:
       | tttttttt  |
 
 
-  Scenario Outline: Choose a map
-    Given a player has a name "<name>"
-          #when player clicks on get a map
-    When the player chooses a map "<map_num>"
-    Then this map "<map_num_displayed>" is displayed
-    Examples:
-      | name   | map_num | map_num_displayed |
-      | Wenjie | map1    | MAP1_CONTENT      |
-      | Jianan | map2    | MAP2_CONTENT      |
-      | Alice  | map999  | ERROR_MAP_NUM     |
+#  Scenario Outline: Choose a map
+#    Given a player has a name "<name>"
+#          #when player clicks on get a map
+#    When the player chooses a map "<map_num>"
+#    Then this map "<map_num_displayed>" is displayed
+#    Examples:
+#      | name   | map_num | map_num_displayed |
+#      | Wenjie | map1    | MAP1_CONTENT      |
+#      | Jianan | map2    | MAP2_CONTENT      |
+#      | Alice  | map999  | ERROR_MAP_NUM     |
 
 
   Scenario Outline: Choose a robot character
@@ -73,10 +73,9 @@ Feature:
     And robot-on-the-board status is false
     When get initial position randomly
     Then Player is now at a position "<position_x>" and "<position_y>"
-
     Examples:
-      | name  | position_x | position_y | robot-name|
-      | test1 | 0          | 0          | jianan|
+      | name  | position_x | position_y | robot-name |
+      | test1 | 0          | 0          | jianan     |
 
   Scenario: Getting a programming cards
     Given a player has a name "<name>"
@@ -90,11 +89,18 @@ Feature:
 #    Given having-a-map status is false
 #    When map many
 #    Then Player chooses a map
-#
-#  Scenario: Game over
-#    Given game-over status is true
-#    And player_informed status is false
-#    Then player_informed status is true
+
+
+  Scenario Outline: The antenna determines the priority
+    Given An antenna and two robots "<robot-name1>", "<robot-name2>" and "<robot-name3>" in a game
+    When RobotI, robotII and robotIII are placed in ("<x1>","<y1>"), ("<x2>","<y2>"),("<x3>","<y3>") respectively.
+    Then The robot "<robot-name>" closet to the antenna has the priority to move.
+    Examples:
+      | robot-name1 | robot-name2 | robot-name3 | x1 | y1 | x2 | y2 | x3 | y3 | robot-name |
+      | SQUASH BOT  | ZOOM BOT    | HAMMER BOT  | 5  | 3  | 7  | 5  | 12 | 4  | SQUASH BOT |
+      | SQUASH BOT  | ZOOM BOT    | HAMMER BOT  | 5  | 3  | 5  | 5  | 12 | 4  | ZOOM BOT   |
+
+
 #
 #
 #
@@ -181,7 +187,7 @@ Feature:
 #    Given now it is player "<player_name>" turn
 #    When he wants to check if it is his turn
 #    Then he knows the current turn is "<current_player_name>" turn
-#
+# hhahha
 #  Example:
 #  | player_name|current_player_name|
 #  | Wenjie| Wenjie|

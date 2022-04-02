@@ -1,7 +1,42 @@
 package model.game.board.map.element;
 
+
 public class Position {
-    int x;
-    int y;
+    private int xcoord;
+    private int ycoord;
+
+    public Position() {
+
+    }
+
+    public Position(int xcoord, int ycoord) {
+        this.xcoord = xcoord;
+        this.ycoord = ycoord;
+    }
+
+    public int getXcoord() {
+        return xcoord;
+    }
+
+    public void setXcoord(int xcoord) {
+        this.xcoord = xcoord;
+    }
+
+    public int getYcoord() {
+        return ycoord;
+    }
+
+    public void setYcoord(int ycoord) {
+        this.ycoord = ycoord;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (object instanceof Position) {
+            return ((Position) object).getXcoord() == this.xcoord && ((Position) object).getYcoord() == this.ycoord;
+        } else {
+            return false;
+        }
+    }
 
 }

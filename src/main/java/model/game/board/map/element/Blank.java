@@ -3,15 +3,13 @@ package model.game.board.map.element;
 /**
  * @ Class Blank represents nothing on this area
  */
-public class Blank implements Tile {
+public class Blank extends Unpassable {
 
-    @Override
-    public boolean hasVerticalLaser() {
-        return false;
+    public Blank(Position position) {
+        super(position);
     }
 
-    @Override
-    public boolean hasHorizontalLaser() {
-        return false;
+    public Blank(int x, int y) {
+        super(x, y);
     }
 }

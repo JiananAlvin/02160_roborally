@@ -7,8 +7,8 @@ import java.util.UUID;
 
 public class Room {
 
-    String roomNumber;
-    ArrayList<Player> players;
+    private String roomNumber;
+    private ArrayList<Player> players;
 
     public Room() {
         this.roomNumber = UUID.randomUUID().toString();

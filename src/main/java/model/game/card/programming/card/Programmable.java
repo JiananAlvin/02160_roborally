@@ -6,4 +6,5 @@ package model.game.card.programming.card;
  */
 
 public interface Programmable  {
+
 }

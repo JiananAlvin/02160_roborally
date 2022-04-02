@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class MapReader {
     /**
-     * @ parseMap: input a map name and then read the txt file of this map
+     * @ txt2matrix: input a Map object and then read the txt file of this map
      * then parse the txt file to a 2D array
      */
     public static TileType[][] txt2matrix(Map map) {

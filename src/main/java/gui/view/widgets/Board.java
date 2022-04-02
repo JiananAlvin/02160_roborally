@@ -55,7 +55,7 @@ public class Board extends JPanel {
     private void loadBoard() {
         for (int j = 0; j < rows; j++) {
             for (int i = 0; i < cols; i++) {
-                Tile t = new Tile(mapMatrix[i][j]);
+                Tile t = new Tile(mapMatrix[j][i]);
                 board[j][i] = t;
                 add(t);
             }

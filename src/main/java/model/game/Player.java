@@ -1,6 +1,5 @@
 package model.game;
 
-
 import java.util.ArrayList;
 
 import model.game.board.mat.element.ProgrammingDeck;
@@ -10,17 +9,24 @@ import model.game.card.Card;
 
 public class Player {
 
-    //    final static int MAX_PLAYER_NUMBER = 6;
     private String name;
     private boolean isPlaying;
     private boolean hasRobot;
     private Robot robot;
     private boolean progCardsStatus;
+    private ProgrammingDeck deck;
+    private DiscardPile discard;
+    private ArrayList<Card> progCards;
 
-    ProgrammingDeck deck = new ProgrammingDeck(this);
-    DiscardPile discard = new DiscardPile(this);
-    ArrayList<Card> progCards;
-
+    public Player() {
+        // TODO:
+        // Check the meaning of @method: setPlaying(true)
+        this.setPlaying(true);
+        this.setHasRobot(false);
+        this.deck = new ProgrammingDeck(this);
+        this.discard = new DiscardPile(this);
+        this.progCards = new ArrayList<>();
+    }
 
     public void setName(String name) {
         this.name = name;
@@ -32,11 +38,6 @@ public class Player {
 
     public void setPlaying(boolean playing) {
         isPlaying = playing;
-    }
-
-    public Player() {
-        this.setPlaying(true);
-        this.setHasRobot(false);
     }
 
     public String getName() {
