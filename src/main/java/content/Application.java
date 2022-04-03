@@ -1,25 +1,35 @@
-import gui.GUIAdaptor;
+package content;
 
-import java.util.ArrayList;
-import java.util.TreeMap;
+import gui.GUIAdaptor;
 
 /**
  * This class is an entrance for our user application
  */
 public class Application {
 
-    GUIAdaptor adaptor;
+    private GUIAdaptor adaptor;
 
-    public Application() {
+    private static Application applicationInstance;
+
+    private Application() {
         this.adaptor = new GUIAdaptor();
     }
 
-    public void run() {
+    public static Application getApplicationInstance() {
+        if (Application.applicationInstance == null) {
+            Application.applicationInstance = new Application();
+            return Application.applicationInstance;
+        } else {
+            return Application.applicationInstance;
+        }
+    }
 
+    public boolean run() {
+        return Application.applicationInstance != null;
     }
 
     public static void main(String[] args) {
-////        new Application().run();
+////        new content.Application().run();
 //        TileType[][] mapMatrix = MapReader.txt2matrix(new Map("map1"));
 //        for (int i = 0; i < mapMatrix.length; i++) {
 //            for (int j = 0; j < mapMatrix[0].length; j++) {
@@ -45,33 +55,8 @@ public class Application {
 //        f.setVisible(true);
 //        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 //
-//        int[][] a =  {{2,5}, {6,7}};
-//        System.out.println(a[0][0]);
-//        System.out.println(a[1][1]);
-//
-//        ArrayList<Integer> d = new ArrayList<Integer>();
-//        int[] c = {-2, -3, -4, -7};
-//        for (int i : c){
-//            d.add(Math.abs(i));
-//        }
-//        System.out.println(d.get(0) + d.get(1));
 
-        TreeMap<Integer, String> e = new TreeMap<>();
-        e.put(4, "purple");
-        e.put(3, "Blue");
-        e.put(1, "Red");
-        e.put(2, "Green");
-        ArrayList<String> g = new ArrayList<>(e.values());
-        System.out.println(g);
 
-        ArrayList<Integer> h = new ArrayList<>() {
-            {
-            add(1);
-            add(2);
-            }
-        };
-        int fe = h.remove(0);
-        System.out.println(fe);
-        System.out.println(h);
+
     }
 }

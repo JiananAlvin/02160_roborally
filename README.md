@@ -39,6 +39,6 @@ Choose the destination folder and run the command in terminal:
 git clone https://github.com/JiananAlvin/02160_agile_OOSD_final_project.git
 ```
 
-### 2.3 Run this Application
+### 2.3 Run this content.Application
 
 [TODO]

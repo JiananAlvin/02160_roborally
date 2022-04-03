@@ -10,10 +10,10 @@ import model.game.card.Card;
 public class Player {
 
     private String name;
-    private boolean isPlaying;
+//    private boolean isPlaying;
     private boolean hasRobot;
     private Robot robot;
-    private boolean progCardsStatus;
+//    private boolean progCardsStatus;
     private ProgrammingDeck deck;
     private DiscardPile discard;
     private ArrayList<Card> progCards;
@@ -21,8 +21,8 @@ public class Player {
     public Player() {
         // TODO:
         // Check the meaning of @method: setPlaying(true)
-        this.setPlaying(true);
-        this.setHasRobot(false);
+//        this.setPlaying(true);
+//        this.setHasRobot(false);
         this.deck = new ProgrammingDeck(this);
         this.discard = new DiscardPile(this);
         this.progCards = new ArrayList<>();
@@ -32,14 +32,14 @@ public class Player {
         this.name = name;
     }
 
-    public boolean isPlaying() {
-        return isPlaying;
-    }
+//    public boolean isPlaying() {
+//        return isPlaying;
+//    }
 
-    public void setPlaying(boolean playing) {
-        isPlaying = playing;
-    }
-
+//    public void setPlaying(boolean playing) {
+//        isPlaying = playing;
+//    }
+//
     public String getName() {
         return this.name;
     }
@@ -54,7 +54,7 @@ public class Player {
     }
 
     public boolean hasRobot() {
-        return this.hasRobot;
+        return this.robot != null;
     }
 
     public void setRobot(Robot robot) {
@@ -65,13 +65,13 @@ public class Player {
         return this.robot;
     }
 
-    public void setHasRobot(boolean b) {
-        this.hasRobot = b;
-    }
+//    public void setHasRobot(boolean b) {
+//        this.hasRobot = b;
+//    }
 
-    public boolean progCardsStatus() {
-        return this.progCardsStatus;
-    }
+//    public boolean progCardsStatus() {
+//        return this.progCardsStatus;
+//    }
 
     public ArrayList<Card> getProgCards() {
         this.progCards = deck.getNRandomCards(9);

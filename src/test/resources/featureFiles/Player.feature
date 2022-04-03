@@ -24,16 +24,12 @@ Feature:
 # #		And that I clicked on "join room"
 #    Then I join a room with room number "uuid"
 
-
-
-
-
 ####################################BEGIN#######################################
 # [Dj]
 #  scenarios for user stories for robo rally (single player)
 
   Scenario Outline: Getting a name
-    Given a player started the game
+    Given a player opened the application
     When  player inputs a name "<name>"
     Then this name is assigned to this player
     Examples:
@@ -55,7 +51,6 @@ Feature:
 #      | Jianan | map2    | MAP2_CONTENT      |
 #      | Alice  | map999  | ERROR_MAP_NUM     |
 
-
   Scenario Outline: Choose a robot character
     Given a player has a name "<name>"
     And having-a-robot status is false
@@ -64,7 +59,6 @@ Feature:
     Examples:
       | name       | robot-name |
       | test1_user | Alice      |
-
 
   Scenario Outline: Initial position
     Given a player has a name "<name>"
@@ -77,30 +71,68 @@ Feature:
       | name  | position_x | position_y | robot-name |
       | test1 | 0          | 0          | jianan     |
 
-  Scenario: Getting a programming cards
+  Scenario: Getting programming cards
     Given a player has a name "<name>"
-    And prog_cards status is false
+#    And prog_cards status is false
     When get programming cards
     Then Player gets 9 cards
 
-#  	#//user stories (feautures mandatory)
+#  	#//user stories (features mandatory)
 #
 #  Scenario: Choosing a map
 #    Given having-a-map status is false
 #    When map many
 #    Then Player chooses a map
 
-
   Scenario Outline: The antenna determines the priority
-    Given An antenna and two robots "<robot-name1>", "<robot-name2>" and "<robot-name3>" in a game
+    Given An antenna and three robots "<robot-name1>", "<robot-name2>" and "<robot-name3>" in a game
     When RobotI, robotII and robotIII are placed in ("<x1>","<y1>"), ("<x2>","<y2>"),("<x3>","<y3>") respectively.
-    Then The robot "<robot-name>" closet to the antenna has the priority to move.
+    Then The order of these robots is "<result_name1>","<result_name2>","<result_name3>".
+    Examples: # (0,4) antenna
+      | robot-name1 | robot-name2 | robot-name3 | x1 | y1 | x2 | y2 | x3 | y3 | result_name1 | result_name2 | result_name3 |
+      | SQUASH BOT  | ZOOM BOT    | HAMMER BOT  | 5  | 3  | 7  | 5  | 12 | 4  | SQUASH BOT   | ZOOM BOT     | HAMMER BOT   |
+      | SQUASH BOT  | ZOOM BOT    | HAMMER BOT  | 5  | 3  | 5  | 5  | 12 | 4  | ZOOM BOT     | SQUASH BOT   | HAMMER BOT   |
+
+  Scenario Outline: As a robot, I want to change my direction according to the input angle value
+    Given A robot was facing "<previous_orientation>"
+    When The robot changes its orientation by using the programming card "<programming_card>"
+    Then The robot is now facing "<new_orientation>"
     Examples:
-      | robot-name1 | robot-name2 | robot-name3 | x1 | y1 | x2 | y2 | x3 | y3 | robot-name |
-      | SQUASH BOT  | ZOOM BOT    | HAMMER BOT  | 5  | 3  | 7  | 5  | 12 | 4  | SQUASH BOT |
-      | SQUASH BOT  | ZOOM BOT    | HAMMER BOT  | 5  | 3  | 5  | 5  | 12 | 4  | ZOOM BOT   |
+      | previous_orientation | programming_card | new_orientation |
+      | N                    | CardTurnLeft     | W               |
+      | W                    | CardTurnLeft     | S               |
+      | S                    | CardTurnLeft     | E               |
+      | E                    | CardTurnLeft     | N               |
+      | N                    | CardTurnRight    | E               |
+      | E                    | CardTurnRight    | S               |
+      | S                    | CardTurnRight    | W               |
+      | W                    | CardTurnRight    | N               |
+      | N                    | CardUTurn        | S               |
+      | S                    | CardUTurn        | N               |
+      | E                    | CardUTurn        | W               |
+      | W                    | CardUTurn        | E               |
 
 
+#   Scenario Outline: As player, I want to move my robot on the map, according to the programming cards selected
+#     Given A robot called "<robot_name>" assigned to a player
+#     And robot orientation is "<orientation>"
+#     And there exists a robot "<robot_name>" on the board
+#     When the board reads the card reavealed
+#     Then robot position is expected postition "<arg1>" "<arg2>"
+#
+#     Examples:
+#       | robot_name           | orientation     | arg2        | arg1|
+#       | Simona               | n               | 1           | 1   |
+
+  Scenario Outline: reboot after robot dies
+    Given A robot "<robot_name>" has "<initial_lives>" lives
+    When The robot lives is reduced "<damage_lives>"
+    Then The robot is rebooted
+    And The robot has "<final_lives>" lives
+    Examples:
+      | robot_name | initial_lives | final_lives | damage_lives |
+      | Raul       | 1             | 5           | 1            |
+      | Raul       | 2             | 1           | 1            |
 #
 #
 #

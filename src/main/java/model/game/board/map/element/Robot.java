@@ -1,11 +1,14 @@
 package model.game.board.map.element;
 
+import model.game.board.map.Orientation;
+import model.game.card.Card;
+
 import java.lang.Math;
-
 public class Robot extends Unpassable {
-
     private String name;
     private boolean onBoard;
+    private Orientation orientation;
+    private int lives;
 
     public Robot(String name) {
         super();
@@ -44,6 +47,42 @@ public class Robot extends Unpassable {
     @Override
     public String toString() {
         return this.name;
+    }
+
+    public void applyCard(Card card) {
+        card.action(this);
+    }
+
+    //-------------------------------------------------------------------------------
+    public Orientation getOrientation() {
+        return orientation;
+    }
+
+    public void setOrientation(Orientation orientation) {
+        this.orientation = orientation;
+    }
+
+    public void setLives(int lives) {
+        this.lives = lives;
+    }
+
+    public int getLives() {
+        return lives;
+    }
+
+    public void takeDamage(int damage) {
+        this.lives -= damage;
+        this.checkLives();
+    }
+
+    public void reboot() {
+        lives = 5;
+    }
+
+    private void checkLives() {
+        if (lives <= 0) {
+            this.reboot();
+        }
     }
 }
 

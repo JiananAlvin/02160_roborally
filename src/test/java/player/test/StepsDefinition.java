@@ -1,6 +1,9 @@
 package player.test;
 
+import content.Application;
+import content.RobotName;
 import io.cucumber.java.Before;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -8,9 +11,15 @@ import io.cucumber.java.en.When;
 import model.Game;
 import model.game.board.map.Map;
 import model.game.Player;
+import model.game.board.map.Orientation;
 import model.game.board.map.element.Position;
+
+//import model.game.board.map.element.ArrayBoard;
 import model.game.board.map.element.Robot;
 import model.game.card.Card;
+import model.game.card.programming.card.CardTurnLeft;
+import model.game.card.programming.card.CardTurnRight;
+import model.game.card.programming.card.CardUTurn;
 
 import static org.junit.Assert.*;
 
@@ -21,6 +30,7 @@ public class StepsDefinition {
     private Robot robot;
     private Map map;
     private ArrayList<Card> register;
+//    private ArrayBoard board;
 
     //----------------------------------------------------------------------------checked
     @Before
@@ -28,9 +38,10 @@ public class StepsDefinition {
         this.player = new Player();
     }
 
-    @Given("a player started the game")
-    public void aPlayerStartedTheGame() {
-        assertTrue(this.player.isPlaying());
+    @Given("a player opened the application")
+    public void a_player_opened_the_application() {
+//        assertTrue(this.player.isPlaying());
+        assertTrue(Application.getApplicationInstance().run());
     }
 
     @When("player inputs a name {string}")
@@ -70,7 +81,7 @@ public class StepsDefinition {
     public void choose_a_robot(String string) {
         this.robot = new Robot(string);
         this.player.setRobot(this.robot);
-        this.player.setHasRobot(true);
+//        this.player.setHasRobot(true);
     }
 
     @Then("{string} is assigned to this player")
@@ -81,7 +92,7 @@ public class StepsDefinition {
     //----------------------------------------------------------------------------checked
     @Given("having-a-robot status is true")
     public void having_a_robot_status_is_true() {
-        this.player.setHasRobot(true);
+        assertTrue(this.player.hasRobot());
     }
 
     @Given("robot-on-the-board status is false")
@@ -100,12 +111,13 @@ public class StepsDefinition {
         assertEquals(new Position(Integer.parseInt(string), Integer.parseInt(string2)), this.robot.getPosition());
     }
 
+    //----------------------------------------------------------------------------checked
     //TODO:
-//  refactor this code later
-    @Given("prog_cards status is false")
-    public void prog_cards_status_is_false() {
-        assertFalse(this.player.progCardsStatus());
-    }
+    //  refactor this code later
+//    @Given("prog_cards status is false")
+//    public void prog_cards_status_is_false() {
+//        assertFalse(this.player.progCardsStatus());
+//    }
 
     @When("get programming cards")
     public void get_programming_cards() {
@@ -124,8 +136,8 @@ public class StepsDefinition {
     private Robot r3;
     private ArrayList<Robot> robotsInGame;
 
-    @Given("An antenna and two robots {string}, {string} and {string} in a game")
-    public void anAntennaAndTwoRobotsAndInAGame(String arg0, String arg1, String arg2) {
+    @Given("An antenna and three robots {string}, {string} and {string} in a game")
+    public void anAntennaAndThreeRobotsAndInAGame(String arg0, String arg1, String arg2) {
         this.r1 = new Robot(arg0);
         this.r2 = new Robot(arg1);
         this.r3 = new Robot(arg2);
@@ -144,8 +156,85 @@ public class StepsDefinition {
         this.r3.setPosition(Integer.parseInt(arg4), Integer.parseInt(arg5));
     }
 
-    @Then("The robot {string} closet to the antenna has the priority to move.")
-    public void theRobotClosetToTheAntennaHasThePriorityToMove(String arg0) {
-        assertEquals(arg0, this.game.turnOf(game.orderOfRobots()).getName());
+    @Then("The order of these robots is {string},{string},{string}.")
+    public void theRobotClosestToTheAntennaHasThePriorityToMove (String arg0, String arg1, String arg2) {
+        assertEquals(arg0, this.game.orderOfRobots().get(0).getName());
+        assertEquals(arg1, this.game.orderOfRobots().get(1).getName());
+        assertEquals(arg2, this.game.orderOfRobots().get(2).getName());
+    }
+
+    //----------------------------------------------------------------------------checked
+
+    @Given("A robot was facing {string}")
+    public void aRobotWasFacing(String arg0) {
+        robot = new Robot(RobotName.HAMMER_BOT);
+        robot.setOrientation(Orientation.valueOf(arg0));
+    }
+
+    @When("The robot changes its orientation by using the programming card {string}")
+    public void theRobotChangesItsOrientationByUsingTheProgrammingCard(String arg0) {
+        Card card;
+        switch (arg0) {
+            case "CardTurnLeft":
+                card = new CardTurnLeft();
+                break;
+            case "CardTurnRight":
+                card = new CardTurnRight();
+                break;
+            case "CardUTurn":
+                card = new CardUTurn();
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + arg0);
+        }
+        robot.applyCard(card);
+    }
+
+    @Then("The robot is now facing {string}")
+    public void theRobotIsNowFacing(String arg0) {
+        assertEquals(Orientation.valueOf(arg0), robot.getOrientation());
+    }
+
+    //----------------------------------------------------------------------------checked **
+//    @Given("there exists a robot {string} on the board")
+//    public void there_exists_a_robot_on_the_board(String robot) {
+//        init();
+//        this.robot = new Robot(robot);
+//    }
+//
+//    @When("the board reads the card reavealed")
+//    public void the_board_reads_the_card_reavealed() {
+//        Card card = new CardMove1();
+//        this.board = new ArrayBoard(robot);
+//        board.ReadCard(card);
+//    }
+//
+//    @Then("robot position is expected postition {string} {string}")
+//    public void robot_position_is_expected_postition(String posx, String posy) {
+//        assertEquals(robot.getCoordx(), Integer.parseInt(posx));
+//        assertEquals(robot.getCoordy(), Integer.parseInt(posy));
+//    }
+
+    //----------------------------------------------------------------------------checked **
+    // TODO:
+    @Given("A robot {string} has {string} lives")
+    public void aRobotHasLives(String arg0, String arg1) {
+        robot = new Robot(arg0);
+        robot.setLives(Integer.parseInt(arg1));
+    }
+
+    @When("The robot lives is reduced {string}")
+    public void theRobotLivesIsReduced(String damage) {
+        robot.takeDamage(Integer.parseInt(damage));
+    }
+
+    @Then("The robot is rebooted")
+    public void the_robot_is_rebooted() {
+// set the position of the robot to the coordinates of the reboot element
+    }
+
+    @Then("The robot has {string} lives")
+    public void the_robot_has_lives(String lives) {
+        robot.setLives(Integer.parseInt(lives));
     }
 }
