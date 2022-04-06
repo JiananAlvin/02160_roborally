@@ -1,6 +1,6 @@
 package model.game.board.map.element;
 
-public class Antenna extends Unpassable {
+public class Antenna extends Tile {
 
     private static Antenna instance = null;
 
@@ -9,12 +9,9 @@ public class Antenna extends Unpassable {
     }
 
     public static Antenna getInstance() {
-        if (Antenna.instance == null) {
+        if (Antenna.instance == null)
             Antenna.instance = new Antenna();
-            return Antenna.instance;
-        } else {
-            return Antenna.instance;
-        }
+        return Antenna.instance;
     }
 
     public Position getPosition() {

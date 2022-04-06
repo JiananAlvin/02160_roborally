@@ -3,7 +3,7 @@ package model.game.board.map.element;
 /**
  * @ Class Blank represents nothing on this area
  */
-public class Blank extends Unpassable {
+public class Blank extends Tile {
 
     public Blank(Position position) {
         super(position);

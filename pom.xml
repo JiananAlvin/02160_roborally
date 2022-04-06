@@ -24,6 +24,14 @@
     </properties>
 
     <dependencies>
+        <!--Use lombok to help us generate getter and setter-->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>RELEASE</version>
+            <scope>compile</scope>
+        </dependency>
+        <!--The dependency for cucumber test-->
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-java</artifactId>

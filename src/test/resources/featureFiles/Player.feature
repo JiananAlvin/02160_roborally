@@ -69,7 +69,7 @@ Feature:
     Then Player is now at a position "<position_x>" and "<position_y>"
     Examples:
       | name  | position_x | position_y | robot-name |
-      | test1 | 0          | 0          | jianan     |
+      | test1 | 0          | 0          | SQUASH BOT |
 
   Scenario: Getting programming cards
     Given a player has a name "<name>"
@@ -124,15 +124,16 @@ Feature:
 #       | robot_name           | orientation     | arg2        | arg1|
 #       | Simona               | n               | 1           | 1   |
 
-  Scenario Outline: reboot after robot dies
-    Given A robot "<robot_name>" has "<initial_lives>" lives
-    When The robot lives is reduced "<damage_lives>"
-    Then The robot is rebooted
-    And The robot has "<final_lives>" lives
+  Scenario Outline: reboot reduces lives after taking some damage
+    Given A robot "<robot_name>" had "<initial_lives>" lives
+    When The robot lives are reduced "<damage_lives>" points of damage by the game
+    Then The robot now has "<final_lives>" lives
     Examples:
-      | robot_name | initial_lives | final_lives | damage_lives |
-      | Raul       | 1             | 5           | 1            |
-      | Raul       | 2             | 1           | 1            |
+      | robot_name | initial_lives | damage_lives | final_lives |
+      | Raul       | 1             | 1            | 5           |
+      | Raul       | 2             | 1            | 1           |
+      | Jianan     | 1             | 2            | 5           |
+
 #
 #
 #

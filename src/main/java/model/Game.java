@@ -1,7 +1,8 @@
 package model;
 
-import model.game.board.map.element.Antenna;
+import model.game.board.map.element.Position;
 import model.game.board.map.element.Robot;
+import model.game.board.map.element.RebootPoint;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -14,9 +15,20 @@ import java.util.TreeMap;
 public class Game {
 
     private ArrayList<Robot> robotsInGame;
+    private RebootPoint rebootPoint;
+
+    public Game() {
+        this.rebootPoint = new RebootPoint( new Position(2,3));
+    }
 
     public Game(ArrayList<Robot> robotsInGame) {
+        this.rebootPoint = new RebootPoint();
         this.robotsInGame = robotsInGame;
+
+    }
+    public Game(ArrayList<Robot> robotsInGame, RebootPoint rebootPoint) {
+        this.robotsInGame = robotsInGame;
+        this.rebootPoint = rebootPoint;
     }
 
     public ArrayList<Robot> getRobotsInGame() {
@@ -57,4 +69,15 @@ public class Game {
             return turnOf(this.robotsInGame);
         }
     }
+
+    public void reboot(Robot r) {
+        r.setLives(5);
+        r.setPosition(this.rebootPoint.getPosition());
+        //this.setPosition(); set position -> reboot position
+    }
+
+    public void robotTakeDamage(Robot r, int damage){
+        if(!r.takeDamage(damage)){reboot(r);}
+    }
+
 }

@@ -3,7 +3,6 @@ package player.test;
 import content.Application;
 import content.RobotName;
 import io.cucumber.java.Before;
-import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -81,7 +80,6 @@ public class StepsDefinition {
     public void choose_a_robot(String string) {
         this.robot = new Robot(string);
         this.player.setRobot(this.robot);
-//        this.player.setHasRobot(true);
     }
 
     @Then("{string} is assigned to this player")
@@ -157,7 +155,7 @@ public class StepsDefinition {
     }
 
     @Then("The order of these robots is {string},{string},{string}.")
-    public void theRobotClosestToTheAntennaHasThePriorityToMove (String arg0, String arg1, String arg2) {
+    public void theRobotClosestToTheAntennaHasThePriorityToMove(String arg0, String arg1, String arg2) {
         assertEquals(arg0, this.game.orderOfRobots().get(0).getName());
         assertEquals(arg1, this.game.orderOfRobots().get(1).getName());
         assertEquals(arg2, this.game.orderOfRobots().get(2).getName());
@@ -217,24 +215,22 @@ public class StepsDefinition {
 
     //----------------------------------------------------------------------------checked **
     // TODO:
-    @Given("A robot {string} has {string} lives")
+    @Given("A robot {string} had {string} lives")
     public void aRobotHasLives(String arg0, String arg1) {
         robot = new Robot(arg0);
         robot.setLives(Integer.parseInt(arg1));
     }
 
-    @When("The robot lives is reduced {string}")
-    public void theRobotLivesIsReduced(String damage) {
-        robot.takeDamage(Integer.parseInt(damage));
+    @When("The robot lives are reduced {string} points of damage by the game")
+    public void theRobotLivesAreReducedPointsOfDamageByTheGame(String arg0) {
+        game = new Game();
+        game.robotTakeDamage(robot, Integer.parseInt(arg0));
     }
 
-    @Then("The robot is rebooted")
-    public void the_robot_is_rebooted() {
-// set the position of the robot to the coordinates of the reboot element
-    }
-
-    @Then("The robot has {string} lives")
+    @Then("The robot now has {string} lives")
     public void the_robot_has_lives(String lives) {
-        robot.setLives(Integer.parseInt(lives));
+        assertEquals(Integer.parseInt(lives), robot.getLives());
     }
+
+
 }

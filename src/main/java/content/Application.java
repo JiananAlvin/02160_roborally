@@ -16,12 +16,9 @@ public class Application {
     }
 
     public static Application getApplicationInstance() {
-        if (Application.applicationInstance == null) {
+        if (Application.applicationInstance == null)
             Application.applicationInstance = new Application();
-            return Application.applicationInstance;
-        } else {
-            return Application.applicationInstance;
-        }
+        return Application.applicationInstance;
     }
 
     public boolean run() {
@@ -55,8 +52,5 @@ public class Application {
 //        f.setVisible(true);
 //        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 //
-
-
-
     }
 }
