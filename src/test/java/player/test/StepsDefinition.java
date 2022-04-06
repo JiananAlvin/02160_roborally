@@ -9,6 +9,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 import model.Game;
+import model.Room;
 import model.game.board.map.Map;
 import model.game.Player;
 import model.game.board.map.Orientation;
@@ -26,11 +27,38 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 
 public class StepsDefinition {
+    private Game game = new Game();
     private Player player;
     private Robot robot;
     private Map map;
     private ArrayList<Card> register;
+    private Room room;
 //    private ArrayBoard board;
+
+    // ---------------------------------- new user stories immplemented
+    @When("player enters a room with code number {int}")
+    public void player_enters_a_room_with_code_number(Integer int1) {
+        this.room = new Room(int1);
+        this.game.addRoom(this.room);
+    }
+    @Then("player is in room {int}")
+    public void player_is_in_room(Integer int1) {
+        this.player.assignRoom(this.room);
+    }
+
+    @When("player creates a new room with code number {int}")
+    public void player_creates_a_new_room_with_code_number(int int0) {
+        this.room = new Room(int0);
+        this.game.addRoom(this.room);
+    }
+
+    @Then("there is a new room with code {int} in the list of available rooms")
+    public void there_is_a_new_room_with_code_in_the_list_of_available_rooms(Integer int1) {
+        assertTrue(this.game.getRooms().contains(this.room));
+    }
+
+
+    // ------------------------------------------ end new stories
 
     //----------------------------------------------------------------------------checked
     @Before
@@ -130,23 +158,18 @@ public class StepsDefinition {
     }
 
     //----------------------------------------------------------------------------checked
-    private Game game;
     private Robot r1;
     private Robot r2;
     private Robot r3;
-    private ArrayList<Robot> robotsInGame;
-
     @Given("An antenna and three robots {string}, {string} and {string} in a game")
     public void anAntennaAndThreeRobotsAndInAGame(String arg0, String arg1, String arg2) {
         this.r1 = new Robot(arg0);
         this.r2 = new Robot(arg1);
         this.r3 = new Robot(arg2);
-        this.robotsInGame = new ArrayList<Robot>() {
-        };
-        this.robotsInGame.add(r1);
-        this.robotsInGame.add(r2);
-        this.robotsInGame.add(r3);
-        this.game = new Game(robotsInGame);
+        this.game.addRobot(r1);
+        this.game.addRobot(r2);
+        this.game.addRobot(r3);
+
     }
 
     @When("RobotI, robotII and robotIII are placed in \\({string},{string}), \\({string},{string}),\\({string},{string}) respectively.")

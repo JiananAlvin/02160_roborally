@@ -2,6 +2,7 @@ package model.game;
 
 import java.util.ArrayList;
 
+import model.Room;
 import model.game.board.mat.element.ProgrammingDeck;
 import model.game.board.mat.element.DiscardPile;
 import model.game.board.map.element.Robot;
@@ -17,12 +18,10 @@ public class Player {
     private ProgrammingDeck deck;
     private DiscardPile discard;
     private ArrayList<Card> progCards;
+    private Room room;
+    private int currentRoomCode;
 
     public Player() {
-        // TODO:
-        // Check the meaning of @method: setPlaying(true)
-//        this.setPlaying(true);
-//        this.setHasRobot(false);
         this.deck = new ProgrammingDeck(this);
         this.discard = new DiscardPile(this);
         this.progCards = new ArrayList<>();
@@ -80,5 +79,13 @@ public class Player {
 
     public ArrayList<Card> getDiscard() {
         return this.discard.getDiscard();
+    }
+
+    public void assignRoom(Room room) {
+        this.room = room;
+    }
+
+    public int getCurrentRoomCode() {
+        return this.currentRoomCode;
     }
 }

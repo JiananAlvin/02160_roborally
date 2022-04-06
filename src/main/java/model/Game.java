@@ -4,6 +4,7 @@ import model.game.board.map.element.Antenna;
 import model.game.board.map.element.Robot;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.TreeMap;
 
@@ -13,11 +14,8 @@ import java.util.TreeMap;
 
 public class Game {
 
-    private ArrayList<Robot> robotsInGame;
-
-    public Game(ArrayList<Robot> robotsInGame) {
-        this.robotsInGame = robotsInGame;
-    }
+    private ArrayList<Robot> robotsInGame = new ArrayList<Robot>();
+    private ArrayList<Room> rooms = new ArrayList<Room>();
 
     public ArrayList<Robot> getRobotsInGame() {
         return this.robotsInGame;
@@ -56,5 +54,17 @@ public class Game {
         } else {
             return turnOf(this.robotsInGame);
         }
+    }
+
+    public void addRoom(Room room) {
+        this.rooms.add(room);
+    }
+
+    public ArrayList<Room> getRooms() {
+        return this.rooms;
+    }
+
+    public void addRobot(Robot r1) {
+        this.robotsInGame.add(r1);
     }
 }

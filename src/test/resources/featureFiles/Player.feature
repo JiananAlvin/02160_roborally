@@ -1,28 +1,21 @@
 @tag
 Feature:
-
-#  @tag1
-#  Scenario Outline: As a player I want to input my name
-#    Given I input my name "<name>"
-#    Then I validate the name stored in InfoManager
-#
-#    Examples:
-#      | name    |
-#      | Weinji  |
-#      | Ion     |
-#      | Simona  |
-#      | Georgia |
-#      | Anna    |
-#      | Jianan  |
-#
-#  Scenario: As a player I want to create a room
-#    Given that I am not in a room
-#    Then I create a room
-#
-#  Scenario: As a player I want to join a room
-#    Given that I am not in a room
-# #		And that I clicked on "join room"
-#    Then I join a room with room number "uuid"
+  Scenario Outline: As a player I want to create a room
+    Given a player has a name "<name>"
+    When player creates a new room with code number <room_number>
+    Then there is a new room with code <room_number> in the list of available rooms
+    Examples:
+    | name | room_number |
+    | test1 | 100        |
+    | test2 | 234        |
+  Scenario Outline: As a player I want to join a room
+    Given a player has a name "<name>"
+    When player enters a room with code number <room_number>
+    Then player is in room <room_number>
+    Examples:
+    | name | room_number |
+    | test1 | 100        |
+    |test2  |212         |
 
 ####################################BEGIN#######################################
 # [Dj]
