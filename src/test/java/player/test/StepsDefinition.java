@@ -15,9 +15,7 @@ import model.game.board.map.Orientation;
 import model.game.board.map.element.Position;
 import model.game.board.map.element.Robot;
 import model.game.card.Card;
-import model.game.card.programming.card.CardTurnLeft;
-import model.game.card.programming.card.CardTurnRight;
-import model.game.card.programming.card.CardUTurn;
+import model.game.card.programming.card.*;
 
 import static org.junit.Assert.*;
 
@@ -31,6 +29,8 @@ public class StepsDefinition {
     private ArrayList<Card> register;
     private Room room;
     private ArrayList<Robot> robotsInGame;
+    private Card card;
+
 
     //----------------------------------------------------------------------------checked
     @Before
@@ -225,7 +225,7 @@ public class StepsDefinition {
         assertEquals(Integer.parseInt(lives), robot.getLives());
     }
 
-    // ---------------------------------- new user stories implemented
+    //----------------------------------------------------------------------------new user stories implemented
     @When("player enters a room with code number {int}")
     public void player_enters_a_room_with_code_number(Integer int1) {
         this.room = new Room(int1);
@@ -247,5 +247,80 @@ public class StepsDefinition {
         assertTrue(this.game.getRooms().contains(this.room));
     }
 
-    // ------------------------------------------ end new stories
+    //----------------------------------------------------------------------------new user stories implemented
+    @Given("A robot {string} has  initial position {string} {string} with orientation {string}")
+    public void aRobotHasInitialPositionWithOrientation(String robotName, String xPos, String yPos, String orientation) {
+        robot = new Robot(robotName);
+        robot.setPosition(Integer.parseInt(xPos), Integer.parseInt(yPos));
+        Orientation o = Orientation.N;
+        switch(orientation){
+            case "N":
+                o = Orientation.N;
+                break;
+            case "S":
+                o = Orientation.S;
+                break;
+            case "E":
+                o = Orientation.E;
+                break;
+            case "W":
+                o = Orientation.W;
+                break;
+        }
+        robot.setOrientation(o);
+    }
+
+    @Given("A card with movement {string}")
+    public void aCardWithMovement(String movement) {
+        switch(movement){
+            case "1":
+                card = new CardMove1();
+                break;
+            case "2":
+                card = new CardMove2();
+                break;
+            case "3":
+                card = new CardMove3();
+                break;
+            case "-1":
+                card = new CardBackUp();
+                break;
+        }
+
+    }
+
+    @When("The card is played")
+    public void theCardIsPlayed() {
+        card.action(robot);
+    }
+
+    @Then("the robot position is {string} {string}")
+    public void theRobotPositionIs(String expectedXPos, String expectedYPos) {
+        assertEquals(Integer.parseInt(expectedXPos), robot.getPosition().getXcoord());
+        assertEquals(Integer.parseInt(expectedYPos), robot.getPosition().getYcoord());
+    }
+
+    //---------------------------------------------------------------------------- new user stories implemented
+    @Given("A robot {string} has position {string} {string}")
+    public void aRobotHasPosition(String robotName, String xPos, String yPos) {
+        robot = new Robot(robotName);
+        robot.setPosition(Integer.parseInt(xPos), Integer.parseInt(yPos));
+    }
+
+    @Then("The expected output is {string} in a board that have a maximum size of {string} {string}")
+    public void theExpectedOutputIsInABoardThatHaveAMaximumSizeOf(String output, String maxX, String maxY) {
+        boolean aux = robot.imInsideBoard(Integer.parseInt(maxX), Integer.parseInt(maxY));
+
+        assertEquals(aux, Boolean.valueOf(output));
+    }
 }
+
+
+
+
+
+
+
+
+
+

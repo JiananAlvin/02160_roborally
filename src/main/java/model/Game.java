@@ -3,31 +3,33 @@ package model;
 import model.game.board.map.element.Position;
 import model.game.board.map.element.Robot;
 import model.game.board.map.element.RebootPoint;
+import model.game.Player;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.TreeMap;
 
 
 public class Game {
 
-    //private ArrayList<Robot> robotsInGame = new ArrayList<Robot>();
     private ArrayList<Room> rooms;
     private ArrayList<Robot> robotsInGame;
     private RebootPoint rebootPoint;
+    private ArrayList<Player> players;
 
     public Game() {
         this.robotsInGame = new ArrayList<>();
         this.rebootPoint = new RebootPoint(new Position(2, 3));
         this.rooms = new ArrayList<>();
+        this.players = new ArrayList<>();
     }
 
-    public Game(ArrayList<Robot> robotsInGame, RebootPoint rebootPoint) {
-        this.robotsInGame = robotsInGame;
-        this.rebootPoint = rebootPoint;
-        this.rooms = new ArrayList<>();
-    }
+//    public Game(ArrayList<Robot> robotsInGame, RebootPoint rebootPoint) {
+//        this.robotsInGame = robotsInGame;
+//        this.rebootPoint = rebootPoint;
+//        this.rooms = new ArrayList<>();
+//        this.players = new ArrayList<>();
+//    }
 
     public ArrayList<Robot> getRobotsInGame() {
         return this.robotsInGame;
@@ -91,4 +93,31 @@ public class Game {
             reboot(r);
         }
     }
+
+    public void addPlayer(Player p1){
+        this.players.add(p1);
+        this.robotsInGame.add(p1.getRobot());
+    }
+
+//    public void playCards(Player p1){
+//
+//        ArrayList<Card> cardsSelected = p1.getProgCards();
+//        for (Card card: cardsSelected)
+//        {
+//            card.action(p1.getRobot());
+//        }
+//
+//    }
+
+//    Prototype about how collisions will work
+//    private void checkCollision(Player p1){
+//       Position pos =  p1.getRobot().getPosition();
+//
+//       for(Tile tile : tilesInTheGame){
+//           if(tile.getPosition().equals(pos)){
+//
+//           }
+//       }
+//    }
+
 }
