@@ -1,19 +1,23 @@
 package model.game.board.map.element;
 
+import lombok.Data;
 import model.game.board.map.Orientation;
 import model.game.card.Card;
 
 import java.lang.Math;
-public class Robot extends Unpassable {
+
+@Data
+public class Robot {
     private String name;
     private boolean onBoard;
     private Orientation orientation;
     private int lives;
+    private Position position;
 
     public Robot(String name) {
-        super();
         this.name = name;
         this.onBoard = false;
+        this.position = new Position();
     }
 
     public boolean onBoard() {
@@ -29,19 +33,20 @@ public class Robot extends Unpassable {
     }
 
     public void setPosition(Position position) {
-        super.setPosition(position);
+        this.position = position;
     }
 
     public void setPosition(int x, int y) {
-        super.setPosition(x, y);
+        this.position.setXcoord(x);
+        this.position.setYcoord(y);
     }
 
     public Position getPosition() {
-        return super.getPosition();
+        return this.position;
     }
 
     public int distanceToAntenna() {
-        return Math.abs(super.getPosition().getXcoord() - Antenna.getInstance().getPosition().getXcoord()) + Math.abs(super.getPosition().getYcoord() - Antenna.getInstance().getPosition().getYcoord());
+        return Math.abs(this.position.getXcoord() - Antenna.getInstance().getPosition().getXcoord()) + Math.abs(this.position.getYcoord() - Antenna.getInstance().getPosition().getYcoord());
     }
 
     @Override
@@ -53,9 +58,8 @@ public class Robot extends Unpassable {
         card.action(this);
     }
 
-    //-------------------------------------------------------------------------------
     public Orientation getOrientation() {
-        return orientation;
+        return this.orientation;
     }
 
     public void setOrientation(Orientation orientation) {
@@ -67,22 +71,24 @@ public class Robot extends Unpassable {
     }
 
     public int getLives() {
-        return lives;
+        return this.lives;
     }
 
-    public void takeDamage(int damage) {
+    /**
+     * @return: This function returns true if the robot is still alive after taking -some- damage
+     */
+    public boolean takeDamage(int damage) {
         this.lives -= damage;
-        this.checkLives();
+        return checkAlive();
     }
 
-    public void reboot() {
-        lives = 5;
-    }
-
-    private void checkLives() {
-        if (lives <= 0) {
-            this.reboot();
+    private boolean checkAlive() {
+        if (this.lives <= 0) {
+            return false; //here we reboot
         }
+        return true; // here nothing happens
     }
+
 }
+
 

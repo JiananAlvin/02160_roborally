@@ -1,21 +1,33 @@
 package model;
 
-import model.game.board.map.element.Antenna;
+import model.game.board.map.element.Position;
 import model.game.board.map.element.Robot;
+import model.game.board.map.element.RebootPoint;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.TreeMap;
 
-/**
- * A class Game represents
- */
 
 public class Game {
 
-    private ArrayList<Robot> robotsInGame = new ArrayList<Robot>();
-    private ArrayList<Room> rooms = new ArrayList<Room>();
+    //private ArrayList<Robot> robotsInGame = new ArrayList<Robot>();
+    private ArrayList<Room> rooms;
+    private ArrayList<Robot> robotsInGame;
+    private RebootPoint rebootPoint;
+
+    public Game() {
+        this.robotsInGame = new ArrayList<>();
+        this.rebootPoint = new RebootPoint(new Position(2, 3));
+        this.rooms = new ArrayList<>();
+    }
+
+    public Game(ArrayList<Robot> robotsInGame, RebootPoint rebootPoint) {
+        this.robotsInGame = robotsInGame;
+        this.rebootPoint = rebootPoint;
+        this.rooms = new ArrayList<>();
+    }
 
     public ArrayList<Robot> getRobotsInGame() {
         return this.robotsInGame;
@@ -66,5 +78,17 @@ public class Game {
 
     public void addRobot(Robot r1) {
         this.robotsInGame.add(r1);
+    }
+
+    public void reboot(Robot r1) {
+        r1.setLives(5);
+        r1.setPosition(this.rebootPoint.getPosition());
+        //this.setPosition(); set position -> reboot position
+    }
+
+    public void robotTakeDamage(Robot r, int damage) {
+        if (!r.takeDamage(damage)) {
+            reboot(r);
+        }
     }
 }

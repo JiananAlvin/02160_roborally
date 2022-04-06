@@ -1,25 +1,5 @@
 @tag
 Feature:
-  Scenario Outline: As a player I want to create a room
-    Given a player has a name "<name>"
-    When player creates a new room with code number <room_number>
-    Then there is a new room with code <room_number> in the list of available rooms
-    Examples:
-    | name | room_number |
-    | test1 | 100        |
-    | test2 | 234        |
-  Scenario Outline: As a player I want to join a room
-    Given a player has a name "<name>"
-    When player enters a room with code number <room_number>
-    Then player is in room <room_number>
-    Examples:
-    | name | room_number |
-    | test1 | 100        |
-    |test2  |212         |
-
-####################################BEGIN#######################################
-# [Dj]
-#  scenarios for user stories for robo rally (single player)
 
   Scenario Outline: Getting a name
     Given a player opened the application
@@ -31,7 +11,6 @@ Feature:
       | test_2    |
       | 123333123 |
       | tttttttt  |
-
 
 #  Scenario Outline: Choose a map
 #    Given a player has a name "<name>"
@@ -62,7 +41,7 @@ Feature:
     Then Player is now at a position "<position_x>" and "<position_y>"
     Examples:
       | name  | position_x | position_y | robot-name |
-      | test1 | 0          | 0          | jianan     |
+      | test1 | 0          | 0          | SQUASH BOT |
 
   Scenario: Getting programming cards
     Given a player has a name "<name>"
@@ -117,16 +96,33 @@ Feature:
 #       | robot_name           | orientation     | arg2        | arg1|
 #       | Simona               | n               | 1           | 1   |
 
-  Scenario Outline: reboot after robot dies
-    Given A robot "<robot_name>" has "<initial_lives>" lives
-    When The robot lives is reduced "<damage_lives>"
-    Then The robot is rebooted
-    And The robot has "<final_lives>" lives
+  Scenario Outline: reboot reduces lives after taking some damage
+    Given A robot "<robot_name>" had "<initial_lives>" lives
+    When The robot lives are reduced "<damage_lives>" points of damage by the game
+    Then The robot now has "<final_lives>" lives
     Examples:
-      | robot_name | initial_lives | final_lives | damage_lives |
-      | Raul       | 1             | 5           | 1            |
-      | Raul       | 2             | 1           | 1            |
-#
+      | robot_name | initial_lives | damage_lives | final_lives |
+      | Raul       | 1             | 1            | 5           |
+      | Raul       | 2             | 1            | 1           |
+      | Jianan     | 1             | 2            | 5           |
+
+  Scenario Outline: As a player I want to create a room
+    Given a player has a name "<name>"
+    When player creates a new room with code number <room_number>
+    Then there is a new room with code <room_number> in the list of available rooms
+    Examples:
+      | name | room_number |
+      | test1 | 100        |
+      | test2 | 234        |
+
+  Scenario Outline: As a player I want to join a room
+    Given a player has a name "<name>"
+    When player enters a room with code number <room_number>
+    Then player is in room <room_number>
+    Examples:
+      | name | room_number |
+      | test1 | 100        |
+      | test2 | 212        |
 #
 #
 #    #########################################START#################################################3

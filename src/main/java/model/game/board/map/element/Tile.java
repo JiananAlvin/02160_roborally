@@ -25,11 +25,6 @@ public abstract class Tile {
     public void setPosition(Position position) {
         this.position = position;
     }
-
-    public void setPosition(int x, int y) {
-        this.position.setXcoord(x);
-        this.position.setYcoord(y);
-    }
 }
 
 

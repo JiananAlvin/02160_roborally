@@ -1,16 +1,16 @@
 package model.game.board.map.element;
 
-public abstract class Unpassable extends Tile {
+public class RebootPoint extends Tile{
 
-    public Unpassable() {
+    public RebootPoint() {
         super();
     }
 
-    public Unpassable(Position position) {
+    public RebootPoint(Position position) {
         super(position);
     }
 
-    public Unpassable(int x, int y) {
+    public RebootPoint(int x, int y) {
         super(x, y);
     }
 

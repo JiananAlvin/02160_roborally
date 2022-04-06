@@ -3,7 +3,6 @@ package player.test;
 import content.Application;
 import content.RobotName;
 import io.cucumber.java.Before;
-import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -14,8 +13,6 @@ import model.game.board.map.Map;
 import model.game.Player;
 import model.game.board.map.Orientation;
 import model.game.board.map.element.Position;
-
-//import model.game.board.map.element.ArrayBoard;
 import model.game.board.map.element.Robot;
 import model.game.card.Card;
 import model.game.card.programming.card.CardTurnLeft;
@@ -33,32 +30,7 @@ public class StepsDefinition {
     private Map map;
     private ArrayList<Card> register;
     private Room room;
-//    private ArrayBoard board;
-
-    // ---------------------------------- new user stories immplemented
-    @When("player enters a room with code number {int}")
-    public void player_enters_a_room_with_code_number(Integer int1) {
-        this.room = new Room(int1);
-        this.game.addRoom(this.room);
-    }
-    @Then("player is in room {int}")
-    public void player_is_in_room(Integer int1) {
-        this.player.assignRoom(this.room);
-    }
-
-    @When("player creates a new room with code number {int}")
-    public void player_creates_a_new_room_with_code_number(int int0) {
-        this.room = new Room(int0);
-        this.game.addRoom(this.room);
-    }
-
-    @Then("there is a new room with code {int} in the list of available rooms")
-    public void there_is_a_new_room_with_code_in_the_list_of_available_rooms(Integer int1) {
-        assertTrue(this.game.getRooms().contains(this.room));
-    }
-
-
-    // ------------------------------------------ end new stories
+    private ArrayList<Robot> robotsInGame;
 
     //----------------------------------------------------------------------------checked
     @Before
@@ -109,7 +81,6 @@ public class StepsDefinition {
     public void choose_a_robot(String string) {
         this.robot = new Robot(string);
         this.player.setRobot(this.robot);
-//        this.player.setHasRobot(true);
     }
 
     @Then("{string} is assigned to this player")
@@ -169,7 +140,6 @@ public class StepsDefinition {
         this.game.addRobot(r1);
         this.game.addRobot(r2);
         this.game.addRobot(r3);
-
     }
 
     @When("RobotI, robotII and robotIII are placed in \\({string},{string}), \\({string},{string}),\\({string},{string}) respectively.")
@@ -180,14 +150,13 @@ public class StepsDefinition {
     }
 
     @Then("The order of these robots is {string},{string},{string}.")
-    public void theRobotClosestToTheAntennaHasThePriorityToMove (String arg0, String arg1, String arg2) {
+    public void theRobotClosestToTheAntennaHasThePriorityToMove(String arg0, String arg1, String arg2) {
         assertEquals(arg0, this.game.orderOfRobots().get(0).getName());
         assertEquals(arg1, this.game.orderOfRobots().get(1).getName());
         assertEquals(arg2, this.game.orderOfRobots().get(2).getName());
     }
 
     //----------------------------------------------------------------------------checked
-
     @Given("A robot was facing {string}")
     public void aRobotWasFacing(String arg0) {
         robot = new Robot(RobotName.HAMMER_BOT);
@@ -238,26 +207,45 @@ public class StepsDefinition {
 //        assertEquals(robot.getCoordy(), Integer.parseInt(posy));
 //    }
 
-    //----------------------------------------------------------------------------checked **
-    // TODO:
-    @Given("A robot {string} has {string} lives")
+    //----------------------------------------------------------------------------checked
+    @Given("A robot {string} had {string} lives")
     public void aRobotHasLives(String arg0, String arg1) {
         robot = new Robot(arg0);
         robot.setLives(Integer.parseInt(arg1));
     }
 
-    @When("The robot lives is reduced {string}")
-    public void theRobotLivesIsReduced(String damage) {
-        robot.takeDamage(Integer.parseInt(damage));
+    @When("The robot lives are reduced {string} points of damage by the game")
+    public void theRobotLivesAreReducedPointsOfDamageByTheGame(String arg0) {
+        game = new Game();
+        game.robotTakeDamage(robot, Integer.parseInt(arg0));
     }
 
-    @Then("The robot is rebooted")
-    public void the_robot_is_rebooted() {
-// set the position of the robot to the coordinates of the reboot element
-    }
-
-    @Then("The robot has {string} lives")
+    @Then("The robot now has {string} lives")
     public void the_robot_has_lives(String lives) {
-        robot.setLives(Integer.parseInt(lives));
+        assertEquals(Integer.parseInt(lives), robot.getLives());
     }
+
+    // ---------------------------------- new user stories implemented
+    @When("player enters a room with code number {int}")
+    public void player_enters_a_room_with_code_number(Integer int1) {
+        this.room = new Room(int1);
+        this.game.addRoom(this.room);
+    }
+    @Then("player is in room {int}")
+    public void player_is_in_room(Integer int1) {
+        this.player.assignRoom(this.room);
+    }
+
+    @When("player creates a new room with code number {int}")
+    public void player_creates_a_new_room_with_code_number(int int0) {
+        this.room = new Room(int0);
+        this.game.addRoom(this.room);
+    }
+
+    @Then("there is a new room with code {int} in the list of available rooms")
+    public void there_is_a_new_room_with_code_in_the_list_of_available_rooms(Integer int1) {
+        assertTrue(this.game.getRooms().contains(this.room));
+    }
+
+    // ------------------------------------------ end new stories
 }
