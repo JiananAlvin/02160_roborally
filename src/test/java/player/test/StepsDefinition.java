@@ -18,9 +18,7 @@ import model.game.board.map.element.Position;
 //import model.game.board.map.element.ArrayBoard;
 import model.game.board.map.element.Robot;
 import model.game.card.Card;
-import model.game.card.programming.card.CardTurnLeft;
-import model.game.card.programming.card.CardTurnRight;
-import model.game.card.programming.card.CardUTurn;
+import model.game.card.programming.card.*;
 
 import static org.junit.Assert.*;
 
@@ -33,6 +31,7 @@ public class StepsDefinition {
     private Map map;
     private ArrayList<Card> register;
     private Room room;
+    private Card card;
 //    private ArrayBoard board;
 
     // ---------------------------------- new user stories immplemented
@@ -260,4 +259,81 @@ public class StepsDefinition {
     public void the_robot_has_lives(String lives) {
         robot.setLives(Integer.parseInt(lives));
     }
+
+
+
+    @Given("A robot {string} has  initial position {string} {string} with orientation {string}")
+    public void aRobotHasInitialPositionWithOrientation(String robotName, String xPos, String yPos, String orientation) {
+        robot = new Robot(robotName);
+        robot.setPosition(new Position(Integer.parseInt(xPos), Integer.parseInt(yPos)));
+        Orientation o = Orientation.N;
+        switch(orientation){
+            case "N":
+                o = Orientation.N;
+                break;
+            case "S":
+                o = Orientation.S;
+                break;
+            case "E":
+                o = Orientation.E;
+                break;
+            case "W":
+                o = Orientation.W;
+                break;
+        }
+        robot.setOrientation(o);
+    }
+
+    @And("A card with movement {string}")
+    public void aCardWithMovement(String movement) {
+        switch(movement){
+            case "1":
+                card = new CardMove1();
+                break;
+            case "2":
+                card = new CardMove2();
+                break;
+            case "3":
+                card = new CardMove3();
+                break;
+            case "-1":
+                card = new CardBackUp();
+                break;
+        }
+
+    }
+
+    @When("The card is played")
+    public void theCardIsPlayed() {
+        card.action(robot);
+    }
+
+    @Then("the robot position is {string} {string}")
+    public void theRobotPositionIs(String expectedXPos, String expectedYPos) {
+        assertEquals(Integer.parseInt(expectedXPos), robot.getPosition().getXcoord());
+        assertEquals(Integer.parseInt(expectedYPos), robot.getPosition().getYcoord());
+    }
+
+    @Given("A robot {string} has position {string} {string}")
+    public void aRobotHasPosition(String robotName, String xPos, String yPos) {
+        robot = new Robot(robotName);
+        robot.setPosition(new Position(Integer.parseInt(xPos), Integer.parseInt(yPos)));
+    }
+
+    @Then("The expected output is {string} in a board that have a maximum size of {string} {string}")
+    public void theExpectedOutputIsInABoardThatHaveAMaximumSizeOf(String output, String maxX, String maxY) {
+        boolean aux = robot.imInsideBoard(Integer.parseInt(maxX), Integer.parseInt(maxY));
+
+        assertEquals(aux, Boolean.valueOf(output));
+    }
 }
+
+
+
+
+
+
+
+
+
+

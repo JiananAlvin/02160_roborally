@@ -126,6 +126,45 @@ Feature:
       | robot_name | initial_lives | final_lives | damage_lives |
       | Raul       | 1             | 5           | 1            |
       | Raul       | 2             | 1           | 1            |
+
+
+  Scenario Outline: As a programming card I will move the robot
+    Given A robot "<robot_name>" has  initial position "<initial_posX>" "<initial_posY>" with orientation "<orientation>"
+    And A card with movement "<movement>"
+    When The card is played
+    Then the robot position is "<expected_positionX>" "<expected_positionY>"
+    Examples:
+      | robot_name | initial_posX | initial_posY | orientation | movement | expected_positionX | expected_positionY |
+      |Anna        | 1            | 1            | N           | 1        | 1                  | 0                  |
+      |Anna        | 1            | 1            | S           | 1        | 1                  | 2                  |
+      |Anna        | 1            | 1            | E           | 2        | 3                  | 1                  |
+      |Anna        | 1            | 1            | W           |-1        | 2                  | 1                  |
+
+
+
+    Scenario Outline: As a robot I want to check if I am inside of the board
+      Given A robot "<robot_name>" has position "<posX>" "<posY>"
+      Then The expected output is "<expected_output>" in a board that have a maximum size of "<max_posX>" "<max_posY>"
+      Examples:
+        | robot_name | posX | posY | max_posX | max_posY | expected_output |
+        |Raul        | 1    | -2   | 3        | 3        | false           |
+        |Raul        | 7    | 1    | 4        | 4        | false           |
+        |Raul        | 1    | 1    | 1        | 1        | true            |
+        |Raul        | 4    | -1   | 3        | 3        | false           |
+
+      #this test only have the purpose of mix some of the scenarios, no step definition needed (:
+  Scenario Outline: As a robot I want to move with some cards and check if I'm inside of the board
+    Given A robot "<robot_name>" has  initial position "<initial_posX>" "<initial_posY>" with orientation "<orientation>"
+    And A card with movement "<movement>"
+    When The card is played
+    Then The expected output is "<expected_output>" in a board that have a maximum size of "<max_posX>" "<max_posY>"
+    Examples:
+      | robot_name | initial_posX | initial_posY | orientation | movement | expected_output | max_posX | max_posY |
+      |Anna        | 3            | 3            | N           | 2        | true            | 5        | 5        |
+      |Anna        | 2            | 0            | S           | -1       | false           | 5        | 5        |
+      |Anna        | 4            | 2            | E           | 3        | false           | 6        | 5        |
+
+
 #
 #
 #

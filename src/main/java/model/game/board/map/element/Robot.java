@@ -28,9 +28,7 @@ public class Robot extends Unpassable {
         this.onBoard = b;
     }
 
-    public void setPosition(Position position) {
-        super.setPosition(position);
-    }
+    public void setPosition(Position position) {super.setPosition(position);    }
 
     public void setPosition(int x, int y) {
         super.setPosition(x, y);
@@ -75,6 +73,14 @@ public class Robot extends Unpassable {
         this.checkLives();
     }
 
+    public boolean imInsideBoard(int maxX, int maxY){
+        if(this.getPosition().getXcoord() > maxX || this.getPosition().getYcoord() > maxY ){return false;}
+        else if(this.getPosition().getXcoord() < 0 || this.getPosition().getYcoord() < 0){ return false;}
+
+        return true;
+    }
+
+
     public void reboot() {
         lives = 5;
     }
@@ -84,5 +90,8 @@ public class Robot extends Unpassable {
             this.reboot();
         }
     }
+
+
+
 }
 

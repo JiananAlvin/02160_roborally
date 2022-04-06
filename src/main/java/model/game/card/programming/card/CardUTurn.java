@@ -7,5 +7,6 @@ import model.game.card.Card;
 public class CardUTurn extends Card implements Programmable {
     public void action(Robot robot) {
         robot.setOrientation(Orientation.matchOrientation((robot.getOrientation().getAngle() + 180) % 360));
+
     }
 }

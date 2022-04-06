@@ -10,6 +10,10 @@ public class CardMove1 extends Card implements Programmable {
     public void action(Robot robot){
        Orientation robotOrientation = robot.getOrientation();
        Position currentPos = robot.getPosition();
+
+       //This function gets the orientation, current position and the amount of movement (1, 2, 3, -1...), and gets
+        // as a result the new position that the robot should have after playing those cards
+
        Position newPos = Movement.calculateNewPosition(robotOrientation, currentPos, 1);
         robot.setPosition(newPos);
     }

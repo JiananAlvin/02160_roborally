@@ -1,7 +1,10 @@
 package model;
 
+import model.game.Player;
 import model.game.board.map.element.Antenna;
+import model.game.board.map.element.Position;
 import model.game.board.map.element.Robot;
+import model.game.card.Card;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -16,6 +19,7 @@ public class Game {
 
     private ArrayList<Robot> robotsInGame = new ArrayList<Robot>();
     private ArrayList<Room> rooms = new ArrayList<Room>();
+    private ArrayList<Player> players = new ArrayList<Player>();
 
     public ArrayList<Robot> getRobotsInGame() {
         return this.robotsInGame;
@@ -67,4 +71,31 @@ public class Game {
     public void addRobot(Robot r1) {
         this.robotsInGame.add(r1);
     }
+
+    public void addPlayer(Player p1){
+        this.players.add(p1);
+        this.robotsInGame.add(p1.getRobot());
+    }
+
+//    public void playCards(Player p1){
+//
+//        ArrayList<Card> cardsSelected = p1.getProgCards();
+//        for (Card card: cardsSelected)
+//        {
+//            card.action(p1.getRobot());
+//        }
+//
+//    }
+
+//Prototype about how collisions will work
+//    private void checkCollision(Player p1){
+//       Position pos =  p1.getRobot().getPosition();
+//
+//       for(Tile tile : tilesInTheGame){
+//           if(tile.getPosition().equals(pos)){
+//
+//           }
+//       }
+//    }
+
 }
