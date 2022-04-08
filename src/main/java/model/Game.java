@@ -1,5 +1,6 @@
 package model;
 
+import lombok.Data;
 import model.game.board.map.element.Position;
 import model.game.board.map.element.Robot;
 import model.game.board.map.element.RebootPoint;
@@ -9,9 +10,10 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.TreeMap;
 
-
+@Data
 public class Game {
 
+    private Player currentPlayer;
     private ArrayList<Room> rooms;
     private ArrayList<Robot> robotsInGame;
     private RebootPoint rebootPoint;

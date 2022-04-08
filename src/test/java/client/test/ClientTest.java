@@ -1,4 +1,4 @@
-package player.test;
+package client.test;
 import org.junit.runner.RunWith;
 
 import io.cucumber.junit.Cucumber;
@@ -8,6 +8,6 @@ import io.cucumber.junit.CucumberOptions;
 @RunWith(Cucumber.class)
 // specify our feature files are actually stored in
 @CucumberOptions(features = "src/test/resources/featureFiles", publish=true) 
-public class PlayerTest {
+public class ClientTest {
 
 }

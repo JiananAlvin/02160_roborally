@@ -91,9 +91,7 @@ public class Robot {
 
     public boolean imInsideBoard(int maxX, int maxY){
         if(this.getPosition().getXcoord() > maxX || this.getPosition().getYcoord() > maxY ){return false;}
-        else if(this.getPosition().getXcoord() < 0 || this.getPosition().getYcoord() < 0){ return false;}
-
-        return true;
+        else return this.getPosition().getXcoord() >= 0 && this.getPosition().getYcoord() >= 0;
     }
 }
 

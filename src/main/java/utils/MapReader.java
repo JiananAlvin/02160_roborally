@@ -1,12 +1,10 @@
 package utils;
 
 import gui.view.map.TileType;
-import model.game.board.map.Map;
-import model.game.board.map.element.Tile;
+import model.game.board.map.GameMap;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -17,7 +15,7 @@ public class MapReader {
      * @ txt2matrix: input a Map object and then read the txt file of this map
      * then parse the txt file to a 2D array
      */
-    public static TileType[][] txt2matrix(Map map) {
+    public static TileType[][] txt2matrix(GameMap map) {
 
         FileReader reader = null;
         BufferedReader readerBuf = null;

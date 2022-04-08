@@ -2,14 +2,12 @@ package gui.view.widgets;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.util.Locale;
-import java.util.Random;
 
 import javax.swing.JPanel;
 
 import gui.view.map.CardinalPoints;
 import gui.view.map.TileType;
-import model.game.board.map.Map;
+import model.game.board.map.GameMap;
 import utils.MapReader;
 
 public class Board extends JPanel {
@@ -21,7 +19,7 @@ public class Board extends JPanel {
     private int cols;
     private Tile[][] board;
 
-    public Board(Map map) {
+    public Board(GameMap map) {
         mapMatrix = MapReader.txt2matrix(map);
         this.rows = mapMatrix.length;
         this.cols = mapMatrix[0].length;
