@@ -12,20 +12,10 @@ Feature:
       | 123333123 |
       | tttttttt  |
 
-#  Scenario Outline: Player chooses a map
-#    Given a player has a name "<name>"
-#          #when player clicks on get a map
-#    When the player chooses a map "<map_num>"
-#    Then this map "<map_num_displayed>" is displayed
-#    Examples:
-#      | name   | map_num | map_num_displayed |
-#      | Wenjie | map1    | MAP1_CONTENT      |
-#      | Jianan | map2    | MAP2_CONTENT      |
-#      | Alice  | map999  | ERROR_MAP_NUM     |
+#    TODO: Choose a map
 
   Scenario Outline: Player chooses a robot character
     Given a player has a name "<name>"
-    And having-a-robot status is false
     When choose a robot "<robot-name>"
     Then  "<robot-name>" is assigned to this player
     Examples:

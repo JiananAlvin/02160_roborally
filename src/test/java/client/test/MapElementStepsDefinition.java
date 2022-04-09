@@ -28,22 +28,22 @@ public class MapElementStepsDefinition {
     }
 
     //==============ROBOT=======================================
-    @Given("a player choose a robot {string}")
-    public void aPlayerChooseARobot(String arg0) {
+    @Given("a player chose a robot {string}")
+    public void aPlayerChoseARobot(String arg0) {
         this.robot = new Robot(arg0);
     }
 
-    @When("robot gets initial position randomly")
-    public void get_initial_position_randomly() {
+    @When("the robot gets an initial position randomly")
+    public void the_robot_gets_an_initial_position_randomly() {
         this.robot.setPosition(0, 0);
+        // TODO:
         this.robot.setOnBoard(true);
     }
 
     @Then("robot is now at a position {string} and {string}")
-    public void player_is_now_at_a_position_and(String string, String string2) {
-        assertEquals(new Position(Integer.parseInt(string), Integer.parseInt(string2)), this.robot.getPosition());
+    public void robotIsNowAtAPositionAnd(String arg0, String arg1) {
+        assertEquals(new Position(Integer.parseInt(arg0), Integer.parseInt(arg1)), this.robot.getPosition());
     }
-
 
 
 
@@ -78,25 +78,6 @@ public class MapElementStepsDefinition {
         assertEquals(Orientation.valueOf(arg0), robot.getOrientation());
     }
 
-    //----------------------------------------------------------------------------checked **
-//    @Given("there exists a robot {string} on the board")
-//    public void there_exists_a_robot_on_the_board(String robot) {
-//        init();
-//        this.robot = new Robot(robot);
-//    }
-//
-//    @When("the board reads the card reavealed")
-//    public void the_board_reads_the_card_reavealed() {
-//        Card card = new CardMove1();
-//        this.board = new ArrayBoard(robot);
-//        board.ReadCard(card);
-//    }
-//
-//    @Then("robot position is expected postition {string} {string}")
-//    public void robot_position_is_expected_postition(String posx, String posy) {
-//        assertEquals(robot.getCoordx(), Integer.parseInt(posx));
-//        assertEquals(robot.getCoordy(), Integer.parseInt(posy));
-//    }
 
     //----------------------------------------------------------------------------checked
     @Given("A robot {string} had {string} lives")
@@ -117,7 +98,7 @@ public class MapElementStepsDefinition {
     }
 
 
-    @Given("A robot {string} has  initial position {string} {string} with orientation {string}")
+    @Given("A robot {string} has initial position {string} {string} with orientation {string}")
     public void aRobotHasInitialPositionWithOrientation(String robotName, String xPos, String yPos, String orientation) {
         this.robot = new Robot(robotName);
         this.robot.setPosition(Integer.parseInt(xPos), Integer.parseInt(yPos));
@@ -206,4 +187,6 @@ public void anAntennaAndThreeRobotsAndInAGame(String arg0, String arg1, String a
         assertEquals(arg1, this.game.orderOfRobots().get(1).getName());
         assertEquals(arg2, this.game.orderOfRobots().get(2).getName());
     }
+
+
 }

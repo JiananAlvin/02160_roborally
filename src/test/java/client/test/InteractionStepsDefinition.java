@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
 
-public class GameProcessStepsDefinition {
+public class InteractionStepsDefinition {
     private Player player;
     private ArrayList<Card> register;
 

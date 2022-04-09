@@ -1,9 +1,9 @@
 @tag
 Feature:
-##############           ROBOT Scenarios          #######################
-  Scenario Outline: Robot has initial position
-    Given a player choose a robot "<robot-name>"
-    When robot gets initial position randomly
+##############           ROBOT SCENARIOS          #######################
+  Scenario Outline: A robot gets an initial position
+    Given a player chose a robot "<robot-name>"
+    When the robot gets an initial position randomly
     Then robot is now at a position "<position_x>" and "<position_y>"
     Examples:
       | position_x | position_y | robot-name  |
@@ -33,8 +33,8 @@ Feature:
       | W                    | CardUTurn        | E               |
 
 
-  Scenario Outline: As a robot I will move according to the programming card
-    Given A robot "<robot_name>" has  initial position "<initial_posX>" "<initial_posY>" with orientation "<orientation>"
+  Scenario Outline: A robot moves according to the programming card
+    Given A robot "<robot_name>" has initial position "<initial_posX>" "<initial_posY>" with orientation "<orientation>"
     And A card with movement "<movement>"
     When The card is played
     Then the robot position is "<expected_positionX>" "<expected_positionY>"
@@ -46,7 +46,7 @@ Feature:
       | Anna       | 1            | 1            | W           | -1       | 2                  | 1                  |
 
 
-  Scenario Outline: reboot of robot reduces lives after taking some damage
+  Scenario Outline: Damage affects robot lives
     Given A robot "<robot_name>" had "<initial_lives>" lives
     When The robot lives are reduced "<damage_lives>" points of damage by the game
     Then The robot now has "<final_lives>" lives
@@ -71,7 +71,7 @@ Feature:
 
   #this test only have the purpose of mix some of the scenarios, no step definition needed (:
   Scenario Outline: As a robot I want to move with some cards and check if I'm inside of the board
-    Given A robot "<robot_name>" has  initial position "<initial_posX>" "<initial_posY>" with orientation "<orientation>"
+    Given A robot "<robot_name>" has initial position "<initial_posX>" "<initial_posY>" with orientation "<orientation>"
     And A card with movement "<movement>"
     When The card is played
     Then The expected output is "<expected_output>" in a board that have a maximum size of "<max_posX>" "<max_posY>"
