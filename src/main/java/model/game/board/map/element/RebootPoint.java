@@ -1,6 +1,8 @@
 package model.game.board.map.element;
 
-public class RebootPoint extends Tile{
+import model.game.board.map.Position;
+
+public class RebootPoint extends Tile {
 
     public RebootPoint() {
         super();
@@ -10,7 +12,7 @@ public class RebootPoint extends Tile{
         super(position);
     }
 
-    public RebootPoint(int x, int y) {
+    public RebootPoint(Integer x, Integer y) {
         super(x, y);
     }
 

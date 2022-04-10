@@ -1,7 +1,7 @@
 package model.game.card.programming.card;
 
 import model.game.board.map.Orientation;
-import model.game.board.map.element.Position;
+import model.game.board.map.Position;
 import model.game.board.map.element.Robot;
 import model.game.card.Card;
 import model.game.card.programming.behaviour.Movement;

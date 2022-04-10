@@ -1,10 +1,13 @@
 package model.game.board.map.element;
 
-import gui.view.map.TileType;
+import model.game.board.map.Position;
 
 public abstract class Tile {
 
     private Position position;
+
+//    private boolean verticalLaser;
+//    private boolean horizonLaser;
 
     public Tile() {
         this.position = new Position();

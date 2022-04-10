@@ -2,6 +2,7 @@ package model.game.board.map.element;
 
 import lombok.Data;
 import model.game.board.map.Orientation;
+import model.game.board.map.Position;
 import model.game.card.Card;
 
 import java.lang.Math;

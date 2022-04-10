@@ -7,7 +7,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import model.Game;
 import model.game.board.map.Orientation;
-import model.game.board.map.element.Position;
+import model.game.board.map.Position;
 import model.game.board.map.element.Robot;
 import model.game.card.Card;
 import model.game.card.programming.card.*;

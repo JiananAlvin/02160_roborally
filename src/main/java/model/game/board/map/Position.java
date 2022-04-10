@@ -1,4 +1,4 @@
-package model.game.board.map.element;
+package model.game.board.map;
 
 
 public class Position {

@@ -1,7 +1,7 @@
 package model;
 
 import lombok.Data;
-import model.game.board.map.element.Position;
+import model.game.board.map.Position;
 import model.game.board.map.element.Robot;
 import model.game.board.map.element.RebootPoint;
 import model.game.Player;

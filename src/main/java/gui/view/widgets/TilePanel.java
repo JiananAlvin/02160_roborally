@@ -15,7 +15,7 @@ import javax.swing.JPanel;
 import gui.view.map.CardinalPoints;
 import gui.view.map.TileType;
 
-public class Tile extends JPanel {
+public class TilePanel extends JPanel {
 
     public static final int PIXEL_SIZE = 66;
 
@@ -26,7 +26,7 @@ public class Tile extends JPanel {
     private boolean containsRobot = false;
     private CardinalPoints direction;
 
-    public Tile(TileType type) {
+    public TilePanel(TileType type) {
         super(true);
 
         this.type = type;

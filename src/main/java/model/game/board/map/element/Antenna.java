@@ -1,5 +1,7 @@
 package model.game.board.map.element;
 
+import model.game.board.map.Position;
+
 public class Antenna extends Tile {
 
     private static Antenna instance = null;

@@ -1,6 +1,5 @@
 package model.game.board.map;
 
-import model.game.board.map.element.Position;
 import model.game.board.map.element.Robot;
 
 public class Collision {
