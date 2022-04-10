@@ -1,14 +1,12 @@
 package gui.view.widgets;
 
-import java.awt.Dimension;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.io.IOException;
 
-import javax.swing.JPanel;
+import javax.swing.*;
 
 import gui.view.map.CardinalPoints;
 import gui.view.map.TileType;
-import model.game.board.map.GameMap;
 import utils.MapReader;
 
 public class BoardPanel extends JPanel {
@@ -52,4 +50,21 @@ public class BoardPanel extends JPanel {
 
     public void setRobot(int initialRow, int initialColumn, CardinalPoints currentDirection) {
     }
+
+//    public static void main(String[] args) {
+////        CardinalPoints currentDirection = CardinalPoints.N;
+//
+//        BoardPanel board = new BoardPanel("map1");
+////        board.setRobot(initialRow, initialColumn, currentDirection);
+//
+////        ControlPanel control = new ControlPanel(board, initialRow, initialColumn, currentDirection);
+//
+//        JFrame f = new JFrame("RoboRally Group10 - v.0.1");
+//        f.setLayout(new FlowLayout(FlowLayout.CENTER));
+//        f.add(board);
+////        f.add(control);
+//        f.setSize(900, 700);
+//        f.setVisible(true);
+//        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//    }
 }

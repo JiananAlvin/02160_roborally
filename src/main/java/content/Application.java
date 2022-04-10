@@ -1,26 +1,33 @@
 package content;
 
-import gui.GUIAdaptor;
-import gui.view.map.CardinalPoints;
-import gui.view.map.TileType;
-import gui.view.widgets.BoardPanel;
-import model.game.board.map.GameMap;
-import utils.MapReader;
+import gui.view.widgets.CoverFrame;
+import gui.view.widgets.LoginFrame;
+import lombok.SneakyThrows;
+import model.Game;
+import model.game.Player;
 
 import javax.swing.*;
-import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.concurrent.TimeUnit;
 
 /**
  * This class is an entrance for our user application
  */
 public class Application {
 
-    private GUIAdaptor adaptor;
-
+    private Game game;
+    private Player user;
+    private LoginFrame loginFrame;
+    private CoverFrame coverFrame;
     private static Application applicationInstance;
 
     private Application() {
-        this.adaptor = new GUIAdaptor();
+//        Initialize all the elements in on APP
+        this.game = new Game();
+        this.user = new Player();
+        this.loginFrame = new LoginFrame();
+        this.coverFrame = new CoverFrame();
     }
 
     public static Application getApplicationInstance() {
@@ -33,35 +40,24 @@ public class Application {
         return Application.applicationInstance != null;
     }
 
+    @SneakyThrows
     public static void main(String[] args) {
-//        new content.Application().run();
-
-//        TileType[][] mapMatrix = MapReader.txtToTileTypeMatrix("map1");
-//        for (int i = 0; i < mapMatrix.length; i++) {
-//            for (int j = 0; j < mapMatrix[0].length; j++) {
-//                System.out.print("   " + mapMatrix[i][j].getClass());
-//            }
-//            System.out.println();
-//        }
-
-//        int initialRow = 10;
-//        int initialColumn = 13;
-//
-//        CardinalPoints currentDirection = CardinalPoints.N;
-
-        BoardPanel board = new BoardPanel("map1");
-//        board.setRobot(initialRow, initialColumn, currentDirection);
-
-//        ControlPanel control = new ControlPanel(board, initialRow, initialColumn, currentDirection);
-
-        JFrame f = new JFrame("RoboRally Group10 - v.0.1");
-        f.setLayout(new FlowLayout(FlowLayout.CENTER));
-        f.add(board);
-//        f.add(control);
-        f.setSize(900, 700);
-        f.setVisible(true);
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-
+        Application app = Application.getApplicationInstance();
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                applicationInstance.coverFrame.showCoverFrame();
+                Timer timer = new Timer(2000, new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        applicationInstance.coverFrame.dispose();
+                        applicationInstance.loginFrame.showLoginFrame();
+                    }
+                });
+                timer.setRepeats(false);
+                timer.start();
+            }
+        });
     }
 }
+

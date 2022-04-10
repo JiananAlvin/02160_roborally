@@ -1,6 +1,6 @@
-package utils.server.controller.robot;
+package server.controller.robot;
 
-import utils.server.controller.ServerConnection;
+import server.controller.ServerConnection;
 
 public class RobotController extends ServerConnection {
     public void updatePosition(String username, int x, int y){

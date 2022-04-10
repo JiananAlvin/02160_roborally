@@ -1,45 +1,55 @@
 package gui.view.widgets;
 
+import server.controller.user.UserController;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
-public class LoginPanel {
-    private final ImageIcon cover = new ImageIcon(new ImageIcon("src/main/resources/images/robots/cover.jpg").getImage().getScaledInstance(900, 400, Image.SCALE_DEFAULT));
-    private final JLabel lblCover = new JLabel(cover);
-    private final JFrame frame = new JFrame("Roborally Group10 v1.0 - login");
-    private final JTextField playerName = new JTextField();
-    private final JLabel lblPlayerName = new JLabel("Player name");
-    private final JLabel lblRobot = new JLabel("Robot");
-    private final JLabel lblChosenRobot = new JLabel();
-    private final Icon iconSquashBot = new ImageIcon(new ImageIcon("src/main/resources/images/robots/SQUASH BOT.jpg").getImage().getScaledInstance(105, 142, Image.SCALE_DEFAULT));
-    private final JToggleButton btSquashBot = new JToggleButton("", this.iconSquashBot);
-    private final Icon iconZoomBot = new ImageIcon(new ImageIcon("src/main/resources/images/robots/ZOOM BOT.jpg").getImage().getScaledInstance(105, 142, Image.SCALE_DEFAULT));
-    private final JToggleButton btZoomBot = new JToggleButton("", this.iconZoomBot);
-    private final Icon iconHammerBot = new ImageIcon(new ImageIcon("src/main/resources/images/robots/HAMMER BOT.jpg").getImage().getScaledInstance(105, 142, Image.SCALE_DEFAULT));
-    private final JToggleButton btHammerBot = new JToggleButton("", this.iconHammerBot);
-    private final Icon iconSpinBot = new ImageIcon(new ImageIcon("src/main/resources/images/robots/SPIN BOT.jpg").getImage().getScaledInstance(105, 142, Image.SCALE_DEFAULT));
-    private final JToggleButton btSpinBot = new JToggleButton("", this.iconSpinBot);
-    private final Icon iconHulkX90 = new ImageIcon(new ImageIcon("src/main/resources/images/robots/HULK X90.jpg").getImage().getScaledInstance(105, 142, Image.SCALE_DEFAULT));
-    private final JToggleButton btHulkX90 = new JToggleButton("", this.iconHulkX90);
-    private final Icon iconTrundleBot = new ImageIcon(new ImageIcon("src/main/resources/images/robots/TRUNDLE BOT.jpg").getImage().getScaledInstance(105, 142, Image.SCALE_DEFAULT));
-    private final JToggleButton btTrundleBot = new JToggleButton("", this.iconTrundleBot);
-    private final JToggleButton btOk = new JToggleButton("Login");
-    private final JToggleButton btCancel = new JToggleButton("Cancel");
+public class LoginFrame extends JFrame {
 
-    public void loadLoginPanel() throws InterruptedException {
-        this.frame.setSize(900, 400);
-        // display cover 2 seconds
-        frame.add(lblCover);
-        frame.setVisible(true);
-        TimeUnit.SECONDS.sleep(2);
-        lblCover.setVisible(false);
+    private final JTextField playerName;
+    private final JLabel lblPlayerName;
+    private final JLabel lblRobot;
+    private final JLabel lblChosenRobot;
+    private final JToggleButton btSquashBot;
+    private final JToggleButton btZoomBot;
+    private final JToggleButton btHammerBot;
+    private final JToggleButton btSpinBot;
+    private final JToggleButton btHulkX90;
+    private final JToggleButton btTrundleBot;
+    private final JToggleButton btOk;
+    private final JToggleButton btCancel;
+
+    public LoginFrame() {
+        super("Roborally Group10 v1.0 - login");
+        this.playerName = new JTextField();
+        this.lblPlayerName = new JLabel("Player name");
+        this.lblRobot = new JLabel("Robot");
+        this.lblChosenRobot = new JLabel();
+        Icon iconSquashBot = new ImageIcon(new ImageIcon("src/main/resources/images/robots/SQUASH BOT.jpg").getImage().getScaledInstance(105, 142, Image.SCALE_DEFAULT));
+        this.btSquashBot = new JToggleButton("", iconSquashBot);
+        Icon iconZoomBot = new ImageIcon(new ImageIcon("src/main/resources/images/robots/ZOOM BOT.jpg").getImage().getScaledInstance(105, 142, Image.SCALE_DEFAULT));
+        this.btZoomBot = new JToggleButton("", iconZoomBot);
+        Icon iconHammerBot = new ImageIcon(new ImageIcon("src/main/resources/images/robots/HAMMER BOT.jpg").getImage().getScaledInstance(105, 142, Image.SCALE_DEFAULT));
+        this.btHammerBot = new JToggleButton("", iconHammerBot);
+        Icon iconSpinBot = new ImageIcon(new ImageIcon("src/main/resources/images/robots/SPIN BOT.jpg").getImage().getScaledInstance(105, 142, Image.SCALE_DEFAULT));
+        this.btSpinBot = new JToggleButton("", iconSpinBot);
+        Icon iconHulkX90 = new ImageIcon(new ImageIcon("src/main/resources/images/robots/HULK X90.jpg").getImage().getScaledInstance(105, 142, Image.SCALE_DEFAULT));
+        this.btHulkX90 = new JToggleButton("", iconHulkX90);
+        Icon iconTrundleBot = new ImageIcon(new ImageIcon("src/main/resources/images/robots/TRUNDLE BOT.jpg").getImage().getScaledInstance(105, 142, Image.SCALE_DEFAULT));
+        this.btTrundleBot = new JToggleButton("", iconTrundleBot);
+        this.btOk = new JToggleButton("Login");
+        this.btCancel = new JToggleButton("Cancel");
+    }
+
+    public void showLoginFrame() {
+        this.setSize(900, 400);
+        this.setVisible(true);
 
         // display login interface
-        frame.setLayout(null);
+        this.setLayout(null);
         RobotListener robotListener = new RobotListener();
         this.lblPlayerName.setBounds(100, 8, 70, 20);
         this.playerName.setBounds(100, 36, 193, 28);
@@ -59,34 +69,34 @@ public class LoginPanel {
         this.btTrundleBot.addActionListener(robotListener);
         this.btOk.setBounds(100, 270, 80, 30);
         this.btCancel.setBounds(300, 270, 80, 30);
-        frame.add(this.playerName);
-        frame.add(this.lblPlayerName);
-        frame.add(this.lblRobot);
-        frame.add(this.lblChosenRobot);
-        frame.add(this.btSquashBot);
-        frame.add(this.btZoomBot);
-        frame.add(this.btHammerBot);
-        frame.add(this.btSpinBot);
-        frame.add(this.btHulkX90);
-        frame.add(this.btTrundleBot);
-        frame.add(this.btOk);
-        frame.add(this.btCancel);
+        this.add(this.playerName);
+        this.add(this.lblPlayerName);
+        this.add(this.lblRobot);
+        this.add(this.lblChosenRobot);
+        this.add(this.btSquashBot);
+        this.add(this.btZoomBot);
+        this.add(this.btHammerBot);
+        this.add(this.btSpinBot);
+        this.add(this.btHulkX90);
+        this.add(this.btTrundleBot);
+        this.add(this.btOk);
+        this.add(this.btCancel);
 
         // Add listeners for "Login" and "Cancel" buttons
         btOk.addActionListener(e -> {
-            // fetching the player name from the JTextField playerName and the chosen robot when the button is pressed
-            String playerNameText = playerName.getText();
-            String chosenRobotText = lblChosenRobot.getText();
-            System.out.println(playerNameText);
-            System.out.println(chosenRobotText);
-            frame.setVisible(false);
+            // fetching the player name from the JTextField playerName and the chosen robot when the "Login" button is pressed
+            // insert the player name and the chosen robot's name into database through API
+            UserController userController = new UserController();
+            userController.createUser(playerName.getText());
+            userController.chooseRobot(playerName.getText(), lblChosenRobot.getText().replace(' ', '_'));
+            this.dispose();
         });
 
         btCancel.addActionListener(e -> {
-            frame.dispose();
+            this.dispose();
         });
 
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
     private class RobotListener implements ActionListener {
@@ -107,9 +117,13 @@ public class LoginPanel {
         }
     }
 
-//    public static void main(String[] args) throws InterruptedException {
-//        LoginPanel loginPanel = new LoginPanel();
-//        loginPanel.loadLoginPanel();
+//    public static void main(String[] args) {
+//        SwingUtilities.invokeLater(new Runnable() {
+//            public void run() {
+//                LoginFrame loginFrame = new LoginFrame();
+//                loginFrame.showLoginFrame();
+//            }
+//        });
 //    }
 }
 

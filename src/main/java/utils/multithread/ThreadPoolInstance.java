@@ -8,7 +8,7 @@ import java.util.concurrent.ThreadPoolExecutor;
  */
 public class ThreadPoolInstance {
 
-    private static ThreadPoolExecutor poolExecutorInstance;
+    private volatile static ThreadPoolExecutor poolExecutorInstance;
 
     private ThreadPoolInstance() {
 

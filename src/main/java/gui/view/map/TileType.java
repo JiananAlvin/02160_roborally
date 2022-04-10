@@ -14,7 +14,7 @@ public enum TileType {
     STARTPOINT("src/main/resources/images/tiles/start_point.png"),
     NORTHTWO("src/main/resources/images/tiles/north_two.png"),
     WALLSOUTH("src/main/resources/images/tiles/wall_south.png"),
-    WALLSOUTH_LASER("src/main/resources/images/tiles/wall_south_laser.png"),
+    WALLSOUTHLASER("src/main/resources/images/tiles/wall_south_laser.png"),
     WALLWEST("src/main/resources/images/tiles/wall_west.png"),
     WALLWESTLASER("src/main/resources/images/tiles/wall_west_laser.png"),
     WALLEAST("src/main/resources/images/tiles/wall_east.png"),

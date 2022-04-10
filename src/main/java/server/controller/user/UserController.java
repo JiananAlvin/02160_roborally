@@ -1,6 +1,6 @@
-package utils.server.controller.user;
+package server.controller.user;
 
-import utils.server.controller.ServerConnection;
+import server.controller.ServerConnection;
 
 public class UserController extends ServerConnection {
 

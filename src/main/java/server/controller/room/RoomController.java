@@ -1,6 +1,6 @@
-package utils.server.controller.room;
+package server.controller.room;
 
-import utils.server.controller.ServerConnection;
+import server.controller.ServerConnection;
 
 public class RoomController extends ServerConnection {
 
