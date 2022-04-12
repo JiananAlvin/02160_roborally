@@ -7,7 +7,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class LoginFrame extends JFrame {
+public class LoginPanel extends JPanel {
 
     private final JTextField playerName;
     private final JLabel lblPlayerName;
@@ -22,8 +22,7 @@ public class LoginFrame extends JFrame {
     private final JToggleButton btOk;
     private final JToggleButton btCancel;
 
-    public LoginFrame() {
-        super("Roborally Group10 v1.0 - login");
+    public LoginPanel(JFrame frame) {
         this.playerName = new JTextField();
         this.lblPlayerName = new JLabel("Player name");
         this.lblRobot = new JLabel("Robot");
@@ -42,11 +41,6 @@ public class LoginFrame extends JFrame {
         this.btTrundleBot = new JToggleButton("", iconTrundleBot);
         this.btOk = new JToggleButton("Login");
         this.btCancel = new JToggleButton("Cancel");
-    }
-
-    public void showLoginFrame() {
-        this.setSize(900, 400);
-        this.setVisible(true);
 
         // display login interface
         this.setLayout(null);
@@ -89,14 +83,14 @@ public class LoginFrame extends JFrame {
             UserController userController = new UserController();
             userController.createUser(playerName.getText());
             userController.chooseRobot(playerName.getText(), lblChosenRobot.getText().replace(' ', '_'));
-            this.dispose();
+            frame.getContentPane().removeAll();
+            frame.getContentPane().add(new RoomPanel(playerName.getText()));
+            frame.setVisible(true);
         });
 
         btCancel.addActionListener(e -> {
-            this.dispose();
+            frame.dispose();
         });
-
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
     private class RobotListener implements ActionListener {
@@ -118,12 +112,11 @@ public class LoginFrame extends JFrame {
     }
 
 //    public static void main(String[] args) {
-//        SwingUtilities.invokeLater(new Runnable() {
-//            public void run() {
-//                LoginFrame loginFrame = new LoginFrame();
-//                loginFrame.showLoginFrame();
-//            }
-//        });
+//        JFrame frame = new JFrame("RoboRally Group10 v1.0");
+//        frame.setSize(880, 400);
+//        LoginPanel loginPanel = new LoginPanel();
+//        frame.add(loginPanel);
+//        frame.setVisible(true);
 //    }
 }
 

@@ -1,7 +1,8 @@
 package content;
 
-import gui.view.widgets.CoverFrame;
-import gui.view.widgets.LoginFrame;
+import gui.view.widgets.CoverPanel;
+import gui.view.widgets.LoginPanel;
+import gui.view.widgets.RoomPanel;
 import lombok.SneakyThrows;
 import model.Game;
 import model.game.Player;
@@ -9,7 +10,6 @@ import model.game.Player;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.concurrent.TimeUnit;
 
 /**
  * This class is an entrance for our user application
@@ -18,16 +18,18 @@ public class Application {
 
     private Game game;
     private Player user;
-    private LoginFrame loginFrame;
-    private CoverFrame coverFrame;
+    private CoverPanel coverPanel;
+    private LoginPanel loginPanel;
+    private JFrame frame;
     private static Application applicationInstance;
 
     private Application() {
 //        Initialize all the elements in on APP
+        this.frame = new JFrame("RoboRally Group10 v1.0");
         this.game = new Game();
         this.user = new Player();
-        this.loginFrame = new LoginFrame();
-        this.coverFrame = new CoverFrame();
+        this.coverPanel = new CoverPanel();
+        this.loginPanel = new LoginPanel(frame);
     }
 
     public static Application getApplicationInstance() {
@@ -46,18 +48,22 @@ public class Application {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                applicationInstance.coverFrame.showCoverFrame();
+                app.frame.setSize(880, 400);
+                app.frame.getContentPane().add(app.coverPanel);
+                app.frame.setVisible(true);
                 Timer timer = new Timer(2000, new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        applicationInstance.coverFrame.dispose();
-                        applicationInstance.loginFrame.showLoginFrame();
+                        app.frame.getContentPane().removeAll();
+                        app.frame.getContentPane().add(app.loginPanel);
+                        app.frame.setVisible(true);
                     }
                 });
                 timer.setRepeats(false);
                 timer.start();
             }
         });
+        System.out.println("nnn");
     }
 }
 
