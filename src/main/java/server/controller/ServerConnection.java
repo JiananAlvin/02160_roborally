@@ -35,7 +35,6 @@ public class ServerConnection {
                 this.response.put("status", connection.getResponseCode());
             }
         } catch (Exception e) {
-//            this.response.put("status",500);
             e.printStackTrace();
         }
 

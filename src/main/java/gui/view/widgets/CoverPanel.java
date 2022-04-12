@@ -2,7 +2,6 @@ package gui.view.widgets;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.concurrent.TimeUnit;
 
 public class CoverPanel extends JPanel {
 

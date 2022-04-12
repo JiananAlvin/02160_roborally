@@ -3,40 +3,47 @@ Feature:
 
   Scenario Outline: Player inputs a name
     Given a player opened the application
-    When  player inputs a name "<name>"
-    Then this name is assigned to this player
+    When the player inputs a name "<name>"
+    Then the player has the name "<name>"
+    And there is a new record in the collection user with username "<name>"
     Examples:
-      | name      |
-      | test_1    |
-      | test_2    |
-      | 123333123 |
-      | tttttttt  |
+      | name    |
+      | Anna    |
+      | Raul    |
+      | Durdija |
+      | Simona  |
 
-#    TODO: Choose a map
-
+#    TODO: Players in the same game/room cannot choose the same robot, but the same robot can appear in different games/rooms
   Scenario Outline: Player chooses a robot character
     Given a player has a name "<name>"
-    When choose a robot "<robot-name>"
-    Then  "<robot-name>" is assigned to this player
+    When the player chooses a robot "<robot-name>"
+    Then "<robot-name>" is assigned to this player
+    And there is a new record in the collection user with username "<name>" and robotname "<robot-name>"
     Examples:
-      | name       | robot-name |
-      | test1_user | Alice      |
-
+      | name   | robot-name |
+      | Ion    | SQUASH_BOT |
+      | Jianan | ZOOM_BOT   |
+      | Wenjie | HAMMER_BOT |
+      | Alien  | SPIN_BOT   |
 
   Scenario Outline: As a player I want to create a room
     Given a player has a name "<name>"
-    When player creates a new room with code number <room_number>
-    Then there is a new room with code <room_number> in the list of available rooms
+    When the player creates a new room and chooses a map "<map_name>"
+    Then there is a new room record in the collection room
     Examples:
-      | name | room_number |
-      | test1 | 100        |
-      | test2 | 234        |
+      | name   | map_name     |
+      | Ion    | STARTER      |
+      | Jianan | BEGINNER     |
+      | Wenjie | INTERMEDIATE |
 
   Scenario Outline: As a player I want to join a room
     Given a player has a name "<name>"
-    When player enters a room with code number <room_number>
-    Then player is in room <room_number>
+    * a room owner "<room_owner_name>" creates a new room with map "<map_name>"
+    When the player gets the room number from room owner and join this room
+    Then the player is in this room
     Examples:
-      | name | room_number |
-      | test1 | 100        |
-      | test2 | 212        |
+      | name   | room_owner_name | map_name |
+      | Anna   | Jianan          | STARTER  |
+      | Raul   | Simona          | BEGINNER |
+      | Durjia | Anna            | ADVANCED |
+

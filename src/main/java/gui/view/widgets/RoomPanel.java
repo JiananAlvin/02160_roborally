@@ -1,6 +1,5 @@
 package gui.view.widgets;
 
-import io.cucumber.java.sl.In;
 import server.controller.room.RoomController;
 import server.controller.user.UserController;
 
@@ -9,13 +8,13 @@ import javax.swing.*;
 public class RoomPanel extends JPanel{
 
     private final JLabel lblMapName;
-    JComboBox<String> jcbMapName;
+    private final JComboBox<String> jcbMapName;
     private final JToggleButton btCreateRoom;
     private final JLabel lblRoomNumber;
     private final JTextField roomNumber;
     private final JToggleButton btJionRoom;
 
-    public RoomPanel(String playerName) {
+    public RoomPanel(String userName) {
         this.lblMapName = new JLabel("Map");
         String[] mapNameList = {"STARTER", "BEGINNER", "INTERMEDIATE", "ADVANCED"};
         this.jcbMapName = new JComboBox<>(mapNameList);
@@ -40,18 +39,22 @@ public class RoomPanel extends JPanel{
 
         // Add listeners for "Create room" and "Join room" buttons
         btCreateRoom.addActionListener(e -> {
-            // fetching the map name when the "Create room" button is pressed
-            // help the player create a room through API
+            /*
+             fetching the map name when the "Create room" button is pressed
+             creating a room for the user through API
+             */
             RoomController roomController = new RoomController();
-            roomController.createRoom(playerName, this.jcbMapName.getSelectedItem().toString());
+            roomController.createRoom(userName, this.jcbMapName.getSelectedItem().toString());
             System.out.println(roomController.getResponse());
         });
 
         btJionRoom.addActionListener(e -> {
-            // fetching the room number when the "Join room" button is pressed
-            // insert the player info into the room through API
+            /*
+            fetching the room number when the "Join room" button is pressed
+            inserting the player info into the room through API
+             */
             UserController userController = new UserController();
-            userController.joinRoom(playerName, Integer.parseInt(this.roomNumber.getText()));
+            userController.joinRoom(userName, Integer.parseInt(this.roomNumber.getText()));
         });
     }
 

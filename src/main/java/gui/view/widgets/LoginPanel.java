@@ -9,8 +9,8 @@ import java.awt.event.ActionListener;
 
 public class LoginPanel extends JPanel {
 
-    private final JTextField playerName;
-    private final JLabel lblPlayerName;
+    private final JTextField userName;
+    private final JLabel lbluserName;
     private final JLabel lblRobot;
     private final JLabel lblChosenRobot;
     private final JToggleButton btSquashBot;
@@ -23,8 +23,8 @@ public class LoginPanel extends JPanel {
     private final JToggleButton btCancel;
 
     public LoginPanel(JFrame frame) {
-        this.playerName = new JTextField();
-        this.lblPlayerName = new JLabel("Player name");
+        this.userName = new JTextField();
+        this.lbluserName = new JLabel("Player name");
         this.lblRobot = new JLabel("Robot");
         this.lblChosenRobot = new JLabel();
         Icon iconSquashBot = new ImageIcon(new ImageIcon("src/main/resources/images/robots/SQUASH BOT.jpg").getImage().getScaledInstance(105, 142, Image.SCALE_DEFAULT));
@@ -42,11 +42,11 @@ public class LoginPanel extends JPanel {
         this.btOk = new JToggleButton("Login");
         this.btCancel = new JToggleButton("Cancel");
 
-        // display login interface
+        // Displaying the login interface
         this.setLayout(null);
         RobotListener robotListener = new RobotListener();
-        this.lblPlayerName.setBounds(100, 8, 70, 20);
-        this.playerName.setBounds(100, 36, 193, 28);
+        this.lbluserName.setBounds(100, 8, 70, 20);
+        this.userName.setBounds(100, 36, 193, 28);
         this.lblRobot.setBounds(100, 75, 70, 20);
         this.lblChosenRobot.setBounds(200, 75, 100, 20);
         this.btSquashBot.setBounds(100, 103, 105, 142);
@@ -63,8 +63,8 @@ public class LoginPanel extends JPanel {
         this.btTrundleBot.addActionListener(robotListener);
         this.btOk.setBounds(100, 270, 80, 30);
         this.btCancel.setBounds(300, 270, 80, 30);
-        this.add(this.playerName);
-        this.add(this.lblPlayerName);
+        this.add(this.userName);
+        this.add(this.lbluserName);
         this.add(this.lblRobot);
         this.add(this.lblChosenRobot);
         this.add(this.btSquashBot);
@@ -76,15 +76,18 @@ public class LoginPanel extends JPanel {
         this.add(this.btOk);
         this.add(this.btCancel);
 
-        // Add listeners for "Login" and "Cancel" buttons
+        // Adding listeners for "Login" and "Cancel" buttons
         btOk.addActionListener(e -> {
-            // fetching the player name from the JTextField playerName and the chosen robot when the "Login" button is pressed
-            // insert the player name and the chosen robot's name into database through API
+            /*
+            fetching the username from the JTextField userName and the chosen robot when the "Login" button is pressed
+            & inserting the username and the chosen robot's name into database through API
+            & loading the RoomPanel
+             */
             UserController userController = new UserController();
-            userController.createUser(playerName.getText());
-            userController.chooseRobot(playerName.getText(), lblChosenRobot.getText().replace(' ', '_'));
+            userController.createUser(userName.getText());
+            userController.chooseRobot(userName.getText(), lblChosenRobot.getText().replace(' ', '_'));
             frame.getContentPane().removeAll();
-            frame.getContentPane().add(new RoomPanel(playerName.getText()));
+            frame.getContentPane().add(new RoomPanel(userName.getText()));
             frame.setVisible(true);
         });
 
@@ -111,13 +114,13 @@ public class LoginPanel extends JPanel {
         }
     }
 
-//    public static void main(String[] args) {
-//        JFrame frame = new JFrame("RoboRally Group10 v1.0");
-//        frame.setSize(880, 400);
-//        LoginPanel loginPanel = new LoginPanel();
-//        frame.add(loginPanel);
-//        frame.setVisible(true);
-//    }
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("RoboRally Group10 v1.0");
+        frame.setSize(880, 400);
+        LoginPanel loginPanel = new LoginPanel(frame);
+        frame.add(loginPanel);
+        frame.setVisible(true);
+    }
 }
 
 

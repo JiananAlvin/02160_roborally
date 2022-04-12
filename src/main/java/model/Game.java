@@ -13,16 +13,15 @@ import java.util.TreeMap;
 @Data
 public class Game {
 
-    private Player currentPlayer;
-    private ArrayList<Room> rooms;
+    private Player user;
     private ArrayList<Robot> robotsInGame;
     private RebootPoint rebootPoint;
     private ArrayList<Player> players;
+    private Room room;
 
     public Game() {
         this.robotsInGame = new ArrayList<>();
         this.rebootPoint = new RebootPoint(new Position(2, 3));
-        this.rooms = new ArrayList<>();
         this.players = new ArrayList<>();
     }
 
@@ -72,13 +71,6 @@ public class Game {
         }
     }
 
-    public void addRoom(Room room) {
-        this.rooms.add(room);
-    }
-
-    public ArrayList<Room> getRooms() {
-        return this.rooms;
-    }
 
     public void addRobot(Robot r1) {
         this.robotsInGame.add(r1);

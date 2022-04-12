@@ -49,6 +49,8 @@ public class Application {
             @Override
             public void run() {
                 app.frame.setSize(880, 400);
+                app.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                app.frame.setLocationRelativeTo(null); // this method display the JFrame to center position of a screen
                 app.frame.getContentPane().add(app.coverPanel);
                 app.frame.setVisible(true);
                 Timer timer = new Timer(2000, new ActionListener() {
@@ -63,7 +65,6 @@ public class Application {
                 timer.start();
             }
         });
-        System.out.println("nnn");
     }
 }
 

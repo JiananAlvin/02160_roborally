@@ -1,34 +1,28 @@
 package server.controller.room;
 
+import org.json.JSONObject;
 import server.controller.ServerConnection;
 
 public class RoomController extends ServerConnection {
 
-    public void createRoom(String owner, String map){
+    public JSONObject createRoom(String owner, String map){
         this.setPath("/createRoom/"+ owner + "/" + map);
         this.setMethod("POST");
         this.connect();
+        return this.getResponse();
     }
 
-    public void roomInfo(int roomNumber){
+    public JSONObject roomInfo(int roomNumber){
         this.setPath("/roomInfo/" + roomNumber);
         this.setMethod("GET");
         this.connect();
+        return this.getResponse();
     }
 
-    public void deleteRoom(int roomNumber){
+    public JSONObject deleteRoom(int roomNumber){
         this.setPath("/deleteRoom/" + roomNumber);
         this.setMethod("DELETE");
         this.connect();
+        return this.getResponse();
     }
-
-
-//    public static void main(String args[]){
-//        RoomController rc = new RoomController();
-////        rc.createRoom("fd", "test");
-////        System.out.println(rc.getResponse());
-//        rc.roomInfo(100);
-//        System.out.println(rc.getResponse());
-//    }
-
 }
