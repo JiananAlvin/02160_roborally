@@ -2,6 +2,7 @@ package model.game;
 
 import java.util.ArrayList;
 
+import io.cucumber.java.bs.A;
 import model.Game;
 import lombok.Data;
 import model.game.board.map.Position;
@@ -27,6 +28,7 @@ public class Player {
         this.deck = new ProgrammingDeck(this);
         this.discard = new DiscardPile(this);
         this.progCards = new ArrayList<>();
+        this.achievedCheckPoints = new ArrayList<>();
     }
 
     @Override

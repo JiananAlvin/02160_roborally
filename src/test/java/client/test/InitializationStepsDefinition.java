@@ -128,7 +128,7 @@ public class InitializationStepsDefinition {
         this.game.setRoom(this.room);
         assertEquals(mapName, this.game.getRoom().getMapName());
         this.response = new RoomController().createRoom(this.user.getName(), mapName);
-        this.game.getRoom().setRoomNumber((Integer) response.get("code"));
+        this.game.getRoom().setRoomNumber((Integer) response.get("room_number"));
     }
 
     @Then("there is a new room record in the collection room")
@@ -147,7 +147,7 @@ public class InitializationStepsDefinition {
         this.response = new RoomController().createRoom(string, string2);
         assertEquals(200, this.response.get("status"));
         this.room = new Room(string2);
-        this.room.setRoomNumber((Integer) this.response.get("code"));
+        this.room.setRoomNumber((Integer) this.response.get("room_number"));
     }
 
     @When("the player gets the room number from room owner and join this room")

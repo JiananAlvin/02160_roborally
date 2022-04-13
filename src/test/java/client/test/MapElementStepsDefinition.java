@@ -19,6 +19,7 @@ import model.game.card.programming.card.*;
 import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class MapElementStepsDefinition {
     private Robot robot;
@@ -193,7 +194,7 @@ public class MapElementStepsDefinition {
         assertEquals(arg2, this.game.orderOfRobots().get(2).getName());
     }
 
-
+    //--------------------------------------------------------------------------------------------
     @Given("there is a game with map {string}")
     public void thereIsAGameWithMap(String arg0) throws IOException {
         this.game = new Game();
@@ -206,6 +207,8 @@ public class MapElementStepsDefinition {
         Player player2 = new Player();
         player1.setName(arg0);
         player2.setName(arg1);
+        player1.setRobot(new Robot("robot1"));
+        player2.setRobot(new Robot("robot2"));
         game.addPlayer(player1);
         game.addPlayer(player2);
     }
@@ -213,7 +216,7 @@ public class MapElementStepsDefinition {
     @And("this is {string} turn")
     public void thisIsTurn(String arg0) {
         int playerNum = this.game.findPlayerNum(arg0);
-        if (playerNum==-1) return;
+        if (playerNum == -1) return;
         this.game.setCurrentPlayerNum(playerNum);
     }
 
@@ -224,20 +227,28 @@ public class MapElementStepsDefinition {
 
     @And("this player's robot is at the check point {int}")
     public void thisPlayerSRobotIsAtTheCheckPoint(int arg0) {
-//        CheckPoint checkPoint = this.game.getGameMap().getCheckPoints().get(arg0-1);
-//        this.robot.setPosition(checkPoint.getPosition());
+        CheckPoint checkPoint = this.game.getGameMap().getCheckPoints().get(arg0 - 1);
+        this.game.findCurrentShownPlayer().getRobot().setPosition(checkPoint.getPosition());
     }
 
     @And("this player's robot has put marks on all numerically previous checkpoints and not put mark on this check point {int}")
     public void thisPlayerSRobotHasPutMarksOnAllNumericallyPreviousCheckpointsAndNotPutMarkOnThisCheckPoint(int arg0) {
-//        this.game.addPlayer();
+        int i = 1;
+        for (CheckPoint checkPoint : this.game.getGameMap().getCheckPoints()) {
+            if (i < arg0)
+                this.game.findCurrentShownPlayer().getAchievedCheckPoints().add(checkPoint);
+            i++;
+        }
+        assertEquals(arg0 - 1, this.game.findCurrentShownPlayer().getAchievedCheckPoints().size());
     }
 
-    @When("this player's turn ends")
-    public void thisPlayerSTurnEnds() {
+    @When("this player's turn ends and the robot stops at check point {int}")
+    public void thisPlayerSTurnEndsAndTheRobotStopsAtCheckPoint(int arg0) {
+        assertTrue(this.game.findCurrentShownPlayer().tryToAddMark(this.game.getGameMap().getCheckPoints().get(arg0 - 1)));
     }
 
-    @Then("this player gets a new mark from this checkpoint successfully")
-    public void thisPlayerGetsANewMarkFromThisCheckpointSuccessfully() {
+    @Then("this player gets a new mark from this checkpoint successfully and now have {int} marks")
+    public void thisPlayerGetsANewMarkFromThisCheckpointSuccessfully(int arg0) {
+        assertEquals(arg0, this.game.findCurrentShownPlayer().getAchievedCheckPoints().size());
     }
 }

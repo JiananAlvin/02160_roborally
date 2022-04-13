@@ -105,6 +105,10 @@ public class Game {
         return -1;
     }
 
+    public Player findCurrentShownPlayer(){
+        return this.getParticipants().get(this.currentPlayerNum);
+    }
+
     public boolean addMark(Player player, CheckPoint checkPoint) {
         if (participants.get(this.currentPlayerNum).getName().equals(player.getName()) && this.hasInteractedWithCard) {
             return player.tryToAddMark(checkPoint);

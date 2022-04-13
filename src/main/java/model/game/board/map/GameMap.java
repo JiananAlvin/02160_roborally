@@ -48,7 +48,7 @@ public class GameMap {
         this.checkPoints.sort(new Comparator<CheckPoint>() {
             @Override
             public int compare(CheckPoint o1, CheckPoint o2) {
-                return o1.getCheckPointNum() < o2.getCheckPointNum() ? 1 : 0;
+                return o1.getCheckPointNum()-o2.getCheckPointNum() ;
             }
         });
     }

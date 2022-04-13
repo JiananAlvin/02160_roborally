@@ -99,8 +99,8 @@ Feature:
     And this player's robot has moved in this turn
     And  this player's robot is at the check point <point_number>
     And  this player's robot has put marks on all numerically previous checkpoints and not put mark on this check point <point_number>
-    When this player's turn ends
-    Then this player gets a new mark from this checkpoint successfully
+    When this player's turn ends and the robot stops at check point <point_number>
+    Then this player gets a new mark from this checkpoint successfully and now have <point_number> marks
     Examples:
       | map_name | playerA | playerB | point_number |
       | map2     | A       | B       | 2            |
