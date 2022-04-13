@@ -2,15 +2,21 @@ package client.test;
 
 import content.RobotName;
 import io.cucumber.java.Before;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import model.Game;
+import model.game.Player;
+import model.game.board.map.GameMap;
 import model.game.board.map.Orientation;
 import model.game.board.map.Position;
+import model.game.board.map.element.CheckPoint;
 import model.game.board.map.element.Robot;
 import model.game.card.Card;
 import model.game.card.programming.card.*;
+
+import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
 
@@ -44,8 +50,6 @@ public class MapElementStepsDefinition {
     public void robotIsNowAtAPositionAnd(String arg0, String arg1) {
         assertEquals(new Position(Integer.parseInt(arg0), Integer.parseInt(arg1)), this.robot.getPosition());
     }
-
-
 
 
     @Given("A robot was facing {string}")
@@ -87,8 +91,9 @@ public class MapElementStepsDefinition {
     }
 
     @When("The robot lives are reduced {string} points of damage by the game")
-    public void theRobotLivesAreReducedPointsOfDamageByTheGame(String arg0) {
+    public void theRobotLivesAreReducedPointsOfDamageByTheGame(String arg0) throws IOException {
         this.game = new Game();
+        this.game.setGameMap(new GameMap("map1"));
         this.game.robotTakeDamage(this.robot, Integer.parseInt(arg0));
     }
 
@@ -163,16 +168,16 @@ public class MapElementStepsDefinition {
     }
 
 
-//==============ANTENA===============================================
-@Given("An antenna and three robots {string}, {string} and {string} in a game")
-public void anAntennaAndThreeRobotsAndInAGame(String arg0, String arg1, String arg2) {
-    this.r1 = new Robot(arg0);
-    this.r2 = new Robot(arg1);
-    this.r3 = new Robot(arg2);
-    this.game.addRobot(r1);
-    this.game.addRobot(r2);
-    this.game.addRobot(r3);
-}
+    //==============ANTENA===============================================
+    @Given("An antenna and three robots {string}, {string} and {string} in a game")
+    public void anAntennaAndThreeRobotsAndInAGame(String arg0, String arg1, String arg2) {
+        this.r1 = new Robot(arg0);
+        this.r2 = new Robot(arg1);
+        this.r3 = new Robot(arg2);
+        this.game.addRobot(r1);
+        this.game.addRobot(r2);
+        this.game.addRobot(r3);
+    }
 
     @When("RobotI, robotII and robotIII are placed in \\({string},{string}), \\({string},{string}),\\({string},{string}) respectively.")
     public void robotiRobotIIAndRobotIIIArePlacedInRespectively(String arg0, String arg1, String arg2, String arg3, String arg4, String arg5) {
@@ -189,4 +194,50 @@ public void anAntennaAndThreeRobotsAndInAGame(String arg0, String arg1, String a
     }
 
 
+    @Given("there is a game with map {string}")
+    public void thereIsAGameWithMap(String arg0) throws IOException {
+        this.game = new Game();
+        game.setGameMap(new GameMap(arg0));
+    }
+
+    @And("there are players {string} and {string} in this game")
+    public void thereArePlayersAndInThisGame(String arg0, String arg1) {
+        Player player1 = new Player();
+        Player player2 = new Player();
+        player1.setName(arg0);
+        player2.setName(arg1);
+        game.addPlayer(player1);
+        game.addPlayer(player2);
+    }
+
+    @And("this is {string} turn")
+    public void thisIsTurn(String arg0) {
+        int playerNum = this.game.findPlayerNum(arg0);
+        if (playerNum==-1) return;
+        this.game.setCurrentPlayerNum(playerNum);
+    }
+
+    @And("this player's robot has moved in this turn")
+    public void thisPlayerSRobotHasMovedInThisTurn() {
+        this.game.setHasInteractedWithCard(true);
+    }
+
+    @And("this player's robot is at the check point {int}")
+    public void thisPlayerSRobotIsAtTheCheckPoint(int arg0) {
+//        CheckPoint checkPoint = this.game.getGameMap().getCheckPoints().get(arg0-1);
+//        this.robot.setPosition(checkPoint.getPosition());
+    }
+
+    @And("this player's robot has put marks on all numerically previous checkpoints and not put mark on this check point {int}")
+    public void thisPlayerSRobotHasPutMarksOnAllNumericallyPreviousCheckpointsAndNotPutMarkOnThisCheckPoint(int arg0) {
+//        this.game.addPlayer();
+    }
+
+    @When("this player's turn ends")
+    public void thisPlayerSTurnEnds() {
+    }
+
+    @Then("this player gets a new mark from this checkpoint successfully")
+    public void thisPlayerGetsANewMarkFromThisCheckpointSuccessfully() {
+    }
 }

@@ -1,5 +1,15 @@
 @tag
 Feature:
+  #####################             ANTENNA SCENARIOS       #######################################
+  Scenario Outline: The antenna determines the priority
+    Given An antenna and three robots "<robot-name1>", "<robot-name2>" and "<robot-name3>" in a game
+    When RobotI, robotII and robotIII are placed in ("<x1>","<y1>"), ("<x2>","<y2>"),("<x3>","<y3>") respectively.
+    Then The order of these robots is "<result_name1>","<result_name2>","<result_name3>".
+    Examples: # (0,4) antenna
+      | robot-name1 | robot-name2 | robot-name3 | x1 | y1 | x2 | y2 | x3 | y3 | result_name1 | result_name2 | result_name3 |
+      | SQUASH BOT  | ZOOM BOT    | HAMMER BOT  | 5  | 3  | 7  | 5  | 12 | 4  | SQUASH BOT   | ZOOM BOT     | HAMMER BOT   |
+      | SQUASH BOT  | ZOOM BOT    | HAMMER BOT  | 5  | 3  | 5  | 5  | 12 | 4  | ZOOM BOT     | SQUASH BOT   | HAMMER BOT   |
+
 ##############           ROBOT SCENARIOS          #######################
   Scenario Outline: A robot gets an initial position
     Given a player chose a robot "<robot-name>"
@@ -81,13 +91,41 @@ Feature:
       | Anna       | 2            | 0            | S           | -1       | false           | 5        | 5        |
       | Anna       | 4            | 2            | E           | 3        | false           | 6        | 5        |
 
+  # A robot can put a marker on a check point only when it is at a check point and it has put marks in all previous checkpoints numerically
+  Scenario Outline:  A robot can put a marker on a check point only when it is at a check point and it has put marks in all previous checkpoints numerically
+    Given there is a game with map "<map_name>"
+    And there are players "<playerA>" and "<playerB>" in this game
+    And  this is "<playerA>" turn
+    And this player's robot has moved in this turn
+    And  this player's robot is at the check point <point_number>
+    And  this player's robot has put marks on all numerically previous checkpoints and not put mark on this check point <point_number>
+    When this player's turn ends
+    Then this player gets a new mark from this checkpoint successfully
+    Examples:
+      | map_name | playerA | playerB | point_number |
+      | map2     | A       | B       | 2            |
+      | map2     | A       | B       | 3            |
+      | map2     | A       | B       | 1            |
 
-#    ################             ANTENNA SCENARIOS       #######################################
-  Scenario Outline: The antenna determines the priority
-    Given An antenna and three robots "<robot-name1>", "<robot-name2>" and "<robot-name3>" in a game
-    When RobotI, robotII and robotIII are placed in ("<x1>","<y1>"), ("<x2>","<y2>"),("<x3>","<y3>") respectively.
-    Then The order of these robots is "<result_name1>","<result_name2>","<result_name3>".
-    Examples: # (0,4) antenna
-      | robot-name1 | robot-name2 | robot-name3 | x1 | y1 | x2 | y2 | x3 | y3 | result_name1 | result_name2 | result_name3 |
-      | SQUASH BOT  | ZOOM BOT    | HAMMER BOT  | 5  | 3  | 7  | 5  | 12 | 4  | SQUASH BOT   | ZOOM BOT     | HAMMER BOT   |
-      | SQUASH BOT  | ZOOM BOT    | HAMMER BOT  | 5  | 3  | 5  | 5  | 12 | 4  | ZOOM BOT     | SQUASH BOT   | HAMMER BOT   |
+#  Scenario:  The robot fails when it has not put marker in previous check point
+#    Given this is "<player_name>" turn
+#    *  his robot is at the check point "<point_number>"
+#    *  his robot does not put marks on all numerically previous checkpoints
+#    When he wants to put a mark on this checkpoint
+#    Then Fail to put a marker on this checkpoint
+#
+#  Scenario:  The robot fails when it is not at the position of this check point
+#    Given this is "<player_name>" turn
+#    *  his robot is not at the check point "<point_number>"
+#    When he wants to put a mark on this checkpoint
+#    Then A mark is put on this checkpoint unsuccessfully
+#
+#  Scenario:  The robot fails when it has put mark on this check point
+#    Given this is "<player_name>" turn
+#    *  his robot is at the check point "<point_number>"
+#    *  his robot has put mark on this check point
+#    When he wants to put a mark on this checkpoint
+#    Then A mark is put on this checkpoint unsuccessfully
+
+
+

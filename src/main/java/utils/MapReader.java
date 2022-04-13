@@ -4,6 +4,7 @@ import gui.view.map.TileType;
 import io.cucumber.java.it.Ma;
 import model.game.board.map.GameMap;
 import model.game.board.map.element.Antenna;
+import model.game.board.map.element.CheckPoint;
 import model.game.board.map.element.Tile;
 
 import java.io.*;
@@ -21,13 +22,13 @@ public class MapReader {
     /**
      * @ PATH_TO_MAP_FILE: The path to the folder storing maps.txt
      */
-    public static final String PATH_TO_MAP_FILE = "src/main/resources/maps/";
+    private static final String PATH_TO_MAP_FILE = "src/main/resources/maps/";
 
     /**
      * @ readLineToStringArray: Read the content of .txt file to a string array.
      * One line of this txt file -> one string element of this arraylist
      */
-    public static ArrayList<String> readLineToStringArray(String mapName) throws IOException {
+    private static ArrayList<String> readLineToStringArray(String mapName) throws IOException {
 
         ArrayList<String> strList = new ArrayList<>();
         FileReader reader = new FileReader(new File(PATH_TO_MAP_FILE + mapName + ".txt"));
@@ -45,12 +46,18 @@ public class MapReader {
      * @ readLineToStringArray: Read the content of .txt file to a string array.
      * One line of this txt file -> one string element of this arraylist
      */
-    public static Tile createTileInstance(String str, int x, int y) {
+    private static Tile createTileInstance(String str, int x, int y) {
         if ("Antenna".equals(str)) return Antenna.getInstance();
         try {
-
-            Class clz = Class.forName("model.game.board.map.element." + str);
-            return (Tile) clz.getDeclaredConstructor(Integer.class, Integer.class).newInstance(x, y);
+            if (str.startsWith("CheckPoint")) {
+                Class clz = Class.forName("model.game.board.map.element.CheckPoint");
+                CheckPoint checkPoint = (CheckPoint) clz.getDeclaredConstructor(Integer.class, Integer.class).newInstance(x, y);
+                checkPoint.setCheckPointNum(Integer.parseInt("" + str.charAt(str.length()-1)));
+                return (Tile) checkPoint;
+            } else {
+                Class clz = Class.forName("model.game.board.map.element." + str);
+                return (Tile) clz.getDeclaredConstructor(Integer.class, Integer.class).newInstance(x, y);
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -114,19 +121,19 @@ public class MapReader {
 
         return result;
     }
-// This is the test of the function
-    //    public static void main(String[] args) {
+
+    // This is the test of the function
+//    public static void main(String[] args) {
 //        Tile[][] map = null;
 //        try {
-//           map =  MapReader.txtToTileMatrix("map1");
+//            map = MapReader.txtToTileMatrix("map1");
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
 //        assert map != null;
-//        for (Tile[] tiles:map)
-//        {
-//            for (Tile tile : tiles){
-//                System.out.print(tile.getClass().getSimpleName()+",");
+//        for (Tile[] tiles : map) {
+//            for (Tile tile : tiles) {
+//                System.out.print(tile.getClass().getSimpleName() + ",");
 //            }
 //            System.out.println();
 //        }

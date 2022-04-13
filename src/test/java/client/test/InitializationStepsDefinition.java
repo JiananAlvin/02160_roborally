@@ -46,22 +46,22 @@ public class InitializationStepsDefinition {
         try {
             new RobotController().deleteRobotInfo(this.user.getName());
         } catch (Exception e) {
-            System.out.println("There is no robot record to delete.");
+//            System.out.println("There is no robot record to delete.");
         }
         try {
             new RoomController().deleteRoom(this.room.getRoomNumber());
         } catch (Exception e) {
-            System.out.println("There is no room record to delete.");
+//            System.out.println("There is no room record to delete.");
         }
         try {
             new UserController().deleteUser(this.user.getName());
         } catch (Exception e) {
-            System.out.println("There is no user record to delete.");
+//            System.out.println("There is no user record to delete.");
         }
         try {
             new UserController().deleteUser(this.roomOwner.getName());
         } catch (Exception e) {
-            System.out.println("There is no user record to delete.");
+//            System.out.println("There is no user record to delete.");
         }
     }
 
@@ -76,8 +76,9 @@ public class InitializationStepsDefinition {
         this.user.setName(arg0);
         this.response = new UserController().createUser(arg0);
     }
-    @Then ("the player has the name {string}")
-    public void thePlayerHasTheName(String arg0){
+
+    @Then("the player has the name {string}")
+    public void thePlayerHasTheName(String arg0) {
         assertEquals(arg0, this.user.getName());
     }
 
@@ -158,7 +159,7 @@ public class InitializationStepsDefinition {
     public void the_player_is_in_this_room() {
         this.response = new RoomController().roomInfo(this.room.getRoomNumber());
         JSONArray users = (JSONArray) this.response.get("users");
-       assertEquals(this.user.getName(), users.getString(0));
+        assertEquals(this.user.getName(), users.getString(0));
 
     }
 

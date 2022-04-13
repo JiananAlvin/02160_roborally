@@ -1,9 +1,9 @@
 package model;
 
 import lombok.Data;
-import model.game.board.map.Position;
+import model.game.board.map.GameMap;
+import model.game.board.map.element.CheckPoint;
 import model.game.board.map.element.Robot;
-import model.game.board.map.element.RebootPoint;
 import model.game.Player;
 
 import java.util.ArrayList;
@@ -13,27 +13,30 @@ import java.util.TreeMap;
 @Data
 public class Game {
 
+    /**
+     * @ Player user: the user of this application
+     * @ ArrayList<Robot> robotsInGame: the player of current turn
+     * @ ArrayList<Player> players:  the players in this game
+     * @ Room room : which room this game is based on
+     * @ GameMap gameMap: which map this game is using
+     * @ int currentTurnNum: the nth turn(outside turn)
+     * @ int registerNum: the nth register runs currently(inner turn)
+     * @ int currentPlayerNum: whose register is performing
+     */
     private Player user;
     private ArrayList<Robot> robotsInGame;
-    private RebootPoint rebootPoint;
-    private ArrayList<Player> players;
+    private ArrayList<Player> participants;
     private Room room;
+    private GameMap gameMap;
+    private int currentTurnNum;
+    private int registerNum;
+    private int currentPlayerNum;
+    private boolean hasInteractedWithCard;
+
 
     public Game() {
         this.robotsInGame = new ArrayList<>();
-        this.rebootPoint = new RebootPoint(new Position(2, 3));
-        this.players = new ArrayList<>();
-    }
-
-//    public Game(ArrayList<Robot> robotsInGame, RebootPoint rebootPoint) {
-//        this.robotsInGame = robotsInGame;
-//        this.rebootPoint = rebootPoint;
-//        this.rooms = new ArrayList<>();
-//        this.players = new ArrayList<>();
-//    }
-
-    public ArrayList<Robot> getRobotsInGame() {
-        return this.robotsInGame;
+        this.participants = new ArrayList<>();
     }
 
     /**
@@ -78,8 +81,7 @@ public class Game {
 
     public void reboot(Robot r1) {
         r1.setLives(5);
-        r1.setPosition(this.rebootPoint.getPosition());
-        //this.setPosition(); set position -> reboot position
+        r1.setPosition(this.gameMap.getRebootPointRandomly().getPosition());
     }
 
     public void robotTakeDamage(Robot r, int damage) {
@@ -88,11 +90,27 @@ public class Game {
         }
     }
 
-    public void addPlayer(Player p1){
-        this.players.add(p1);
+    public void addPlayer(Player p1) {
+        this.participants.add(p1);
         this.robotsInGame.add(p1.getRobot());
     }
 
+    public int findPlayerNum(String name){
+        int i = 0;
+        for (Player player : this.participants)
+        {
+            if(player.getName().equals(name)) return i;
+            i++;
+        }
+        return -1;
+    }
+
+    public boolean addMark(Player player, CheckPoint checkPoint) {
+        if (participants.get(this.currentPlayerNum).getName().equals(player.getName()) && this.hasInteractedWithCard) {
+            return player.tryToAddMark(checkPoint);
+        }
+        else return false;
+    }
 //    public void playCards(Player p1){
 //
 //        ArrayList<Card> cardsSelected = p1.getProgCards();

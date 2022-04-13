@@ -2,8 +2,11 @@ package model.game;
 
 import java.util.ArrayList;
 
-import model.Room;
+import model.Game;
 import lombok.Data;
+import model.game.board.map.Position;
+import model.game.board.map.element.CheckPoint;
+import model.game.board.map.element.Tile;
 import model.game.board.mat.element.ProgrammingDeck;
 import model.game.board.mat.element.DiscardPile;
 import model.game.board.map.element.Robot;
@@ -17,8 +20,8 @@ public class Player {
     private ProgrammingDeck deck;
     private DiscardPile discard;
     private ArrayList<Card> progCards;
-    private Room room;
-    private int currentRoomCode;
+    private ArrayList<Tile> achievedCheckPoints;
+
 
     public Player() {
         this.deck = new ProgrammingDeck(this);
@@ -48,11 +51,13 @@ public class Player {
         return this.discard.getDiscard();
     }
 
-    public void assignRoom(Room room) {
-        this.room = room;
-    }
-
-    public int getCurrentRoomCode() {
-        return this.currentRoomCode;
+    public boolean tryToAddMark(CheckPoint checkPoint) {
+        int currentOwnedMark = this.achievedCheckPoints.size();
+        if (robot.getPosition().equals(checkPoint.getPosition()) // robot at this checkPoint
+                && checkPoint.getCheckPointNum() == currentOwnedMark + 1 //robot has all the marks before current one
+        ) {
+            this.achievedCheckPoints.add(checkPoint);
+            return true;
+        } else return false;
     }
 }
