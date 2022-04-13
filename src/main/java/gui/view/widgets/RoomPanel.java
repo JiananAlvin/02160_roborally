@@ -5,37 +5,33 @@ import server.controller.user.UserController;
 
 import javax.swing.*;
 
-public class RoomPanel extends JPanel{
+public class RoomPanel<IntField> extends JPanel{
 
-    private final JLabel lblMapName;
     private final JComboBox<String> jcbMapName;
-    private final JToggleButton btCreateRoom;
-    private final JLabel lblRoomNumber;
     private final JTextField roomNumber;
-    private final JToggleButton btJionRoom;
 
-    public RoomPanel(String userName) {
-        this.lblMapName = new JLabel("Map");
+    public RoomPanel(String userName, JFrame frame) {
+        JLabel lblMapName = new JLabel("Map");
         String[] mapNameList = {"STARTER", "BEGINNER", "INTERMEDIATE", "ADVANCED"};
         this.jcbMapName = new JComboBox<>(mapNameList);
-        this.btCreateRoom = new JToggleButton("Create room");
-        this.lblRoomNumber = new JLabel("Room number");
+        JToggleButton btCreateRoom = new JToggleButton("Create room");
+        JLabel lblRoomNumber = new JLabel("Room number");
         this.roomNumber = new JTextField();
-        this.btJionRoom = new JToggleButton("Join room");
+        JToggleButton btJionRoom = new JToggleButton("Join room");
 
         this.setLayout(null);
-        this.lblMapName.setBounds(200, 50, 70, 20);
+        lblMapName.setBounds(200, 50, 70, 20);
         this.jcbMapName.setBounds(200, 78, 190, 28);
-        this.btCreateRoom.setBounds(450, 78, 150, 30);
-        this.lblRoomNumber.setBounds(200, 200, 100, 20);
+        btCreateRoom.setBounds(450, 78, 150, 30);
+        lblRoomNumber.setBounds(200, 200, 100, 20);
         this.roomNumber.setBounds(200, 228, 190, 28);
-        this.btJionRoom.setBounds(450, 228, 150, 30);
-        this.add(this.lblMapName);
+        btJionRoom.setBounds(450, 228, 150, 30);
+        this.add(lblMapName);
         this.add(this.jcbMapName);
-        this.add(this.btCreateRoom);
-        this.add(this.lblRoomNumber);
+        this.add(btCreateRoom);
+        this.add(lblRoomNumber);
         this.add(this.roomNumber);
-        this.add(this.btJionRoom);
+        this.add(btJionRoom);
 
         // Add listeners for "Create room" and "Join room" buttons
         btCreateRoom.addActionListener(e -> {
@@ -45,7 +41,9 @@ public class RoomPanel extends JPanel{
              */
             RoomController roomController = new RoomController();
             roomController.createRoom(userName, this.jcbMapName.getSelectedItem().toString());
-            System.out.println(roomController.getResponse());
+            frame.getContentPane().removeAll();
+            frame.getContentPane().add(new WaitingPanel("Jianannnnnn", "100"));
+            frame.setVisible(true);
         });
 
         btJionRoom.addActionListener(e -> {
@@ -55,13 +53,16 @@ public class RoomPanel extends JPanel{
              */
             UserController userController = new UserController();
             userController.joinRoom(userName, Integer.parseInt(this.roomNumber.getText()));
+            frame.getContentPane().removeAll();
+            frame.getContentPane().add(new WaitingPanel("Jianannnnnn", 100));
+            frame.setVisible(true);
         });
     }
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("RoboRally Group10 v1.0");
         frame.setSize(880, 400);
-        RoomPanel roomPanel = new RoomPanel("ddd");
+        RoomPanel roomPanel = new RoomPanel("ddd", frame);
         frame.add(roomPanel);
         frame.setVisible(true);
     }

@@ -5,11 +5,9 @@ import java.awt.*;
 
 public class CoverPanel extends JPanel {
 
-    private final JLabel lblCover;
-
     public CoverPanel() {
         ImageIcon cover = new ImageIcon(new ImageIcon("src/main/resources/images/robots/cover.jpg").getImage().getScaledInstance(870, 360, Image.SCALE_DEFAULT));
-        this.lblCover = new JLabel(cover);
+        JLabel lblCover = new JLabel(cover);
         this.add(lblCover);
     }
 
