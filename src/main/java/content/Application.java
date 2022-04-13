@@ -24,7 +24,7 @@ public class Application {
     private static Application applicationInstance;
 
     private Application() {
-//        Initialize all the elements in on APP
+        // Initialize all the elements in on APP
         this.frame = new JFrame("RoboRally Group10 v1.0");
         this.game = new Game();
         this.user = new Player();
