@@ -1,9 +1,10 @@
 package model;
 
 import lombok.Data;
+import model.game.board.map.Collision;
 import model.game.board.map.GameMap;
-import model.game.board.map.element.CheckPoint;
-import model.game.board.map.element.Robot;
+import model.game.board.map.Position;
+import model.game.board.map.element.*;
 import model.game.Player;
 
 import java.util.ArrayList;
@@ -80,13 +81,18 @@ public class Game {
     }
 
     public void reboot(Robot r1) {
+        System.out.println("1");
         r1.setLives(5);
-        r1.setPosition(this.gameMap.getRebootPointRandomly().getPosition());
+        System.out.println("2");
+        // the gameMap is null, so in order to test our functions is going to remain commented
+        //r1.setPosition(this.gameMap.getRebootPointRandomly().getPosition());
+        System.out.println("3");
+
     }
 
     public void robotTakeDamage(Robot r, int damage) {
         if (!r.takeDamage(damage)) {
-            reboot(r);
+           this.reboot(r);
         }
     }
 
@@ -126,14 +132,39 @@ public class Game {
 //    }
 
 //    Prototype about how collisions will work
-//    private void checkCollision(Player p1){
-//       Position pos =  p1.getRobot().getPosition();
-//
-//       for(Tile tile : tilesInTheGame){
-//           if(tile.getPosition().equals(pos)){
-//
-//           }
-//       }
-//    }
+    private void checkCollision(Player p1){
+       Position pos =  p1.getRobot().getPosition();
+
+       for(Tile[] tileArray : gameMap.getContent()){
+           for(Tile tile : tileArray ){
+             if(tile.getPosition().equals(pos))
+             {
+                //do some stuff
+                Collision collision = new Collision();
+                switch (collision.checkCollision(tile)){
+                    case 1:
+                        // WallNorthLaser laser = (WallNorthLaser) tile ;
+                        robotTakeDamage(p1.getRobot(), 1);
+                        break;
+                }
+             }
+           }
+       }
+    }
+
+    // this function is a test from the one above
+    public void checkCollisionWithLaser(Robot r, Tile tile){
+        Position pos =  r.getPosition();
+        Collision collision = new Collision();
+        if(tile.getPosition().equals(r.getPosition())) {
+            if (collision.checkCollision(tile) == 1) { //laser/gear case
+                // WallNorthLaser laser = (WallNorthLaser) tile ;
+                robotTakeDamage(r, ((Obstacle)tile).getDamage());
+            }
+        }
+    }
+
+
+
 
 }

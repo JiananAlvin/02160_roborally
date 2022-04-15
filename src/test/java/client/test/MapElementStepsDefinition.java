@@ -11,8 +11,7 @@ import model.game.Player;
 import model.game.board.map.GameMap;
 import model.game.board.map.Orientation;
 import model.game.board.map.Position;
-import model.game.board.map.element.CheckPoint;
-import model.game.board.map.element.Robot;
+import model.game.board.map.element.*;
 import model.game.card.Card;
 import model.game.card.programming.card.*;
 
@@ -28,6 +27,7 @@ public class MapElementStepsDefinition {
     private Robot r2;
     private Robot r3;
     private Card card;
+    private Tile tile;
 
     @Before
     public void initMapElement() {
@@ -165,7 +165,7 @@ public class MapElementStepsDefinition {
     @Then("The expected output is {string} in a board that have a maximum size of {string} {string}")
     public void theExpectedOutputIsInABoardThatHaveAMaximumSizeOf(String output, String maxX, String maxY) {
         boolean aux = this.robot.imInsideBoard(Integer.parseInt(maxX), Integer.parseInt(maxY));
-        assertEquals(aux, Boolean.valueOf(output));
+        assertEquals(Boolean.valueOf(output), aux);
     }
 
 
@@ -251,4 +251,56 @@ public class MapElementStepsDefinition {
     public void thisPlayerGetsANewMarkFromThisCheckpointSuccessfully(int arg0) {
         assertEquals(arg0, this.game.findCurrentShownPlayer().getAchievedCheckPoints().size());
     }
+
+
+
+    @And("The robot has initial position {string} {string} with orientation {string}")
+    public void theRobotHasInitialPositionWithOrientation(String xPos, String yPos, String orientation) {
+        this.robot.setPosition(Integer.parseInt(xPos), Integer.parseInt(yPos));
+        Orientation o = Orientation.N;
+        switch (orientation) {
+            case "N":
+                o = Orientation.N;
+                break;
+            case "S":
+                o = Orientation.S;
+                break;
+            case "E":
+                o = Orientation.E;
+                break;
+            case "W":
+                o = Orientation.W;
+                break;
+        }
+        this.robot.setOrientation(o);
+    }
+
+    @And("a position {string} {string} on the map indicating the obstacle of type {string}")
+    public void aPositionOnTheMapIndicatingTheObstacle(String xPos, String yPos, String type) {
+        switch(type){
+            case "wnl":
+                tile = new WallNorthLaser(Integer.parseInt(xPos), Integer.parseInt(yPos));
+                break;
+            case "wsl":
+                tile = new WallSouthLaser(Integer.parseInt(xPos), Integer.parseInt(yPos));
+                break;
+            case "wel":
+                tile = new WallEastLaser(Integer.parseInt(xPos), Integer.parseInt(yPos));
+                break;
+            case "wwl":
+                tile = new WallWestLaser(Integer.parseInt(xPos), Integer.parseInt(yPos));
+                break;
+            case "sg":
+                tile = new StaticGear(Integer.parseInt(xPos), Integer.parseInt(yPos));
+                break;
+        }
+    }
+
+    @When("robot lands on an obstacle status is true")
+    public void robotLandsOnAnObstacleStatusIsTrue() {
+        initMapElement();
+
+        game.checkCollisionWithLaser(robot, tile );
+    }
+
 }

@@ -1,6 +1,9 @@
 package model.game.board.map;
 
+import model.game.board.map.element.Obstacle;
 import model.game.board.map.element.Robot;
+import model.game.board.map.element.Tile;
+import model.game.board.map.element.WallNorthLaser;
 
 public class Collision {
     // we'll difference the different kind of collisions that can happen between the robot and other tiles
@@ -9,7 +12,11 @@ public class Collision {
     public static final int ROBOT_OUT_OF_BOUNDS_COLLISION = 2;
 
     //receiving as a parameter a robot and a position, we will return the collision between the robot and tiles in that position
-    public Collision checkCollision(Position p, Robot r){
-        return new Collision();
+    public int checkCollision(Tile tile){
+
+        if(tile instanceof Obstacle){
+            return 1;
+        }
+        else{return -1;}
     }
 }
