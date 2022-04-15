@@ -300,7 +300,7 @@ public class MapElementStepsDefinition {
     public void robotLandsOnAnObstacleStatusIsTrue() {
         initMapElement();
 
-        game.checkCollisionWithLaser(robot, tile );
+        game.checkCollisionTemporary(robot, tile );
     }
 
 }

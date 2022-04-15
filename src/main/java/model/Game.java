@@ -153,7 +153,7 @@ public class Game {
     }
 
     // this function is a test from the one above
-    public void checkCollisionWithLaser(Robot r, Tile tile){
+    public void checkCollisionTemporary(Robot r, Tile tile){
         Position pos =  r.getPosition();
         Collision collision = new Collision();
         if(tile.getPosition().equals(r.getPosition())) {
