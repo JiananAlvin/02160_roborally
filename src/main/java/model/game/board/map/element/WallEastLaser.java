@@ -10,4 +10,6 @@ public class WallEastLaser extends Obstacle{
     public WallEastLaser(Integer x, Integer y) {
         super(x, y);
     }
+
+
 }

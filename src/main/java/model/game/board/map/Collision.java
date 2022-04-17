@@ -1,9 +1,7 @@
 package model.game.board.map;
 
 import model.game.board.map.element.Obstacle;
-import model.game.board.map.element.Robot;
 import model.game.board.map.element.Tile;
-import model.game.board.map.element.WallNorthLaser;
 
 public class Collision {
     // we'll difference the different kind of collisions that can happen between the robot and other tiles

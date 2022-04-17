@@ -160,10 +160,8 @@ public class InitializationStepsDefinition {
         this.response = new RoomController().roomInfo(this.room.getRoomNumber());
         JSONArray users = (JSONArray) this.response.get("users");
         assertEquals(this.user.getName(), users.getString(0));
-
+        System.out.println(users.get(1).getClass());
     }
-
-
 }
 
 

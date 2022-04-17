@@ -40,9 +40,10 @@ public class RoomPanel<IntField> extends JPanel{
              creating a room for the user through API
              */
             RoomController roomController = new RoomController();
-            roomController.createRoom(userName, this.jcbMapName.getSelectedItem().toString());
+            String roomNumberStr = roomController.createRoom(userName, this.jcbMapName.getSelectedItem().toString()).get("room_number").toString();
+            System.out.println(roomNumberStr);
             frame.getContentPane().removeAll();
-            frame.getContentPane().add(new WaitingPanel("Jianannnnnn", "100"));
+            frame.getContentPane().add(new WaitingPanel(roomNumberStr, "owner", frame));
             frame.setVisible(true);
         });
 
@@ -52,9 +53,10 @@ public class RoomPanel<IntField> extends JPanel{
             inserting the player info into the room through API
              */
             UserController userController = new UserController();
-            userController.joinRoom(userName, Integer.parseInt(this.roomNumber.getText()));
+            String roomNumberStr = this.roomNumber.getText();
+            userController.joinRoom(userName, Integer.parseInt(roomNumberStr));
             frame.getContentPane().removeAll();
-            frame.getContentPane().add(new WaitingPanel("Jianannnnnn", 100));
+            frame.getContentPane().add(new WaitingPanel(roomNumberStr, "participant", frame));
             frame.setVisible(true);
         });
     }

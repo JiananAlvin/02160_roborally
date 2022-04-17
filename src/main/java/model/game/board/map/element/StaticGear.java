@@ -3,7 +3,6 @@ package model.game.board.map.element;
 import model.game.board.map.Position;
 
 public class StaticGear extends Obstacle{
-
     private int damage = 2;
 
     public StaticGear(Position position) {

@@ -4,7 +4,7 @@ import lombok.Data;
 import model.game.board.map.Position;
 
 @Data
-public class CheckPoint extends Tile implements Comparable<CheckPoint> {
+public class CheckPoint extends Tile {
     private int checkPointNum;
 
     public CheckPoint(Position position) {
@@ -13,10 +13,5 @@ public class CheckPoint extends Tile implements Comparable<CheckPoint> {
 
     public CheckPoint(Integer x, Integer y) {
         super(x, y);
-    }
-
-    @Override
-    public int compareTo(CheckPoint o) {
-        return this.checkPointNum > o.getCheckPointNum() ? 1 : 0;
     }
 }

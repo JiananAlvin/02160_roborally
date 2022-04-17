@@ -20,7 +20,6 @@ public class InteractionStepsDefinition {
         this.player = new Player();
     }
 
-
     @Given("a player {string} is in programming phase")
     public void aPlayerIsInProgrammingPhase(String arg0) {
         this.player.setName(arg0);

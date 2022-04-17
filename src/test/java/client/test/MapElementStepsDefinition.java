@@ -1,5 +1,6 @@
 package client.test;
 
+import content.MapName;
 import content.RobotName;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
@@ -23,9 +24,9 @@ import static org.junit.Assert.assertTrue;
 public class MapElementStepsDefinition {
     private Robot robot;
     private Game game;
-    private Robot r1;
-    private Robot r2;
-    private Robot r3;
+    private Player p1;
+    private Player p2;
+    private Player p3;
     private Card card;
     private Tile tile;
 
@@ -34,7 +35,7 @@ public class MapElementStepsDefinition {
         this.game = new Game();
     }
 
-    //==============ROBOT=======================================
+    //--------------------------------------------------------------------------------------------
     @Given("a player chose a robot {string}")
     public void aPlayerChoseARobot(String arg0) {
         this.robot = new Robot(arg0);
@@ -84,7 +85,7 @@ public class MapElementStepsDefinition {
     }
 
 
-    //----------------------------------------------------------------------------checked
+    //--------------------------------------------------------------------------------------------
     @Given("A robot {string} had {string} lives")
     public void aRobotHasLives(String arg0, String arg1) {
         this.robot = new Robot(arg0);
@@ -94,7 +95,7 @@ public class MapElementStepsDefinition {
     @When("The robot lives are reduced {string} points of damage by the game")
     public void theRobotLivesAreReducedPointsOfDamageByTheGame(String arg0) throws IOException {
         this.game = new Game();
-        this.game.setGameMap(new GameMap("map1"));
+        this.game.setGameMap(new GameMap(MapName.STARTER));
         this.game.robotTakeDamage(this.robot, Integer.parseInt(arg0));
     }
 
@@ -169,91 +170,83 @@ public class MapElementStepsDefinition {
     }
 
 
-    //==============ANTENA===============================================
-    @Given("An antenna and three robots {string}, {string} and {string} in a game")
-    public void anAntennaAndThreeRobotsAndInAGame(String arg0, String arg1, String arg2) {
-        this.r1 = new Robot(arg0);
-        this.r2 = new Robot(arg1);
-        this.r3 = new Robot(arg2);
-        this.game.addRobot(r1);
-        this.game.addRobot(r2);
-        this.game.addRobot(r3);
+    //--------------------------------------------------------------------------------------------
+    @Given("an antenna and three robots {string}, {string} and {string} chosen by {string}, {string} and {string} respectively")
+    public void anAntennaAndThreeRobotsAndChosenByAndRespectively(String arg0, String arg1, String arg2, String arg3, String arg4, String arg5) {
+        this.p1 = new Player(arg3, new Robot(arg0));
+        this.p2 = new Player(arg4, new Robot(arg1));
+        this.p3 = new Player(arg5, new Robot(arg2));
+        this.game.addParticipant(p1);
+        this.game.addParticipant(p2);
+        this.game.addParticipant(p3);
     }
 
-    @When("RobotI, robotII and robotIII are placed in \\({string},{string}), \\({string},{string}),\\({string},{string}) respectively.")
+    @When("robotI, robotII and robotIII are placed in \\({string},{string}), \\({string},{string}),\\({string},{string}) respectively")
     public void robotiRobotIIAndRobotIIIArePlacedInRespectively(String arg0, String arg1, String arg2, String arg3, String arg4, String arg5) {
-        this.r1.setPosition(Integer.parseInt(arg0), Integer.parseInt(arg1));
-        this.r2.setPosition(Integer.parseInt(arg2), Integer.parseInt(arg3));
-        this.r3.setPosition(Integer.parseInt(arg4), Integer.parseInt(arg5));
+        this.p1.getRobot().setPosition(Integer.parseInt(arg0), Integer.parseInt(arg1));
+        this.p2.getRobot().setPosition(Integer.parseInt(arg2), Integer.parseInt(arg3));
+        this.p3.getRobot().setPosition(Integer.parseInt(arg4), Integer.parseInt(arg5));
     }
 
-    @Then("The order of these robots is {string},{string},{string}.")
-    public void theRobotClosestToTheAntennaHasThePriorityToMove(String arg0, String arg1, String arg2) {
-        assertEquals(arg0, this.game.orderOfRobots().get(0).getName());
-        assertEquals(arg1, this.game.orderOfRobots().get(1).getName());
-        assertEquals(arg2, this.game.orderOfRobots().get(2).getName());
+    @Then("the priority of these players is {string},{string},{string}")
+    public void thePriorityOfThesePlayersIs(String arg0, String arg1, String arg2) {
+        assertEquals(arg0, this.game.orderOfPlayers().get(0).getName());
+        assertEquals(arg1, this.game.orderOfPlayers().get(1).getName());
+        assertEquals(arg2, this.game.orderOfPlayers().get(2).getName());
     }
+
 
     //--------------------------------------------------------------------------------------------
     @Given("there is a game with map {string}")
     public void thereIsAGameWithMap(String arg0) throws IOException {
         this.game = new Game();
-        game.setGameMap(new GameMap(arg0));
+        this.game.setGameMap(new GameMap(arg0));
     }
 
     @And("there are players {string} and {string} in this game")
     public void thereArePlayersAndInThisGame(String arg0, String arg1) {
-        Player player1 = new Player();
-        Player player2 = new Player();
-        player1.setName(arg0);
-        player2.setName(arg1);
-        player1.setRobot(new Robot("robot1"));
-        player2.setRobot(new Robot("robot2"));
-        game.addPlayer(player1);
-        game.addPlayer(player2);
+        Player player1 = new Player(arg0, new Robot("SQUASH BOT"));
+        Player player2 = new Player(arg1, new Robot("ZOOM BOT"));
+        this.game.addParticipant(player1);
+        this.game.addParticipant(player2);
     }
 
     @And("this is {string} turn")
     public void thisIsTurn(String arg0) {
-        int playerNum = this.game.findPlayerNum(arg0);
-        if (playerNum == -1) return;
-        this.game.setCurrentPlayerNum(playerNum);
+        for (Player player : this.game.getParticipants())
+            if (player.getName().equals(arg0))
+                this.game.setCurrentPlayer(player);
     }
 
-    @And("this player's robot has moved in this turn")
-    public void thisPlayerSRobotHasMovedInThisTurn() {
-        this.game.setHasInteractedWithCard(true);
-    }
-
-    @And("this player's robot is at the check point {int}")
-    public void thisPlayerSRobotIsAtTheCheckPoint(int arg0) {
+    @And("this player's robot stops on the checkpoint {int}")
+    public void thisPlayerSRobotStopsOnTheCheckPoint(int arg0) {
         CheckPoint checkPoint = this.game.getGameMap().getCheckPoints().get(arg0 - 1);
-        this.game.findCurrentShownPlayer().getRobot().setPosition(checkPoint.getPosition());
+        this.game.getCurrentPlayer().getRobot().setPosition(checkPoint.getPosition());
     }
 
-    @And("this player's robot has put marks on all numerically previous checkpoints and not put mark on this check point {int}")
-    public void thisPlayerSRobotHasPutMarksOnAllNumericallyPreviousCheckpointsAndNotPutMarkOnThisCheckPoint(int arg0) {
+    @And("this player's robot taken checkpoint tokens from all previous checkpoints numerically and did not take a checkpoint token from this checkpoint {int}")
+    public void thisPlayerSRobotTakenCheckpointTokensFromAllPreviousCheckpointsNumericallyAndDidNotTakeACheckpointTokenFromThisCheckpointPoint(int arg0) {
         int i = 1;
         for (CheckPoint checkPoint : this.game.getGameMap().getCheckPoints()) {
             if (i < arg0)
-                this.game.findCurrentShownPlayer().getAchievedCheckPoints().add(checkPoint);
+                this.game.getCurrentPlayer().getObtainedCheckpointTokens().add(checkPoint);
             i++;
         }
-        assertEquals(arg0 - 1, this.game.findCurrentShownPlayer().getAchievedCheckPoints().size());
+        assertEquals(arg0 - 1, this.game.getCurrentPlayer().getObtainedCheckpointTokens().size());
     }
 
-    @When("this player's turn ends and the robot stops at check point {int}")
-    public void thisPlayerSTurnEndsAndTheRobotStopsAtCheckPoint(int arg0) {
-        assertTrue(this.game.findCurrentShownPlayer().tryToAddMark(this.game.getGameMap().getCheckPoints().get(arg0 - 1)));
+    @When("this player's turn ends and the robot stops on this checkpoint {int}")
+    public void thisPlayerSTurnEndsAndTheRobotStopsOnThisCheckpoint(int arg0) {
+        assertTrue(this.game.getCurrentPlayer().takeToken(this.game.getGameMap().getCheckPoints().get(arg0 - 1)));
     }
 
-    @Then("this player gets a new mark from this checkpoint successfully and now have {int} marks")
-    public void thisPlayerGetsANewMarkFromThisCheckpointSuccessfully(int arg0) {
-        assertEquals(arg0, this.game.findCurrentShownPlayer().getAchievedCheckPoints().size());
+    @Then("this player gets a checkpoint token from this checkpoint successfully and now has {int} checkpoint tokens")
+    public void thisPlayerGetsACheckpointTokenFromThisCheckpointSuccessfullyAndNowHasCheckpointTokens(int arg0) {
+        assertEquals(arg0, this.game.getCurrentPlayer().getObtainedCheckpointTokens().size());
     }
 
 
-
+    //--------------------------------------------------------------------------------------------
     @And("The robot has initial position {string} {string} with orientation {string}")
     public void theRobotHasInitialPositionWithOrientation(String xPos, String yPos, String orientation) {
         this.robot.setPosition(Integer.parseInt(xPos), Integer.parseInt(yPos));
@@ -277,30 +270,27 @@ public class MapElementStepsDefinition {
 
     @And("a position {string} {string} on the map indicating the obstacle of type {string}")
     public void aPositionOnTheMapIndicatingTheObstacle(String xPos, String yPos, String type) {
-        switch(type){
+        switch (type) {
             case "wnl":
-                tile = new WallNorthLaser(Integer.parseInt(xPos), Integer.parseInt(yPos));
+                this.tile = new WallNorthLaser(Integer.parseInt(xPos), Integer.parseInt(yPos));
                 break;
             case "wsl":
-                tile = new WallSouthLaser(Integer.parseInt(xPos), Integer.parseInt(yPos));
+                this.tile = new WallSouthLaser(Integer.parseInt(xPos), Integer.parseInt(yPos));
                 break;
             case "wel":
-                tile = new WallEastLaser(Integer.parseInt(xPos), Integer.parseInt(yPos));
+                this.tile = new WallEastLaser(Integer.parseInt(xPos), Integer.parseInt(yPos));
                 break;
             case "wwl":
-                tile = new WallWestLaser(Integer.parseInt(xPos), Integer.parseInt(yPos));
+                this.tile = new WallWestLaser(Integer.parseInt(xPos), Integer.parseInt(yPos));
                 break;
             case "sg":
-                tile = new StaticGear(Integer.parseInt(xPos), Integer.parseInt(yPos));
+                this.tile = new StaticGear(Integer.parseInt(xPos), Integer.parseInt(yPos));
                 break;
         }
     }
 
     @When("robot lands on an obstacle status is true")
     public void robotLandsOnAnObstacleStatusIsTrue() {
-        initMapElement();
-
-        game.checkCollisionTemporary(robot, tile );
+        this.game.checkCollisionTemporary(this.robot, this.tile);
     }
-
 }

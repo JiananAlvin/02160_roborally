@@ -2,15 +2,13 @@ package model.game;
 
 import java.util.ArrayList;
 
-import io.cucumber.java.bs.A;
-import model.Game;
 import lombok.Data;
-import model.game.board.map.Position;
 import model.game.board.map.element.CheckPoint;
 import model.game.board.map.element.Tile;
 import model.game.board.mat.element.ProgrammingDeck;
 import model.game.board.mat.element.DiscardPile;
 import model.game.board.map.element.Robot;
+import model.game.board.mat.element.RegisterArea;
 import model.game.card.Card;
 
 @Data
@@ -21,14 +19,26 @@ public class Player {
     private ProgrammingDeck deck;
     private DiscardPile discard;
     private ArrayList<Card> progCards;
-    private ArrayList<Tile> achievedCheckPoints;
+    private ArrayList<Tile> obtainedCheckpointTokens;
+    private RegisterArea registerArea;
 
+
+    public Player(String name, Robot robot) {
+        this.name = name;
+        this.robot = robot;
+        this.deck = new ProgrammingDeck(this);
+        this.discard = new DiscardPile(this);
+        this.progCards = new ArrayList<>();
+        this.obtainedCheckpointTokens = new ArrayList<>();
+        this.registerArea = new RegisterArea();
+    }
 
     public Player() {
         this.deck = new ProgrammingDeck(this);
         this.discard = new DiscardPile(this);
         this.progCards = new ArrayList<>();
-        this.achievedCheckPoints = new ArrayList<>();
+        this.obtainedCheckpointTokens = new ArrayList<>();
+        this.registerArea = new RegisterArea();
     }
 
     @Override
@@ -40,12 +50,8 @@ public class Player {
         return false;
     }
 
-    public boolean hasRobot() {
-        return this.robot != null;
-    }
-
     public ArrayList<Card> getProgCards() {
-        this.progCards = deck.getNRandomCards(9);
+        this.progCards = this.deck.getNRandomCards(9);
         return this.progCards;
     }
 
@@ -53,12 +59,12 @@ public class Player {
         return this.discard.getDiscard();
     }
 
-    public boolean tryToAddMark(CheckPoint checkPoint) {
-        int currentOwnedMark = this.achievedCheckPoints.size();
-        if (robot.getPosition().equals(checkPoint.getPosition()) // robot at this checkPoint
-                && checkPoint.getCheckPointNum() == currentOwnedMark + 1 //robot has all the marks before current one
+    public boolean takeToken(CheckPoint checkPoint) {
+        int ownedTokens = this.obtainedCheckpointTokens.size();
+        if (this.robot.getPosition().equals(checkPoint.getPosition()) // robot at this checkPoint
+                && checkPoint.getCheckPointNum() == ownedTokens + 1 //robot has all the marks before current one
         ) {
-            this.achievedCheckPoints.add(checkPoint);
+            this.obtainedCheckpointTokens.add(checkPoint);
             return true;
         } else return false;
     }

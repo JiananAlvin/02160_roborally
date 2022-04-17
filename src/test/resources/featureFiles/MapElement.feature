@@ -2,15 +2,15 @@
 Feature:
   #####################             ANTENNA SCENARIOS       #######################################
   Scenario Outline: The antenna determines the priority
-    Given An antenna and three robots "<robot-name1>", "<robot-name2>" and "<robot-name3>" in a game
-    When RobotI, robotII and robotIII are placed in ("<x1>","<y1>"), ("<x2>","<y2>"),("<x3>","<y3>") respectively.
-    Then The order of these robots is "<result_name1>","<result_name2>","<result_name3>".
+    Given an antenna and three robots "<robot-name1>", "<robot-name2>" and "<robot-name3>" chosen by "<player1>", "<player2>" and "<player3>" respectively
+    When robotI, robotII and robotIII are placed in ("<x1>","<y1>"), ("<x2>","<y2>"),("<x3>","<y3>") respectively
+    Then the priority of these players is "<result_name1>","<result_name2>","<result_name3>"
     Examples: # (0,4) antenna
-      | robot-name1 | robot-name2 | robot-name3 | x1 | y1 | x2 | y2 | x3 | y3 | result_name1 | result_name2 | result_name3 |
-      | SQUASH BOT  | ZOOM BOT    | HAMMER BOT  | 5  | 3  | 7  | 5  | 12 | 4  | SQUASH BOT   | ZOOM BOT     | HAMMER BOT   |
-      | SQUASH BOT  | ZOOM BOT    | HAMMER BOT  | 5  | 3  | 5  | 5  | 12 | 4  | ZOOM BOT     | SQUASH BOT   | HAMMER BOT   |
+      | player1 | player2 | player3 | robot-name1 | robot-name2 | robot-name3 | x1 | y1 | x2 | y2 | x3 | y3 | result_name1 | result_name2 | result_name3 |
+      | Raul    | Simona  | Durdija | SQUASH BOT  | ZOOM BOT    | HAMMER BOT  | 5  | 3  | 7  | 5  | 12 | 4  | Raul         | Simona       | Durdija      |
+      | Wenjie  | Anna    | Ion     | SQUASH BOT  | ZOOM BOT    | HAMMER BOT  | 5  | 3  | 5  | 5  | 12 | 4  | Anna         | Wenjie       | Ion          |
 
-##############           ROBOT SCENARIOS          #######################
+ #####################             ROBOT SCENARIOS          #######################################
   Scenario Outline: A robot gets an initial position
     Given a player chose a robot "<robot-name>"
     When the robot gets an initial position randomly
@@ -79,7 +79,7 @@ Feature:
       | Raul       | 4    | -1   | 3        | 3        | false           |
 
 
-  #this test only have the purpose of mix some of the scenarios, no step definition needed (:
+  # This test only have the purpose of mix some of the scenarios, no step definition needed (:
   Scenario Outline: As a robot I want to move with some cards and check if I'm inside of the board
     Given A robot "<robot_name>" has initial position "<initial_posX>" "<initial_posY>" with orientation "<orientation>"
     And A card with movement "<movement>"
@@ -91,21 +91,20 @@ Feature:
       | Anna       | 2            | 0            | S           | -1       | false           | 5        | 5        |
       | Anna       | 4            | 2            | E           | 3        | false           | 6        | 5        |
 
-  # A robot can put a marker on a check point only when it is at a check point and it has put marks in all previous checkpoints numerically
-  Scenario Outline:  A robot can put a marker on a check point only when it is at a check point and it has put marks in all previous checkpoints numerically
+  # A robot can take a checkpoint token only when it stops on a checkpoint and it has taken checkpoint tokens from all previous checkpoints numerically
+  Scenario Outline: A robot can take a checkpoint token only when it stops on a checkpoint and it has taken checkpoint tokens from all previous checkpoints numerically
     Given there is a game with map "<map_name>"
     And there are players "<playerA>" and "<playerB>" in this game
-    And  this is "<playerA>" turn
-    And this player's robot has moved in this turn
-    And  this player's robot is at the check point <point_number>
-    And  this player's robot has put marks on all numerically previous checkpoints and not put mark on this check point <point_number>
-    When this player's turn ends and the robot stops at check point <point_number>
-    Then this player gets a new mark from this checkpoint successfully and now have <point_number> marks
+    And this is "<playerA>" turn
+    And this player's robot stops on the checkpoint <point_number>
+    And this player's robot taken checkpoint tokens from all previous checkpoints numerically and did not take a checkpoint token from this checkpoint <point_number>
+    When this player's turn ends and the robot stops on this checkpoint <point_number>
+    Then this player gets a checkpoint token from this checkpoint successfully and now has <point_number> checkpoint tokens
     Examples:
       | map_name | playerA | playerB | point_number |
-      | map2     | A       | B       | 2            |
-      | map2     | A       | B       | 3            |
-      | map2     | A       | B       | 1            |
+      | map2     | Jianan  | Wenjie  | 2            |
+      | map2     | Anna    | Raul    | 3            |
+      | map2     | Ion     | Durdija | 1            |
 
   Scenario Outline: Player lands on an Obstacle
     Given A robot "<robot_name>" had "<initial_lives>" lives
@@ -115,33 +114,13 @@ Feature:
     Then The robot now has "<final_lives>" lives
 
     Examples:
-      | robot_name | initial_lives | initial_posX | initial_posY | orientation | obstacle_posX | obstacle_posY | type_of_obstacle| final_lives|
-      | Simona     | 2             | 2            |  2           |  N          |  2            |  2            | wnl               |  1         |
-      | Simona     | 2             | 3            |  2           |  N          |  2            |  2            | wsl               |  2         |
-      | Simona     | 1             | 2            |  2           |  N          |  2            |  2            | wel               |  5         |
-      | Simona     | 3             | 2            |  2           |  S          |  2            |  2            | wwl               |  2         |
-      | Simona     | 4             | 2            |  2           |  S          |  2            |  2            | sg                |  2         |
+      | robot_name | initial_lives | initial_posX | initial_posY | orientation | obstacle_posX | obstacle_posY | type_of_obstacle | final_lives |
+      | Simona     | 2             | 2            | 2            | N           | 2             | 2             | wnl              | 1           |
+      | Simona     | 2             | 3            | 2            | N           | 2             | 2             | wsl              | 2           |
+      | Simona     | 1             | 2            | 2            | N           | 2             | 2             | wel              | 5           |
+      | Simona     | 3             | 2            | 2            | S           | 2             | 2             | wwl              | 2           |
+      | Simona     | 4             | 2            | 2            | S           | 2             | 2             | sg               | 2           |
 
-
-#  Scenario:  The robot fails when it has not put marker in previous check point
-#    Given this is "<player_name>" turn
-#    *  his robot is at the check point "<point_number>"
-#    *  his robot does not put marks on all numerically previous checkpoints
-#    When he wants to put a mark on this checkpoint
-#    Then Fail to put a marker on this checkpoint
-#
-#  Scenario:  The robot fails when it is not at the position of this check point
-#    Given this is "<player_name>" turn
-#    *  his robot is not at the check point "<point_number>"
-#    When he wants to put a mark on this checkpoint
-#    Then A mark is put on this checkpoint unsuccessfully
-#
-#  Scenario:  The robot fails when it has put mark on this check point
-#    Given this is "<player_name>" turn
-#    *  his robot is at the check point "<point_number>"
-#    *  his robot has put mark on this check point
-#    When he wants to put a mark on this checkpoint
-#    Then A mark is put on this checkpoint unsuccessfully
 
 
 

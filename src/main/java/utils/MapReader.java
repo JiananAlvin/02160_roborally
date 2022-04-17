@@ -1,18 +1,12 @@
 package utils;
 
 import gui.view.map.TileType;
-import io.cucumber.java.it.Ma;
-import model.game.board.map.GameMap;
 import model.game.board.map.element.Antenna;
 import model.game.board.map.element.CheckPoint;
 import model.game.board.map.element.Tile;
 
 import java.io.*;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 
 /**
  *
@@ -50,12 +44,12 @@ public class MapReader {
         if ("Antenna".equals(str)) return Antenna.getInstance();
         try {
             if (str.startsWith("CheckPoint")) {
-                Class clz = Class.forName("model.game.board.map.element.CheckPoint");
+                Class<?> clz = Class.forName("model.game.board.map.element.CheckPoint");
                 CheckPoint checkPoint = (CheckPoint) clz.getDeclaredConstructor(Integer.class, Integer.class).newInstance(x, y);
                 checkPoint.setCheckPointNum(Integer.parseInt("" + str.charAt(str.length()-1)));
-                return (Tile) checkPoint;
+                return checkPoint;
             } else {
-                Class clz = Class.forName("model.game.board.map.element." + str);
+                Class<?> clz = Class.forName("model.game.board.map.element." + str);
                 return (Tile) clz.getDeclaredConstructor(Integer.class, Integer.class).newInstance(x, y);
             }
 
