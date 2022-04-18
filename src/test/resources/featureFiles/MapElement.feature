@@ -97,7 +97,7 @@ Feature:
     And there are players "<playerA>" and "<playerB>" in this game
     And this is "<playerA>" turn
     And this player's robot stops on the checkpoint <point_number>
-    And this player's robot taken checkpoint tokens from all previous checkpoints numerically and did not take a checkpoint token from this checkpoint <point_number>
+    And this player's robot has taken checkpoint tokens from all previous checkpoints numerically and did not take a checkpoint token from this checkpoint <point_number>
     When this player's turn ends and the robot stops on this checkpoint <point_number>
     Then this player gets a checkpoint token from this checkpoint successfully and now has <point_number> checkpoint tokens
     Examples:
@@ -105,6 +105,21 @@ Feature:
       | map2     | Jianan  | Wenjie  | 2            |
       | map2     | Anna    | Raul    | 3            |
       | map2     | Ion     | Durdija | 1            |
+
+  Scenario Outline: The game status is checked every time a checkpoint token is taken by a player
+    Given there is a game with map "<map_name>"
+    And there are players "<playerA>" and "<playerB>" in this game
+    And this is "<playerA>" turn
+    And this player's robot stops on the checkpoint <point_number>
+    And this player's robot has taken checkpoint tokens from all previous checkpoints numerically and did not take a checkpoint token from this checkpoint <point_number>
+    And this player's turn ends and the robot stops on this checkpoint <point_number>
+    When this player gets a checkpoint token from this checkpoint successfully and now has <point_number> checkpoint tokens
+    Then this game checks game status and now the game status is "<is_finished>"
+    Examples:
+      | map_name | playerA | playerB | point_number | is_finished |
+      | map2     | Jianan  | Wenjie  | 2            | unfinished  |
+      | map2     | Anna    | Raul    | 3            | finished    |
+      | map2     | Ion     | Durdija | 1            | unfinished  |
 
   Scenario Outline: Player lands on an Obstacle
     Given A robot "<robot_name>" had "<initial_lives>" lives
@@ -120,7 +135,3 @@ Feature:
       | Simona     | 1             | 2            | 2            | N           | 2             | 2             | wel              | 5           |
       | Simona     | 3             | 2            | 2            | S           | 2             | 2             | wwl              | 2           |
       | Simona     | 4             | 2            | 2            | S           | 2             | 2             | sg               | 2           |
-
-
-
-

@@ -121,7 +121,6 @@ public class InitializationStepsDefinition {
 
 
     //------------------------------------------------------------------------------------
-    // TODO: replace "code" with "room_number"
     @When("the player creates a new room and chooses a map {string}")
     public void thePlayerCreatesANewRoomAndChoosesAMap(String mapName) {
         this.room = new Room(mapName);
@@ -160,7 +159,6 @@ public class InitializationStepsDefinition {
         this.response = new RoomController().roomInfo(this.room.getRoomNumber());
         JSONArray users = (JSONArray) this.response.get("users");
         assertEquals(this.user.getName(), users.getString(0));
-        System.out.println(users.get(1).getClass());
     }
 }
 

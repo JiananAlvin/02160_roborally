@@ -18,8 +18,7 @@ import model.game.card.programming.card.*;
 
 import java.io.IOException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class MapElementStepsDefinition {
     private Robot robot;
@@ -224,8 +223,8 @@ public class MapElementStepsDefinition {
         this.game.getCurrentPlayer().getRobot().setPosition(checkPoint.getPosition());
     }
 
-    @And("this player's robot taken checkpoint tokens from all previous checkpoints numerically and did not take a checkpoint token from this checkpoint {int}")
-    public void thisPlayerSRobotTakenCheckpointTokensFromAllPreviousCheckpointsNumericallyAndDidNotTakeACheckpointTokenFromThisCheckpointPoint(int arg0) {
+    @And("this player's robot has taken checkpoint tokens from all previous checkpoints numerically and did not take a checkpoint token from this checkpoint {int}")
+    public void thisPlayerSRobotHasTakenCheckpointTokensFromAllPreviousCheckpointsNumericallyAndDidNotTakeACheckpointTokenFromThisCheckpointPoint(int arg0) {
         int i = 1;
         for (CheckPoint checkPoint : this.game.getGameMap().getCheckPoints()) {
             if (i < arg0)
@@ -245,6 +244,16 @@ public class MapElementStepsDefinition {
         assertEquals(arg0, this.game.getCurrentPlayer().getObtainedCheckpointTokens().size());
     }
 
+    //--------------------------------------------------------------------------------------------
+// Check this game has finished
+    @Then("this game checks game status and now the game status is {string}")
+    public void thisGameChecksGameStatusAndNowTheGameStatusIs(String arg0) {
+        if (this.game.getCurrentPlayer().getObtainedCheckpointTokens().size() == this.game.getGameMap().getCheckPoints().size())
+            this.game.setWinner(this.game.getCurrentPlayer());
+        if (arg0.equals("finished"))
+            assertEquals(this.game.getCurrentPlayer(), this.game.getWinner());
+        else assertNull(this.game.getWinner());
+    }
 
     //--------------------------------------------------------------------------------------------
     @And("The robot has initial position {string} {string} with orientation {string}")
@@ -293,4 +302,6 @@ public class MapElementStepsDefinition {
     public void robotLandsOnAnObstacleStatusIsTrue() {
         this.game.checkCollisionTemporary(this.robot, this.tile);
     }
+
+
 }

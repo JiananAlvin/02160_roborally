@@ -22,7 +22,7 @@ public class Game {
      * @ GameMap gameMap: which map this game is using
      * @ int currentRoundNum: the nth round
      * @ int currentRegisterNum: the nth register runs currently
-     * @ int currentPlayer: whose turn of activation
+     * @ Player currentPlayer: whose turn of activation
      */
     private Player user;
     private ArrayList<Player> participants;
@@ -31,6 +31,7 @@ public class Game {
     private int currentRoundNum;
     private int currentRegisterNum;
     private Player currentPlayer;
+    private Player winner;
 
     public Game() {
         this.participants = new ArrayList<>();
