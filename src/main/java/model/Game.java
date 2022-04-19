@@ -84,17 +84,16 @@ public class Game {
         return order;
     }
 
-
     public void addParticipant(Player p1) {
         this.participants.add(p1);
     }
 
-    public void addParticipantsFromJSONResponseInRoomInfo(JSONObject response) {
-        JSONArray users = (JSONArray) response.get(RoomController.RESPONSE_USERS_IN_ROOM);
+    public void initParticipants(JSONObject roomInfoReponse) {
+        JSONArray users = (JSONArray) roomInfoReponse.get(RoomController.RESPONSE_USERS_IN_ROOM);
         List<Object> userList = users.toList();
         for (Object userName : userList) {
             JSONObject robotInfo = new RobotController().getRobotInfo(userName.toString());
-            this.addParticipant(new Player(userName.toString(), new Robot((String) robotInfo.get(RobotController.RESPONSE_ROBOT_NAME))));
+            this.participants.add(new Player(userName.toString(), new Robot((String) robotInfo.get(RobotController.RESPONSE_ROBOT_NAME))));
         }
     }
 

@@ -21,7 +21,6 @@ import server.controller.robot.RobotController;
 import server.controller.room.RoomController;
 import server.controller.user.UserController;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -182,18 +181,16 @@ public class InitializationStepsDefinition {
 
     //----------------------------------------------------------------------------checked
     @SneakyThrows
-    @Given("a room owner {string} creates a new room with map {string} and chose robot {string}")
-    public void aRoomOwnerCreatesANewRoomWithMapAndChoseRobot(String ownerName, String mapName, String robotName) {
-        this.roomOwner = new Player();
-        this.roomOwner.setName(ownerName);
-        this.roomOwner.setRobot(new Robot(robotName));
+    @Given("a room owner {string} created a new room with map {string} and chose robot {string}")
+    public void aRoomOwnerCreatedANewRoomWithMapAndChoseRobot(String ownerName, String mapName, String robotName) {
+        this.roomOwner = new Player(ownerName, new Robot(robotName));
         assertEquals(200, new UserController().createUser(ownerName).get(ServerConnection.RESPONSE_STATUS));
         assertEquals(200, new UserController().chooseRobot(ownerName, robotName).get(ServerConnection.RESPONSE_STATUS));
-        this.response = new RoomController().createRoom(ownerName, mapName);
-        assertEquals(200, this.response.get(ServerConnection.RESPONSE_STATUS));
+        JSONObject createRoomResponse = new RoomController().createRoom(ownerName, mapName);
+        assertEquals(200, createRoomResponse.get(ServerConnection.RESPONSE_STATUS));
         this.room = new Room(mapName);
-        this.room.setRoomNumber((Integer) this.response.get(RoomController.RESPONSE_ROOM_NUMBER));
         this.game.setGameMap(new GameMap(mapName));
+        this.room.setRoomNumber((Integer) createRoomResponse.get(RoomController.RESPONSE_ROOM_NUMBER));
     }
 
     @And("player1 {string} player2 {string} and player3 {string} chose robot1 {string} robot2 {string} and robot3 {string} respectively")
@@ -214,27 +211,26 @@ public class InitializationStepsDefinition {
         assertEquals(200, new UserController().joinRoom(this.player1.getName(), this.room.getRoomNumber()).get(ServerConnection.RESPONSE_STATUS));
         assertEquals(200, new UserController().joinRoom(this.player2.getName(), this.room.getRoomNumber()).get(ServerConnection.RESPONSE_STATUS));
         assertEquals(200, new UserController().joinRoom(this.player3.getName(), this.room.getRoomNumber()).get(ServerConnection.RESPONSE_STATUS));
-
     }
 
-    @When("the game starts and room owner pulls all information from server")
-    public void theGameStarts() {
+    @When("the room owner starts the game and gets all information from server")
+    public void theRoomOwnerStartsTheGameAndGetsAllInformationFromServer() {
         // the room owner click on the button 'start'
-        JSONObject response = new RoomController().roomInfo(this.room.getRoomNumber());
-        JSONArray users = (JSONArray) response.get(RoomController.RESPONSE_USERS_IN_ROOM);
+        JSONObject roomInfoResponse = new RoomController().roomInfo(this.room.getRoomNumber());
+        JSONArray users = (JSONArray) roomInfoResponse.get(RoomController.RESPONSE_USERS_IN_ROOM);
         List<Object> userList = users.toList();
         assertEquals(4, userList.size());
-        this.game.addParticipantsFromJSONResponseInRoomInfo(response);
+        this.game.initParticipants(roomInfoResponse);
         this.game.startGame();
     }
 
-    @Then("the client of room owner generates all the initial positions and upload them to server")
-    public void theClientOfRoomOwnerWillGenerateAllTheInitialPositionsAndUploadThemToServer() {
+    @Then("the client of room owner generates all the initial positions and puts them to server")
+    public void theClientOfRoomOwnerWillGenerateAllTheInitialPositionsAndPutsThemToServer() {
         for (Player player : this.game.getParticipants()) {
 //            To check every player's robot gets initial position
 //            If the server fails to assign a new position to this robot, the position of this robot is (0,0)
             JSONObject jsonObject = new RobotController().getRobotInfo(player.getName());
-            assertFalse(0 == jsonObject.getInt(RobotController.RESPONSE_ROBOT_X) && 0 == jsonObject.getInt(RobotController.RESPONSE_ROBOT_Y));
+            assertFalse(0 == jsonObject.getInt(RobotController.RESPONSE_ROBOT_XCOORD) && 0 == jsonObject.getInt(RobotController.RESPONSE_ROBOT_YCOORD));
         }
     }
 
@@ -246,9 +242,9 @@ public class InitializationStepsDefinition {
         JSONObject jsonObject1 = new RobotController().getRobotInfo(this.player1.getName());
         JSONObject jsonObject2 = new RobotController().getRobotInfo(this.player2.getName());
         JSONObject jsonObject3 = new RobotController().getRobotInfo(this.player3.getName());
-        assertFalse(0 == jsonObject1.getInt(RobotController.RESPONSE_ROBOT_X) && 0 == jsonObject1.getInt(RobotController.RESPONSE_ROBOT_Y));
-        assertFalse(0 == jsonObject2.getInt(RobotController.RESPONSE_ROBOT_X) && 0 == jsonObject2.getInt(RobotController.RESPONSE_ROBOT_Y));
-        assertFalse(0 == jsonObject3.getInt(RobotController.RESPONSE_ROBOT_X) && 0 == jsonObject3.getInt(RobotController.RESPONSE_ROBOT_Y));
+        assertFalse(0 == jsonObject1.getInt(RobotController.RESPONSE_ROBOT_XCOORD) && 0 == jsonObject1.getInt(RobotController.RESPONSE_ROBOT_YCOORD));
+        assertFalse(0 == jsonObject2.getInt(RobotController.RESPONSE_ROBOT_XCOORD) && 0 == jsonObject2.getInt(RobotController.RESPONSE_ROBOT_YCOORD));
+        assertFalse(0 == jsonObject3.getInt(RobotController.RESPONSE_ROBOT_XCOORD) && 0 == jsonObject3.getInt(RobotController.RESPONSE_ROBOT_YCOORD));
     }
 }
 
