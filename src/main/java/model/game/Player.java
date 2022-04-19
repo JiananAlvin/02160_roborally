@@ -3,6 +3,7 @@ package model.game;
 import java.util.ArrayList;
 
 import lombok.Data;
+import model.Game;
 import model.game.board.map.element.CheckPoint;
 import model.game.board.map.element.Tile;
 import model.game.board.mat.element.ProgrammingDeck;
@@ -16,28 +17,25 @@ public class Player {
 
     private String name;
     private Robot robot;
-    private ProgrammingDeck deck;
-    private DiscardPile discard;
-    private ArrayList<Card> progCards;
     private ArrayList<Tile> obtainedCheckpointTokens;
+    private ProgrammingDeck programmingDeck;
+    private DiscardPile discardPile;
     private RegisterArea registerArea;
 
 
     public Player(String name, Robot robot) {
         this.name = name;
         this.robot = robot;
-        this.deck = new ProgrammingDeck(this);
-        this.discard = new DiscardPile(this);
-        this.progCards = new ArrayList<>();
         this.obtainedCheckpointTokens = new ArrayList<>();
+        this.programmingDeck = new ProgrammingDeck(this);
+        this.discardPile = new DiscardPile(this);
         this.registerArea = new RegisterArea();
     }
 
     public Player() {
-        this.deck = new ProgrammingDeck(this);
-        this.discard = new DiscardPile(this);
-        this.progCards = new ArrayList<>();
         this.obtainedCheckpointTokens = new ArrayList<>();
+        this.programmingDeck = new ProgrammingDeck(this);
+        this.discardPile = new DiscardPile(this);
         this.registerArea = new RegisterArea();
     }
 
@@ -50,15 +48,6 @@ public class Player {
         return false;
     }
 
-    public ArrayList<Card> getProgCards() {
-        this.progCards = this.deck.getNRandomCards(9);
-        return this.progCards;
-    }
-
-    public ArrayList<Card> getDiscard() {
-        return this.discard.getDiscard();
-    }
-
     public boolean takeToken(CheckPoint checkPoint) {
         int ownedTokens = this.obtainedCheckpointTokens.size();
         if (this.robot.getPosition().equals(checkPoint.getPosition()) // robot at this checkPoint
@@ -67,5 +56,48 @@ public class Player {
             this.obtainedCheckpointTokens.add(checkPoint);
             return true;
         } else return false;
+    }
+
+    /**
+     * In each round, A player draws 9 cards from his programming deck. If there are fewer than 9 to draw from, he should take
+     * what is available. Then shuffles the discard pile to replenish his programming deck, and draws until he has nine cards.
+     * @return an arraylist of 9 cards that is 9 cards in the player's hand.
+     */
+    public ArrayList<Card> drawCards() {
+        ArrayList<Card> cardsInHand = new ArrayList<>();
+        if (this.programmingDeck.getCards().size() < ProgrammingDeck.NUMBER_OF_CARDS_DRAWN_IN_EACH_ROUND) {
+            cardsInHand = this.programmingDeck.getCards();
+            this.discardPile.getDiscards().addAll(cardsInHand);
+            this.programmingDeck.getCards().removeAll(this.programmingDeck.getCards());
+            this.replenishProgrammingDeck();
+            ArrayList<Card> complements = (ArrayList<Card>) this.programmingDeck.getCards().subList(0, ProgrammingDeck.NUMBER_OF_CARDS_DRAWN_IN_EACH_ROUND - cardsInHand.size());
+            cardsInHand.addAll(complements);
+            this.discardPile.getDiscards().addAll(cardsInHand);
+            complements.clear();
+        } else {
+            cardsInHand = (ArrayList<Card>) this.programmingDeck.getCards().subList(0, 9);
+            this.discardPile.getDiscards().addAll(cardsInHand);
+            cardsInHand.clear();
+        }
+        return cardsInHand;
+    }
+
+    /**
+     * <p>This method replenishes a player's programming deck with all cards in his discard pile, and then shuffles the
+     * programming deck.
+     */
+    public void replenishProgrammingDeck() {
+        this.programmingDeck.getCards().addAll(this.discardPile.getDiscards());
+        this.discardPile.getDiscards().removeAll(this.discardPile.getDiscards());
+        this.programmingDeck.shuffle(this.programmingDeck.getCards());
+    }
+
+    /**
+     * After a player has placed programming cards in each of the five registers, he should
+     * place the remaining 4 programming cards in his hand in the discard pile.
+     * <p>This method places an arraylist of cards in the player's discard pile.
+     */
+    public void discard(ArrayList<Card> cards) {
+        this.discardPile.getDiscards().addAll(cards);
     }
 }

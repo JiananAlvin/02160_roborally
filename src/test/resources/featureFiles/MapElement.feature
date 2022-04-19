@@ -78,7 +78,6 @@ Feature:
       | Raul       | 1    | 1    | 1        | 1        | true            |
       | Raul       | 4    | -1   | 3        | 3        | false           |
 
-
   # This test only have the purpose of mix some of the scenarios, no step definition needed (:
   Scenario Outline: As a robot I want to move with some cards and check if I'm inside of the board
     Given A robot "<robot_name>" has initial position "<initial_posX>" "<initial_posY>" with orientation "<orientation>"
@@ -106,6 +105,7 @@ Feature:
       | map2     | Anna    | Raul    | 3            |
       | map2     | Ion     | Durdija | 1            |
 
+
   Scenario Outline: The game status is checked every time a checkpoint token is taken by a player
     Given there is a game with map "<map_name>"
     And there are players "<playerA>" and "<playerB>" in this game
@@ -121,13 +121,13 @@ Feature:
       | map2     | Anna    | Raul    | 3            | finished    |
       | map2     | Ion     | Durdija | 1            | unfinished  |
 
+
   Scenario Outline: Player lands on an Obstacle
     Given A robot "<robot_name>" had "<initial_lives>" lives
     And The robot has initial position "<initial_posX>" "<initial_posY>" with orientation "<orientation>"
     And a position "<obstacle_posX>" "<obstacle_posY>" on the map indicating the obstacle of type "<type_of_obstacle>"
     When robot lands on an obstacle status is true
     Then The robot now has "<final_lives>" lives
-
     Examples:
       | robot_name | initial_lives | initial_posX | initial_posY | orientation | obstacle_posX | obstacle_posY | type_of_obstacle | final_lives |
       | Simona     | 2             | 2            | 2            | N           | 2             | 2             | wnl              | 1           |

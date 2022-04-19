@@ -10,6 +10,7 @@ import java.util.UUID;
 public class Room {
 
     private int roomNumber;
+    private String roomOwner;
     private ArrayList<Player> players;
     private String mapName;
 

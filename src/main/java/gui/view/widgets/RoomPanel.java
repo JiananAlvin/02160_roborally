@@ -5,7 +5,7 @@ import server.controller.user.UserController;
 
 import javax.swing.*;
 
-public class RoomPanel<IntField> extends JPanel{
+public class RoomPanel<IntField> extends JPanel {
 
     private final JComboBox<String> jcbMapName;
     private final JTextField roomNumber;
@@ -61,11 +61,11 @@ public class RoomPanel<IntField> extends JPanel{
         });
     }
 
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("RoboRally Group10 v1.0");
-        frame.setSize(880, 400);
-        RoomPanel roomPanel = new RoomPanel("ddd", frame);
-        frame.add(roomPanel);
-        frame.setVisible(true);
-    }
+//    public static void main(String[] args) {
+//        JFrame frame = new JFrame(Application.APP_TITLE);
+//        frame.setSize(880, 400);
+//        RoomPanel roomPanel = new RoomPanel("ddd", frame);
+//        frame.add(roomPanel);
+//        frame.setVisible(true);
+//    }
 }

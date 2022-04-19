@@ -2,7 +2,6 @@ package content;
 
 import gui.view.widgets.CoverPanel;
 import gui.view.widgets.LoginPanel;
-import gui.view.widgets.RoomPanel;
 import lombok.SneakyThrows;
 import model.Game;
 import model.game.Player;
@@ -22,10 +21,11 @@ public class Application {
     private LoginPanel loginPanel;
     private JFrame frame;
     private static Application applicationInstance;
+    public final static String APP_TITLE = "RoboRally Group10 v1.0";
 
     private Application() {
-        // Initialize all the elements in on APP
-        this.frame = new JFrame("RoboRally Group10 v1.0");
+        // Initialize all the elements in an APP
+        this.frame = new JFrame(APP_TITLE);
         this.game = new Game();
         this.user = new Player();
         this.coverPanel = new CoverPanel();

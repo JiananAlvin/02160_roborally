@@ -5,6 +5,9 @@ import server.controller.ServerConnection;
 
 public class RobotController extends ServerConnection {
 
+    public static final String RESPONSE_ROBOT_NAME = "name";
+    public static final String RESPONSE_ROBOT_X = "x";
+    public static final String RESPONSE_ROBOT_Y = "y";
     public JSONObject updatePosition(String username, int x, int y){
         this.setPath("/updateRobotPosition/" + username + "/" + x + "/" + y);
         this.setMethod("PUT");

@@ -12,6 +12,4 @@ import model.game.board.map.element.Robot;
 public abstract class Card {
 
     public abstract void action(Robot robot);
-
-
 }

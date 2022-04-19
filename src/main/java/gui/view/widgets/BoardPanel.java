@@ -59,7 +59,7 @@ public class BoardPanel extends JPanel {
 //
 ////        ControlPanel control = new ControlPanel(board, initialRow, initialColumn, currentDirection);
 //
-//        JFrame f = new JFrame("RoboRally Group10 - v.0.1");
+//        JFrame f = new JFrame(Application.APP_TITLE);
 //        f.setLayout(new FlowLayout(FlowLayout.CENTER));
 //        f.add(board);
 ////        f.add(control);

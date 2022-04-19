@@ -2,19 +2,18 @@ package model.game.board.mat.element;
 
 import java.util.ArrayList;
 
+import lombok.Data;
 import model.game.Player;
 import model.game.card.Card;
 
+@Data
 public class DiscardPile {
 
-	private ArrayList<Card> discard;
-	Player player;
+	private Player player;
+	private ArrayList<Card> discards;
 
 	public DiscardPile(Player player) {
 		this.player = player;
-	}
-
-	public ArrayList<Card> getDiscard() {
-		return this.discard;
+		this.discards = new ArrayList<>();
 	}
 }

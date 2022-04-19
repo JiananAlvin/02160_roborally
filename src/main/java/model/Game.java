@@ -7,10 +7,13 @@ import model.game.board.map.GameMap;
 import model.game.board.map.Position;
 import model.game.board.map.element.*;
 import model.game.Player;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import server.controller.robot.RobotController;
+import server.controller.room.RoomController;
+import server.controller.user.UserController;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.TreeMap;
+import java.util.*;
 
 @Data
 public class Game {
@@ -18,12 +21,13 @@ public class Game {
     /**
      * @ Player user: the user of this application
      * @ ArrayList<Player> participants: the participants in this game
-     * @ Room room: which room this game is based on
-     * @ GameMap gameMap: which map this game is using
-     * @ int currentRoundNum: the nth round
-     * @ int currentRegisterNum: the nth register runs currently
+     * @ Room room: the room for this game
+     * @ GameMap gameMap: the map used in this game
+     * @ int currentRoundNum: the nth round of programming
+     * @ int currentRegisterNum: the nth register that is activated currently
      * @ Player currentPlayer: whose turn of activation
      */
+
     private Player user;
     private ArrayList<Player> participants;
     private Room room;
@@ -37,9 +41,10 @@ public class Game {
         this.participants = new ArrayList<>();
     }
 
+
     /**
-     * @param orderOfPlayers : the sorted arraylist of players according to their robots' distances to antenna
-     * @param registerNum:   it represents the current turn of this activation phase(e.g. 1st register, 2nd register... not the general round)
+     * @param orderOfPlayers the arraylist of players sorted by their robots' distances to antenna
+     * @param registerNum    it represents the register that is activated now (e.g. 1st register, 2nd register... not the general round)
      */
     @SneakyThrows
     public void executeRegisters(int registerNum, ArrayList<Player> orderOfPlayers) {
@@ -47,9 +52,10 @@ public class Game {
             this.currentPlayer = player;
             player.getRobot().applyCard(player.getRegisterArea().getCard(registerNum));
             if (this.gameMap.getTileWithPosition(player.getRobot().getPosition()).getClass().equals(CheckPoint.class))
-                this.takeToken(player, (CheckPoint) this.gameMap.getTileWithPosition(player.getRobot().getPosition()));
+                this.currentPlayer.takeToken((CheckPoint) this.gameMap.getTileWithPosition(player.getRobot().getPosition()));
         }
     }
+
 
     /**
      * In case two robots have the same distance to the antenna. Imagine an invisible line
@@ -78,9 +84,33 @@ public class Game {
         return order;
     }
 
+
     public void addParticipant(Player p1) {
         this.participants.add(p1);
     }
+
+    public void addParticipantsFromJSONResponseInRoomInfo(JSONObject response) {
+        JSONArray users = (JSONArray) response.get(RoomController.RESPONSE_USERS_IN_ROOM);
+        List<Object> userList = users.toList();
+        for (Object userName : userList) {
+            JSONObject robotInfo = new RobotController().getRobotInfo(userName.toString());
+            this.addParticipant(new Player(userName.toString(), new Robot((String) robotInfo.get(RobotController.RESPONSE_ROBOT_NAME))));
+        }
+    }
+
+    /**
+     * if current user is the owner of this room, assign different startpoint to different robot and publish them to server
+     * else if current user is just a participant, pull the information of robot Position
+     */
+    public void startGame() {
+        ArrayList<StartPoint> startPoints = new ArrayList<>(this.gameMap.getStartPoints());
+        for (Player player : this.participants) {
+            StartPoint assignedStartPoint = startPoints.remove(new Random().nextInt(startPoints.size()));
+            player.getRobot().setPosition(assignedStartPoint.getPosition());
+            new RobotController().updatePosition(player.getName(), player.getRobot().getPosition().getXcoord(), player.getRobot().getPosition().getYcoord());
+        }
+    }
+
 
     public void reboot(Robot r1) {
         r1.setLives(5);
@@ -89,27 +119,13 @@ public class Game {
             r1.setPosition(this.gameMap.getARandomRebootPoint().getPosition());
     }
 
+
     public void robotTakeDamage(Robot r, int damage) {
         if (!r.takeDamage(damage)) {
             this.reboot(r);
         }
     }
 
-    public int findPlayerNum(String name) {
-        int i = 0;
-        for (Player player : this.participants) {
-            if (player.getName().equals(name)) return i;
-            i++;
-        }
-        return -1;
-    }
-
-
-    public boolean takeToken(Player player, CheckPoint checkPoint) {
-        if (this.currentPlayer.getName().equals(player.getName())) {
-            return player.takeToken(checkPoint);
-        } else return false;
-    }
 
     // TODO:
     // Prototype about how collisions will work

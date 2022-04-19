@@ -17,7 +17,8 @@ public class MapReader {
      * @ PATH_TO_MAP_FILE: The path to the folder storing maps.txt
      */
     private static final String PATH_TO_MAP_FILE = "src/main/resources/maps/";
-
+    private static final String FULLY_QUALIFIED_NAME_OF_ELEMENT = "model.game.board.map.element.";
+    private static final String FULLY_QUALIFIED_NAME_OF_CHECKPOINT ="model.game.board.map.element.CheckPoint";
     /**
      * @ readLineToStringArray: Read the content of .txt file to a string array.
      * One line of this txt file -> one string element of this arraylist
@@ -44,12 +45,12 @@ public class MapReader {
         if ("Antenna".equals(str)) return Antenna.getInstance();
         try {
             if (str.startsWith("CheckPoint")) {
-                Class<?> clz = Class.forName("model.game.board.map.element.CheckPoint");
+                Class<?> clz = Class.forName(FULLY_QUALIFIED_NAME_OF_CHECKPOINT);
                 CheckPoint checkPoint = (CheckPoint) clz.getDeclaredConstructor(Integer.class, Integer.class).newInstance(x, y);
                 checkPoint.setCheckPointNum(Integer.parseInt("" + str.charAt(str.length()-1)));
                 return checkPoint;
             } else {
-                Class<?> clz = Class.forName("model.game.board.map.element." + str);
+                Class<?> clz = Class.forName(FULLY_QUALIFIED_NAME_OF_ELEMENT + str);
                 return (Tile) clz.getDeclaredConstructor(Integer.class, Integer.class).newInstance(x, y);
             }
 

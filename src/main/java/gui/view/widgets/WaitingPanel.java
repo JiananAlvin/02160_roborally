@@ -117,8 +117,8 @@ public class WaitingPanel extends JPanel {
     }
 
 
-    public static void main(String[] args) {
-//        JFrame frame = new JFrame("RoboRally Group10 v1.0");
+//    public static void main(String[] args) {
+//        JFrame frame = new JFrame(Application.APP_TITLE);
 //        frame.setSize(880, 400);
 //        WaitingPanel waitingPanel = new WaitingPanel("Jianannnnnn", "100", "participant");
 //        frame.add(waitingPanel);
@@ -129,5 +129,5 @@ public class WaitingPanel extends JPanel {
 //        exampleArray.put("Geeks ");
 //        System.out.println(exampleArray.get(1).getClass()); // String
 //        for (Object user : users) {...}
-    }
+//    }
 }

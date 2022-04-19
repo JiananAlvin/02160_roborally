@@ -28,6 +28,8 @@ public abstract class Tile {
     public void setPosition(Position position) {
         this.position = position;
     }
+
+
 }
 
 

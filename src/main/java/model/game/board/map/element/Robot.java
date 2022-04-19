@@ -21,6 +21,13 @@ public class Robot {
         this.position = new Position();
     }
 
+    public Robot(String name, int x, int y) {
+        this.name = name;
+        this.onBoard = false;
+        this.position = new Position(x, y);
+    }
+
+
     public boolean onBoard() {
         return this.onBoard;
     }
@@ -90,9 +97,10 @@ public class Robot {
         return true; // here nothing happens
     }
 
-    public boolean imInsideBoard(int maxX, int maxY){
-        if(this.getPosition().getXcoord() > maxX || this.getPosition().getYcoord() > maxY ){return false;}
-        else return this.getPosition().getXcoord() >= 0 && this.getPosition().getYcoord() >= 0;
+    public boolean imInsideBoard(int maxX, int maxY) {
+        if (this.getPosition().getXcoord() > maxX || this.getPosition().getYcoord() > maxY) {
+            return false;
+        } else return this.getPosition().getXcoord() >= 0 && this.getPosition().getYcoord() >= 0;
     }
 }
 

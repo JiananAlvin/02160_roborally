@@ -14,7 +14,7 @@ import model.game.board.map.Orientation;
 import model.game.board.map.Position;
 import model.game.board.map.element.*;
 import model.game.card.Card;
-import model.game.card.programming.card.*;
+import model.game.card.programming.*;
 
 import java.io.IOException;
 
