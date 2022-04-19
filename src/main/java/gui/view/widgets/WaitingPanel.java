@@ -3,6 +3,7 @@ package gui.view.widgets;
 import lombok.EqualsAndHashCode;
 import model.Room;
 import org.json.JSONArray;
+import org.json.JSONObject;
 import server.controller.robot.RobotController;
 import server.controller.room.RoomController;
 
@@ -74,6 +75,7 @@ public class WaitingPanel extends JPanel {
 
     private void loadParticipantsTable(String roomNumberStr) {
         Timer timer = new Timer(300, new ActionListener() {
+            long timeStamp;
 
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -93,24 +95,30 @@ public class WaitingPanel extends JPanel {
                 RoomController roomController = new RoomController();
                 RobotController robotController = new RobotController();
                 int roomNumber = Integer.parseInt(roomNumberStr);
-                JSONArray users = (JSONArray) roomController.roomInfo(roomNumber).get("users");
-                for (Object user : users) {
-                    if (Objects.equals(user.toString(), roomController.roomInfo(roomNumber).getString("owner"))) {
-                        tableModel.addRow(new Object[]{user.toString(), robotController.getRobotInfo(user.toString()).getString("name"), "owner"});
-                    } else {
-                        tableModel.addRow(new Object[]{user.toString(), robotController.getRobotInfo(user.toString()).getString("name"), "participant"});
+                JSONObject roomInfoResponse = roomController.roomInfo(roomNumber);
+                long timeStampResponse = roomInfoResponse.getLong(RoomController.RESPONSE_REQUEST_TIME);
+                if (timeStampResponse > this.timeStamp) {
+                    // update the stored timeStamp
+                    this.timeStamp = timeStampResponse;
+                    JSONArray users = (JSONArray) roomInfoResponse.get(RoomController.RESPONSE_USERS_IN_ROOM);
+                    for (Object user : users) {
+                        if (Objects.equals(user.toString(), roomController.roomInfo(roomNumber).getString(RoomController.RESPONSE_ROOM_OWNER))) {
+                            tableModel.addRow(new Object[]{user.toString(), robotController.getRobotInfo(user.toString()).getString(RobotController.RESPONSE_ROBOT_NAME), "owner"});
+                        } else {
+                            tableModel.addRow(new Object[]{user.toString(), robotController.getRobotInfo(user.toString()).getString(RobotController.RESPONSE_ROBOT_NAME), "participant"});
+                        }
                     }
+//TODO: Jianan
+                    tabParticipants = new JTable(tableModel);
+                    // centering all columns
+                    centerRenderer = new DefaultTableCellRenderer();
+                    centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+                    tabParticipants.setDefaultRenderer(Object.class, centerRenderer);
+                    // putting the JTable "tabParticipants" inside a JScrollPane to show the TableHeader
+                    scrollPane = new JScrollPane(tabParticipants);
+                    scrollPane.setBounds(100, 78, 680, 142);
+                    add(scrollPane);
                 }
-
-                tabParticipants = new JTable(tableModel);
-                // centering all columns
-                centerRenderer = new DefaultTableCellRenderer();
-                centerRenderer.setHorizontalAlignment( JLabel.CENTER );
-                tabParticipants.setDefaultRenderer(Object.class, centerRenderer);
-                // putting the JTable "tabParticipants" inside a JScrollPane to show the TableHeader
-                scrollPane = new JScrollPane(tabParticipants);
-                scrollPane.setBounds(100, 78, 680, 142);
-                add(scrollPane);
             }
         });
         timer.start();
@@ -129,5 +137,5 @@ public class WaitingPanel extends JPanel {
 //        exampleArray.put("Geeks ");
 //        System.out.println(exampleArray.get(1).getClass()); // String
 //        for (Object user : users) {...}
-//    }
+//    }ze
 }

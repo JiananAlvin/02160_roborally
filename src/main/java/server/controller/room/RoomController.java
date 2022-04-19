@@ -6,6 +6,8 @@ import server.controller.ServerConnection;
 public class RoomController extends ServerConnection {
     public static final String RESPONSE_ROOM_NUMBER = "room_number";
     public static final String RESPONSE_USERS_IN_ROOM = "users";
+    public static final String RESPONSE_ROOM_OWNER = "owner";
+    public static final String RESPONSE_REQUEST_TIME = "requestTime";
 
     public JSONObject createRoom(String owner, String map) {
         this.setPath("/createRoom/" + owner + "/" + map);

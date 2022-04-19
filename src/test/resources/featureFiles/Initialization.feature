@@ -49,22 +49,22 @@ Feature:
       | Raul   | Simona          | BEGINNER |
       | Durjia | Anna            | ADVANCED |
 
-  Scenario Outline: As a room owner, I must generate all the participants' robots' initial positions and upload them to server.
-    Given a room owner "<room_owner_name>" creates a new room with map "<map_name>" and chose robot "<room_owner_robot>"
+  Scenario Outline: As a room owner, I should generate initial positions for each participant's robot and put them to server.
+    Given a room owner "<room_owner_name>" created a new room with map "<map_name>" and chose robot "<room_owner_robot>"
     And player1 "<player1_name>" player2 "<player2_name>" and player3 "<player3_name>" chose robot1 "<player1_robot>" robot2 "<player2_robot>" and robot3 "<player3_robot>" respectively
     And player1 player2 and player3 joint this room
-    When the game starts and room owner pulls all information from server
-    Then the client of room owner generates all the initial positions and upload them to server
+    When the room owner starts the game and gets all information from server
+    Then the client of room owner generates all the initial positions and puts them to server
     Examples:
       | room_owner_name | map_name | room_owner_robot | player1_name | player2_name | player3_name | player1_robot | player2_robot | player3_robot |
       | Wenjie          | STARTER  | SQUASH_BOT       | Jianan       | Ion          | Durjia       | ZOOM_BOT      | HAMMER_BOT    | SPIN_BOT      |
 
-  Scenario Outline: As a participant of a room, I must pull the initial position of my robot from server.
-    Given a room owner "<room_owner_name>" creates a new room with map "<map_name>" and chose robot "<room_owner_robot>"
+  Scenario Outline: As a participant of a room, I should know the initial position of my robot from server.
+    Given a room owner "<room_owner_name>" created a new room with map "<map_name>" and chose robot "<room_owner_robot>"
     And player1 "<player1_name>" player2 "<player2_name>" and player3 "<player3_name>" chose robot1 "<player1_robot>" robot2 "<player2_robot>" and robot3 "<player3_robot>" respectively
     And player1 player2 and player3 joint this room
-    And  the game starts and room owner pulls all information from server
-    When the client of room owner generates all the initial positions and upload them to server
+    And the room owner starts the game and gets all information from server
+    When the client of room owner generates all the initial positions and puts them to server
     Then player1 player2 and player3 successfully get their robot info from server
     Examples:
       | room_owner_name | map_name | room_owner_robot | player1_name | player2_name | player3_name | player1_robot | player2_robot | player3_robot |
