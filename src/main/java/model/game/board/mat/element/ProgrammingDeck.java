@@ -62,7 +62,7 @@ public class ProgrammingDeck {
     }
 
 
-    public static void main(String[] args) {
+//    public static void main(String[] args) {
 //        ProgrammingDeck pd = new ProgrammingDeck(new Player());
 //        for (Card c : pd.getCards()) {
 //            System.out.println(c.getClass().getSimpleName());
@@ -95,5 +95,5 @@ public class ProgrammingDeck {
 //
 //        ArrayList<Card> b = null;
 //        System.out.println(b.size()); //NullPointerException
-    }
+//    }
 }

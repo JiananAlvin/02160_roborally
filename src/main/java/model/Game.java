@@ -27,7 +27,6 @@ public class Game {
      * @ int currentRegisterNum: the nth register that is activated currently
      * @ Player currentPlayer: whose turn of activation
      */
-
     private Player user;
     private ArrayList<Player> participants;
     private Room room;
@@ -40,7 +39,6 @@ public class Game {
     public Game() {
         this.participants = new ArrayList<>();
     }
-
 
     /**
      * @param orderOfPlayers the arraylist of players sorted by their robots' distances to antenna
@@ -55,7 +53,6 @@ public class Game {
                 this.currentPlayer.takeToken((CheckPoint) this.gameMap.getTileWithPosition(player.getRobot().getPosition()));
         }
     }
-
 
     /**
      * In case two robots have the same distance to the antenna. Imagine an invisible line
@@ -84,7 +81,6 @@ public class Game {
         return order;
     }
 
-
     public void addParticipant(Player p1) {
         this.participants.add(p1);
     }
@@ -99,8 +95,8 @@ public class Game {
     }
 
     /**
-     * if current user is the owner of this room, assign different startpoint to different robot and publish them to server
-     * else if current user is just a participant, pull the information of robot Position
+     * If current user is the owner of this room, assign different startpoints to different robots and publish them to server
+     * else if current user is just a participant, pull the information of robot Position.
      */
     public void startGame() {
         ArrayList<StartPoint> startPoints = new ArrayList<>(this.gameMap.getStartPoints());
@@ -111,7 +107,6 @@ public class Game {
         }
     }
 
-
     public void reboot(Robot r1) {
         r1.setLives(5);
         // the gameMap is null, so in order to test our functions is going to remain commented
@@ -119,13 +114,11 @@ public class Game {
             r1.setPosition(this.gameMap.getARandomRebootPoint().getPosition());
     }
 
-
     public void robotTakeDamage(Robot r, int damage) {
         if (!r.takeDamage(damage)) {
             this.reboot(r);
         }
     }
-
 
     // TODO:
     // Prototype about how collisions will work

@@ -30,12 +30,5 @@ Feature:
 #    Then the programming phase is finished with some randome cards
 
 
-#  Scenario Outline: Choose five programming cards and put them into registers in order
-#    Given  a player "<user_name>" is in programming phase
-#    And the cards in card desk are shuffled
-#    And he gets 9 programming cards from card desk
-#    When he chooses five programming cards
-#    Examples:
-#      | user_name |
 
 

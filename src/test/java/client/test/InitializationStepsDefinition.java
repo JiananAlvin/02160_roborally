@@ -84,6 +84,7 @@ public class InitializationStepsDefinition {
         }
     }
 
+
     //------------------------------------------------------------------------------------
     @Given("a player opened the application")
     public void a_player_opened_the_application() {
@@ -180,7 +181,8 @@ public class InitializationStepsDefinition {
         assertEquals(this.user.getName(), users.getString(0));
     }
 
-    //----------------------------------------------------------------------------checked
+
+    //------------------------------------------------------------------------------------
     @SneakyThrows
     @Given("a room owner {string} creates a new room with map {string} and chose robot {string}")
     public void aRoomOwnerCreatesANewRoomWithMapAndChoseRobot(String ownerName, String mapName, String robotName) {
@@ -231,18 +233,18 @@ public class InitializationStepsDefinition {
     @Then("the client of room owner generates all the initial positions and upload them to server")
     public void theClientOfRoomOwnerWillGenerateAllTheInitialPositionsAndUploadThemToServer() {
         for (Player player : this.game.getParticipants()) {
-//            To check every player's robot gets initial position
-//            If the server fails to assign a new position to this robot, the position of this robot is (0,0)
+            // To check every player's robot gets initial position
+            // If the server fails to assign a new position to this robot, the position of this robot is (0,0)
             JSONObject jsonObject = new RobotController().getRobotInfo(player.getName());
             assertFalse(0 == jsonObject.getInt(RobotController.RESPONSE_ROBOT_X) && 0 == jsonObject.getInt(RobotController.RESPONSE_ROBOT_Y));
         }
     }
 
 
-    //    -----------------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------------
     @Then("player1 player2 and player3 successfully get their robot info from server")
     public void player1Player2AndPlayer3SuccessfullyGetTheirRobotInfoFromServer() {
-//        Mock participants are trying to pull information from server
+        // Mock participants are trying to pull information from server
         JSONObject jsonObject1 = new RobotController().getRobotInfo(this.player1.getName());
         JSONObject jsonObject2 = new RobotController().getRobotInfo(this.player2.getName());
         JSONObject jsonObject3 = new RobotController().getRobotInfo(this.player3.getName());
