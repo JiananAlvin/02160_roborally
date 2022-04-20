@@ -170,9 +170,11 @@ public class Game {
         Position pos = r.getPosition();
         Collision collision = new Collision();
         if (tile.getPosition().equals(r.getPosition())) {
-            if (collision.checkCollision(tile) == 1) { //laser/gear case
-                // WallNorthLaser laser = (WallNorthLaser) tile ;
+           int collisionNumber = (collision.checkCollision(tile));
+            switch (collisionNumber) {
+                case 1: //laser, static gear
                 robotTakeDamage(r, ((Obstacle) tile).getDamage());
+                break;
             }
         }
     }

@@ -12,6 +12,7 @@ public class Collision {
     //receiving as a parameter a robot and a position, we will return the collision between the robot and tiles in that position
     public int checkCollision(Tile tile){
 
+
         if(tile instanceof Obstacle){
             return 1;
         }
