@@ -29,7 +29,6 @@ public enum TileType {
     }
 
     public String getPictureFile() {
-        System.out.println("pictureFile:" + pictureFile);
         return pictureFile;
     }
 }

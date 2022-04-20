@@ -17,9 +17,10 @@ import gui.view.map.TileType;
 
 public class TilePanel extends JPanel {
 
-    public static final int PIXEL_SIZE = 66;
+    public static final int PIXEL_SIZE = 50;
 
     private static final long serialVersionUID = 8749974136051364514L;
+
     private TileType type;
     private BufferedImage image;
     //    private BufferedImage imageRobot;

@@ -140,11 +140,13 @@ public class InitializationStepsDefinition {
 
 
     //------------------------------------------------------------------------------------
+    @SneakyThrows
     @When("the player creates a new room and chooses a map {string}")
     public void thePlayerCreatesANewRoomAndChoosesAMap(String mapName) {
-        this.room = new Room(mapName);
+        this.room = new Room();
         this.game.setRoom(this.room);
-        assertEquals(mapName, this.game.getRoom().getMapName());
+        this.game.setGameMap(new GameMap(mapName));
+        assertEquals(mapName, this.game.getGameMap().getMapName());
         this.response = new RoomController().createRoom(this.user.getName(), mapName);
         this.game.getRoom().setRoomNumber((Integer) response.get(RoomController.RESPONSE_ROOM_NUMBER));
     }
@@ -164,7 +166,7 @@ public class InitializationStepsDefinition {
         this.roomOwner.setName(string);
         this.response = new RoomController().createRoom(string, string2);
         assertEquals(200, this.response.get(ServerConnection.RESPONSE_STATUS));
-        this.room = new Room(string2);
+        this.room = new Room();
         this.room.setRoomNumber((Integer) this.response.get(RoomController.RESPONSE_ROOM_NUMBER));
     }
 
@@ -190,7 +192,7 @@ public class InitializationStepsDefinition {
         assertEquals(200, new UserController().chooseRobot(ownerName, robotName).get(ServerConnection.RESPONSE_STATUS));
         JSONObject createRoomResponse = new RoomController().createRoom(ownerName, mapName);
         assertEquals(200, createRoomResponse.get(ServerConnection.RESPONSE_STATUS));
-        this.room = new Room(mapName);
+        this.room = new Room();
         this.game.setGameMap(new GameMap(mapName));
         this.room.setRoomNumber((Integer) createRoomResponse.get(RoomController.RESPONSE_ROOM_NUMBER));
     }
@@ -223,7 +225,7 @@ public class InitializationStepsDefinition {
         List<Object> userList = users.toList();
         assertEquals(4, userList.size());
         this.game.initParticipants(roomInfoResponse);
-        this.game.startGame();
+        this.game.generateRandomPositionsForAllParticipants();
     }
 
     @Then("the client of room owner generates all the initial positions and puts them to server")

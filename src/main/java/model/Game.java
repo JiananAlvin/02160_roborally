@@ -16,8 +16,8 @@ import server.controller.user.UserController;
 import java.util.*;
 
 @Data
-public class Game {
 
+public class Game {
     /**
      * @ Player user: the user of this application
      * @ ArrayList<Player> participants: the participants in this game
@@ -39,6 +39,16 @@ public class Game {
     public Game() {
         this.participants = new ArrayList<>();
     }
+
+    public void init(Room room, Player user, GameMap gameMap) {
+        this.room = room;
+        this.user = user;
+        this.gameMap = gameMap;
+        JSONObject roomInfoResponse = new RoomController().roomInfo(room.getRoomNumber());
+        this.initParticipants(roomInfoResponse);
+        this.generateRandomPositionsForAllParticipants();
+    }
+
 
     /**
      * @param orderOfPlayers the arraylist of players sorted by their robots' distances to antenna
@@ -81,10 +91,24 @@ public class Game {
         return order;
     }
 
+    /**
+     * This method is used to add a new player p1 to the participants in this game.
+     * In the real game process, this method would not be used because there is another method called `initParticipants` in this class.
+     *
+     * @param p1 the player you want to add to participants.
+     */
     public void addParticipant(Player p1) {
         this.participants.add(p1);
     }
 
+    /**
+     * This method creates new players according to the information in
+     * JSONObject(Response of GET:/RoomInfo/[room_number]) and add them to participants
+     *
+     * @param roomInfoReponse the response from GET:/RoomInfo/[room_number].
+     *                        It must be in JSON format data.
+     *                        Its status should be 200. Otherwise there is not values for 'users'.
+     */
     public void initParticipants(JSONObject roomInfoReponse) {
         JSONArray users = (JSONArray) roomInfoReponse.get(RoomController.RESPONSE_USERS_IN_ROOM);
         List<Object> userList = users.toList();
@@ -95,10 +119,10 @@ public class Game {
     }
 
     /**
-     * If current user is the owner of this room, assign different startpoints to different robots and publish them to server
-     * else if current user is just a participant, pull the information of robot Position.
+     * This method is called only when the user is the room owner.
+     * Only the room owner has the privilege to assign random positions for all robots.
      */
-    public void startGame() {
+    public void generateRandomPositionsForAllParticipants() {
         ArrayList<StartPoint> startPoints = new ArrayList<>(this.gameMap.getStartPoints());
         for (Player player : this.participants) {
             StartPoint assignedStartPoint = startPoints.remove(new Random().nextInt(startPoints.size()));
