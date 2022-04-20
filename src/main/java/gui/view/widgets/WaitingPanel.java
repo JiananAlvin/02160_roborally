@@ -132,6 +132,7 @@ public class WaitingPanel extends JPanel {
                             frame.setVisible(true);
                         }
                     });
+                    ((Timer) e.getSource()).stop();
                     return;
                 }
                 long timeStampResponse = roomInfoResponse.getLong(RoomController.RESPONSE_REQUEST_TIME);

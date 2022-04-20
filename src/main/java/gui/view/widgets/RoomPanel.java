@@ -19,6 +19,8 @@ public class RoomPanel<IntField> extends JPanel {
         JLabel lblRoomNumber = new JLabel("Room number");
         this.roomNumber = new JTextField();
         JToggleButton btJoinRoom = new JToggleButton("Join room");
+        JToggleButton btQuit = new JToggleButton("Quit");
+
         this.setLayout(null);
         lblMapName.setBounds(200, 50, 70, 20);
         this.jcbMapName.setBounds(200, 78, 190, 28);
@@ -26,12 +28,14 @@ public class RoomPanel<IntField> extends JPanel {
         lblRoomNumber.setBounds(200, 200, 100, 20);
         this.roomNumber.setBounds(200, 228, 190, 28);
         btJoinRoom.setBounds(450, 228, 150, 30);
+        btQuit.setBounds(450, 153, 150, 30);
         this.add(lblMapName);
         this.add(this.jcbMapName);
         this.add(btCreateRoom);
         this.add(lblRoomNumber);
         this.add(this.roomNumber);
         this.add(btJoinRoom);
+        this.add(btQuit);
 
         // Add listeners for "Create room" and "Join room" buttons
         btCreateRoom.addActionListener(e -> {
@@ -64,6 +68,10 @@ public class RoomPanel<IntField> extends JPanel {
             } else if (userController.getResponse().get("status").equals(400)) {
                 JOptionPane.showMessageDialog(frame, "Room does not exist.", "Error", JOptionPane.ERROR_MESSAGE);
             }
+        });
+
+        btQuit.addActionListener(e -> {
+            frame.dispose();
         });
     }
 

@@ -83,8 +83,10 @@ public class LoginPanel extends JPanel {
             userController.createUser(userName.getText());
             if (userController.getResponse().get("status").equals(200)) {
                 if (lblChosenRobot.getText().equals("")) {
-                    JOptionPane.showMessageDialog(null, "Please choose a robot");
-                    userController.deleteUser(userName.getText());
+                    SwingUtilities.invokeLater(() -> {
+                        JOptionPane.showMessageDialog(null, "Please choose a robot", "Error", JOptionPane.ERROR_MESSAGE);
+                        userController.deleteUser(userName.getText());
+                    });
                 } else {
                     userController.chooseRobot(userName.getText(), lblChosenRobot.getText().replace(' ', '_'));
                     frame.getContentPane().removeAll();
@@ -92,7 +94,9 @@ public class LoginPanel extends JPanel {
                     frame.setVisible(true);
                 }
             } else {
-                JOptionPane.showMessageDialog(null, "Username already exists");
+                SwingUtilities.invokeLater(() -> {
+                    JOptionPane.showMessageDialog(null, "Username already exists", "Error", JOptionPane.ERROR_MESSAGE);
+                });
             }
         });
 
