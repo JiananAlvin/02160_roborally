@@ -1,5 +1,6 @@
 package model;
 
+import content.RobotName;
 import lombok.Data;
 import lombok.SneakyThrows;
 import model.game.board.map.Collision;
@@ -120,7 +121,7 @@ public class Game {
         List<Object> userList = users.toList();
         for (Object userName : userList) {
             JSONObject robotInfo = new RobotController().getRobotInfo(userName.toString());
-            this.participants.add(new Player(userName.toString(), new Robot((String) robotInfo.get(RobotController.RESPONSE_ROBOT_NAME))));
+            this.participants.add(new Player(userName.toString(), new Robot(RobotName.valueOf((String) robotInfo.get(RobotController.RESPONSE_ROBOT_NAME)))));
         }
     }
 

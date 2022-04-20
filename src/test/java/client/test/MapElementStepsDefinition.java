@@ -37,7 +37,7 @@ public class MapElementStepsDefinition {
     //--------------------------------------------------------------------------------------------
     @Given("a player chose a robot {string}")
     public void aPlayerChoseARobot(String arg0) {
-        this.robot = new Robot(arg0);
+        this.robot = new Robot(RobotName.valueOf(arg0));
     }
 
     @When("the robot gets an initial position randomly")
@@ -87,7 +87,7 @@ public class MapElementStepsDefinition {
     //--------------------------------------------------------------------------------------------
     @Given("A robot {string} had {string} lives")
     public void aRobotHasLives(String arg0, String arg1) {
-        this.robot = new Robot(arg0);
+        this.robot = new Robot(RobotName.valueOf(arg0));
         this.robot.setLives(Integer.parseInt(arg1));
     }
 
@@ -106,7 +106,7 @@ public class MapElementStepsDefinition {
 
     @Given("A robot {string} has initial position {string} {string} with orientation {string}")
     public void aRobotHasInitialPositionWithOrientation(String robotName, String xPos, String yPos, String orientation) {
-        this.robot = new Robot(robotName);
+        this.robot = new Robot(RobotName.valueOf(robotName));
         this.robot.setPosition(Integer.parseInt(xPos), Integer.parseInt(yPos));
         Orientation o = Orientation.N;
         switch (orientation) {
@@ -158,7 +158,7 @@ public class MapElementStepsDefinition {
 
     @Given("A robot {string} has position {string} {string}")
     public void aRobotHasPosition(String robotName, String xPos, String yPos) {
-        this.robot = new Robot(robotName);
+        this.robot = new Robot(RobotName.valueOf(robotName));
         this.robot.setPosition(Integer.parseInt(xPos), Integer.parseInt(yPos));
     }
 
@@ -172,9 +172,9 @@ public class MapElementStepsDefinition {
     //--------------------------------------------------------------------------------------------
     @Given("an antenna and three robots {string}, {string} and {string} chosen by {string}, {string} and {string} respectively")
     public void anAntennaAndThreeRobotsAndChosenByAndRespectively(String arg0, String arg1, String arg2, String arg3, String arg4, String arg5) {
-        this.p1 = new Player(arg3, new Robot(arg0));
-        this.p2 = new Player(arg4, new Robot(arg1));
-        this.p3 = new Player(arg5, new Robot(arg2));
+        this.p1 = new Player(arg3, new Robot(RobotName.valueOf(arg0)));
+        this.p2 = new Player(arg4, new Robot(RobotName.valueOf(arg1)));
+        this.p3 = new Player(arg5, new Robot(RobotName.valueOf(arg2)));
         this.game.addParticipant(p1);
         this.game.addParticipant(p2);
         this.game.addParticipant(p3);
@@ -199,13 +199,13 @@ public class MapElementStepsDefinition {
     @Given("there is a game with map {string}")
     public void thereIsAGameWithMap(String arg0) throws IOException {
         this.game = new Game();
-        this.game.setGameMap(new GameMap(arg0));
+        this.game.setGameMap(new GameMap(MapName.valueOf(arg0)));
     }
 
     @And("there are players {string} and {string} in this game")
     public void thereArePlayersAndInThisGame(String arg0, String arg1) {
-        Player player1 = new Player(arg0, new Robot("SQUASH BOT"));
-        Player player2 = new Player(arg1, new Robot("ZOOM BOT"));
+        Player player1 = new Player(arg0, new Robot(RobotName.SQUASH_BOT));
+        Player player2 = new Player(arg1, new Robot(RobotName.ZOOM_BOT));
         this.game.addParticipant(player1);
         this.game.addParticipant(player2);
     }

@@ -1,5 +1,6 @@
 package client.test;
 
+import content.RobotName;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -25,7 +26,7 @@ public class InteractionStepsDefinition {
 
     @Before
     public void init() {
-        this.p1 = new Player("group10", new Robot("HULK X90"));
+        this.p1 = new Player("group10", new Robot(RobotName.HULK_X90));
     }
 
     @Given("a player had {string} cards in his programming deck")

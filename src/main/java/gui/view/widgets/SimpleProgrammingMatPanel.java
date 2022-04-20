@@ -1,5 +1,6 @@
 package gui.view.widgets;
 
+import content.RobotName;
 import model.game.Player;
 import model.game.board.map.element.Robot;
 import model.game.board.mat.element.RegisterArea;
@@ -67,7 +68,7 @@ public class SimpleProgrammingMatPanel extends JPanel {
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.setSize(frame.getPreferredSize());
                 //Set up the content pane.
-                frame.add(new SimpleProgrammingMatPanel(new Player("Wenjie", new Robot("TRUNDLE_BOT"))));
+                frame.add(new SimpleProgrammingMatPanel(new Player("Wenjie", new Robot(RobotName.TRUNDLE_BOT))));
 
                 //Display the window.
                 frame.pack();
