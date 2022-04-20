@@ -6,6 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import server.controller.robot.RobotController;
 import server.controller.room.RoomController;
+import server.controller.user.UserController;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -14,6 +15,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Objects;
+
+import static java.lang.Integer.parseInt;
 
 public class WaitingPanel extends JPanel {
 
@@ -25,8 +28,10 @@ public class WaitingPanel extends JPanel {
     private JToggleButton btStart;
     private JToggleButton btQuit;
     private JLabel lblTip;
+    private Timer timer;
 
-    public WaitingPanel(String roomNumberStr, String signal, JFrame frame) {
+
+    public WaitingPanel(String roomNumberStr, String signal, JFrame frame, String userName) {
         if (Objects.equals(signal, "owner")) {
             this.lblRoomNumber = new JLabel("Room Number: " + roomNumberStr);
             this.lblRoomNumber.setFont(new Font("Calibri", Font.BOLD, 20));
@@ -35,7 +40,7 @@ public class WaitingPanel extends JPanel {
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
-                    loadParticipantsTable(roomNumberStr);
+                    loadParticipantsTable(roomNumberStr, frame, userName);
                 }
             });
             this.setLayout(null);
@@ -46,12 +51,22 @@ public class WaitingPanel extends JPanel {
             this.add(this.btStart);
             this.add(this.btQuit);
 
+            this.btQuit.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent arg0) {
+                    // delete room and return to the RoomPanel
+                    RoomController roomController = new RoomController();
+                    roomController.deleteRoom(parseInt(roomNumberStr));
+                }
+            });
+
             this.btStart.addActionListener(new ActionListener() {
 
                 @Override
                 public void actionPerformed(ActionEvent arg0) {
-                    frame.dispose();
+
                 }
+
             });
 
         } else {
@@ -60,7 +75,7 @@ public class WaitingPanel extends JPanel {
             this.btQuit = new JToggleButton("Quit");
             this.lblTip = new JLabel("Please wait for the owner to start the game.");
             this.lblTip.setFont(new Font("Calibri", Font.PLAIN, 15));
-            this.loadParticipantsTable(roomNumberStr);
+            this.loadParticipantsTable(roomNumberStr, frame, userName);
             this.setLayout(null);
             this.lblRoomNumber.setBounds(100, 28, 780, 20);
             this.btQuit.setBounds(100, 270, 80, 30);
@@ -68,13 +83,26 @@ public class WaitingPanel extends JPanel {
             this.add(this.lblRoomNumber);
             this.add(this.btQuit);
             this.add(this.lblTip);
+
+            this.btQuit.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent arg0) {
+                    // exit room and return to the RoomPanel
+                    UserController userController = new UserController();
+                    userController.exitRoom(userName);
+                    frame.getContentPane().removeAll();
+                    frame.getContentPane().add(new RoomPanel(userName, frame));
+                    frame.setVisible(true);
+                }
+            });
         }
 
     }
 
 
-    private void loadParticipantsTable(String roomNumberStr) {
-        Timer timer = new Timer(300, new ActionListener() {
+    private void loadParticipantsTable(String roomNumberStr, JFrame frame, String userName) {
+
+        timer = new Timer(300, new ActionListener() {
             long timeStamp;
 
             @Override
@@ -94,8 +122,20 @@ public class WaitingPanel extends JPanel {
                 // updating the table of participants
                 RoomController roomController = new RoomController();
                 RobotController robotController = new RobotController();
-                int roomNumber = Integer.parseInt(roomNumberStr);
+                int roomNumber = parseInt(roomNumberStr);
                 JSONObject roomInfoResponse = roomController.roomInfo(roomNumber);
+                if (roomInfoResponse.get("status").equals(404)) {
+
+                    SwingUtilities.invokeLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            frame.getContentPane().removeAll();
+                            frame.getContentPane().add(new RoomPanel(userName, frame));
+                            frame.setVisible(true);
+                        }
+                    });
+                    return;
+                }
                 long timeStampResponse = roomInfoResponse.getLong(RoomController.RESPONSE_REQUEST_TIME);
                 if (timeStampResponse > this.timeStamp) {
                     // update the stored timeStamp

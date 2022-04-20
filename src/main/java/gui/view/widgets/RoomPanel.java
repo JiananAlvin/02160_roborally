@@ -1,5 +1,6 @@
 package gui.view.widgets;
 
+import org.json.JSONObject;
 import server.controller.room.RoomController;
 import server.controller.user.UserController;
 
@@ -17,21 +18,20 @@ public class RoomPanel<IntField> extends JPanel {
         JToggleButton btCreateRoom = new JToggleButton("Create room");
         JLabel lblRoomNumber = new JLabel("Room number");
         this.roomNumber = new JTextField();
-        JToggleButton btJionRoom = new JToggleButton("Join room");
-
+        JToggleButton btJoinRoom = new JToggleButton("Join room");
         this.setLayout(null);
         lblMapName.setBounds(200, 50, 70, 20);
         this.jcbMapName.setBounds(200, 78, 190, 28);
         btCreateRoom.setBounds(450, 78, 150, 30);
         lblRoomNumber.setBounds(200, 200, 100, 20);
         this.roomNumber.setBounds(200, 228, 190, 28);
-        btJionRoom.setBounds(450, 228, 150, 30);
+        btJoinRoom.setBounds(450, 228, 150, 30);
         this.add(lblMapName);
         this.add(this.jcbMapName);
         this.add(btCreateRoom);
         this.add(lblRoomNumber);
         this.add(this.roomNumber);
-        this.add(btJionRoom);
+        this.add(btJoinRoom);
 
         // Add listeners for "Create room" and "Join room" buttons
         btCreateRoom.addActionListener(e -> {
@@ -40,14 +40,16 @@ public class RoomPanel<IntField> extends JPanel {
              creating a room for the user through API
              */
             RoomController roomController = new RoomController();
-            String roomNumberStr = roomController.createRoom(userName, this.jcbMapName.getSelectedItem().toString()).get("room_number").toString();
-            System.out.println(roomNumberStr);
+            JSONObject response =  roomController.createRoom(userName, this.jcbMapName.getSelectedItem().toString());
+            System.out.println(response);
+            String roomNumberStr =response.get("room_number").toString();
+
             frame.getContentPane().removeAll();
-            frame.getContentPane().add(new WaitingPanel(roomNumberStr, "owner", frame));
+            frame.getContentPane().add(new WaitingPanel(roomNumberStr, "owner", frame,userName));
             frame.setVisible(true);
         });
 
-        btJionRoom.addActionListener(e -> {
+        btJoinRoom.addActionListener(e -> {
             /*
             fetching the room number when the "Join room" button is pressed
             inserting the player info into the room through API
@@ -55,9 +57,13 @@ public class RoomPanel<IntField> extends JPanel {
             UserController userController = new UserController();
             String roomNumberStr = this.roomNumber.getText();
             userController.joinRoom(userName, Integer.parseInt(roomNumberStr));
-            frame.getContentPane().removeAll();
-            frame.getContentPane().add(new WaitingPanel(roomNumberStr, "participant", frame));
-            frame.setVisible(true);
+            if (userController.getResponse().get("status").equals(200)) {
+                frame.getContentPane().removeAll();
+                frame.getContentPane().add(new WaitingPanel(roomNumberStr, "participant", frame,userName));
+                frame.setVisible(true);
+            } else if (userController.getResponse().get("status").equals(400)) {
+                JOptionPane.showMessageDialog(frame, "Room does not exist.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
         });
     }
 
