@@ -1,24 +1,16 @@
 package client.test;
 
-import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import lombok.SneakyThrows;
-import model.Game;
-import model.Room;
 import model.game.Player;
 import model.game.board.map.element.Robot;
 import model.game.board.mat.element.ProgrammingDeck;
 import model.game.board.mat.element.RegisterArea;
 import model.game.card.Card;
-import org.json.JSONObject;
-import org.junit.Assert;
-import server.controller.robot.RobotController;
-import server.controller.room.RoomController;
-import server.controller.user.UserController;
 
 import java.util.ArrayList;
 import java.util.Random;

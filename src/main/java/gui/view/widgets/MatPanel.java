@@ -1,2 +1,15 @@
-package gui.view.widgets;public class MatPanel {
+package gui.view.widgets;
+
+import model.game.Player;
+import model.game.board.map.element.Robot;
+
+import javax.swing.*;
+
+public class MatPanel extends JPanel {
+    private Player user;
+
+    public MatPanel(String userName, String robotName) {
+        this.user = new Player(userName, new Robot(robotName));
+    }
+
 }

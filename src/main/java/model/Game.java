@@ -9,9 +9,8 @@ import model.game.board.map.element.*;
 import model.game.Player;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import server.controller.robot.RobotController;
-import server.controller.room.RoomController;
-import server.controller.user.UserController;
+import server.controller.RobotController;
+import server.controller.RoomController;
 
 import java.util.*;
 
@@ -40,6 +39,13 @@ public class Game {
         this.participants = new ArrayList<>();
     }
 
+    /**
+     * this method is used to init the whole game when the game starts.
+     * For the room owner, the game starts only when
+     * @param room
+     * @param user
+     * @param gameMap
+     */
     public void init(Room room, Player user, GameMap gameMap) {
         this.room = room;
         this.user = user;

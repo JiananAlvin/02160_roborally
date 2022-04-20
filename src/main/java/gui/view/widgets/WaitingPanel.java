@@ -1,11 +1,9 @@
 package gui.view.widgets;
 
-import lombok.EqualsAndHashCode;
-import model.Room;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import server.controller.robot.RobotController;
-import server.controller.room.RoomController;
+import server.controller.RobotController;
+import server.controller.RoomController;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;

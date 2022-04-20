@@ -1,7 +1,7 @@
 package gui.view.widgets;
 
-import server.controller.room.RoomController;
-import server.controller.user.UserController;
+import server.controller.RoomController;
+import server.controller.UserController;
 
 import javax.swing.*;
 

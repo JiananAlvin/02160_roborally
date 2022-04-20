@@ -1,7 +1,7 @@
 package server.controller;
 
+import model.Game;
 import org.json.JSONObject;
-import server.controller.ServerConnection;
 
 /**
  * This class is used to connect to server and try to fetch and update data stored in collection "ProgrammingRecord"
@@ -17,18 +17,31 @@ public class ProgrammingRecordController extends ServerConnection {
     public static final String RESPONSE_REGISTER4 = "register4";
     public static final String RESPONSE_REGISTER5 = "register5";
 
-    public JSONObject getProgrammingRecords(String roomNumber, int round) {
-        this.setPath("/getProgrammingRecords/" + roomNumber + "/" + round );
+    public JSONObject getProgrammingRecords(int roomNumber, int round) {
+        this.setPath("/getProgrammingRecords/" + roomNumber + "/" + round);
         this.setMethod("GET");
         this.connect();
         return this.getResponse();
     }
 
-    public JSONObject createProgrammingRecord(String roomNumber, int round) {
-        this.setPath("/getProgrammingRecords");
-        this.setMethod("POST");
-        this.connect();
+    public JSONObject createProgrammingRecord(String userName, int roomNumber, int round, String register1, String register2, String register3, String register4, String register5) {
+        this.setPath("/createProgrammingRecord");
+        JSONObject body = new JSONObject();
+        body.put("username", userName);
+        body.put("roomNumber", roomNumber+"");
+        body.put("round", round+"");
+        body.put("register1", register1);
+        body.put("register2", register2);
+        body.put("register3", register3);
+        body.put("register4", register4);
+        body.put("register5", register5);
+        this.postRequestWithBody(body);
         return this.getResponse();
+    }
+
+    public static void main(String[] args) {
+        System.out.println(new ProgrammingRecordController().getProgrammingRecords(100, 1));
+        System.out.println(new ProgrammingRecordController().createProgrammingRecord("ion", 100, 2, "Move1", "Move1", "Move1", "Move1", "Move1"));
     }
 
 }

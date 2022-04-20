@@ -1,7 +1,6 @@
 package gui.view.widgets;
 
-import content.Application;
-import server.controller.user.UserController;
+import server.controller.UserController;
 
 import javax.swing.*;
 import java.awt.*;
