@@ -131,6 +131,7 @@ public class Game {
         }
     }
 
+
     public void reboot(Robot r1) {
         r1.setLives(5);
         // the gameMap is null, so in order to test our functions is going to remain commented
@@ -173,11 +174,14 @@ public class Game {
            int collisionNumber = (collision.checkCollision(tile));
             switch (collisionNumber) {
                 case 1: //laser, static gear
-                robotTakeDamage(r, ((Obstacle) tile).getDamage());
-                break;
+                    robotTakeDamage(r, ((Obstacle) tile).getDamage());
+                    break;
+                case 3:
+                   // this.currentPlayer.resetCheckpoints();
+                    this.reboot(r);
+                    break;
             }
         }
     }
-
 
 }

@@ -282,20 +282,11 @@ public class MapElementStepsDefinition {
     @And("a position {string} {string} on the map indicating the obstacle of type {string}")
     public void aPositionOnTheMapIndicatingTheObstacle(String xPos, String yPos, String type) {
         switch (type) {
-            case "wnl":
-                this.tile = new WallNorthLaser(Integer.parseInt(xPos), Integer.parseInt(yPos));
+            case "laser":
+                this.tile = new Laser(Integer.parseInt(xPos), Integer.parseInt(yPos));
                 break;
-            case "wsl":
-                this.tile = new WallSouthLaser(Integer.parseInt(xPos), Integer.parseInt(yPos));
-                break;
-            case "wel":
-                this.tile = new WallEastLaser(Integer.parseInt(xPos), Integer.parseInt(yPos));
-                break;
-            case "wwl":
-                this.tile = new WallWestLaser(Integer.parseInt(xPos), Integer.parseInt(yPos));
-                break;
-            case "sg":
-                this.tile = new StaticGear(Integer.parseInt(xPos), Integer.parseInt(yPos));
+            case "pit":
+                this.tile = new Pit(Integer.parseInt(xPos), Integer.parseInt(yPos));
                 break;
         }
     }

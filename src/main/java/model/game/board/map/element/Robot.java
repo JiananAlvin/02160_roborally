@@ -102,6 +102,7 @@ public class Robot {
             return false;
         } else return this.getPosition().getXcoord() >= 0 && this.getPosition().getYcoord() >= 0;
     }
+
 }
 
 

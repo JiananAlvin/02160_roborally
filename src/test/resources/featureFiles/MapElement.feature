@@ -130,8 +130,6 @@ Feature:
     Then The robot now has "<final_lives>" lives
     Examples:
       | robot_name | initial_lives | initial_posX | initial_posY | orientation | obstacle_posX | obstacle_posY | type_of_obstacle | final_lives |
-      | Simona     | 2             | 2            | 2            | N           | 2             | 2             | wnl              | 1           |
-      | Simona     | 2             | 3            | 2            | N           | 2             | 2             | wsl              | 2           |
-      | Simona     | 1             | 2            | 2            | N           | 2             | 2             | wel              | 5           |
-      | Simona     | 3             | 2            | 2            | S           | 2             | 2             | wwl              | 2           |
-      | Simona     | 4             | 2            | 2            | S           | 2             | 2             | sg               | 2           |
+      | Simona     | 2             | 2            | 2            | N           | 2             | 2             | laser            | 1           |
+      | Simona     | 4             | 2            | 2            | S           | 2             | 2             | pit              | 5           |
+

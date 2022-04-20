@@ -6,7 +6,6 @@ public class Position {
     private int ycoord;
 
     public Position() {
-
     }
 
     public Position(int xcoord, int ycoord) {
