@@ -3,15 +3,17 @@ package model.game.board.mat.element;
 import com.sun.jdi.PathSearchingVirtualMachine;
 import exception.OutOfMaxRegisterSizeException;
 import io.cucumber.java.bs.A;
+import lombok.Data;
 import model.game.board.map.element.Robot;
 import model.game.card.Card;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
+@Data
 public class RegisterArea {
     private ArrayList<Card> registers;
-    private static final int REGISTER_QUEUE_SIZE = 5;
+    public static final int REGISTER_QUEUE_SIZE = 5;
     private static final String FULLY_QUALIFIED_NAME_OF_PROGRAMMING = "model.game.card.programming.";
 
     public RegisterArea() {
@@ -66,8 +68,4 @@ public class RegisterArea {
         Class<?> clz = Class.forName(FULLY_QUALIFIED_NAME_OF_PROGRAMMING + cardName);
         return (Card) clz.getConstructor().newInstance();
     }
-
-//    public static void main(String[] args) {
-//
-//    }
 }

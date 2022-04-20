@@ -244,8 +244,9 @@ public class MapElementStepsDefinition {
         assertEquals(arg0, this.game.getCurrentPlayer().getObtainedCheckpointTokens().size());
     }
 
+
     //--------------------------------------------------------------------------------------------
-// Check this game has finished
+    // Check this game has finished
     @Then("this game checks game status and now the game status is {string}")
     public void thisGameChecksGameStatusAndNowTheGameStatusIs(String arg0) {
         if (this.game.getCurrentPlayer().getObtainedCheckpointTokens().size() == this.game.getGameMap().getCheckPoints().size())
@@ -254,6 +255,7 @@ public class MapElementStepsDefinition {
             assertEquals(this.game.getCurrentPlayer(), this.game.getWinner());
         else assertNull(this.game.getWinner());
     }
+
 
     //--------------------------------------------------------------------------------------------
     @And("The robot has initial position {string} {string} with orientation {string}")
@@ -302,6 +304,4 @@ public class MapElementStepsDefinition {
     public void robotLandsOnAnObstacleStatusIsTrue() {
         this.game.checkCollisionTemporary(this.robot, this.tile);
     }
-
-
 }

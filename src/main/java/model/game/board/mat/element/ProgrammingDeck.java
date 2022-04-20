@@ -32,7 +32,7 @@ public class ProgrammingDeck {
         this.shuffle(this.cards);
     }
 
-    public void init() {
+    private void init() {
         this.cards = new ArrayList<>() {
             {
                 for (int i = 0; i < ProgrammingDeck.NUMBER_OF_CARDAGAIN; i++)
@@ -62,7 +62,7 @@ public class ProgrammingDeck {
     }
 
 
-//    public static void main(String[] args) {
+    public static void main(String[] args) {
 //        ProgrammingDeck pd = new ProgrammingDeck(new Player());
 //        for (Card c : pd.getCards()) {
 //            System.out.println(c.getClass().getSimpleName());
@@ -71,14 +71,14 @@ public class ProgrammingDeck {
 //        pd.shuffle(pd.getCards());
 //        for (Card c : pd.getCards()) {
 //            System.out.println(c.getClass().getSimpleName());
-//        ArrayList<String> strings = new ArrayList<String>();
-//        strings.add("one");
-//        strings.add("two");
-//        strings.add("three");
-//        strings.add("four");
-//
-//        System.out.println(strings);   // prints [one, two, three, four]
-//
+        ArrayList<String> strings = new ArrayList<String>();
+        strings.add("one");
+        strings.add("two");
+        strings.add("three");
+        strings.add("four");
+
+        System.out.println(strings);   // prints [one, two, three, four]
+
 //        strings.subList(1, 3);
 //
 //        System.out.println(strings.subList(1, 3));
@@ -90,10 +90,21 @@ public class ProgrammingDeck {
 //
 //        System.out.println(strings);
 
+        strings.subList(1, 3);
+
+        System.out.println(strings.subList(1, 3));
+        System.out.println(strings);
+
+        System.out.println("=========================");
+
+        strings.subList(1, 3).clear();
+
+        System.out.println(strings);
+
 //        ArrayList<Card> a = new ArrayList<>();
 //        System.out.println(a.size());
 //
 //        ArrayList<Card> b = null;
 //        System.out.println(b.size()); //NullPointerException
-//    }
+    }
 }

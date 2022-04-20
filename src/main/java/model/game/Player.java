@@ -61,23 +61,24 @@ public class Player {
     /**
      * In each round, A player draws 9 cards from his programming deck. If there are fewer than 9 to draw from, he should take
      * what is available. Then shuffles the discard pile to replenish his programming deck, and draws until he has nine cards.
+     *
      * @return an arraylist of 9 cards that is 9 cards in the player's hand.
      */
     public ArrayList<Card> drawCards() {
         ArrayList<Card> cardsInHand = new ArrayList<>();
         if (this.programmingDeck.getCards().size() < ProgrammingDeck.NUMBER_OF_CARDS_DRAWN_IN_EACH_ROUND) {
-            cardsInHand = this.programmingDeck.getCards();
-            this.discardPile.getDiscards().addAll(cardsInHand);
+            cardsInHand = new ArrayList<>(this.programmingDeck.getCards());
+            //this.discardPile.getDiscards().addAll(cardsInHand);
             this.programmingDeck.getCards().removeAll(this.programmingDeck.getCards());
             this.replenishProgrammingDeck();
-            ArrayList<Card> complements = (ArrayList<Card>) this.programmingDeck.getCards().subList(0, ProgrammingDeck.NUMBER_OF_CARDS_DRAWN_IN_EACH_ROUND - cardsInHand.size());
+            ArrayList<Card> complements = new ArrayList<>(this.programmingDeck.getCards().subList(0, ProgrammingDeck.NUMBER_OF_CARDS_DRAWN_IN_EACH_ROUND - cardsInHand.size()));
+            this.programmingDeck.getCards().subList(0, ProgrammingDeck.NUMBER_OF_CARDS_DRAWN_IN_EACH_ROUND - cardsInHand.size()).clear();
             cardsInHand.addAll(complements);
-            this.discardPile.getDiscards().addAll(cardsInHand);
-            complements.clear();
+            //this.discardPile.getDiscards().addAll(cardsInHand);
         } else {
-            cardsInHand = (ArrayList<Card>) this.programmingDeck.getCards().subList(0, 9);
-            this.discardPile.getDiscards().addAll(cardsInHand);
-            cardsInHand.clear();
+            cardsInHand = new ArrayList<>(this.programmingDeck.getCards().subList(0, ProgrammingDeck.NUMBER_OF_CARDS_DRAWN_IN_EACH_ROUND));
+            this.programmingDeck.getCards().subList(0, ProgrammingDeck.NUMBER_OF_CARDS_DRAWN_IN_EACH_ROUND).clear();
+            //this.discardPile.getDiscards().addAll(cardsInHand);
         }
         return cardsInHand;
     }

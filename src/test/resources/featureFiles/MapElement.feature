@@ -12,11 +12,11 @@ Feature:
 
  #####################             ROBOT SCENARIOS          #######################################
   Scenario Outline: A robot gets an initial position
-    Given a player chose a robot "<robot-name>"
+    Given a player chose a robot "<robot_name>"
     When the robot gets an initial position randomly
     Then robot is now at a position "<position_x>" and "<position_y>"
     Examples:
-      | position_x | position_y | robot-name  |
+      | position_x | position_y | robot_name  |
       | 0          | 0          | SQUASH BOT  |
       | 0          | 0          | ZOOM BOT    |
       | 0          | 0          | HAMMER BOT  |

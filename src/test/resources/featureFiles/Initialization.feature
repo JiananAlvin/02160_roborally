@@ -16,11 +16,11 @@ Feature:
 
   Scenario Outline: Player chooses a robot character
     Given a player has a name "<name>"
-    When the player chooses a robot "<robot-name>"
-    Then "<robot-name>" is assigned to this player
-    And there is a new record in the collection user with username "<name>" and robotname "<robot-name>"
+    When the player chooses a robot "<robot_name>"
+    Then "<robot_name>" is assigned to this player
+    And there is a new record in the collection user with username "<name>" and robotname "<robot_name>"
     Examples:
-      | name   | robot-name |
+      | name   | robot_name |
       | Ion    | SQUASH_BOT |
       | Jianan | ZOOM_BOT   |
       | Wenjie | HAMMER_BOT |
@@ -40,7 +40,7 @@ Feature:
 
   Scenario Outline: As a player I want to join a room
     Given a player has a name "<name>"
-    * a room owner "<room_owner_name>" creates a new room with map "<map_name>"
+    And a room owner "<room_owner_name>" creates a new room with map "<map_name>"
     When the player gets the room number from room owner and join this room
     Then the player is in this room
     Examples:

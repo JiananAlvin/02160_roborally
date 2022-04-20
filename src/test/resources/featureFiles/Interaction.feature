@@ -1,33 +1,32 @@
 @tag
 Feature:
 
-#  Scenario: Programming in given time when the programming deck has sufficient cards
-#    Given the programming deck has at least 9 cards
-#    * the player draws 9 cards from her programming deck
-#    When the player chooses five cards in sequence within 1 minute
-#    Then the player finished programming in given time
-#
-#  Scenario: Programming unfinished registers randomly when the programming deck has sufficient cards
-#    Given the programming deck has at least 9 cards
-#    * the player draws 9 cards from her programming deck
-#    When the player chooses less than 5 cards in sequence within 1 minute
-#    Then the programming phase is finished with some randome cards
-#
-#  Scenario: Programming in given time when the programming deck has insufficient cards
-#    Given the programming deck has fewer than 9 cards
-#    * the player takes all available cards from the programming deck
-#    * the player shuffles her programming discard pile to replenish her deck
-#    * the player draws from her programming deck until she has 9 cards
-#    When the player chooses 5 cards in sequence within 1 minute
-#    Then the player finished programming in given time
-#
-#  Scenario: Programming unfinished registers randomly when the programming deck has insufficient cards
-#    Given the programming deck has fewer than 9 cards
-#    * the player takes all available cards from the programming deck
-#    * the player shuffles her programming discard pile to replenish her deck
-#    * the player draws from her programming deck until she has 9 cards
-#    When the player chooses less than 5 cards in sequence within 1 minute
-#    Then the programming phase is finished with some randome cards
+  Scenario Outline: A player draws cards
+    Given a player had "<num_of_cards_in_prog_deck>" cards in his programming deck
+    When the player draws nine cards from his programming deck
+    Then the player now has "<num_of_cards_in_prog_deck_now>" cards in his programming deck
+    And he now has "<num_of_cards_in_discard_pile_now>" cards in his discard pile
+    And he now has "<num_of_cards_in_hand>" cards in his hand
+    Examples:
+      | num_of_cards_in_prog_deck | num_of_cards_in_prog_deck_now | num_of_cards_in_discard_pile_now | num_of_cards_in_hand |
+      | 32                        | 23                            | 0                                | 9                    |
+      | 10                        | 1                             | 22                               | 9                    |
+      | 8                         | 23                            | 0                                | 9                    |
+      | 2                         | 23                            | 0                                | 9                    |
+
+  Scenario Outline: An player place programming cards in each of registers
+    Given a player had nine cards in his hands
+    And the player has finished "<num_of_finished_registers>" registers.
+    When the time runs out but the player did not finish programming but only "<num_of_finished_registers>" registers
+    Then his unfinished registers will be filled randomly with the remaining programming cards in his hand.
+    And he now has "<num_of_finished_registers_now>" cards in each of registers
+#    And the programming result will be put to sever
+    Examples:
+      | num_of_finished_registers | num_of_finished_registers_now |
+      | 3                         | 5                             |
+      | 2                         | 5                             |
+      | 0                         | 5                             |
+
 
 
 
