@@ -1,14 +1,14 @@
 package gui.view.widgets;
 
-import content.MapName;
-import content.RobotName;
-import io.cucumber.java.sl.In;
-import lombok.SneakyThrows;
+import gui.view.widgets.BoardPanel;
+import gui.view.widgets.InfoPanel;
+import gui.view.widgets.MatPanel;
 import model.Game;
-import model.game.Player;
-import model.game.board.map.GameMap;
-import model.game.board.map.element.Robot;
+import model.Room;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import server.controller.ProgrammingRecordController;
+import server.controller.RoomController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,65 +18,114 @@ import java.util.ArrayList;
 
 /*
  * The whole GamePanel is like this
- * _______________________
- * | map panel      |user1|
+ * _____________________
+ * |    board Panel |user1|
  * |                |_____|
  * |                |user2|
- * |                |.....|
+ * |                |-----|
+ * |                |.log.|
  * |________________|_____|
- * |Programming Mat |Log  |
- * |________________|_____|
+ * |MatPanel              |
+ * |________________ _____|
  */
 public class GamePanel extends JPanel {
-    private SimpleProgrammingMatPanel simpleProgrammingMatPanel;
+    private MatPanel matPanel;
     private InfoPanel infoPanel;
     private BoardPanel boardPanel;
     private ArrayList<Icon> icons;
+    public static final Color[] userColors = new Color[]{Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.CYAN, Color.MAGENTA};
+    private Timer timeCalculator;
+    private Timer timeDisplayBoard;
+    private SwingWorker<JSONObject, Void> updateProgRecordsWorker;
+    public static final int MAX_WAITING_TIME = 10;
 
     public GamePanel(Game game) {
         super(true);
         this.setLayout(null);
-        this.simpleProgrammingMatPanel = new SimpleProgrammingMatPanel(game);
+        this.matPanel = new MatPanel(game);
         this.infoPanel = new InfoPanel(game.getParticipants(), game.getUser());
-        this.boardPanel = new BoardPanel(game.getGameMap().getMapName());
+        //this.boardPanel = new BoardPanel(game);
         Dimension boardPanelDimension = this.boardPanel.getMinimumSize();
         this.boardPanel.setBounds(0, 0, boardPanelDimension.width, boardPanelDimension.height);
         this.add(boardPanel);
         this.infoPanel.setBounds(boardPanelDimension.width + 10, 0, 400, 1000);
         this.add(infoPanel);
-        this.simpleProgrammingMatPanel.setBounds(0, boardPanelDimension.height, boardPanelDimension.width, 50);
-        this.add(simpleProgrammingMatPanel);
+        this.matPanel.setBounds(0, boardPanelDimension.height, boardPanelDimension.width, 50);
+        this.add(matPanel);
         this.setSize(boardPanelDimension.width + 400, Math.max(boardPanelDimension.width + 50, 1000));
 
-        simpleProgrammingMatPanel.setTimer(this.createTimeCalculator(game));
-        simpleProgrammingMatPanel.getTimer().start();
-
+        timeCalculator = this.createTimeCalculator(game);
+        timeCalculator.start();
+        timeDisplayBoard = this.createDisplayTimer(game);
+        timeDisplayBoard.start();
+        startThread(game);
     }
 
     private Timer createTimeCalculator(Game game) {
         // init the timer in ProgrammingPanel
         return new Timer(1000, new ActionListener() {
-            int timeLeft = SimpleProgrammingMatPanel.MAX_WAITING_TIME;
+            int timeLeft = MAX_WAITING_TIME;
+
             public void actionPerformed(ActionEvent e) {
                 timeLeft--;
-                simpleProgrammingMatPanel.getLabelTimer().setText("LeftTime:" + timeLeft);
+                matPanel.getLblClock().setText("" + timeLeft);
                 if (timeLeft <= 0) {
-                    JTextField[] registers = simpleProgrammingMatPanel.getRegisters();
-                    new ProgrammingRecordController().createProgrammingRecord(game.getUser().getName(), game.getRoom().getRoomNumber(), game.getCurrentRoundNum(), registers[0].getText(), registers[1].getText(), registers[2].getText(), registers[3].getText(), registers[4].getText());
-                    simpleProgrammingMatPanel.getTimer().stop();
+                    //new ProgrammingRecordController().createProgrammingRecord(game.getUser().getName(), game.getRoom().getRoomNumber(), game.getCurrentRoundNum(), registers[0].getText(), registers[1].getText(), registers[2].getText(), registers[3].getText(), registers[4].getText());
+                    timeCalculator.stop();
+                    startThread(game);
                 }
             }
         });
     }
 
-//    private Timer createDisplayTimer(Game game){
-//        return new Timer();
+    //TODO
+    private Timer createDisplayTimer(Game game) {
+        return new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+    }
+
+//    private Timer createSychronizeProgRecordsInfoTimer(Game game) {
+//        return new Timer(500, new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//            }
+//        });
 //    }
 
-//    private Timer createSychronizeProgRecordsInfoTimer(){
-//
-//    }
 
+    private void startThread(Game game) {
+
+        updateProgRecordsWorker = new SwingWorker<JSONObject, Void>() {
+
+            @Override
+            protected JSONObject doInBackground() throws Exception {
+                JSONObject result;
+                int i = 0;
+                do {
+//                    Thread.sleep(4000);
+                    result = new ProgrammingRecordController().getProgrammingRecords(game.getRoom().getRoomNumber(), game.getCurrentRoundNum());
+//                    JSONArray users = result.getJSONArray(ProgrammingRecordController.);
+                    System.out.println(result);
+
+                }
+                while (i++ < 20);
+                return result;
+            }
+
+
+            @Override
+            protected void done() {
+                System.out.println("DONE!!!!!!!!!");
+            }
+        };
+
+        // executes the swingworker on worker thread
+        updateProgRecordsWorker.execute();
+    }
 
     public static void init(JFrame frame, Game game) {
         frame.getContentPane().removeAll();
@@ -110,5 +159,4 @@ public class GamePanel extends JPanel {
 //            }
 //        });
 //    }
-
 }

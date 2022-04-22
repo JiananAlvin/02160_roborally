@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 
 public class LoginPanel extends JPanel {
 
+    private final String PATH_TO_ROBOT_ICONS = "src/main/resources/images/robots/";
     private final JTextField userName;
     private final JLabel lblChosenRobot;
     private final JToggleButton btSquashBot;
@@ -23,17 +24,17 @@ public class LoginPanel extends JPanel {
         JLabel lbluserName = new JLabel("Player name");
         JLabel lblRobot = new JLabel("Robot");
         this.lblChosenRobot = new JLabel();
-        Icon iconSquashBot = new ImageIcon(new ImageIcon("src/main/resources/images/robots/SQUASH_BOT.jpg").getImage().getScaledInstance(105, 142, Image.SCALE_DEFAULT));
+        Icon iconSquashBot = new ImageIcon(new ImageIcon(PATH_TO_ROBOT_ICONS + "SQUASH_BOT.jpg").getImage().getScaledInstance(105, 142, Image.SCALE_DEFAULT));
         this.btSquashBot = new JToggleButton("", iconSquashBot);
-        Icon iconZoomBot = new ImageIcon(new ImageIcon("src/main/resources/images/robots/ZOOM_BOT.jpg").getImage().getScaledInstance(105, 142, Image.SCALE_DEFAULT));
+        Icon iconZoomBot = new ImageIcon(new ImageIcon(PATH_TO_ROBOT_ICONS + "ZOOM_BOT.jpg").getImage().getScaledInstance(105, 142, Image.SCALE_DEFAULT));
         this.btZoomBot = new JToggleButton("", iconZoomBot);
-        Icon iconHammerBot = new ImageIcon(new ImageIcon("src/main/resources/images/robots/HAMMER_BOT.jpg").getImage().getScaledInstance(105, 142, Image.SCALE_DEFAULT));
+        Icon iconHammerBot = new ImageIcon(new ImageIcon(PATH_TO_ROBOT_ICONS + "HAMMER_BOT.jpg").getImage().getScaledInstance(105, 142, Image.SCALE_DEFAULT));
         this.btHammerBot = new JToggleButton("", iconHammerBot);
-        Icon iconSpinBot = new ImageIcon(new ImageIcon("src/main/resources/images/robots/SPIN_BOT.jpg").getImage().getScaledInstance(105, 142, Image.SCALE_DEFAULT));
+        Icon iconSpinBot = new ImageIcon(new ImageIcon(PATH_TO_ROBOT_ICONS + "SPIN_BOT.jpg").getImage().getScaledInstance(105, 142, Image.SCALE_DEFAULT));
         this.btSpinBot = new JToggleButton("", iconSpinBot);
-        Icon iconHulkX90 = new ImageIcon(new ImageIcon("src/main/resources/images/robots/HULK_X90.jpg").getImage().getScaledInstance(105, 142, Image.SCALE_DEFAULT));
+        Icon iconHulkX90 = new ImageIcon(new ImageIcon(PATH_TO_ROBOT_ICONS + "HULK_X90.jpg").getImage().getScaledInstance(105, 142, Image.SCALE_DEFAULT));
         this.btHulkX90 = new JToggleButton("", iconHulkX90);
-        Icon iconTrundleBot = new ImageIcon(new ImageIcon("src/main/resources/images/robots/TRUNDLE_BOT.jpg").getImage().getScaledInstance(105, 142, Image.SCALE_DEFAULT));
+        Icon iconTrundleBot = new ImageIcon(new ImageIcon(PATH_TO_ROBOT_ICONS + "TRUNDLE_BOT.jpg").getImage().getScaledInstance(105, 142, Image.SCALE_DEFAULT));
         this.btTrundleBot = new JToggleButton("", iconTrundleBot);
         JToggleButton btOk = new JToggleButton("Login");
         JToggleButton btCancel = new JToggleButton("Cancel");

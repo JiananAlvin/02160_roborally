@@ -37,7 +37,6 @@ public class Game {
     public Game() {
         this.participants = new ArrayList<>();
     }
-
     /**
      * This method is used to init the whole game when the game starts.
      * For the room owner, the game starts only when room owner starts it.
@@ -50,6 +49,7 @@ public class Game {
         this.room = room;
         this.user = user;
         this.gameMap = gameMap;
+        this.currentRoundNum = 1;
         this.initParticipants(roomInfoResponse);
         this.generateRandomPositionsForAllParticipants();
     }

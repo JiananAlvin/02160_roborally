@@ -1,6 +1,4 @@
 package gui.view.widgets;
-
-
 import model.game.Player;
 import model.game.board.map.element.Robot;
 import model.game.card.Card;
