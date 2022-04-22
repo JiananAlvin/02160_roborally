@@ -1,6 +1,7 @@
-package gui.view.widgets;
+package gui.view.widgets.waiting;
 
-import io.cucumber.messages.JSON;
+import gui.view.widgets.game.GamePanel;
+import gui.view.widgets.room.RoomPanel;
 import lombok.SneakyThrows;
 import model.Game;
 import model.Room;
@@ -19,6 +20,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.Objects;
 
 import static java.lang.Integer.parseInt;
@@ -43,7 +45,7 @@ public class WaitingPanel extends JPanel {
             this.lblRoomNumber.setFont(new Font("Calibri", Font.BOLD, 20));
             this.btStart = new JToggleButton("Start");
             this.btQuit = new JToggleButton("Quit");
-            loadParticipantsTable(userName, roomNumberStr, frame);
+            loadParticipantsTable(userName, roomNumberStr, frame, signal);
 //            SwingUtilities.invokeLater(new Runnable() {
 //                @Override
 //                public void run() {
@@ -71,8 +73,9 @@ public class WaitingPanel extends JPanel {
                 @SneakyThrows
                 @Override
                 public void actionPerformed(ActionEvent arg0) {
-                    new RoomController().updateStatus(Integer.parseInt(roomNumberStr), "START");
-
+                    int roomNumber = parseInt(roomNumberStr);
+                    JSONObject roomInfoResponse = new RoomController().roomInfo(roomNumber);
+                    startGamePanel(roomNumber, roomInfoResponse, userName, frame, signal);
                 }
             });
         } else {
@@ -81,7 +84,7 @@ public class WaitingPanel extends JPanel {
             this.btQuit = new JToggleButton("Quit");
             this.lblTip = new JLabel("Please wait for the owner to start the game.");
             this.lblTip.setFont(new Font("Calibri", Font.PLAIN, 15));
-            this.loadParticipantsTable(userName, roomNumberStr, frame);
+            this.loadParticipantsTable(userName, roomNumberStr, frame, signal);
             this.setLayout(null);
             this.lblRoomNumber.setBounds(100, 28, 780, 20);
             this.btQuit.setBounds(100, 270, 80, 30);
@@ -89,20 +92,6 @@ public class WaitingPanel extends JPanel {
             this.add(this.lblRoomNumber);
             this.add(this.btQuit);
             this.add(this.lblTip);
-
-//            SwingWorker swingWorker = new SwingWorker() {
-//
-//                @Override
-//                protected Object doInBackground() throws Exception {
-//                    return null;
-//                }
-//                @Override
-//                protected Object done(){
-//                    frame.removeAll();
-//                    frame.add(jtable);
-//
-//                }
-//            }
 
             this.btQuit.addActionListener(new ActionListener() {
                 @Override
@@ -121,7 +110,7 @@ public class WaitingPanel extends JPanel {
     }
 
 
-    private void loadParticipantsTable(String userName, String roomNumberStr, JFrame frame) {
+    private void loadParticipantsTable(String userName, String roomNumberStr, JFrame frame, String signal) {
 
         timer = new Timer(300, new ActionListener() {
             long timeStamp;
@@ -162,20 +151,8 @@ public class WaitingPanel extends JPanel {
 
                 // Wenjie
 //                 If the game starts, initialize the Game game and pass it to the GamePanel
-                if (roomInfoResponse.get(RoomController.RESPONSE_ROOM_STATUS).equals(RoomController.ROOM_STATUS_START)) {
-                    timer.stop();
-                    Game game = new Game();
-//                JSONObject roomInfoResponse = new RoomController().roomInfo(Integer.parseInt(roomNumberStr));
-                    String mapName = roomInfoResponse.getString(RoomController.RESPONSE_MAP_NAME);
-//                int roomNumber = roomInfoResponse.getInt(RoomController.RESPONSE_ROOM_NUMBER);
-                    String robotName = (String) new RobotController().getRobotInfo(userName).get(RobotController.RESPONSE_ROBOT_NAME);
-                    game.init(new Player(userName, new Robot(robotName)), new Room(roomNumber), new GameMap(mapName), roomInfoResponse);
-                    SwingUtilities.invokeLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            GamePanel.init(frame, game);
-                        }
-                    });
+                if ((!signal.equals("owner")) && roomInfoResponse.get(RoomController.RESPONSE_ROOM_STATUS).equals(RoomController.ROOM_STATUS_START)) {
+                    startGamePanel(roomNumber, roomInfoResponse, userName, frame, signal);
                 }
 
                 long timeStampResponse = roomInfoResponse.getLong(RoomController.RESPONSE_REQUEST_TIME);
@@ -210,6 +187,25 @@ public class WaitingPanel extends JPanel {
             }
         });
         timer.start();
+    }
+
+    private void startGamePanel(int roomNumber, JSONObject roomInfoResponse, String userName, JFrame frame, String signal) throws IOException {
+        timer.stop();
+        if (signal.equals("owner")) {
+            new RoomController().updateStatus(roomNumber, "START");
+        }
+        Game game = new Game();
+//                JSONObject roomInfoResponse = new RoomController().roomInfo(Integer.parseInt(roomNumberStr));
+        String mapName = roomInfoResponse.getString(RoomController.RESPONSE_MAP_NAME);
+//                int roomNumber = roomInfoResponse.getInt(RoomController.RESPONSE_ROOM_NUMBER);
+        String robotName = (String) new RobotController().getRobotInfo(userName).get(RobotController.RESPONSE_ROBOT_NAME);
+        game.init(new Player(userName, new Robot(robotName)), new Room(roomNumber), new GameMap(mapName), roomInfoResponse);
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                GamePanel.init(frame, game);
+            }
+        });
     }
 
 

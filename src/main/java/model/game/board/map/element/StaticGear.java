@@ -1,5 +1,6 @@
 package model.game.board.map.element;
 
+import gui.view.map.TileImageEnum;
 import model.game.board.map.Position;
 
 public class StaticGear extends Obstacle{
@@ -7,10 +8,13 @@ public class StaticGear extends Obstacle{
 
     public StaticGear(Position position) {
         super(position);
+//        TODO change it to StaticGear;
+        this.tileImageEnum = TileImageEnum.STARTPOINT;
     }
 
     public StaticGear(Integer x, Integer y) {
         super(x, y);
+        this.tileImageEnum = TileImageEnum.STARTPOINT;
     }
 
 

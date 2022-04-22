@@ -1,4 +1,4 @@
-package gui.view.widgets;
+package gui.view.widgets.cover;
 
 import content.Application;
 

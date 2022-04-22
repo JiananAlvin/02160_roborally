@@ -37,7 +37,7 @@ public class InteractionStepsDefinition {
 
     @When("the player draws nine cards from his programming deck")
     public void the_player_draws_nine_cards_from_his_programming_deck() {
-        this.p1.drawCards();
+        ArrayList<Card> cardsInHand = this.p1.drawCards();
     }
 
     @Then("the player now has {string} cards in his programming deck")
@@ -52,16 +52,16 @@ public class InteractionStepsDefinition {
 
     @Then("he now has {string} cards in his hand")
     public void he_now_has_cards_in_his_hand(String string) {
-        assertEquals(Integer.parseInt(string), this.p1.getCardsInHand().size());
+        assertEquals(Integer.parseInt(string), this.p1.drawCards().size());
     }
 
 
     //--------------------------------------------------------------------------------------------
     @Given("a player had nine cards in his hands")
     public void aPlayerHadNineCardsInHisHands() {
-        this.p1.setCardsInHand(new ArrayList<>(this.p1.getProgrammingDeck().getCards().subList(0, ProgrammingDeck.NUMBER_OF_CARDS_DRAWN_IN_EACH_ROUND)));
+        ArrayList<Card> cardsInHand = new ArrayList<>(this.p1.getProgrammingDeck().getCards().subList(0, ProgrammingDeck.NUMBER_OF_CARDS_DRAWN_IN_EACH_ROUND));
         this.namesOfCardsInHand = new ArrayList<>();
-        this.p1.getCardsInHand().forEach((card) -> this.namesOfCardsInHand.add(card.getClass().getSimpleName()));
+        cardsInHand.forEach((card) -> this.namesOfCardsInHand.add(card.getClass().getSimpleName()));
         this.namesOfCardsInRegisters = new ArrayList<>() {
             {
                 for (int i = 0; i < RegisterArea.REGISTER_QUEUE_SIZE; i++)

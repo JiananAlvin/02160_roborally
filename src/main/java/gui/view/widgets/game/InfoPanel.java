@@ -1,4 +1,4 @@
-package gui.view.widgets;
+package gui.view.widgets.game;
 
 import content.RobotName;
 import model.game.Player;
@@ -11,13 +11,14 @@ import java.util.ArrayList;
 /*
  * The whole GamePanel is like this
  * _______________________
- * | map panel      |user1|
+ * |    board Panel |user1|
  * |                |_____|
  * |                |user2|
- * |                |.....|
+ * |                |-----|
+ * |                |.log.|
  * |________________|_____|
- * |Programming Mat |Log  |
- * |________________|_____|
+ * |MatPanel              |
+ * |________________ _____|
  * <p>
  * InfoPanel is the part of :
  * _______

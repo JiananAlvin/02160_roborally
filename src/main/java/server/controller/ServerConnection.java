@@ -52,7 +52,6 @@ public class ServerConnection {
             con.setRequestProperty("Content-Type", "application/json");
             con.setRequestProperty("Accept", "application/json");
             con.setRequestMethod("POST");
-            System.out.println(body.toString());
             OutputStreamWriter wr = new OutputStreamWriter(con.getOutputStream());
             wr.write(body.toString());
             wr.flush();

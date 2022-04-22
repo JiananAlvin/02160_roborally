@@ -1,19 +1,12 @@
-package gui.view.widgets;
+package gui.view.widgets.game;
 
 import lombok.Data;
 import model.Game;
 import model.game.Player;
 import model.game.board.map.element.Robot;
-import model.game.board.mat.element.ProgrammingDeck;
-import model.game.board.mat.element.RegisterArea;
-import server.controller.ProgrammingRecordController;
-import server.controller.UserController;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.text.SimpleDateFormat;
 
 @Data
 public class SimpleProgrammingMatPanel extends JPanel {
@@ -25,8 +18,7 @@ public class SimpleProgrammingMatPanel extends JPanel {
     private JLabel labelRobotName;
     private JLabel labelRound;
     private JLabel labelTimer;
-    private Timer timer;
-    public static final int MAX_WAITING_TIME = 10;
+
 
     public SimpleProgrammingMatPanel(Game game) {
         super(true);

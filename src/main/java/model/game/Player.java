@@ -1,9 +1,8 @@
 package model.game;
 
+import java.awt.*;
 import java.util.ArrayList;
-import java.util.concurrent.ArrayBlockingQueue;
 
-import io.cucumber.java.bs.A;
 import lombok.Data;
 import model.Game;
 import model.game.board.map.element.CheckPoint;
@@ -22,8 +21,8 @@ public class Player {
     private ArrayList<Tile> obtainedCheckpointTokens;
     private ProgrammingDeck programmingDeck;
     private DiscardPile discardPile;
-    private ArrayList<Card> cardsInHand;
     private RegisterArea registerArea;
+    private Color userColor;
 
     public Player(String name, Robot robot) {
         this.name = name;
@@ -31,7 +30,6 @@ public class Player {
         this.obtainedCheckpointTokens = new ArrayList<>();
         this.programmingDeck = new ProgrammingDeck(this);
         this.discardPile = new DiscardPile(this);
-        this.cardsInHand = new ArrayList<>();
         this.registerArea = new RegisterArea();
     }
 
@@ -67,7 +65,7 @@ public class Player {
      *
      * @return an arraylist of 9 cards that is 9 cards in the player's hand.
      */
-    public void drawCards() {
+    public ArrayList<Card> drawCards() {
         ArrayList<Card> cardsInHand = new ArrayList<>();
         if (this.programmingDeck.getCards().size() < ProgrammingDeck.NUMBER_OF_CARDS_DRAWN_IN_EACH_ROUND) {
             cardsInHand = new ArrayList<>(this.programmingDeck.getCards());
@@ -83,7 +81,7 @@ public class Player {
             this.programmingDeck.getCards().subList(0, ProgrammingDeck.NUMBER_OF_CARDS_DRAWN_IN_EACH_ROUND).clear();
             //this.discardPile.getDiscards().addAll(cardsInHand);
         }
-        this.cardsInHand = cardsInHand;
+        return cardsInHand;
     }
 
     /**

@@ -1,29 +1,31 @@
-package gui.view.widgets;
+package gui.view.widgets.game;
 
 import java.awt.*;
-import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.swing.*;
 
-import gui.view.map.CardinalPoints;
-import gui.view.map.TileType;
-import utils.MapReader;
+import lombok.Data;
+import model.Game;
+import model.game.Player;
+import model.game.board.map.element.Robot;
+import model.game.board.map.element.Tile;
 
+@Data
 public class BoardPanel extends JPanel {
 
     private static final long serialVersionUID = 5384602441603297852L;
 
-    private TileType[][] mapMatrix;
+    private Tile[][] mapMatrix;
     private int rows;
     private int cols;
     private TilePanel[][] board;
+    private Game game;
 
-    public BoardPanel(String mapName) {
-        try {
-            mapMatrix = MapReader.txtToTileTypeMatrix(mapName);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+    public BoardPanel(Game game) {
+        this.game = game;
+        this.mapMatrix = game.getGameMap().getContent();
         this.rows = mapMatrix.length;
         this.cols = mapMatrix[0].length;
         this.board = new TilePanel[rows][cols];
@@ -46,10 +48,12 @@ public class BoardPanel extends JPanel {
                 add(t);
             }
         }
+        for (Player player : game.getParticipants()) {
+            Robot r = player.getRobot();
+            board[r.getPosition().getXcoord()][r.getPosition().getYcoord()].setRobot(r.getOrientation(),player.getUserColor());
+        }
     }
 
-    public void setRobot(int initialRow, int initialColumn, CardinalPoints currentDirection) {
-    }
 
 //    public static void main(String[] args) {
 ////        CardinalPoints currentDirection = CardinalPoints.N;
