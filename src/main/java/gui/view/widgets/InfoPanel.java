@@ -37,15 +37,18 @@ public class InfoPanel extends JPanel {
     private ScrollPane logPanel;
     private TextArea logArea;
 
-    public InfoPanel(ArrayList<Player> participants) {
+    public InfoPanel(ArrayList<Player> participants, Player user) {
         super(true);
         this.participantsPanels = new ArrayList<>();
         int i = 0;
         for (Player participant : participants) {
-            ParticipantInfoPanel participantInfoPanel = new ParticipantInfoPanel(participant);
-            this.participantsPanels.add(participantInfoPanel);
-            participantInfoPanel.setBounds(0, i++ * 100, 400, 100);
-            this.add(participantInfoPanel);
+            if (!participant.getName().equals(user.getName()))
+            {
+                ParticipantInfoPanel participantInfoPanel = new ParticipantInfoPanel(participant);
+                this.participantsPanels.add(participantInfoPanel);
+                participantInfoPanel.setBounds(0, i++ * 100, 400, 100);
+                this.add(participantInfoPanel);
+            }
         }
         this.logArea = new TextArea("[System Log]:\n Welcome to this game!\n[System Log]:\n The programming phase of 1st rount starts!",20,55,TextArea.SCROLLBARS_VERTICAL_ONLY);
 //        this.logPanel = new ScrollPane(this.logArea);
@@ -71,7 +74,7 @@ public class InfoPanel extends JPanel {
                 participants.add(new Player("Test4", new Robot(RobotName.SQUASH_BOT)));
                 participants.add(new Player("Test5", new Robot(RobotName.TRUNDLE_BOT)));
                 participants.add(new Player("Test6", new Robot(RobotName.ZOOM_BOT)));
-                frame.add(new InfoPanel(participants));
+                frame.add(new InfoPanel(participants,new Player("Test1", new Robot(RobotName.HAMMER_BOT))));
                 //Display the window.
                 frame.pack();
                 frame.setVisible(true);

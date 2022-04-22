@@ -9,14 +9,12 @@ import model.game.board.map.element.*;
 import model.game.Player;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import server.controller.robot.RobotController;
-import server.controller.room.RoomController;
-import server.controller.user.UserController;
+import server.controller.RobotController;
+import server.controller.RoomController;
 
 import java.util.*;
 
 @Data
-
 public class Game {
     /**
      * @ Player user: the user of this application
@@ -40,11 +38,18 @@ public class Game {
         this.participants = new ArrayList<>();
     }
 
-    public void init(Room room, Player user, GameMap gameMap) {
+    /**
+     * This method is used to init the whole game when the game starts.
+     * For the room owner, the game starts only when room owner starts it.
+     *
+     * @param room
+     * @param user
+     * @param gameMap
+     */
+    public void init(Player user, Room room, GameMap gameMap, JSONObject roomInfoResponse) {
         this.room = room;
         this.user = user;
         this.gameMap = gameMap;
-        JSONObject roomInfoResponse = new RoomController().roomInfo(room.getRoomNumber());
         this.initParticipants(roomInfoResponse);
         this.generateRandomPositionsForAllParticipants();
     }

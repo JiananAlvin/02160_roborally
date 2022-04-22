@@ -1,7 +1,6 @@
 package gui.view.widgets;
 
-import content.Application;
-import server.controller.user.UserController;
+import server.controller.UserController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -82,10 +81,19 @@ public class LoginPanel extends JPanel {
              */
             UserController userController = new UserController();
             userController.createUser(userName.getText());
-            userController.chooseRobot(userName.getText(), lblChosenRobot.getText().replace(' ', '_'));
-            frame.getContentPane().removeAll();
-            frame.getContentPane().add(new RoomPanel(userName.getText(), frame));
-            frame.setVisible(true);
+            if (userController.getResponse().get("status").equals(200)) {
+                if (lblChosenRobot.getText().equals("")) {
+                    JOptionPane.showMessageDialog(null, "Please choose a robot");
+                    userController.deleteUser(userName.getText());
+                } else {
+                    userController.chooseRobot(userName.getText(), lblChosenRobot.getText().replace(' ', '_'));
+                    frame.getContentPane().removeAll();
+                    frame.getContentPane().add(new RoomPanel(userName.getText(), frame));
+                    frame.setVisible(true);
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Username already exists");
+            }
         });
 
         btCancel.addActionListener(e -> {
@@ -107,6 +115,8 @@ public class LoginPanel extends JPanel {
                 lblChosenRobot.setText("HULK X90");
             } else if (e.getSource() == btTrundleBot) {
                 lblChosenRobot.setText("TRUNDLE BOT");
+            } else {
+                lblChosenRobot.setText("");
             }
         }
     }

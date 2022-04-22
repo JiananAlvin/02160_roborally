@@ -17,9 +17,9 @@ import model.game.board.map.element.Robot;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import server.controller.ServerConnection;
-import server.controller.robot.RobotController;
-import server.controller.room.RoomController;
-import server.controller.user.UserController;
+import server.controller.RobotController;
+import server.controller.RoomController;
+import server.controller.UserController;
 
 import java.util.List;
 

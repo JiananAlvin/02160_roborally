@@ -43,14 +43,6 @@ public class TilePanel extends JPanel {
         setPreferredSize(getMinimumSize());
     }
 
-//    public void setRobot(CardinalPoints direction) {
-//        this.containsRobot = true;
-//        this.direction = direction;
-//    }
-//
-//    public void unsetRobot() {
-//        this.containsRobot = false;
-//    }
 
     @Override
     public void paint(Graphics g) {

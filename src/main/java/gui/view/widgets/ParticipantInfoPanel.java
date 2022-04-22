@@ -3,6 +3,7 @@ package gui.view.widgets;
 
 import model.game.Player;
 import model.game.board.map.element.Robot;
+import model.game.card.Card;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -64,30 +65,35 @@ public class ParticipantInfoPanel extends JPanel {
 
 
         for (int i = 0; i < this.registers.length; i++) {
-            this.registers[i] = new JLabel("Move1");
+            Card registerContent;
+            try {
+                registerContent = participant.getRegisterArea().getRegisters().get(i);
+                this.registers[i] = new JLabel(registerContent.getClass().getSimpleName());
+            } catch (IndexOutOfBoundsException e) {
+                this.registers[i] = new JLabel("NaN");
+            }
 
-            this.registers[i].setBounds(100+60*i,20,75,75);
+            this.registers[i].setBounds(100 + 60 * i, 20, 75, 75);
             this.add(registers[i]);
         }
         this.setBorder(BorderFactory.createLineBorder(Color.gray));
         this.setPreferredSize(new Dimension(400, 100));
     }
 
-    public static void main(String[] args) {
-        //Schedule a job for the event-dispatching thread:
-        //creating and showing this application's GUI.
-        javax.swing.SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                JFrame frame = new JFrame("GridBagLayoutDemo");
-
-                //Set up the content pane.
-                frame.add(new ParticipantInfoPanel(new Player("Wenjie", new Robot("TRUNDLE_BOT"))));
-                //Display the window.
-                frame.pack();
-                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                frame.setSize(frame.getPreferredSize());
-                frame.setVisible(true);
-            }
-        });
-    }
+//    public static void main(String[] args) {
+//        //Schedule a job for the event-dispatching thread:
+//        //creating and showing this application's GUI.
+//        javax.swing.SwingUtilities.invokeLater(new Runnable() {
+//            public void run() {
+//                JFrame frame = new JFrame("GridBagLayoutDemo");
+//                //Set up the content pane.
+//                frame.add(new ParticipantInfoPanel(new Player("Wenjie", new Robot("TRUNDLE_BOT"))));
+//                //Display the window.
+//                frame.pack();
+//                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//                frame.setSize(frame.getPreferredSize());
+//                frame.setVisible(true);
+//            }
+//        });
+//    }
 }
