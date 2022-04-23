@@ -1,8 +1,8 @@
 package model;
 
+import content.RobotName;
 import gui.view.widgets.game.GamePanel;
 import lombok.Data;
-import lombok.SneakyThrows;
 import model.game.board.map.Collision;
 import model.game.board.map.GameMap;
 import model.game.board.map.Position;
@@ -91,7 +91,7 @@ public class Game {
         TreeMap<Integer, TreeMap<Integer, Player>> robotDistanceTree = new TreeMap<>();
         for (Player p : this.participants) {
             Integer dist = p.getRobot().distanceToAntenna();
-            Integer ycoord = p.getRobot().getPosition().getYcoord();
+            Integer ycoord = p.getRobot().getPosition().getCol();
             if (robotDistanceTree.containsKey(dist)) {
                 robotDistanceTree.get(dist).put(ycoord, p);
             } else {
@@ -131,7 +131,7 @@ public class Game {
         List<Object> userList = users.toList();
         for (Object userName : userList) {
             JSONObject robotInfo = new RobotController().getRobotInfo(userName.toString());
-            Robot robot = new Robot((String) robotInfo.get(RobotController.RESPONSE_ROBOT_NAME));
+            Robot robot = new Robot(RobotName.valueOf((String) robotInfo.get(RobotController.RESPONSE_ROBOT_NAME)));
             try {
                 // if JSONObject["x"] not found, it means there is no initial position
                 int x = (int) robotInfo.get(RobotController.RESPONSE_ROBOT_XCOORD);
@@ -153,7 +153,7 @@ public class Game {
         for (Player player : this.participants) {
             StartPoint assignedStartPoint = startPoints.remove(new Random().nextInt(startPoints.size()));
             player.getRobot().setPosition(assignedStartPoint.getPosition());
-            new RobotController().updatePosition(player.getName(), player.getRobot().getPosition().getXcoord(), player.getRobot().getPosition().getYcoord());
+            new RobotController().updatePosition(player.getName(), player.getRobot().getPosition().getRow(), player.getRobot().getPosition().getCol());
         }
     }
 

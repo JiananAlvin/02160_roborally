@@ -22,7 +22,7 @@ public class LoginPanel extends JPanel {
 
     public LoginPanel(JFrame frame) {
         this.userName = new JTextField();
-        JLabel lbluserName = new JLabel("Player name");
+        JLabel lblUserName = new JLabel("Player name");
         JLabel lblRobot = new JLabel("Robot");
         this.lblChosenRobot = new JLabel();
         Icon iconSquashBot = new ImageIcon(new ImageIcon(PATH_TO_ROBOT_ICONS + "SQUASH_BOT.jpg").getImage().getScaledInstance(105, 142, Image.SCALE_DEFAULT));
@@ -43,7 +43,7 @@ public class LoginPanel extends JPanel {
         // Displaying the login interface
         this.setLayout(null);
         RobotListener robotListener = new RobotListener();
-        lbluserName.setBounds(100, 8, 70, 20);
+        lblUserName.setBounds(100, 8, 70, 20);
         this.userName.setBounds(100, 36, 193, 28);
         lblRobot.setBounds(100, 75, 70, 20);
         this.lblChosenRobot.setBounds(200, 75, 100, 20);
@@ -62,7 +62,7 @@ public class LoginPanel extends JPanel {
         btOk.setBounds(100, 270, 80, 30);
         btCancel.setBounds(300, 270, 80, 30);
         this.add(this.userName);
-        this.add(lbluserName);
+        this.add(lblUserName);
         this.add(lblRobot);
         this.add(this.lblChosenRobot);
         this.add(this.btSquashBot);

@@ -53,7 +53,7 @@ public class RoomPanel<IntField> extends JPanel {
         btJoinRoom.addActionListener(e -> {
             /*
             fetching the room number when the "Join room" button is pressed
-            inserting the player info into the room through API
+            inserting the qplayer info into the room through API
              */
             UserController userController = new UserController();
             String roomNumberStr = this.roomNumber.getText();

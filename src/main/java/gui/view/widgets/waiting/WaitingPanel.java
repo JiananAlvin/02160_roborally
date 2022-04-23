@@ -1,5 +1,7 @@
 package gui.view.widgets.waiting;
 
+import content.MapName;
+import content.RobotName;
 import gui.view.widgets.game.GamePanel;
 import gui.view.widgets.room.RoomPanel;
 import lombok.SneakyThrows;
@@ -199,7 +201,7 @@ public class WaitingPanel extends JPanel {
         String mapName = roomInfoResponse.getString(RoomController.RESPONSE_MAP_NAME);
 //                int roomNumber = roomInfoResponse.getInt(RoomController.RESPONSE_ROOM_NUMBER);
         String robotName = (String) new RobotController().getRobotInfo(userName).get(RobotController.RESPONSE_ROBOT_NAME);
-        game.init(new Player(userName, new Robot(robotName)), new Room(roomNumber), new GameMap(mapName), roomInfoResponse);
+        game.init(new Player(userName, new Robot(RobotName.valueOf(robotName))), new Room(roomNumber), new GameMap(MapName.valueOf(mapName)), roomInfoResponse);
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {

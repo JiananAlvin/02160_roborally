@@ -2,38 +2,38 @@ package model.game.board.map;
 
 
 public class Position {
-    private int xcoord;
-    private int ycoord;
+    private int row;
+    private int col;
 
     public Position() {
 
     }
 
-    public Position(int xcoord, int ycoord) {
-        this.xcoord = xcoord;
-        this.ycoord = ycoord;
+    public Position(int row, int col) {
+        this.row = row;
+        this.col = col;
     }
 
-    public int getXcoord() {
-        return xcoord;
+    public int getRow() {
+        return row;
     }
 
-    public void setXcoord(int xcoord) {
-        this.xcoord = xcoord;
+    public void setRow(int row) {
+        this.row = row;
     }
 
-    public int getYcoord() {
-        return ycoord;
+    public int getCol() {
+        return col;
     }
 
-    public void setYcoord(int ycoord) {
-        this.ycoord = ycoord;
+    public void setCol(int col) {
+        this.col = col;
     }
 
     @Override
     public boolean equals(Object object) {
         if (object instanceof Position) {
-            return ((Position) object).getXcoord() == this.xcoord && ((Position) object).getYcoord() == this.ycoord;
+            return ((Position) object).getRow() == this.row && ((Position) object).getCol() == this.col;
         } else {
             return false;
         }
@@ -41,7 +41,7 @@ public class Position {
 
     @Override
     public String toString() {
-        return "[x:" + this.getXcoord() + "y:" + this.getYcoord() + "]";
+        return "[row:" + this.getRow() + "column:" + this.getCol() + "]";
     }
 
 }

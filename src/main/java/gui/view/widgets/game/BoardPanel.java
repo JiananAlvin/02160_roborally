@@ -1,7 +1,6 @@
 package gui.view.widgets.game;
 
 import java.awt.*;
-import java.util.ArrayList;
 
 import javax.swing.*;
 
@@ -46,7 +45,7 @@ public class BoardPanel extends JPanel {
         }
         for (Player player : game.getParticipants()) {
             Robot r = player.getRobot();
-            board[r.getPosition().getXcoord()][r.getPosition().getYcoord()].setRobot(r.getOrientation(), player.getUserColor());
+            board[r.getPosition().getRow()][r.getPosition().getCol()].setRobot(r.getOrientation(), player.getUserColor());
         }
     }
 
