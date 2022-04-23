@@ -1,6 +1,6 @@
 package utils;
 
-import gui.view.map.TileType;
+import gui.view.map.TileImageEnum;
 import model.game.board.map.element.Antenna;
 import model.game.board.map.element.CheckPoint;
 import model.game.board.map.element.Tile;
@@ -93,29 +93,29 @@ public class MapReader {
      * then parse the txt file to a 2D array of TileType
      * TIP: THIS IS ONLY USED IN UI!!!!!!!!!!!!!!
      */
-    public static TileType[][] txtToTileTypeMatrix(String mapName) throws IOException {
-        TileType[][] result = null;
-        ArrayList<String> strList;
-        strList = MapReader.readLineToStringArray(mapName);
-
-        // The number of columns
-        String s = strList.get(0);
-        int columnNum = s.split(",").length;
-
-        result = new TileType[strList.size()][columnNum];
-
-        // Put data into a 2D array
-        int count = 0;
-        for (String str : strList) {
-            String[] strs = str.split(",");
-            for (int i = 0; i < columnNum; i++) {
-                result[count][i] = TileType.valueOf(strs[i].toUpperCase());
-            }
-            count++;
-        }
-
-        return result;
-    }
+//    public static TileImageEnum[][] txtToTileTypeMatrix(String mapName) throws IOException {
+//        TileImageEnum[][] result = null;
+//        ArrayList<String> strList;
+//        strList = MapReader.readLineToStringArray(mapName);
+//
+//        // The number of columns
+//        String s = strList.get(0);
+//        int columnNum = s.split(",").length;
+//
+//        result = new TileImageEnum[strList.size()][columnNum];
+//
+//        // Put data into a 2D array
+//        int count = 0;
+//        for (String str : strList) {
+//            String[] strs = str.split(",");
+//            for (int i = 0; i < columnNum; i++) {
+//                result[count][i] = TileImageEnum.valueOf(strs[i].toUpperCase());
+//            }
+//            count++;
+//        }
+//
+//        return result;
+//    }
 
     // This is the test of the function
 //    public static void main(String[] args) {

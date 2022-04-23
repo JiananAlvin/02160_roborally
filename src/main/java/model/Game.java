@@ -1,5 +1,6 @@
 package model;
 
+import gui.view.widgets.game.GamePanel;
 import lombok.Data;
 import lombok.SneakyThrows;
 import model.game.board.map.Collision;
@@ -15,6 +16,7 @@ import server.controller.RoomController;
 import java.util.*;
 
 @Data
+
 public class Game {
     /**
      * @ Player user: the user of this application
@@ -31,8 +33,13 @@ public class Game {
     private GameMap gameMap;
     private int currentRoundNum;
     private int currentRegisterNum;
-    private Player currentPlayer;
+
     private Player winner;
+
+    // TODO delete currentPlayer
+    private Player currentPlayer;
+
+    private int currentPlayerOrderedIndex;
 
     public Game() {
         this.participants = new ArrayList<>();
@@ -50,24 +57,29 @@ public class Game {
         this.user = user;
         this.gameMap = gameMap;
         this.currentRoundNum = 1;
+
         this.initParticipants(roomInfoResponse);
-        this.generateRandomPositionsForAllParticipants();
+        // generate initial positions for all robots, only when the user is a room owner
+        if (user.getName().equals(roomInfoResponse.getString(RoomController.RESPONSE_ROOM_OWNER)))
+            this.generateRandomPositionsForAllParticipants();
+//        give User different color
+        this.assignColorToParticipants();
     }
 
 
-    /**
-     * @param orderOfPlayers the arraylist of players sorted by their robots' distances to antenna
-     * @param registerNum    it represents the register that is activated now (e.g. 1st register, 2nd register... not the general round)
-     */
-    @SneakyThrows
-    public void executeRegisters(int registerNum, ArrayList<Player> orderOfPlayers) {
-        for (Player player : orderOfPlayers) {
-            this.currentPlayer = player;
-            player.getRobot().applyCard(player.getRegisterArea().getCard(registerNum));
-            if (this.gameMap.getTileWithPosition(player.getRobot().getPosition()).getClass().equals(CheckPoint.class))
-                this.currentPlayer.takeToken((CheckPoint) this.gameMap.getTileWithPosition(player.getRobot().getPosition()));
-        }
-    }
+//    /**
+//     * @param orderOfPlayers the arraylist of players sorted by their robots' distances to antenna
+//     * @param registerNum    it represents the register that is activated now (e.g. 1st register, 2nd register... not the general round)
+//     */
+//    @SneakyThrows
+//    public void executeRegisters(int registerNum, ArrayList<Player> orderOfPlayers) {
+//        for (Player player : orderOfPlayers) {
+//            this.currentPlayer = player;
+//            player.getRobot().applyCard(player.getRegisterArea().getCard(registerNum));
+//            if (this.gameMap.getTileWithPosition(player.getRobot().getPosition()).getClass().equals(CheckPoint.class))
+//                this.currentPlayer.takeToken((CheckPoint) this.gameMap.getTileWithPosition(player.getRobot().getPosition()));
+//        }
+//    }
 
     /**
      * In case two robots have the same distance to the antenna. Imagine an invisible line
@@ -119,7 +131,16 @@ public class Game {
         List<Object> userList = users.toList();
         for (Object userName : userList) {
             JSONObject robotInfo = new RobotController().getRobotInfo(userName.toString());
-            this.participants.add(new Player(userName.toString(), new Robot((String) robotInfo.get(RobotController.RESPONSE_ROBOT_NAME))));
+            Robot robot = new Robot((String) robotInfo.get(RobotController.RESPONSE_ROBOT_NAME));
+            try {
+                // if JSONObject["x"] not found, it means there is no initial position
+                int x = (int) robotInfo.get(RobotController.RESPONSE_ROBOT_XCOORD);
+                int y = (int) robotInfo.get(RobotController.RESPONSE_ROBOT_YCOORD);
+                robot.setPosition(x, y);
+            } catch (Exception e) {
+                robot.setPosition(0, 0);
+            }
+            this.participants.add(new Player(userName.toString(), robot));
         }
     }
 
@@ -133,6 +154,22 @@ public class Game {
             StartPoint assignedStartPoint = startPoints.remove(new Random().nextInt(startPoints.size()));
             player.getRobot().setPosition(assignedStartPoint.getPosition());
             new RobotController().updatePosition(player.getName(), player.getRobot().getPosition().getXcoord(), player.getRobot().getPosition().getYcoord());
+        }
+    }
+
+    /**
+     * Assign Colors to different participants according to their hash code.
+     */
+    public void assignColorToParticipants() {
+        this.participants.sort(new Comparator<Player>() {
+            @Override
+            public int compare(Player o1, Player o2) {
+                return o1.getName().hashCode() - o2.getName().hashCode();
+            }
+        });
+        int i = 0;
+        for (Player player : participants) {
+            player.setUserColor(GamePanel.userColors[i++]);
         }
     }
 

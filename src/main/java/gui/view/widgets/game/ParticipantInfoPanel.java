@@ -1,22 +1,22 @@
-package gui.view.widgets;
+package gui.view.widgets.game;
+
 import model.game.Player;
-import model.game.board.map.element.Robot;
 import model.game.card.Card;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 
 /*
  * The whole GamePanel is like this
  * _______________________
- * | map panel      |user1|
+ * |    board Panel |user1|
  * |                |_____|
  * |                |user2|
- * |                |.....|
+ * |                |-----|
+ * |                |.log.|
  * |________________|_____|
- * |Programming Mat |Log  |
- * |________________|_____|
+ * |MatPanel              |
+ * |________________ _____|
  * <p>
  * ParticipantInfoPanel is the part of :
  * _______
@@ -33,32 +33,32 @@ public class ParticipantInfoPanel extends JPanel {
     private JLabel labelLive;
     private JLabel labelUserName;
     private JLabel labelRobotName;
-    private JLabel robotImage;
+    private JLabel lblRobot;
 
     public ParticipantInfoPanel(Player participant) {
         super(true);
         this.setLayout(null);
 
-        Icon robotIcon = new ImageIcon(new ImageIcon("src/main/resources/images/robots/" + participant.getRobot().getName() + ".jpg").getImage().getScaledInstance(105, 142, Image.SCALE_DEFAULT));
-        this.robotImage = new JLabel();
-        this.robotImage.setIcon(robotIcon);
-        this.robotImage.setBorder(BorderFactory.createLineBorder(Color.gray));
+        Icon iconRobot = new ImageIcon(new ImageIcon("src/main/resources/images/robots/" + participant.getRobot().getName() + ".jpg").getImage().getScaledInstance(105, 142, Image.SCALE_DEFAULT));
+        this.lblRobot = new JLabel();
+        this.lblRobot.setIcon(iconRobot);
+        this.lblRobot.setBorder(BorderFactory.createLineBorder(Color.gray));
         this.registers = new JLabel[5];
-        this.labelTokenNumber = new JLabel("Token:0");
-        this.labelLive = new JLabel("Live:5");
+        this.labelTokenNumber = new JLabel("Token:" + participant.getObtainedCheckpointTokens().size());
+        this.labelLive = new JLabel("Lives:" + participant.getRobot().getLives());
         this.labelUserName = new JLabel(participant.getName());
-        this.labelRobotName = new JLabel(participant.getRobot().getName().split("_")[0]);
+        this.labelRobotName = new JLabel(participant.getRobot().getName().replace("_", " "));
 
+        this.lblRobot.setBounds(0, 0, 100, 100);
+        this.labelUserName.setBounds(115, 0, 75, 20);
+        this.labelRobotName.setBounds(240, 0, 90, 20);
+        this.labelTokenNumber.setBounds(340, 0, 60, 20);
+        this.labelLive.setBounds(410, 0, 60, 20);
 
-        this.robotImage.setBounds(0, 0, 100, 100);
-        this.add(this.robotImage);
-        this.labelUserName.setBounds(100, 0, 75, 20);
+        this.add(this.lblRobot);
         this.add(this.labelUserName);
-        this.labelRobotName.setBounds(175, 0, 75, 20);
         this.add(this.labelRobotName);
-        this.labelTokenNumber.setBounds(250, 0, 75, 20);
         this.add(this.labelTokenNumber);
-        this.labelLive.setBounds(325, 0, 75, 20);
         this.add(this.labelLive);
 
 
@@ -71,11 +71,11 @@ public class ParticipantInfoPanel extends JPanel {
                 this.registers[i] = new JLabel("NaN");
             }
 
-            this.registers[i].setBounds(100 + 60 * i, 20, 75, 75);
+            this.registers[i].setBounds(125 + 60 * i, 20, 75, 75);
             this.add(registers[i]);
         }
         this.setBorder(BorderFactory.createLineBorder(Color.gray));
-        this.setPreferredSize(new Dimension(400, 100));
+        this.setPreferredSize(new Dimension(500, 100));
     }
 
 //    public static void main(String[] args) {

@@ -59,9 +59,9 @@ public class InteractionStepsDefinition {
     //--------------------------------------------------------------------------------------------
     @Given("a player had nine cards in his hands")
     public void aPlayerHadNineCardsInHisHands() {
-        this.p1.setCardsInHand(new ArrayList<>(this.p1.getProgrammingDeck().getCards().subList(0, ProgrammingDeck.NUMBER_OF_CARDS_DRAWN_IN_EACH_ROUND)));
+        ArrayList<Card> cardsInHand = new ArrayList<>(this.p1.getProgrammingDeck().getCards().subList(0, ProgrammingDeck.NUMBER_OF_CARDS_DRAWN_IN_EACH_ROUND));
         this.namesOfCardsInHand = new ArrayList<>();
-        this.p1.getCardsInHand().forEach((card) -> this.namesOfCardsInHand.add(card.getClass().getSimpleName()));
+        cardsInHand.forEach((card) -> this.namesOfCardsInHand.add(card.getClass().getSimpleName()));
         this.namesOfCardsInRegisters = new ArrayList<>() {
             {
                 for (int i = 0; i < RegisterArea.REGISTER_QUEUE_SIZE; i++)

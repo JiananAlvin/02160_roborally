@@ -19,26 +19,16 @@ public class Robot {
         this.name = name;
         this.onBoard = false;
         this.position = new Position();
+        this.orientation = Orientation.E;
     }
 
     public Robot(String name, int x, int y) {
         this.name = name;
         this.onBoard = false;
         this.position = new Position(x, y);
+        this.orientation = Orientation.E;
     }
 
-
-    public boolean onBoard() {
-        return this.onBoard;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public void setOnBoard(boolean b) {
-        this.onBoard = b;
-    }
 
     public void setPosition(Position position) {
         this.position = position;
@@ -47,10 +37,6 @@ public class Robot {
     public void setPosition(int x, int y) {
         this.position.setXcoord(x);
         this.position.setYcoord(y);
-    }
-
-    public Position getPosition() {
-        return this.position;
     }
 
     public int distanceToAntenna() {
@@ -64,22 +50,6 @@ public class Robot {
 
     public void applyCard(Card card) {
         card.action(this);
-    }
-
-    public Orientation getOrientation() {
-        return this.orientation;
-    }
-
-    public void setOrientation(Orientation orientation) {
-        this.orientation = orientation;
-    }
-
-    public void setLives(int lives) {
-        this.lives = lives;
-    }
-
-    public int getLives() {
-        return this.lives;
     }
 
     /**

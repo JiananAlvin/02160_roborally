@@ -1,5 +1,6 @@
-package gui.view.widgets;
+package gui.view.widgets.login;
 
+import gui.view.widgets.room.RoomPanel;
 import server.controller.UserController;
 
 import javax.swing.*;

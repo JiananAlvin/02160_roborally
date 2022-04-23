@@ -41,7 +41,7 @@ public class Position {
 
     @Override
     public String toString() {
-        return "x:" + this.getXcoord() + "y:" + this.getYcoord();
+        return "[x:" + this.getXcoord() + "y:" + this.getYcoord() + "]";
     }
 
 }

@@ -1,6 +1,6 @@
-package gui.view.widgets;
+package gui.view.widgets.room;
 
-import io.cucumber.java.sl.In;
+import gui.view.widgets.waiting.WaitingPanel;
 import server.controller.RoomController;
 import server.controller.UserController;
 import org.json.JSONObject;
