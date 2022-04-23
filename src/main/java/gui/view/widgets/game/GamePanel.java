@@ -1,6 +1,8 @@
 package gui.view.widgets.game;
 
 import content.Application;
+import content.MapName;
+import content.RobotName;
 import lombok.SneakyThrows;
 import model.Game;
 import model.Room;
@@ -18,7 +20,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.util.ArrayList;
 
 /*
@@ -109,9 +110,9 @@ public class GamePanel extends JPanel {
                 }
                 Player currentPlayer = game.getParticipants().get(currenPlayerIndex);
                 Card currentRegisterCard = currentPlayer.getRegisterArea().getCard(registerIndex);
-                boardPanel.getBoard()[currentPlayer.getRobot().getPosition().getXcoord()][currentPlayer.getRobot().getPosition().getYcoord()].unsetRobot();
+                boardPanel.getBoard()[currentPlayer.getRobot().getPosition().getRow()][currentPlayer.getRobot().getPosition().getCol()].unsetRobot();
                 currentRegisterCard.action(currentPlayer.getRobot());
-                boardPanel.getBoard()[currentPlayer.getRobot().getPosition().getXcoord()][currentPlayer.getRobot().getPosition().getYcoord()].setRobot(currentPlayer.getRobot().getOrientation(), currentPlayer.getUserColor());
+                boardPanel.getBoard()[currentPlayer.getRobot().getPosition().getRow()][currentPlayer.getRobot().getPosition().getCol()].setRobot(currentPlayer.getRobot().getOrientation(), currentPlayer.getUserColor());
 
                 boardPanel.repaint();
 //                boardPanel.revalidate();
@@ -196,7 +197,7 @@ public class GamePanel extends JPanel {
 
     @SneakyThrows
     public static void main(String[] args) {
-        Player user = new Player("SpongeBob", new Robot("SQUASH_BOT"));
+        Player user = new Player("SpongeBob", new Robot(RobotName.SQUASH_BOT));
         UserController userController = new UserController();
         userController.deleteUser("SpongeBob");
         userController.createUser("SpongeBob");
@@ -208,7 +209,7 @@ public class GamePanel extends JPanel {
         System.out.println(roomController.createRoom(user.getName(), "STARTER"));
         int roomNumber = roomController.createRoom(user.getName(), "STARTER").getInt("room_number");
         userController.joinRoom("PatrickStar", roomNumber);
-        GameMap gameMap = new GameMap("STARTER");
+        GameMap gameMap = new GameMap(MapName.STARTER);
         Room room = new Room(roomNumber);
         Game game = new Game();
         game.init(user, room, gameMap, roomController.roomInfo(roomNumber));

@@ -11,21 +11,20 @@ public class Movement {
         //this switch takes the robot Orientation given by the Card class, and returns the newPosition based on this orientation
         switch (robotOrientation) {
             case N:
-                newPos = new Position(currentPos.getXcoord()- amount, currentPos.getYcoord() );
+                newPos = new Position(currentPos.getRow() - amount, currentPos.getCol());
                 break;
             case S:
-                newPos = new Position(currentPos.getXcoord()+ amount, currentPos.getYcoord() );
+                newPos = new Position(currentPos.getRow() + amount, currentPos.getCol());
                 break;
             case E:
-                newPos = new Position(currentPos.getXcoord() , currentPos.getYcoord()+ amount);
+                newPos = new Position(currentPos.getRow(), currentPos.getCol() + amount);
                 break;
             case W:
-                newPos = new Position(currentPos.getXcoord() , currentPos.getYcoord()- amount);
+                newPos = new Position(currentPos.getRow(), currentPos.getCol() - amount);
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + robotOrientation + " is different from N/S/E/W");
         }
-
         return newPos;
     }
 }

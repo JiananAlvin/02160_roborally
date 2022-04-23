@@ -1,6 +1,8 @@
 package gui.view.widgets.game;
 
 import content.Application;
+import content.MapName;
+import content.RobotName;
 import lombok.Data;
 import model.Game;
 import model.Room;
@@ -122,7 +124,7 @@ public class MatPanel extends JPanel {
 
 
     public static void main(String[] args) throws IOException {
-        Player user = new Player("SpongeBob", new Robot("SQUASH_BOT"));
+        Player user = new Player("SpongeBob", new Robot(RobotName.valueOf("SQUASH_BOT")));
         UserController userController = new UserController();
         userController.createUser("SpongeBob");
         userController.createUser("PatrickStar");
@@ -133,7 +135,7 @@ public class MatPanel extends JPanel {
         System.out.println(roomController.createRoom(user.getName(), "STARTER"));
         int roomNumber = roomController.createRoom(user.getName(), "STARTER").getInt("room_number");
         userController.joinRoom("PatrickStar", roomNumber);
-        GameMap gameMap = new GameMap("STARTER");
+        GameMap gameMap = new GameMap(MapName.valueOf("STARTER"));
         Room room = new Room(roomNumber);
         Game game = new Game();
         game.init(user, room, gameMap, roomController.roomInfo(roomNumber));
