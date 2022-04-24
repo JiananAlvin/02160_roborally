@@ -1,4 +1,4 @@
-package server.controller.user;
+package server.controller;
 
 import org.json.JSONObject;
 import server.controller.ServerConnection;

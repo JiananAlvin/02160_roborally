@@ -1,7 +1,7 @@
 package content;
 
-import gui.view.widgets.CoverPanel;
-import gui.view.widgets.LoginPanel;
+import gui.view.widgets.cover.CoverPanel;
+import gui.view.widgets.login.LoginPanel;
 import lombok.SneakyThrows;
 import model.Game;
 import model.game.Player;

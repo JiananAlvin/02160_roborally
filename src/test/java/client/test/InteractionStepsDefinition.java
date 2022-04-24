@@ -1,24 +1,17 @@
 package client.test;
 
-import io.cucumber.java.After;
+import content.RobotName;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import lombok.SneakyThrows;
-import model.Game;
-import model.Room;
 import model.game.Player;
 import model.game.board.map.element.Robot;
 import model.game.board.mat.element.ProgrammingDeck;
 import model.game.board.mat.element.RegisterArea;
 import model.game.card.Card;
-import org.json.JSONObject;
-import org.junit.Assert;
-import server.controller.robot.RobotController;
-import server.controller.room.RoomController;
-import server.controller.user.UserController;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -33,7 +26,7 @@ public class InteractionStepsDefinition {
 
     @Before
     public void init() {
-        this.p1 = new Player("group10", new Robot("HULK X90"));
+        this.p1 = new Player("group10", new Robot(RobotName.valueOf("HULK_X90")));
     }
 
     @Given("a player had {string} cards in his programming deck")
@@ -45,7 +38,7 @@ public class InteractionStepsDefinition {
 
     @When("the player draws nine cards from his programming deck")
     public void the_player_draws_nine_cards_from_his_programming_deck() {
-        ArrayList<Card> cardsInHand = this.p1.drawCards();
+        this.p1.drawCards();
     }
 
     @Then("the player now has {string} cards in his programming deck")
@@ -60,7 +53,7 @@ public class InteractionStepsDefinition {
 
     @Then("he now has {string} cards in his hand")
     public void he_now_has_cards_in_his_hand(String string) {
-        assertEquals(Integer.parseInt(string), this.p1.drawCards().size());
+        assertEquals(Integer.parseInt(string), this.p1.getCardsInHand().size());
     }
 
 

@@ -1,6 +1,10 @@
 package gui.view.map;
 
-public enum TileType {
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+
+public enum TileImageEnum {
 
     BLANK("src/main/resources/images/tiles/blank.png"),
     CHARGER("src/main/resources/images/tiles/charger.png"),
@@ -20,15 +24,23 @@ public enum TileType {
     WALLEAST("src/main/resources/images/tiles/wall_east.png"),
     WALLEASTLASER("src/main/resources/images/tiles/wall_east_laser.png"),
     WALLNORTH("src/main/resources/images/tiles/wall_north.png"),
-    WALLNORTHLASER("src/main/resources/images/tiles/wall_north_laser.png");
+    WALLNORTHLASER("src/main/resources/images/tiles/wall_north_laser.png"),
+    NORTHONE("src/main/resources/images/tiles/north_one.png"),
+    ARROW("src/main/resources/images/robots/arrow.png");
 
-    private String pictureFile;
+    private final BufferedImage image;
 
-    private TileType(String pictureFile) {
-        this.pictureFile = pictureFile;
+    private TileImageEnum(String fileName) {
+        BufferedImage tempImage;
+        try {
+            tempImage = ImageIO.read(new File(fileName));
+        } catch (Exception e) {
+            tempImage = null;
+        }
+        this.image = tempImage;
     }
 
-    public String getPictureFile() {
-        return pictureFile;
+    public BufferedImage getImage() {
+        return this.image;
     }
 }

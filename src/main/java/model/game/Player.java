@@ -1,5 +1,6 @@
 package model.game;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 import lombok.Data;
@@ -21,7 +22,8 @@ public class Player {
     private ProgrammingDeck programmingDeck;
     private DiscardPile discardPile;
     private RegisterArea registerArea;
-
+    private ArrayList<Card> cardsInHand;
+    private Color userColor;
 
     public Player(String name, Robot robot) {
         this.name = name;
@@ -64,23 +66,22 @@ public class Player {
      *
      * @return an arraylist of 9 cards that is 9 cards in the player's hand.
      */
-    public ArrayList<Card> drawCards() {
-        ArrayList<Card> cardsInHand = new ArrayList<>();
+    public void drawCards() {
+        this.cardsInHand = new ArrayList<>();
         if (this.programmingDeck.getCards().size() < ProgrammingDeck.NUMBER_OF_CARDS_DRAWN_IN_EACH_ROUND) {
-            cardsInHand = new ArrayList<>(this.programmingDeck.getCards());
+            this.cardsInHand = new ArrayList<>(this.programmingDeck.getCards());
             //this.discardPile.getDiscards().addAll(cardsInHand);
             this.programmingDeck.getCards().removeAll(this.programmingDeck.getCards());
             this.replenishProgrammingDeck();
-            ArrayList<Card> complements = new ArrayList<>(this.programmingDeck.getCards().subList(0, ProgrammingDeck.NUMBER_OF_CARDS_DRAWN_IN_EACH_ROUND - cardsInHand.size()));
-            this.programmingDeck.getCards().subList(0, ProgrammingDeck.NUMBER_OF_CARDS_DRAWN_IN_EACH_ROUND - cardsInHand.size()).clear();
-            cardsInHand.addAll(complements);
+            ArrayList<Card> complements = new ArrayList<>(this.programmingDeck.getCards().subList(0, ProgrammingDeck.NUMBER_OF_CARDS_DRAWN_IN_EACH_ROUND - this.cardsInHand.size()));
+            this.programmingDeck.getCards().subList(0, ProgrammingDeck.NUMBER_OF_CARDS_DRAWN_IN_EACH_ROUND - this.cardsInHand.size()).clear();
+            this.cardsInHand.addAll(complements);
             //this.discardPile.getDiscards().addAll(cardsInHand);
         } else {
-            cardsInHand = new ArrayList<>(this.programmingDeck.getCards().subList(0, ProgrammingDeck.NUMBER_OF_CARDS_DRAWN_IN_EACH_ROUND));
+            this.cardsInHand = new ArrayList<>(this.programmingDeck.getCards().subList(0, ProgrammingDeck.NUMBER_OF_CARDS_DRAWN_IN_EACH_ROUND));
             this.programmingDeck.getCards().subList(0, ProgrammingDeck.NUMBER_OF_CARDS_DRAWN_IN_EACH_ROUND).clear();
             //this.discardPile.getDiscards().addAll(cardsInHand);
         }
-        return cardsInHand;
     }
 
     /**
@@ -102,3 +103,4 @@ public class Player {
         this.discardPile.getDiscards().addAll(cards);
     }
 }
+

@@ -1,7 +1,7 @@
-package gui.view.widgets;
+package gui.view.widgets.login;
 
-import content.Application;
-import server.controller.user.UserController;
+import gui.view.widgets.room.RoomPanel;
+import server.controller.UserController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 
 public class LoginPanel extends JPanel {
 
+    private final String PATH_TO_ROBOT_ICONS = "src/main/resources/images/robots/";
     private final JTextField userName;
     private final JLabel lblChosenRobot;
     private final JToggleButton btSquashBot;
@@ -21,20 +22,20 @@ public class LoginPanel extends JPanel {
 
     public LoginPanel(JFrame frame) {
         this.userName = new JTextField();
-        JLabel lbluserName = new JLabel("Player name");
+        JLabel lblUserName = new JLabel("Player name");
         JLabel lblRobot = new JLabel("Robot");
         this.lblChosenRobot = new JLabel();
-        Icon iconSquashBot = new ImageIcon(new ImageIcon("src/main/resources/images/robots/SQUASH_BOT.jpg").getImage().getScaledInstance(105, 142, Image.SCALE_DEFAULT));
+        Icon iconSquashBot = new ImageIcon(new ImageIcon(PATH_TO_ROBOT_ICONS + "SQUASH_BOT.jpg").getImage().getScaledInstance(105, 142, Image.SCALE_DEFAULT));
         this.btSquashBot = new JToggleButton("", iconSquashBot);
-        Icon iconZoomBot = new ImageIcon(new ImageIcon("src/main/resources/images/robots/ZOOM_BOT.jpg").getImage().getScaledInstance(105, 142, Image.SCALE_DEFAULT));
+        Icon iconZoomBot = new ImageIcon(new ImageIcon(PATH_TO_ROBOT_ICONS + "ZOOM_BOT.jpg").getImage().getScaledInstance(105, 142, Image.SCALE_DEFAULT));
         this.btZoomBot = new JToggleButton("", iconZoomBot);
-        Icon iconHammerBot = new ImageIcon(new ImageIcon("src/main/resources/images/robots/HAMMER_BOT.jpg").getImage().getScaledInstance(105, 142, Image.SCALE_DEFAULT));
+        Icon iconHammerBot = new ImageIcon(new ImageIcon(PATH_TO_ROBOT_ICONS + "HAMMER_BOT.jpg").getImage().getScaledInstance(105, 142, Image.SCALE_DEFAULT));
         this.btHammerBot = new JToggleButton("", iconHammerBot);
-        Icon iconSpinBot = new ImageIcon(new ImageIcon("src/main/resources/images/robots/SPIN_BOT.jpg").getImage().getScaledInstance(105, 142, Image.SCALE_DEFAULT));
+        Icon iconSpinBot = new ImageIcon(new ImageIcon(PATH_TO_ROBOT_ICONS + "SPIN_BOT.jpg").getImage().getScaledInstance(105, 142, Image.SCALE_DEFAULT));
         this.btSpinBot = new JToggleButton("", iconSpinBot);
-        Icon iconHulkX90 = new ImageIcon(new ImageIcon("src/main/resources/images/robots/HULK_X90.jpg").getImage().getScaledInstance(105, 142, Image.SCALE_DEFAULT));
+        Icon iconHulkX90 = new ImageIcon(new ImageIcon(PATH_TO_ROBOT_ICONS + "HULK_X90.jpg").getImage().getScaledInstance(105, 142, Image.SCALE_DEFAULT));
         this.btHulkX90 = new JToggleButton("", iconHulkX90);
-        Icon iconTrundleBot = new ImageIcon(new ImageIcon("src/main/resources/images/robots/TRUNDLE_BOT.jpg").getImage().getScaledInstance(105, 142, Image.SCALE_DEFAULT));
+        Icon iconTrundleBot = new ImageIcon(new ImageIcon(PATH_TO_ROBOT_ICONS + "TRUNDLE_BOT.jpg").getImage().getScaledInstance(105, 142, Image.SCALE_DEFAULT));
         this.btTrundleBot = new JToggleButton("", iconTrundleBot);
         JToggleButton btOk = new JToggleButton("Login");
         JToggleButton btCancel = new JToggleButton("Cancel");
@@ -42,7 +43,7 @@ public class LoginPanel extends JPanel {
         // Displaying the login interface
         this.setLayout(null);
         RobotListener robotListener = new RobotListener();
-        lbluserName.setBounds(100, 8, 70, 20);
+        lblUserName.setBounds(100, 8, 70, 20);
         this.userName.setBounds(100, 36, 193, 28);
         lblRobot.setBounds(100, 75, 70, 20);
         this.lblChosenRobot.setBounds(200, 75, 100, 20);
@@ -61,7 +62,7 @@ public class LoginPanel extends JPanel {
         btOk.setBounds(100, 270, 80, 30);
         btCancel.setBounds(300, 270, 80, 30);
         this.add(this.userName);
-        this.add(lbluserName);
+        this.add(lblUserName);
         this.add(lblRobot);
         this.add(this.lblChosenRobot);
         this.add(this.btSquashBot);
@@ -82,10 +83,19 @@ public class LoginPanel extends JPanel {
              */
             UserController userController = new UserController();
             userController.createUser(userName.getText());
-            userController.chooseRobot(userName.getText(), lblChosenRobot.getText().replace(' ', '_'));
-            frame.getContentPane().removeAll();
-            frame.getContentPane().add(new RoomPanel(userName.getText(), frame));
-            frame.setVisible(true);
+            if (userController.getResponse().get("status").equals(200)) {
+                if (lblChosenRobot.getText().equals("")) {
+                    JOptionPane.showMessageDialog(null, "Please choose a robot");
+                    userController.deleteUser(userName.getText());
+                } else {
+                    userController.chooseRobot(userName.getText(), lblChosenRobot.getText().replace(' ', '_'));
+                    frame.getContentPane().removeAll();
+                    frame.getContentPane().add(new RoomPanel(userName.getText(), frame));
+                    frame.setVisible(true);
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Username already exists");
+            }
         });
 
         btCancel.addActionListener(e -> {
@@ -107,6 +117,8 @@ public class LoginPanel extends JPanel {
                 lblChosenRobot.setText("HULK X90");
             } else if (e.getSource() == btTrundleBot) {
                 lblChosenRobot.setText("TRUNDLE BOT");
+            } else {
+                lblChosenRobot.setText("");
             }
         }
     }

@@ -1,4 +1,4 @@
-package server.controller.robot;
+package server.controller;
 
 import org.json.JSONObject;
 import server.controller.ServerConnection;
