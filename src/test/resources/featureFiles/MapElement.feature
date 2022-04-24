@@ -135,3 +135,17 @@ Feature:
       | SPIN_BOT   | 1             | 2           | 2           | N           | 2            | 2            | wel              | 5           |
       | SQUASH_BOT | 3             | 2           | 2           | S           | 2            | 2            | wwl              | 2           |
       | HAMMER_BOT | 4             | 2           | 2           | S           | 2            | 2            | sg               | 2           |
+
+  Scenario Outline: Robot can not go through wall
+    Given there is a game with map "<map_name>"
+    And A robot "<robot_name>" has position "<row>" "<col>"
+    And there is a wall "<wall_name>" at the same position as the robot
+    And the robot faces the wall
+    When robot tries to move forward
+    Then robot does not move forward
+    Examples:
+      | robot_name | row | col | wall_name | map_name |
+      | ZOOM_BOT   | 2   | 1   | wn       | BEGINNER |
+      | HULK_X90   | 7   | 1   | ws       | BEGINNER |
+      | SPIN_BOT   | 5   | 2   | we       | BEGINNER |
+      | SQUASH_BOT | 3   | 6   | wnl    | BEGINNER |

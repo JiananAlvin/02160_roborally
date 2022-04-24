@@ -2,6 +2,8 @@ package model.game.board.map.element;
 
 import content.RobotName;
 import lombok.Data;
+import model.Game;
+import model.game.board.map.GameMap;
 import model.game.board.map.Orientation;
 import model.game.board.map.Position;
 import model.game.card.Card;
@@ -31,13 +33,17 @@ public class Robot {
     }
 
 
-    public void setPosition(Position position) {
-        this.position = position;
+    public void setPosition(Position position)
+    {
+        setPosition(position.getRow(), position.getCol());
     }
 
     public void setPosition(int row, int col) {
-        this.position.setRow(row);
-        this.position.setCol(col);
+        if(Game.validatePosition(this, row, col)) {
+            this.position.setRow(row);
+            this.position.setCol(col);
+        }
+
     }
 
     public int distanceToAntenna() {

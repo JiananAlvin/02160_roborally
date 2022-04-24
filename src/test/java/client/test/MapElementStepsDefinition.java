@@ -28,6 +28,7 @@ public class MapElementStepsDefinition {
     private Player p3;
     private Card card;
     private Tile tile;
+    private Position initialRobotPosition;
 
     @Before
     public void initMapElement() {
@@ -46,6 +47,7 @@ public class MapElementStepsDefinition {
         // TODO:
         this.robot.setOnBoard(true);
     }
+
 
     @Then("robot is now at a position {string} and {string}")
     public void robotIsNowAtAPositionAnd(String arg0, String arg1) {
@@ -155,11 +157,11 @@ public class MapElementStepsDefinition {
         assertEquals(Integer.parseInt(expectedXPos), robot.getPosition().getRow());
         assertEquals(Integer.parseInt(expectedYPos), robot.getPosition().getCol());
     }
-
     @Given("A robot {string} has position {string} {string}")
     public void aRobotHasPosition(String robotName, String xPos, String yPos) {
         this.robot = new Robot(RobotName.valueOf(robotName));
         this.robot.setPosition(Integer.parseInt(xPos), Integer.parseInt(yPos));
+        this.initialRobotPosition = new Position(Integer.parseInt(xPos), Integer.parseInt(yPos));
     }
 
     @Then("the expected output is {string} in a board that have a maximum size of {string} {string}")
@@ -304,4 +306,85 @@ public class MapElementStepsDefinition {
     public void robotLandsOnAnObstacleStatusIsTrue() {
         this.game.checkCollisionTemporary(this.robot, this.tile);
     }
+
+    @And("there is a wall {string} at the same position as the robot")
+    public void thereIsAWallAtTheSamePositionAsTheRobot(String arg0) {
+        switch (arg0) {
+            case "ww":
+                this.tile = new WallWest(this.robot.getPosition().getCol(), this.robot.getPosition().getRow());
+                break;
+            case "we":
+                this.tile = new WallEast(this.robot.getPosition().getCol(), this.robot.getPosition().getRow());
+                break;
+            case "ws":
+                this.tile = new WallSouth(this.robot.getPosition().getCol(), this.robot.getPosition().getRow());
+                break;
+            case "wn":
+                this.tile = new WallNorth(this.robot.getPosition().getCol(), this.robot.getPosition().getRow());
+                break;
+            case "wsl":
+                this.tile = new WallSouthLaser(this.robot.getPosition().getCol(), this.robot.getPosition().getRow());
+                break;
+            case "wnl":
+                this.tile = new WallNorthLaser(this.robot.getPosition().getCol(), this.robot.getPosition().getRow());
+                break;
+            case "wel":
+                this.tile = new WallEastLaser(this.robot.getPosition().getCol(), this.robot.getPosition().getRow());
+                break;
+            case "wwl":
+                this.tile = new WallWestLaser(this.robot.getPosition().getCol(), this.robot.getPosition().getRow());
+                break;
+
+        }
+    }
+
+
+    @And("the robot faces the wall")
+    public void theRobotFacesTheWall() {
+        switch (this.tile.getClass().getSimpleName()) {
+            case "WallWest":
+            case "WallWestLaser":
+                this.robot.setOrientation(Orientation.W);
+                break;
+            case "WallEast":
+            case "WallEastLaser":
+                this.robot.setOrientation(Orientation.E);
+                break;
+            case "WallNorth":
+            case "WallNorthLaser":
+                this.robot.setOrientation(Orientation.N);
+                break;
+            case "WallSouth":
+            case "WallSouthLaser":
+                this.robot.setOrientation(Orientation.S);
+                break;
+
+        }
+
+    }
+
+    @When("robot tries to move forward")
+    public void robotTriesToMoveForward() {
+        switch (this.robot.getOrientation()) {
+            case N:
+                this.robot.setPosition(this.robot.getPosition().getCol(), this.robot.getPosition().getRow() + 1);
+                break;
+            case S:
+                this.robot.setPosition(this.robot.getPosition().getCol(), this.robot.getPosition().getRow() - 1);
+                break;
+            case E:
+                this.robot.setPosition(this.robot.getPosition().getCol() + 1, this.robot.getPosition().getRow());
+                break;
+            case W:
+                this.robot.setPosition(this.robot.getPosition().getCol() - 1, this.robot.getPosition().getRow());
+                break;
+        }
+    }
+
+    @Then("robot does not move forward")
+    public void robotDoesNotMoveForward() {
+
+        assertTrue(this.initialRobotPosition.equals(this.robot.getPosition()));
+    }
+
 }

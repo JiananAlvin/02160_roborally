@@ -5,6 +5,7 @@ import gui.view.widgets.game.GamePanel;
 import lombok.Data;
 import model.game.board.map.Collision;
 import model.game.board.map.GameMap;
+import model.game.board.map.Orientation;
 import model.game.board.map.Position;
 import model.game.board.map.element.*;
 import model.game.Player;
@@ -13,6 +14,7 @@ import org.json.JSONObject;
 import server.controller.RobotController;
 import server.controller.RoomController;
 
+import java.net.ContentHandler;
 import java.util.*;
 
 @Data
@@ -30,7 +32,7 @@ public class Game {
     private Player user;
     private ArrayList<Player> participants;
     private Room room;
-    private GameMap gameMap;
+    private static GameMap gameMap;
     private int currentRoundNum;
     private int currentRegisterNum;
 
@@ -43,6 +45,32 @@ public class Game {
 
     public Game() {
         this.participants = new ArrayList<>();
+    }
+
+    public static boolean validatePosition(Robot r, int row, int col) {
+        switch (gameMap.getTileWithPosition(new Position(r.getPosition().getRow(), r.getPosition().getCol())).getClass().getSimpleName()) {
+            case "WallEast":
+            case "WallEastLaser":
+                return r.getOrientation() != Orientation.E;
+            case "WallNorth":
+            case "WallNorthLaser":
+                return r.getOrientation() != Orientation.N;
+            case "WallSouth":
+            case "WallSouthLaser":
+                return r.getOrientation()  != Orientation.S;
+            case "WallWest":
+            case "WallWestLaser":
+                return r.getOrientation() != Orientation.W;
+        }
+        return true;
+    }
+
+    public GameMap getGameMap() {
+        return gameMap;
+    }
+
+    public void setGameMap(GameMap gameMap) {
+        this.gameMap = gameMap;
     }
     /**
      * This method is used to init the whole game when the game starts.
@@ -218,6 +246,16 @@ public class Game {
             }
         }
     }
+
+
+
+
+//    public boolean validMovement(Robot r, Position newPos) {
+//        switch (gameMap.getContent()[r.getPosition().getRow()][r.getPosition().getCol()].getType()) {
+//            case WallWest:
+//                if (r.getOrientation()) {
+//        }
+//    }
 
 
 }
