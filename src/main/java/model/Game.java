@@ -11,7 +11,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import server.controller.robot.RobotController;
 import server.controller.room.RoomController;
-import server.controller.user.UserController;
 
 import java.util.*;
 
@@ -174,7 +173,7 @@ public class Game {
            int collisionNumber = (collision.checkCollision(tile));
             switch (collisionNumber) {
                 case 1: //laser, static gear
-                    robotTakeDamage(r, ((Obstacle) tile).getDamage());
+                    ((Obstacle) tile).robotInteraction(r);
                     break;
                 case 3:
                    // this.currentPlayer.resetCheckpoints();

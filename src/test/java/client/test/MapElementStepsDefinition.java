@@ -282,28 +282,32 @@ public class MapElementStepsDefinition {
     @And("a position {string} {string} on the map indicating the obstacle of type {string}")
     public void aPositionOnTheMapIndicatingTheObstacle(String xPos, String yPos, String type) {
         switch (type) {
-            case "wnl":
-                this.tile = new WallNorthLaser(Integer.parseInt(xPos), Integer.parseInt(yPos));
-            case "wsl":
-                this.tile = new WallSouthLaser(Integer.parseInt(xPos), Integer.parseInt(yPos));
-                break;
-            case "wel":
-                this.tile = new WallEastLaser(Integer.parseInt(xPos), Integer.parseInt(yPos));
-                break;
-            case "wwl":
-                this.tile = new WallWestLaser(Integer.parseInt(xPos), Integer.parseInt(yPos));
-                break;
             case "sg":
                 this.tile = new StaticGear(Integer.parseInt(xPos), Integer.parseInt(yPos));
                 break;
             case "pit":
                 this.tile = new Pit(Integer.parseInt(xPos), Integer.parseInt(yPos));
                 break;
+            case "rgR":
+                this.tile = new RotatingGear(Integer.parseInt(xPos), Integer.parseInt(yPos), true);
+                break;
+            case "rgL":
+                this.tile = new RotatingGear(Integer.parseInt(xPos), Integer.parseInt(yPos), false);
+                break;
+            case "ch":
+                this.tile = new Charger(Integer.parseInt(xPos), Integer.parseInt(yPos));
+                break;
+
         }
     }
 
     @When("robot lands on an obstacle status is true")
     public void robotLandsOnAnObstacleStatusIsTrue() {
         this.game.checkCollisionTemporary(this.robot, this.tile);
+    }
+
+    @Then("The robot now has {string} orientation")
+    public void theRobotNowHasOrientation(String arg0) {
+        assertEquals(Orientation.valueOf(arg0), robot.getOrientation());
     }
 }

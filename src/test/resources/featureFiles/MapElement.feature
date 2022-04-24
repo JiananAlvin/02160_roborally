@@ -130,10 +130,20 @@ Feature:
     Then The robot now has "<final_lives>" lives
     Examples:
       | robot_name | initial_lives | initial_posX | initial_posY | orientation | obstacle_posX | obstacle_posY | type_of_obstacle | final_lives |
-      | Simona     | 2             | 2            | 2            | N           | 2             | 2             | wnl              | 1           |
-      | Simona     | 2             | 3            | 2            | N           | 2             | 2             | wsl              | 2           |
-      | Simona     | 1             | 2            | 2            | N           | 2             | 2             | wel              | 5           |
-      | Simona     | 3             | 2            | 2            | S           | 2             | 2             | wwl              | 2           |
       | Simona     | 4             | 2            | 2            | S           | 2             | 2             | sg               | 2           |
       | Simona     | 4             | 2            | 2            | S           | 2             | 2             | pit              | 5           |
+      | Simona     | 3             | 2            | 2            | S           | 2             | 2             | ch               | 4           |
+
+
+
+  Scenario Outline: Player lands on an Obstacle
+    Given A robot "<robot_name>" had "<initial_lives>" lives
+    And The robot has initial position "<initial_posX>" "<initial_posY>" with orientation "<orientation>"
+    And a position "<obstacle_posX>" "<obstacle_posY>" on the map indicating the obstacle of type "<type_of_obstacle>"
+    When robot lands on an obstacle status is true
+    Then The robot now has "<final_orientation>" orientation
+    Examples:
+      | robot_name | initial_lives | initial_posX | initial_posY | orientation | obstacle_posX | obstacle_posY | type_of_obstacle | final_orientation |
+      | Simona     | 4             | 2            | 2            | S           | 2             | 2             | rgR              | W                 |
+      | Simona     | 4             | 2            | 2            | N           | 2             | 2             | rgL              | W                 |
 

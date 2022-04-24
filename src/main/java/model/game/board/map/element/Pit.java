@@ -2,7 +2,7 @@ package model.game.board.map.element;
 
 import model.game.board.map.Position;
 
-public class Pit extends Tile {
+public class Pit extends Tile{
     public Pit() { super();}
 
     public Pit(Position position) {
@@ -20,5 +20,6 @@ public class Pit extends Tile {
     public void setPosition(Position position) {
         super.setPosition(position);
     }
+
 }
 
