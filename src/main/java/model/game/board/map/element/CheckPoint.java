@@ -24,10 +24,10 @@ public class CheckPoint extends Tile {
                 this.tileImageEnum = TileImageEnum.CHECKPOINT1;
                 break;
             case 2:
-                this.tileImageEnum = TileImageEnum.CHECKPOINT1;
+                this.tileImageEnum = TileImageEnum.CHECKPOINT2;
                 break;
             case 3:
-                this.tileImageEnum = TileImageEnum.CHECKPOINT1;
+                this.tileImageEnum = TileImageEnum.CHECKPOINT3;
                 break;
             default:
                 break;

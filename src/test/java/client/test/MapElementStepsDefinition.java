@@ -17,6 +17,7 @@ import model.game.card.Card;
 import model.game.card.programming.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
@@ -95,6 +96,9 @@ public class MapElementStepsDefinition {
     public void theRobotLivesAreReducedPointsOfDamageByTheGame(String arg0) throws IOException {
         this.game = new Game();
         this.game.setGameMap(new GameMap(MapName.STARTER));
+        ArrayList<RebootPoint> rebootPoints = new ArrayList<>();
+        rebootPoints.add(new RebootPoint(1, 1));
+        this.game.getGameMap().setRebootPoints(rebootPoints);
         this.game.robotTakeDamage(this.robot, Integer.parseInt(arg0));
     }
 
@@ -283,16 +287,16 @@ public class MapElementStepsDefinition {
     public void aPositionOnTheMapIndicatingTheObstacle(String xPos, String yPos, String type) {
         switch (type) {
             case "wnl":
-                this.tile = new WallNorthLaser(Integer.parseInt(xPos), Integer.parseInt(yPos));
+                this.tile = new Laser(Integer.parseInt(xPos), Integer.parseInt(yPos), false);
                 break;
             case "wsl":
-                this.tile = new WallSouthLaser(Integer.parseInt(xPos), Integer.parseInt(yPos));
+                this.tile = new Laser(Integer.parseInt(xPos), Integer.parseInt(yPos), false);
                 break;
             case "wel":
-                this.tile = new WallEastLaser(Integer.parseInt(xPos), Integer.parseInt(yPos));
+                this.tile = new Laser(Integer.parseInt(xPos), Integer.parseInt(yPos), true);
                 break;
             case "wwl":
-                this.tile = new WallWestLaser(Integer.parseInt(xPos), Integer.parseInt(yPos));
+                this.tile = new Laser(Integer.parseInt(xPos), Integer.parseInt(yPos), true);
                 break;
             case "sg":
                 this.tile = new StaticGear(Integer.parseInt(xPos), Integer.parseInt(yPos));
@@ -304,4 +308,5 @@ public class MapElementStepsDefinition {
     public void robotLandsOnAnObstacleStatusIsTrue() {
         this.game.checkCollisionTemporary(this.robot, this.tile);
     }
+
 }

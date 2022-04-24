@@ -169,7 +169,7 @@ public class WaitingPanel extends JPanel {
                             tableModel.addRow(new Object[]{user.toString(), robotController.getRobotInfo(user.toString()).getString(RobotController.RESPONSE_ROBOT_NAME), "participant"});
                         }
                     }
-//TODO: Jianan
+                    //TODO: Jianan
                     //Modified Wenjie
                     SwingUtilities.invokeLater(new Runnable() {
                         @Override

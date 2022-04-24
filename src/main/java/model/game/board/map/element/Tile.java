@@ -10,9 +10,6 @@ public abstract class Tile {
     private Position position;
     protected TileImageEnum tileImageEnum;
 
-//    private boolean verticalLaser;
-//    private boolean horizonLaser;
-
     public Tile() {
         this.position = new Position();
     }
@@ -24,8 +21,6 @@ public abstract class Tile {
     public Tile(int x, int y) {
         this.position = new Position(x, y);
     }
-
-
 }
 
 

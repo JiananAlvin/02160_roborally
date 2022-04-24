@@ -122,16 +122,17 @@ Feature:
       | INTERMEDIATE | Ion     | Durdija | 1            | unfinished  |
 
 
-  Scenario Outline: Player lands on an Obstacle
-    Given A robot "<robot_name>" had "<initial_lives>" lives
-    And The robot has initial position "<initial_row>" "<initial_col>" with orientation "<orientation>"
-    And a position "<obstacle_row>" "<obstacle_col>" on the map indicating the obstacle of type "<type_of_obstacle>"
-    When robot lands on an obstacle status is true
-    Then The robot now has "<final_lives>" lives
-    Examples:
-      | robot_name | initial_lives | initial_row | initial_col | orientation | obstacle_row | obstacle_col | type_of_obstacle | final_lives |
-      | ZOOM_BOT   | 2             | 2           | 2           | N           | 2            | 2            | wnl              | 1           |
-      | HULK_X90   | 2             | 3           | 2           | N           | 2            | 2            | wsl              | 2           |
-      | SPIN_BOT   | 1             | 2           | 2           | N           | 2            | 2            | wel              | 5           |
-      | SQUASH_BOT | 3             | 2           | 2           | S           | 2            | 2            | wwl              | 2           |
-      | HAMMER_BOT | 4             | 2           | 2           | S           | 2            | 2            | sg               | 2           |
+#  Scenario Outline: Player lands on an Obstacle
+#    Given A robot "<robot_name>" had "<initial_lives>" lives
+#    And The robot has initial position "<initial_row>" "<initial_col>" with orientation "<orientation>"
+#    And a position "<obstacle_row>" "<obstacle_col>" on the map indicating the obstacle of type "<type_of_obstacle>"
+#    When robot lands on an obstacle status is true
+#    Then The robot now has "<final_lives>" lives
+#    Examples:
+#      | robot_name | initial_lives | initial_row | initial_col | orientation | obstacle_row | obstacle_col | type_of_obstacle | final_lives |
+#      | ZOOM_BOT   | 2             | 2           | 2           | N           | 2            | 2            | wnl              | 1           |
+#      | HULK_X90   | 2             | 3           | 2           | N           | 2            | 2            | wsl              | 2           |
+#      | SPIN_BOT   | 1             | 2           | 2           | N           | 2            | 2            | wel              | 5           |
+#      | SQUASH_BOT | 3             | 2           | 2           | S           | 2            | 2            | wwl              | 2           |
+#      | HAMMER_BOT | 4             | 2           | 2           | S           | 2            | 2            | sg               | 2           |
+

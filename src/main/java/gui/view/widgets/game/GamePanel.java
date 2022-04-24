@@ -31,8 +31,8 @@ import java.util.ArrayList;
  * |                |-----|
  * |                |.log.|
  * |________________|_____|
- * |MatPanel              |
- * |________________ _____|
+ * |       MatPanel       |
+ * |______________________|
  */
 public class GamePanel extends JPanel {
 
