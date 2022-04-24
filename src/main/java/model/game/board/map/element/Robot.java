@@ -16,46 +16,32 @@ public class Robot {
     private int lives;
     private Position position;
 
-    public Robot(RobotName robot) {
-        this.name = robot.getName();
+    public Robot(RobotName robotName) {
+        this.name = robotName.getName();
         this.onBoard = false;
         this.position = new Position();
+        this.orientation = Orientation.E;
     }
 
-    public Robot(String name, int x, int y) {
+    public Robot(String name, int row, int col) {
         this.name = name;
         this.onBoard = false;
-        this.position = new Position(x, y);
+        this.position = new Position(row, col);
+        this.orientation = Orientation.E;
     }
 
-
-    public boolean onBoard() {
-        return this.onBoard;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public void setOnBoard(boolean b) {
-        this.onBoard = b;
-    }
 
     public void setPosition(Position position) {
         this.position = position;
     }
 
-    public void setPosition(int x, int y) {
-        this.position.setXcoord(x);
-        this.position.setYcoord(y);
-    }
-
-    public Position getPosition() {
-        return this.position;
+    public void setPosition(int row, int col) {
+        this.position.setRow(row);
+        this.position.setCol(col);
     }
 
     public int distanceToAntenna() {
-        return Math.abs(this.position.getXcoord() - Antenna.getInstance().getPosition().getXcoord()) + Math.abs(this.position.getYcoord() - Antenna.getInstance().getPosition().getYcoord());
+        return Math.abs(this.position.getRow() - Antenna.getInstance().getPosition().getRow()) + Math.abs(this.position.getCol() - Antenna.getInstance().getPosition().getCol());
     }
 
     @Override
@@ -65,22 +51,6 @@ public class Robot {
 
     public void applyCard(Card card) {
         card.action(this);
-    }
-
-    public Orientation getOrientation() {
-        return this.orientation;
-    }
-
-    public void setOrientation(Orientation orientation) {
-        this.orientation = orientation;
-    }
-
-    public void setLives(int lives) {
-        this.lives = lives;
-    }
-
-    public int getLives() {
-        return this.lives;
     }
 
     /**
@@ -98,10 +68,10 @@ public class Robot {
         return true; // here nothing happens
     }
 
-    public boolean imInsideBoard(int maxX, int maxY) {
-        if (this.getPosition().getXcoord() > maxX || this.getPosition().getYcoord() > maxY) {
+    public boolean imInsideBoard(int maxRow, int maxCol) {
+        if (this.getPosition().getRow() > maxRow || this.getPosition().getCol() > maxCol) {
             return false;
-        } else return this.getPosition().getXcoord() >= 0 && this.getPosition().getYcoord() >= 0;
+        } else return this.getPosition().getRow() >= 0 && this.getPosition().getCol() >= 0;
     }
 }
 

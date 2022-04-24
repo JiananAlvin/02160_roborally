@@ -1,7 +1,6 @@
 package model.game.board.map;
 
 import content.MapName;
-import io.cucumber.java.bs.A;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import model.game.board.map.element.CheckPoint;
@@ -32,7 +31,7 @@ public class GameMap {
      */
     public GameMap(MapName mapName) throws IOException {
         this.mapName = mapName.getMapName();
-        this.content = MapReader.txtToTileMatrix(this.mapName);
+        this.content = MapReader.txtToTileMatrix(mapName);
         this.startPoints = new ArrayList<>();
         this.rebootPoints = new ArrayList<>();
         this.checkPoints = new ArrayList<>();
@@ -64,6 +63,6 @@ public class GameMap {
     }
 
     public Tile getTileWithPosition(Position position) {
-        return content[position.getXcoord()][position.getYcoord()];
+        return content[position.getRow()][position.getCol()];
     }
 }

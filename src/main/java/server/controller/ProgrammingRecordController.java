@@ -8,7 +8,7 @@ import org.json.JSONObject;
  */
 public class ProgrammingRecordController extends ServerConnection {
 
-    public static final String RESPONSE_USER = "user";
+    public static final String RESPONSE_USER = "username";
     public static final String RESPONSE_ROOM = "room";
     public static final String RESPONSE_ROUND = "round";
     public static final String RESPONSE_REGISTER1 = "register1";
@@ -16,6 +16,7 @@ public class ProgrammingRecordController extends ServerConnection {
     public static final String RESPONSE_REGISTER3 = "register3";
     public static final String RESPONSE_REGISTER4 = "register4";
     public static final String RESPONSE_REGISTER5 = "register5";
+    public static final String RESPONSE = "response";
 
     public JSONObject getProgrammingRecords(int roomNumber, int round) {
         this.setPath("/getProgrammingRecords/" + roomNumber + "/" + round);
@@ -28,8 +29,8 @@ public class ProgrammingRecordController extends ServerConnection {
         this.setPath("/createProgrammingRecord");
         JSONObject body = new JSONObject();
         body.put("username", userName);
-        body.put("roomNumber", roomNumber+"");
-        body.put("round", round+"");
+        body.put("roomNumber", roomNumber + "");
+        body.put("round", round + "");
         body.put("register1", register1);
         body.put("register2", register2);
         body.put("register3", register3);
@@ -39,9 +40,9 @@ public class ProgrammingRecordController extends ServerConnection {
         return this.getResponse();
     }
 
-    public static void main(String[] args) {
-        System.out.println(new ProgrammingRecordController().getProgrammingRecords(100, 1));
-        System.out.println(new ProgrammingRecordController().createProgrammingRecord("ion", 100, 2, "Move1", "Move1", "Move1", "Move1", "Move1"));
-    }
+//    public static void main(String[] args) {
+//        System.out.println(new ProgrammingRecordController().getProgrammingRecords(100, 1));
+//        System.out.println(new ProgrammingRecordController().createProgrammingRecord("ion", 100, 2, "Move1", "Move1", "Move1", "Move1", "Move1"));
+//    }
 
 }

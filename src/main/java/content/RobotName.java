@@ -1,6 +1,7 @@
 package content;
 
 public enum RobotName {
+
     SQUASH_BOT("SQUASH_BOT"),
     ZOOM_BOT("ZOOM_BOT"),
     HAMMER_BOT("HAMMER_BOT"),
@@ -10,7 +11,7 @@ public enum RobotName {
 
     private String name;
 
-    RobotName(String name) {
+    private RobotName(String name) {
         this.name = name;
     }
 
@@ -18,4 +19,3 @@ public enum RobotName {
         return name;
     }
 }
-

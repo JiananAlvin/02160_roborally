@@ -49,6 +49,11 @@
             <artifactId>json</artifactId>
             <version>20220320</version>
         </dependency>
+        <dependency>
+            <groupId>net.coobird</groupId>
+            <artifactId>thumbnailator</artifactId>
+            <version>0.4.3</version>
+        </dependency>
 
     </dependencies>
 </project>

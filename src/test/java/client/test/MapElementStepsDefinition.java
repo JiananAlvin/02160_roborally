@@ -104,8 +104,8 @@ public class MapElementStepsDefinition {
     }
 
 
-    @Given("A robot {string} has initial position {string} {string} with orientation {string}")
-    public void aRobotHasInitialPositionWithOrientation(String robotName, String xPos, String yPos, String orientation) {
+    @Given("a robot {string} had initial position {string} {string} with orientation {string}")
+    public void aRobotHadInitialPositionWithOrientation(String robotName, String xPos, String yPos, String orientation) {
         this.robot = new Robot(RobotName.valueOf(robotName));
         this.robot.setPosition(Integer.parseInt(xPos), Integer.parseInt(yPos));
         Orientation o = Orientation.N;
@@ -126,7 +126,7 @@ public class MapElementStepsDefinition {
         this.robot.setOrientation(o);
     }
 
-    @Given("A card with movement {string}")
+    @Given("a card with movement {string}")
     public void aCardWithMovement(String movement) {
         switch (movement) {
             case "1":
@@ -145,15 +145,15 @@ public class MapElementStepsDefinition {
 
     }
 
-    @When("The card is played")
+    @When("the card is played")
     public void theCardIsPlayed() {
         card.action(robot);
     }
 
     @Then("the robot position is {string} {string}")
     public void theRobotPositionIs(String expectedXPos, String expectedYPos) {
-        assertEquals(Integer.parseInt(expectedXPos), robot.getPosition().getXcoord());
-        assertEquals(Integer.parseInt(expectedYPos), robot.getPosition().getYcoord());
+        assertEquals(Integer.parseInt(expectedXPos), robot.getPosition().getRow());
+        assertEquals(Integer.parseInt(expectedYPos), robot.getPosition().getCol());
     }
 
     @Given("A robot {string} has position {string} {string}")
@@ -162,7 +162,7 @@ public class MapElementStepsDefinition {
         this.robot.setPosition(Integer.parseInt(xPos), Integer.parseInt(yPos));
     }
 
-    @Then("The expected output is {string} in a board that have a maximum size of {string} {string}")
+    @Then("the expected output is {string} in a board that have a maximum size of {string} {string}")
     public void theExpectedOutputIsInABoardThatHaveAMaximumSizeOf(String output, String maxX, String maxY) {
         boolean aux = this.robot.imInsideBoard(Integer.parseInt(maxX), Integer.parseInt(maxY));
         assertEquals(Boolean.valueOf(output), aux);

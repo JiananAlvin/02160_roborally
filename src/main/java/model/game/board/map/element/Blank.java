@@ -1,5 +1,6 @@
 package model.game.board.map.element;
 
+import gui.view.map.TileImageEnum;
 import model.game.board.map.Position;
 
 /**
@@ -8,9 +9,11 @@ import model.game.board.map.Position;
 public class Blank extends Tile {
     public Blank(Position position) {
         super(position);
+        this.tileImageEnum = TileImageEnum.BLANK;
     }
 
     public Blank(Integer x, Integer y) {
         super(x, y);
+        this.tileImageEnum = TileImageEnum.BLANK;
     }
 }

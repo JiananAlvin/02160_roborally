@@ -1,5 +1,6 @@
-package gui.view.widgets;
+package gui.view.widgets.room;
 
+import gui.view.widgets.waiting.WaitingPanel;
 import server.controller.RoomController;
 import server.controller.UserController;
 import org.json.JSONObject;
@@ -19,8 +20,6 @@ public class RoomPanel<IntField> extends JPanel {
         JLabel lblRoomNumber = new JLabel("Room number");
         this.roomNumber = new JTextField();
         JToggleButton btJoinRoom = new JToggleButton("Join room");
-        JToggleButton btQuit = new JToggleButton("Quit");
-
         this.setLayout(null);
         lblMapName.setBounds(200, 50, 70, 20);
         this.jcbMapName.setBounds(200, 78, 190, 28);
@@ -28,14 +27,12 @@ public class RoomPanel<IntField> extends JPanel {
         lblRoomNumber.setBounds(200, 200, 100, 20);
         this.roomNumber.setBounds(200, 228, 190, 28);
         btJoinRoom.setBounds(450, 228, 150, 30);
-        btQuit.setBounds(450, 153, 150, 30);
         this.add(lblMapName);
         this.add(this.jcbMapName);
         this.add(btCreateRoom);
         this.add(lblRoomNumber);
         this.add(this.roomNumber);
         this.add(btJoinRoom);
-        this.add(btQuit);
 
         // Add listeners for "Create room" and "Join room" buttons
         btCreateRoom.addActionListener(e -> {
@@ -44,34 +41,30 @@ public class RoomPanel<IntField> extends JPanel {
              creating a room for the user through API
              */
             RoomController roomController = new RoomController();
-            JSONObject response =  roomController.createRoom(userName, this.jcbMapName.getSelectedItem().toString());
-            System.out.println(response);
-            String roomNumberStr =response.get("room_number").toString();
-
+            JSONObject response = roomController.createRoom(userName, this.jcbMapName.getSelectedItem().toString());
+            String roomNumberStr = response.get("room_number").toString();
+            //Wenjie:
+            roomController.updateStatus(Integer.parseInt(roomNumberStr), RoomController.ROOM_STATUS_WAITING);
             frame.getContentPane().removeAll();
-            frame.getContentPane().add(new WaitingPanel(roomNumberStr, "owner", frame,userName));
+            frame.getContentPane().add(new WaitingPanel(roomNumberStr, "owner", frame, userName));
             frame.setVisible(true);
         });
 
         btJoinRoom.addActionListener(e -> {
             /*
             fetching the room number when the "Join room" button is pressed
-            inserting the player info into the room through API
+            inserting the qplayer info into the room through API
              */
             UserController userController = new UserController();
             String roomNumberStr = this.roomNumber.getText();
             userController.joinRoom(userName, Integer.parseInt(roomNumberStr));
             if (userController.getResponse().get("status").equals(200)) {
                 frame.getContentPane().removeAll();
-                frame.getContentPane().add(new WaitingPanel(roomNumberStr, "participant", frame,userName));
+                frame.getContentPane().add(new WaitingPanel(roomNumberStr, "participant", frame, userName));
                 frame.setVisible(true);
             } else if (userController.getResponse().get("status").equals(400)) {
                 JOptionPane.showMessageDialog(frame, "Room does not exist.", "Error", JOptionPane.ERROR_MESSAGE);
             }
-        });
-
-        btQuit.addActionListener(e -> {
-            frame.dispose();
         });
     }
 

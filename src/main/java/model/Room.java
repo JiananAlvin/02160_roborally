@@ -14,6 +14,5 @@ public class Room {
     public Room(){};
     public Room(int roomNumber) {
         this.roomNumber = roomNumber;
-
     }
 }

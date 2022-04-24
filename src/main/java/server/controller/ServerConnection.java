@@ -33,6 +33,7 @@ public class ServerConnection {
                 if (content.length() > 0) {
                     this.response = new JSONObject(content.toString());
                 }
+                else this.response = new JSONObject();
                 this.response.put("status", 200);
             } else {
                 this.response.put("status", connection.getResponseCode());
@@ -51,7 +52,6 @@ public class ServerConnection {
             con.setRequestProperty("Content-Type", "application/json");
             con.setRequestProperty("Accept", "application/json");
             con.setRequestMethod("POST");
-            System.out.println(body.toString());
             OutputStreamWriter wr = new OutputStreamWriter(con.getOutputStream());
             wr.write(body.toString());
             wr.flush();
