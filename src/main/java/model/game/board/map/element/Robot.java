@@ -35,6 +35,10 @@ public class Robot {
         this.position.setRow(row);
         this.position.setCol(col);
     }
+
+    public void setInitialPosition(Position position) {
+        this.position = position;
+    }
     public void setPosition(Position position) {
         setPosition(position.getRow(), position.getCol());
     }
@@ -91,6 +95,10 @@ public class Robot {
             robot2.takeDamage(1);
 //        }
 
+    }
+
+    public void push(Robot robot2) {
+        this.setPosition(robot2.getPosition());
     }
 }
 

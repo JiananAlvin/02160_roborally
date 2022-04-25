@@ -30,6 +30,7 @@ public class MapElementStepsDefinition {
     private Card card;
     private Tile tile;
     private Position initialRobotPosition;
+    private Position initialRobot2Position;
 
     @Before
     public void initMapElement() {
@@ -279,9 +280,6 @@ public class MapElementStepsDefinition {
     }
 
 
-
-
-
     @And("the robot faces the wall")
     public void theRobotFacesTheWall() {
         this.robot.setOrientation(this.tile.getOrientation());
@@ -316,6 +314,8 @@ public class MapElementStepsDefinition {
     @And("robot faces another robot {string} with position {string} {string}")
     public void robotFacesAnotherRobotWithPosition(String arg0, String arg1, String arg2) {
         this.robot2 = new Robot(arg0, Integer.parseInt(arg1), Integer.parseInt(arg2));
+        this.initialRobot2Position = this.robot2.getPosition();
+        this.robot2.setOrientation(Orientation.E);
     }
 
     @When("programming phase is over")
@@ -349,8 +349,33 @@ public class MapElementStepsDefinition {
     @And("there is a wall at the same position as the robot")
     public void thereIsAWallAtTheSamePositionAsTheRobot() {
         this.tile = game.getGameMap().getTileWithPosition(this.robot.getPosition());
-        if(this.tile.getClass().equals(Wall.class)){
-
+        if (this.tile.getClass().equals(Wall.class)) {
+            System.out.println("wall here");
         }
+    }
+
+    @And("there is a wall at the next position of the robot")
+    public void thereIsAWallAtTheNextPositionOfTheRobot() {
+        this.tile = game.getGameMap().getTileWithPosition(this.robot.getPosition());
+        if (this.tile.getClass().equals(Wall.class)) {
+            System.out.println(this.robot.getName());
+            System.out.println("wall next position");
+        }
+    }
+
+    @Then("robot{int} pushes robot{int}")
+    public void robotPushesRobot(int arg0, int arg1) {
+        this.robot.push(this.robot2);
+    }
+
+    @And("robot{int} is at the initial position of robot{int}")
+    public void robotIsAtTheInitialPositionOfRobot(int arg0, int arg1) {
+        assertTrue(this.robot.getPosition().equals(this.initialRobot2Position));
+    }
+
+
+    @And("robot{int} is at a new position")
+    public void robotIsAtANewPosition(int arg0) {
+        assertTrue(!this.robot2.getPosition().equals(this.initialRobot2Position));
     }
 }

@@ -4,10 +4,7 @@ import content.MapName;
 import io.cucumber.java.bs.A;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import model.game.board.map.element.CheckPoint;
-import model.game.board.map.element.RebootPoint;
-import model.game.board.map.element.StartPoint;
-import model.game.board.map.element.Tile;
+import model.game.board.map.element.*;
 import utils.MapReader;
 
 import java.io.IOException;
@@ -80,4 +77,6 @@ public class GameMap {
     public int getWidth() {
         return this.width;
     }
+
+
 }

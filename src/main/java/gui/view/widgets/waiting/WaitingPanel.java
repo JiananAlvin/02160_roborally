@@ -201,6 +201,7 @@ public class WaitingPanel extends JPanel {
         String mapName = roomInfoResponse.getString(RoomController.RESPONSE_MAP_NAME);
 //                int roomNumber = roomInfoResponse.getInt(RoomController.RESPONSE_ROOM_NUMBER);
         String robotName = (String) new RobotController().getRobotInfo(userName).get(RobotController.RESPONSE_ROBOT_NAME);
+//        game.addParticipant(new Player("juanito", new Robot("TURBO",5,5)));
         game.init(new Player(userName, new Robot(RobotName.valueOf(robotName))), new Room(roomNumber), new GameMap(MapName.valueOf(mapName)), roomInfoResponse);
         SwingUtilities.invokeLater(new Runnable() {
             @Override

@@ -99,7 +99,7 @@ Feature:
       | INTERMEDIATE | Anna    | Raul    | 2            | unfinished    |
 
 
-  Scenario Outline: Robot can not go through wall
+  Scenario Outline: Robot can not go through wall when wall is at the current position
     Given there is a game with map "<map_name>"
     And A robot "<robot_name>" has position "<row>" "<col>"
     And there is a wall at the same position as the robot
@@ -112,6 +112,19 @@ Feature:
       | HULK_X90    | 7   | 1   | BEGINNER |
       | SPIN_BOT    | 6   | 5   | BEGINNER |
       | TRUNDLE_BOT | 5   | 2   | BEGINNER |
+
+    Scenario Outline: Robot can not go through wall when wall is at next position
+    Given there is a game with map "<map_name>"
+    And A robot "<robot_name>" has position "<row>" "<col>"
+    When robot tries to move forward
+    And there is a wall at the next position of the robot
+    Then robot does not move forward
+    Examples:
+      | robot_name  | row | col | map_name |
+      | ZOOM_BOT    | 4   | 2   | BEGINNER |
+      | SPIN_BOT    | 6   | 5   | BEGINNER |
+      | TRUNDLE_BOT | 5   | 2   | BEGINNER |
+      | HULK_X90    | 6   | 7   | BEGINNER |
 
   Scenario Outline: Robots can shoot each other
     Given there is a game with map "<map_name>"
@@ -154,4 +167,16 @@ Feature:
 #        | robot_name | robot_name2 | map_name | row | col | row2 | col2 |
 #        | ZOOM_BOT   | SPIN_BOT    | BEGINNER | 2   | 1   | 3   | 1   |
 #        | HULK_X90   | ZOOM_BOT    | BEGINNER | 7   | 1   | 2   | 1   |
-
+#  Scenario Outline: Robots push each other
+#    Given there is a game with map "<map_name>"
+#    And A robot "<robot_name>" has position "<row>" "<col>"
+#    And robot faces another robot "<robot_name2>" with position "<row2>" "<col2>"
+#    When programming phase is over
+#    Then robot1 pushes robot2
+#    And robot1 is at the initial position of robot2
+#    And robot2 is at a new position
+#    Examples:
+#      | robot_name | robot_name2 | map_name | row | col | row2 | col2 |
+#      | ZOOM_BOT   | SPIN_BOT    | BEGINNER | 3   | 1   | 3   | 2   |
+#      | HULK_X90   | ZOOM_BOT    | BEGINNER | 1   | 0   | 1   | 1   |
+#      | SPIN_BOT   | ZOOM_BOT    | BEGINNER | 3   | 0   | 3   | 1   |

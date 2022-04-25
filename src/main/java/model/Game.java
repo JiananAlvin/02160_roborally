@@ -29,7 +29,7 @@ public class Game {
      * @ Player currentPlayer: whose turn of activation
      */
     private Player user;
-    private ArrayList<Player> participants;
+    private static ArrayList<Player> participants;
     private Room room;
     private static GameMap gameMap;
     private int currentRoundNum;
@@ -51,6 +51,28 @@ public class Game {
         if (!(row >= 0 && row < gameMap.getHeight() && col >= 0 && col < gameMap.getWidth())) {
             return false;
         }
+        if (robotAt(row, col) == null) {
+            return true;
+        } else {
+            Robot r1 = robotAt(row, col);
+            r.setPosition(r1.getPosition());
+            // temporary
+            switch (r.getOrientation()) {
+                case N:
+                    r1.setPosition(new Position(r.getPosition().getRow() - 1, r.getPosition().getCol()));
+                    break;
+                case S:
+                    r1.setPosition(new Position(r.getPosition().getRow() + 1, r.getPosition().getCol()));
+                    break;
+                case E:
+                    r1.setPosition(new Position(r.getPosition().getRow(), r.getPosition().getCol() + 1));
+                    break;
+                case W:
+                    r1.setPosition(new Position(r.getPosition().getRow(), r.getPosition().getCol() - 1));
+                    break;
+
+            }
+        }
         Tile tile = gameMap.getTileWithPosition(r.getPosition());
 
         if (tile instanceof Wall) { // current position is a wall
@@ -59,9 +81,22 @@ public class Game {
         tile = gameMap.getTileWithPosition(new Position(row, col));
 
         if(tile instanceof Wall) {  // next position is wall
-            return !tile.getOrientation().equals(r.getOrientation());
+            return !tile.getOrientation().getOpposite().equals(r.getOrientation());
         }
         return true;
+    }
+
+    private static Robot robotAt(int row, int col) {
+        for (Player p : participants) {
+            if (p.getRobot().getPosition().getRow() == row && p.getRobot().getPosition().getCol() == col) {
+                return p.getRobot();
+            }
+        }
+        return null;
+    }
+
+    public ArrayList<Player> getParticipants() {
+        return participants;
     }
 
 
@@ -165,9 +200,9 @@ public class Game {
                 // if JSONObject["x"] not found, it means there is no initial position
                 int x = (int) robotInfo.get(RobotController.RESPONSE_ROBOT_XCOORD);
                 int y = (int) robotInfo.get(RobotController.RESPONSE_ROBOT_YCOORD);
-                robot.setPosition(x, y);
+                robot.setInitialPosition(x, y);
             } catch (Exception e) {
-                robot.setPosition(0, 0);
+                robot.setInitialPosition(0, 0);
             }
             this.participants.add(new Player(userName.toString(), robot));
         }
@@ -181,7 +216,7 @@ public class Game {
         ArrayList<StartPoint> startPoints = new ArrayList<>(this.gameMap.getStartPoints());
         for (Player player : this.participants) {
             StartPoint assignedStartPoint = startPoints.remove(new Random().nextInt(startPoints.size()));
-            player.getRobot().setPosition(assignedStartPoint.getPosition());
+            player.getRobot().setInitialPosition(assignedStartPoint.getPosition());
             new RobotController().updatePosition(player.getName(), player.getRobot().getPosition().getRow(), player.getRobot().getPosition().getCol());
         }
     }
@@ -206,7 +241,7 @@ public class Game {
         r1.setLives(5);
         // the gameMap is null, so in order to test our functions is going to remain commented
         if (this.gameMap != null)
-            r1.setPosition(this.gameMap.getARandomRebootPoint().getPosition());
+            r1.setInitialPosition(this.gameMap.getARandomRebootPoint().getPosition());
     }
 
     public void robotTakeDamage(Robot r, int damage) {
@@ -250,6 +285,10 @@ public class Game {
 
     public void endProgrammingPhase() {
         this.programmingPhaseOver = true;
+    }
+
+    public void setParticipants(ArrayList<Player> orderOfPlayers) {
+        participants = orderOfPlayers;
     }
 
 
