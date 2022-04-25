@@ -87,6 +87,7 @@ public class MapReader {
                 Class<?> clz = Class.forName(FULLY_QUALIFIED_NAME_OF_ELEMENT + str);
                 return (Tile) clz.getDeclaredConstructor(Integer.class, Integer.class).newInstance(row, col);
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }

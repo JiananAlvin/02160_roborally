@@ -1,10 +1,10 @@
-Blank,Blank,EastOne,Blank,SouthTwo,SouthTwo,CheckPoint3,Blank,Blank,Blank,Blank,Blank,Charger
+Blank,Blank,EastOne,Blank,SouthTwo,SouthTwo,Blank,Blank,Blank,Blank,Blank,Blank,Charger
 Blank,StartPoint,Blank,Blank,SouthTwo,WestTwo,WestTwo,WestTwo,WestTwo,WestTwo,WestTwo,WestTwo,WestTwo
-Blank,WallNorth,Blank,Blank,SouthTwo,Charger,WallSouth,Blank,Blank,Blank,Blank,NorthTwo,WestTwo
-StartPoint,Blank,Blank,Blank,SouthTwo,Blank,LaserVertical,WallEast,LaserHorizontal,LaserHorizontal,WallWest,CheckPoint2,CheckPoint1
-Antenna,StartPoint,WallEast,Blank,SouthTwo,Blank,LaserVertical,Blank,Charger,Blank,Blank,NorthTwo,Blank
-Blank,StartPoint,WallEast,Blank,SouthTwo,Blank,WallNorth,Charger,Blank,LaserVertical,Blank,NorthTwo,Blank
-StartPoint,Blank,Blank,Blank,SouthTwo,WallEast,LaserHorizontal,LaserHorizontal,WallWest,LaserVertical,Blank,NorthTwo,Blank
+Blank,WallNorth,Blank,Blank,SouthTwo,Charger,Blank,Blank,Blank,Blank,Blank,NorthTwo,WestTwo
+StartPoint,Blank,Blank,Blank,SouthTwo,Blank,WallNorthLaser,RebootPoint,WallWestLaser,WallEastLaser,CheckPoint3,CheckPoint2,CheckPoint1
+Antenna,StartPoint,WallEast,Blank,SouthTwo,Blank,WallSouthLaser,Blank,Charger,Blank,Blank,NorthTwo,Blank
+Blank,StartPoint,WallEast,Blank,SouthTwo,Blank,Blank,Charger,CheckPoint2,WallNorthLaser,Blank,NorthTwo,Blank
+StartPoint,Blank,Blank,Blank,SouthTwo,Blank,WallWestLaser,WallEastLaser,Blank,WallSouthLaser,Blank,NorthTwo,Blank
 Blank,WallSouth,Blank,WestTwo,SouthTwo,Blank,Blank,Blank,Blank,Blank,Charger,NorthTwo,Blank
 Blank,StartPoint,Blank,EastTwo,EastTwo,EastTwo,EastTwo,EastTwo,EastTwo,EastTwo,EastTwo,EastTwo,Blank
 Blank,Blank,EastOne,Charger,Blank,Blank,Blank,Blank,Blank,Blank,NorthTwo,NorthTwo,Blank

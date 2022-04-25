@@ -5,6 +5,7 @@ import gui.view.widgets.game.GamePanel;
 import lombok.Data;
 import model.game.board.map.Collision;
 import model.game.board.map.GameMap;
+import model.game.board.map.Orientation;
 import model.game.board.map.Position;
 import model.game.board.map.element.*;
 import model.game.Player;
@@ -30,10 +31,10 @@ public class Game {
     private Player user;
     private ArrayList<Player> participants;
     private Room room;
-    private GameMap gameMap;
+    private static GameMap gameMap;
     private int currentRoundNum;
     private int currentRegisterNum;
-
+    private boolean programmingPhaseOver;
     private Player winner;
 
     // TODO delete currentPlayer
@@ -44,6 +45,53 @@ public class Game {
     public Game() {
         this.participants = new ArrayList<>();
     }
+
+    public static boolean validateMovement(Robot r, int row, int col) {
+        if (!(row >= 0 && row < gameMap.getHeight() && col >= 0 && col < gameMap.getWidth())) {
+            return false;
+        }
+        switch (gameMap.getTileWithPosition(new Position(r.getPosition().getRow(), r.getPosition().getCol())).getClass().getSimpleName()) {
+            case "WallEast":
+            case "WallEastLaser":
+                return r.getOrientation() != Orientation.E;
+            case "WallNorth":
+            case "WallNorthLaser":
+                return r.getOrientation() != Orientation.N;
+            case "WallSouth":
+            case "WallSouthLaser":
+                return r.getOrientation() != Orientation.S;
+            case "WallWest":
+            case "WallWestLaser":
+                return r.getOrientation() != Orientation.W;
+        }
+        switch (gameMap.getTileWithPosition(new Position(row, col)).getClass().getSimpleName()) {
+            case "WallEast":
+            case "WallEastLaser":
+                return r.getOrientation() != Orientation.W;
+            case "WallNorth":
+            case "WallNorthLaser":
+                return r.getOrientation() != Orientation.S;
+            case "WallSouth":
+            case "WallSouthLaser":
+                return r.getOrientation() != Orientation.N;
+            case "WallWest":
+            case "WallWestLaser":
+                return r.getOrientation() != Orientation.E;
+
+        }
+
+        return true;
+    }
+
+
+    public GameMap getGameMap() {
+        return gameMap;
+    }
+
+    public void setGameMap(GameMap gameMap) {
+        this.gameMap = gameMap;
+    }
+
     /**
      * This method is used to init the whole game when the game starts.
      * For the room owner, the game starts only when room owner starts it.
@@ -218,6 +266,18 @@ public class Game {
             }
         }
     }
+
+    public void endProgrammingPhase() {
+        this.programmingPhaseOver = true;
+    }
+
+
+//    public boolean validMovement(Robot r, Position newPos) {
+//        switch (gameMap.getContent()[r.getPosition().getRow()][r.getPosition().getCol()].getType()) {
+//            case WallWest:
+//                if (r.getOrientation()) {
+//        }
+//    }
 
 
 }
