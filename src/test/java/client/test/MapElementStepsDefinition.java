@@ -40,10 +40,14 @@ public class MapElementStepsDefinition {
     public void aPlayerChoseARobot(String arg0) {
         this.robot = new Robot(RobotName.valueOf(arg0));
     }
-
+    @Given("there is a game with map {string}")
+    public void thereIsAGameWithMap(String arg0) throws IOException {
+        this.game = new Game();
+        this.game.setGameMap(new GameMap(MapName.valueOf(arg0)));
+    }
     @When("the robot gets an initial position randomly")
     public void the_robot_gets_an_initial_position_randomly() {
-        this.robot.setPosition(0, 0);
+        this.robot.setInitialPosition(0, 0);
         // TODO:
         this.robot.setOnBoard(true);
     }
@@ -109,7 +113,7 @@ public class MapElementStepsDefinition {
     @Given("a robot {string} had initial position {string} {string} with orientation {string}")
     public void aRobotHadInitialPositionWithOrientation(String robotName, String xPos, String yPos, String orientation) {
         this.robot = new Robot(RobotName.valueOf(robotName));
-        this.robot.setPosition(Integer.parseInt(xPos), Integer.parseInt(yPos));
+        this.robot.setInitialPosition(Integer.parseInt(xPos), Integer.parseInt(yPos));
         Orientation o = Orientation.N;
         switch (orientation) {
             case "N":
@@ -160,7 +164,7 @@ public class MapElementStepsDefinition {
     @Given("A robot {string} has position {string} {string}")
     public void aRobotHasPosition(String robotName, String xPos, String yPos) {
         this.robot = new Robot(RobotName.valueOf(robotName));
-        this.robot.setPosition(Integer.parseInt(xPos), Integer.parseInt(yPos));
+        this.robot.setInitialPosition(Integer.parseInt(xPos), Integer.parseInt(yPos));
         this.initialRobotPosition = new Position(Integer.parseInt(xPos), Integer.parseInt(yPos));
     }
 
@@ -184,9 +188,9 @@ public class MapElementStepsDefinition {
 
     @When("robotI, robotII and robotIII are placed in \\({string},{string}), \\({string},{string}),\\({string},{string}) respectively")
     public void robotiRobotIIAndRobotIIIArePlacedInRespectively(String arg0, String arg1, String arg2, String arg3, String arg4, String arg5) {
-        this.p1.getRobot().setPosition(Integer.parseInt(arg0), Integer.parseInt(arg1));
-        this.p2.getRobot().setPosition(Integer.parseInt(arg2), Integer.parseInt(arg3));
-        this.p3.getRobot().setPosition(Integer.parseInt(arg4), Integer.parseInt(arg5));
+        this.p1.getRobot().setInitialPosition(Integer.parseInt(arg0), Integer.parseInt(arg1));
+        this.p2.getRobot().setInitialPosition(Integer.parseInt(arg2), Integer.parseInt(arg3));
+        this.p3.getRobot().setInitialPosition(Integer.parseInt(arg4), Integer.parseInt(arg5));
     }
 
     @Then("the priority of these players is {string},{string},{string}")
@@ -198,11 +202,7 @@ public class MapElementStepsDefinition {
 
 
     //--------------------------------------------------------------------------------------------
-    @Given("there is a game with map {string}")
-    public void thereIsAGameWithMap(String arg0) throws IOException {
-        this.game = new Game();
-        this.game.setGameMap(new GameMap(MapName.valueOf(arg0)));
-    }
+
 
     @And("there are players {string} and {string} in this game")
     public void thereArePlayersAndInThisGame(String arg0, String arg1) {
@@ -262,7 +262,7 @@ public class MapElementStepsDefinition {
     //--------------------------------------------------------------------------------------------
     @And("The robot has initial position {string} {string} with orientation {string}")
     public void theRobotHasInitialPositionWithOrientation(String xPos, String yPos, String orientation) {
-        this.robot.setPosition(Integer.parseInt(xPos), Integer.parseInt(yPos));
+        this.robot.setInitialPosition(Integer.parseInt(xPos), Integer.parseInt(yPos));
         Orientation o = Orientation.N;
         switch (orientation) {
             case "N":
@@ -367,10 +367,10 @@ public class MapElementStepsDefinition {
     public void robotTriesToMoveForward() {
         switch (this.robot.getOrientation()) {
             case N:
-                this.robot.setPosition(this.robot.getPosition().getCol(), this.robot.getPosition().getRow() + 1);
+                this.robot.setPosition(this.robot.getPosition().getCol(), this.robot.getPosition().getRow() - 1);
                 break;
             case S:
-                this.robot.setPosition(this.robot.getPosition().getCol(), this.robot.getPosition().getRow() - 1);
+                this.robot.setPosition(this.robot.getPosition().getCol(), this.robot.getPosition().getRow() + 1);
                 break;
             case E:
                 this.robot.setPosition(this.robot.getPosition().getCol() + 1, this.robot.getPosition().getRow());
@@ -383,8 +383,41 @@ public class MapElementStepsDefinition {
 
     @Then("robot does not move forward")
     public void robotDoesNotMoveForward() {
-
         assertTrue(this.initialRobotPosition.equals(this.robot.getPosition()));
     }
 
+    private Robot robot2;
+    @And("robot faces another robot {string} with position {string} {string}")
+    public void robotFacesAnotherRobotWithPosition(String arg0, String arg1, String arg2) {
+        this.robot2 = new Robot(arg0, Integer.parseInt(arg1), Integer.parseInt(arg2));
+    }
+
+    @When("programming phase is over")
+    public void programmingPhaseIsOver() {
+        this.game.endProgrammingPhase();
+    }
+
+    @Then("robot{int} shoots robot{int}")
+    public void robotShootsRobot(int arg0, int arg1) {
+        int lives = this.robot2.getLives();
+        this.robot.shoot(this.robot2);
+        assertTrue(this.robot2.getLives()==lives-1);
+    }
+
+
+
+    @When("robot tries to move past the board limits")
+    public void robotTriesToMovePastTheBoardLimits() {
+        robotTriesToMoveForward();
+    }
+
+    @Then("robot does not move past the board limits")
+    public void robotDoesNotMovePastTheBoardLimits() {
+        assertTrue(this.initialRobotPosition.equals(this.robot.getPosition()));
+    }
+
+    @And("robot has orientation {string}")
+    public void robotHasOrientation(String arg0) {
+        this.robot.setOrientation(Orientation.valueOf(arg0));
+    }
 }
