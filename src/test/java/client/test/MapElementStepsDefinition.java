@@ -41,11 +41,14 @@ public class MapElementStepsDefinition {
     public void aPlayerChoseARobot(String arg0) {
         this.robot = new Robot(RobotName.valueOf(arg0));
     }
+
     @Given("there is a game with map {string}")
     public void thereIsAGameWithMap(String arg0) throws IOException {
         this.game = new Game();
         this.game.setGameMap(new GameMap(MapName.valueOf(arg0)));
+
     }
+
     @When("the robot gets an initial position randomly")
     public void the_robot_gets_an_initial_position_randomly() {
         this.robot.setInitialPosition(0, 0);
@@ -102,6 +105,7 @@ public class MapElementStepsDefinition {
     public void theRobotLivesAreReducedPointsOfDamageByTheGame(String arg0) throws IOException {
         this.game = new Game();
         this.game.setGameMap(new GameMap(MapName.STARTER));
+
         this.game.robotTakeDamage(this.robot, Integer.parseInt(arg0));
     }
 
@@ -162,6 +166,7 @@ public class MapElementStepsDefinition {
         assertEquals(Integer.parseInt(expectedXPos), robot.getPosition().getRow());
         assertEquals(Integer.parseInt(expectedYPos), robot.getPosition().getCol());
     }
+
     @Given("A robot {string} has position {string} {string}")
     public void aRobotHasPosition(String robotName, String xPos, String yPos) {
         this.robot = new Robot(RobotName.valueOf(robotName));
@@ -264,44 +269,9 @@ public class MapElementStepsDefinition {
     @And("The robot has initial position {string} {string} with orientation {string}")
     public void theRobotHasInitialPositionWithOrientation(String xPos, String yPos, String orientation) {
         this.robot.setInitialPosition(Integer.parseInt(xPos), Integer.parseInt(yPos));
-        Orientation o = Orientation.N;
-        switch (orientation) {
-            case "N":
-                o = Orientation.N;
-                break;
-            case "S":
-                o = Orientation.S;
-                break;
-            case "E":
-                o = Orientation.E;
-                break;
-            case "W":
-                o = Orientation.W;
-                break;
-        }
-        this.robot.setOrientation(o);
+        this.robot.setOrientation(Orientation.valueOf(orientation));
     }
 
-    @And("a position {string} {string} on the map indicating the obstacle of type {string}")
-    public void aPositionOnTheMapIndicatingTheObstacle(String xPos, String yPos, String type) {
-        switch (type) {
-            case "wnl":
-                this.tile = new Laser(Integer.parseInt(xPos), Integer.parseInt(yPos), false);
-                break;
-            case "wsl":
-                this.tile = new Laser(Integer.parseInt(xPos), Integer.parseInt(yPos), false);
-                break;
-            case "wel":
-                this.tile = new Laser(Integer.parseInt(xPos), Integer.parseInt(yPos), true);
-                break;
-            case "wwl":
-                this.tile = new Laser(Integer.parseInt(xPos), Integer.parseInt(yPos), true);
-                break;
-            case "sg":
-                this.tile = new StaticGear(Integer.parseInt(xPos), Integer.parseInt(yPos));
-                break;
-        }
-    }
 
     @When("robot lands on an obstacle status is true")
     public void robotLandsOnAnObstacleStatusIsTrue() {
@@ -309,77 +279,30 @@ public class MapElementStepsDefinition {
     }
 
 
-    @And("there is a wall {string} at the same position as the robot")
-    public void thereIsAWallAtTheSamePositionAsTheRobot(String arg0) {
-        switch (arg0) {
-            case "ww":
-                this.tile = new WallWest(this.robot.getPosition().getCol(), this.robot.getPosition().getRow());
-                break;
-            case "we":
-                this.tile = new WallEast(this.robot.getPosition().getCol(), this.robot.getPosition().getRow());
-                break;
-            case "ws":
-                this.tile = new WallSouth(this.robot.getPosition().getCol(), this.robot.getPosition().getRow());
-                break;
-            case "wn":
-                this.tile = new WallNorth(this.robot.getPosition().getCol(), this.robot.getPosition().getRow());
-                break;
-            case "wsl":
-                this.tile = new WallSouthLaser(this.robot.getPosition().getCol(), this.robot.getPosition().getRow());
-                break;
-            case "wnl":
-                this.tile = new WallNorthLaser(this.robot.getPosition().getCol(), this.robot.getPosition().getRow());
-                break;
-            case "wel":
-                this.tile = new WallEastLaser(this.robot.getPosition().getCol(), this.robot.getPosition().getRow());
-                break;
-            case "wwl":
-                this.tile = new WallWestLaser(this.robot.getPosition().getCol(), this.robot.getPosition().getRow());
-                break;
 
-        }
-    }
 
 
     @And("the robot faces the wall")
     public void theRobotFacesTheWall() {
-        switch (this.tile.getClass().getSimpleName()) {
-            case "WallWest":
-            case "WallWestLaser":
-                this.robot.setOrientation(Orientation.W);
-                break;
-            case "WallEast":
-            case "WallEastLaser":
-                this.robot.setOrientation(Orientation.E);
-                break;
-            case "WallNorth":
-            case "WallNorthLaser":
-                this.robot.setOrientation(Orientation.N);
-                break;
-            case "WallSouth":
-            case "WallSouthLaser":
-                this.robot.setOrientation(Orientation.S);
-                break;
-
-        }
-
+        this.robot.setOrientation(this.tile.getOrientation());
     }
 
     @When("robot tries to move forward")
     public void robotTriesToMoveForward() {
         switch (this.robot.getOrientation()) {
             case N:
-                this.robot.setPosition(this.robot.getPosition().getCol(), this.robot.getPosition().getRow() - 1);
+                this.robot.setPosition(this.robot.getPosition().getRow() - 1, this.robot.getPosition().getCol());
                 break;
             case S:
-                this.robot.setPosition(this.robot.getPosition().getCol(), this.robot.getPosition().getRow() + 1);
+                this.robot.setPosition(this.robot.getPosition().getRow() + 1, this.robot.getPosition().getCol());
                 break;
             case E:
-                this.robot.setPosition(this.robot.getPosition().getCol() + 1, this.robot.getPosition().getRow());
+                this.robot.setPosition(this.robot.getPosition().getRow(), this.robot.getPosition().getCol() + 1);
                 break;
             case W:
-                this.robot.setPosition(this.robot.getPosition().getCol() - 1, this.robot.getPosition().getRow());
+                this.robot.setPosition(this.robot.getPosition().getRow(), this.robot.getPosition().getCol() - 1);
                 break;
+
         }
     }
 
@@ -389,6 +312,7 @@ public class MapElementStepsDefinition {
     }
 
     private Robot robot2;
+
     @And("robot faces another robot {string} with position {string} {string}")
     public void robotFacesAnotherRobotWithPosition(String arg0, String arg1, String arg2) {
         this.robot2 = new Robot(arg0, Integer.parseInt(arg1), Integer.parseInt(arg2));
@@ -403,9 +327,8 @@ public class MapElementStepsDefinition {
     public void robotShootsRobot(int arg0, int arg1) {
         int lives = this.robot2.getLives();
         this.robot.shoot(this.robot2);
-        assertTrue(this.robot2.getLives()==lives-1);
+        assertTrue(this.robot2.getLives() == lives - 1);
     }
-
 
 
     @When("robot tries to move past the board limits")
@@ -421,5 +344,13 @@ public class MapElementStepsDefinition {
     @And("robot has orientation {string}")
     public void robotHasOrientation(String arg0) {
         this.robot.setOrientation(Orientation.valueOf(arg0));
+    }
+
+    @And("there is a wall at the same position as the robot")
+    public void thereIsAWallAtTheSamePositionAsTheRobot() {
+        this.tile = game.getGameMap().getTileWithPosition(this.robot.getPosition());
+        if(this.tile.getClass().equals(Wall.class)){
+
+        }
     }
 }

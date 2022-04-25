@@ -47,39 +47,20 @@ public class Game {
     }
 
     public static boolean validateMovement(Robot r, int row, int col) {
+
         if (!(row >= 0 && row < gameMap.getHeight() && col >= 0 && col < gameMap.getWidth())) {
             return false;
         }
-        switch (gameMap.getTileWithPosition(new Position(r.getPosition().getRow(), r.getPosition().getCol())).getClass().getSimpleName()) {
-            case "WallEast":
-            case "WallEastLaser":
-                return r.getOrientation() != Orientation.E;
-            case "WallNorth":
-            case "WallNorthLaser":
-                return r.getOrientation() != Orientation.N;
-            case "WallSouth":
-            case "WallSouthLaser":
-                return r.getOrientation() != Orientation.S;
-            case "WallWest":
-            case "WallWestLaser":
-                return r.getOrientation() != Orientation.W;
-        }
-        switch (gameMap.getTileWithPosition(new Position(row, col)).getClass().getSimpleName()) {
-            case "WallEast":
-            case "WallEastLaser":
-                return r.getOrientation() != Orientation.W;
-            case "WallNorth":
-            case "WallNorthLaser":
-                return r.getOrientation() != Orientation.S;
-            case "WallSouth":
-            case "WallSouthLaser":
-                return r.getOrientation() != Orientation.N;
-            case "WallWest":
-            case "WallWestLaser":
-                return r.getOrientation() != Orientation.E;
+        Tile tile = gameMap.getTileWithPosition(r.getPosition());
 
+        if (tile instanceof Wall) { // current position is a wall
+            return !tile.getOrientation().equals(r.getOrientation());
         }
+        tile = gameMap.getTileWithPosition(new Position(row, col));
 
+        if(tile instanceof Wall) {  // next position is wall
+            return !tile.getOrientation().equals(r.getOrientation());
+        }
         return true;
     }
 

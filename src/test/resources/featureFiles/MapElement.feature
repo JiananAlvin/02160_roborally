@@ -63,37 +63,9 @@ Feature:
     Then The robot now has "<final_lives>" lives
     Examples:
       | robot_name | initial_lives | damage_lives | final_lives |
-      | SQUASH_BOT | 1             | 1            | 5           |
+      | SQUASH_BOT | 3             | 2            | 1           |
       | HULK_X90   | 2             | 1            | 1           |
-      | SPIN_BOT   | 1             | 2            | 5           |
-
-  # TODO:
-  #  When
-#  DO we want to do this?
-#  Scenario Outline: As a robot I want to check if I am inside of the board
-#    Given A robot "<robot_name>" has position "<row>" "<col>"
-#    Then the expected output is "<expected_output>" in a board that have a maximum size of "<max_row>" "<max_col>"
-#    Examples:
-#      | robot_name  | row | col | max_row | max_col | expected_output |
-#      | ZOOM_BOT    | 1   | -2  | 3       | 3       | false           |
-#      | HULK_X90    | 7   | 1   | 4       | 4       | false           |
-#      | SPIN_BOT    | 1   | 1   | 1       | 1       | true            |
-#      | TRUNDLE_BOT | 4   | -1  | 3       | 3       | false           |
-
-  # This test only have the purpose of mix some of the scenarios, no step definition needed (:
-#  THIS TEST CORRESPONDS TO CHECK WHETHER ROBOT GOES OUT OF THE MAP, THEREFORE WE EXCLDUE IT
-  #CHECK:
-#  Scenario Outline: As a robot I want to move with some cards and check if I'm inside of the board
-#    Given there is a game with map "<map_name>"
-#    And a robot "<robot_name>" had initial position "<initial_row>" "<initial_col>" with orientation "<orientation>"
-#    And a card with movement "<movement>"
-#    When the card is played
-#    Then the expected output is "<expected_output>" in a board that have a maximum size of "<max_row>" "<max_col>"
-#    Examples:
-#      | robot_name | initial_row | initial_col | orientation | movement | expected_output | max_row | max_col |
-#      | HAMMER_BOT | 3           | 3           | N           | 2        | true            | 5       | 5       |
-#      | SPIN_BOT   | 2           | 0           | E           | -1       | false           | 5       | 5       |
-#      | HULK_X90   | 4           | 2           | S           | 3        | false           | 6       | 5       |
+      | SPIN_BOT   | 3             | 1            | 2           |
 
   # A robot can take a checkpoint token only when it stops on a checkpoint and it has taken checkpoint tokens from all previous checkpoints numerically
   Scenario Outline: A robot can take a checkpoint token only when it stops on a checkpoint and it has taken checkpoint tokens from all previous checkpoints numerically
@@ -106,9 +78,9 @@ Feature:
     Then this player gets a checkpoint token from this checkpoint successfully and now has <point_number> checkpoint tokens
     Examples:
       | map_name     | playerA | playerB | point_number |
-      | ADVANCED     | Jianan  | Wenjie  | 2            |
-      | INTERMEDIATE | Anna    | Raul    | 3            |
-      | INTERMEDIATE | Ion     | Durdija | 1            |
+      | INTERMEDIATE | Jianan  | Wenjie  | 1            |
+      | ADVANCED     | Anna    | Raul    | 2            |
+      | INTERMEDIATE | Ion     | Durdija | 2            |
 
 
   Scenario Outline: The game status is checked every time a checkpoint token is taken by a player
@@ -122,38 +94,24 @@ Feature:
     Then this game checks game status and now the game status is "<is_finished>"
     Examples:
       | map_name     | playerA | playerB | point_number | is_finished |
-      | ADVANCED     | Jianan  | Wenjie  | 2            | unfinished  |
-      | ADVANCED     | Anna    | Raul    | 3            | finished    |
-      | INTERMEDIATE | Ion     | Durdija | 1            | unfinished  |
+      | STARTER      | Jianan  | Wenjie  | 1            | finished  |
+      | ADVANCED     | Ion     | Durdija | 3            | finished  |
+      | INTERMEDIATE | Anna    | Raul    | 2            | unfinished    |
 
-# TOO UNIVERSAL?
-#  Scenario Outline: Player lands on an Obstacle
-#    Given A robot "<robot_name>" had "<initial_lives>" lives
-#    And The robot has initial position "<initial_row>" "<initial_col>" with orientation "<orientation>"
-#    And a position "<obstacle_row>" "<obstacle_col>" on the map indicating the obstacle of type "<type_of_obstacle>"
-#    When robot lands on an obstacle status is true
-#    Then The robot now has "<final_lives>" lives
-#    Examples:
-#      | robot_name | initial_lives | initial_row | initial_col | orientation | obstacle_row | obstacle_col | type_of_obstacle | final_lives |
-#      | ZOOM_BOT   | 2             | 2           | 2           | N           | 2            | 2            | wnl              | 1           |
-#      | HULK_X90   | 2             | 3           | 2           | N           | 2            | 2            | wsl              | 2           |
-#      | SPIN_BOT   | 1             | 2           | 2           | N           | 2            | 2            | wel              | 5           |
-#      | SQUASH_BOT | 3             | 2           | 2           | S           | 2            | 2            | wwl              | 2           |
-#      | HAMMER_BOT | 4             | 2           | 2           | S           | 2            | 2            | sg               | 2           |
 
   Scenario Outline: Robot can not go through wall
     Given there is a game with map "<map_name>"
     And A robot "<robot_name>" has position "<row>" "<col>"
-    And there is a wall "<wall_name>" at the same position as the robot
+    And there is a wall at the same position as the robot
     And the robot faces the wall
     When robot tries to move forward
     Then robot does not move forward
     Examples:
-      | robot_name | row | col | wall_name | map_name |
-      | ZOOM_BOT   | 2   | 1   | wn        | BEGINNER |
-      | HULK_X90   | 7   | 1   | ws        | BEGINNER |
-      | SPIN_BOT   | 5   | 2   | we        | BEGINNER |
-      | SQUASH_BOT | 3   | 6   | wnl       | BEGINNER |
+      | robot_name  | row | col | map_name |
+      | ZOOM_BOT    | 2   | 1   | BEGINNER |
+      | HULK_X90    | 7   | 1   | BEGINNER |
+      | SPIN_BOT    | 6   | 5   | BEGINNER |
+      | TRUNDLE_BOT | 5   | 2   | BEGINNER |
 
   Scenario Outline: Robots can shoot each other
     Given there is a game with map "<map_name>"
@@ -180,9 +138,9 @@ Feature:
       | HULK_X90   | 0   | 0   | BEGINNER | N           |
       | ZOOM_BOT   | 0   | 0   | BEGINNER | W           |
       | SPIN_BOT   | 9   | 0   | BEGINNER | W           |
-      | SQUASH_BOT | 8   | 12   | BEGINNER | E           |
-      | HAMMER_BOT | 0   | 12   | BEGINNER | N           |
-      | HAMMER_BOT | 0   | 12   | BEGINNER | E           |
+      | SQUASH_BOT | 8   | 12  | BEGINNER | E           |
+      | HAMMER_BOT | 0   | 12  | BEGINNER | N           |
+      | HAMMER_BOT | 0   | 12  | BEGINNER | E           |
 
 # TODO: implement the following scenario
 #    Scenario Outline: Robots can not shoot each other when there is an obstacle between them

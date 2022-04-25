@@ -27,4 +27,16 @@ public enum Orientation {
                 return null;
         }
     }
+
+    public Orientation getOpposite() {
+        this.angle += 180;
+        minimizeAngle();
+        return matchOrientation(angle);
+    }
+
+    private void minimizeAngle() {
+        if (this.angle >= 360) {
+            this.angle -= 360;
+        }
+    }
 }

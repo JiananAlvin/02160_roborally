@@ -1,5 +1,6 @@
 package model.game.board.map;
 
+import content.MapName;
 import io.cucumber.java.bs.A;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,9 @@ public class GameMap {
     private ArrayList<RebootPoint> rebootPoints;
     // checkPoints are sorted in numerical order
     private ArrayList<CheckPoint> checkPoints;
+    private int height;
+    private int width;
+
 
     /**
      * GameMap: Initialize an instance of GameMap from the name of MAPNAME.txt

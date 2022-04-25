@@ -45,4 +45,8 @@ public class Wall extends Tile {
 
     }
 
+    public Orientation getOrientation() {
+        return orientation;
+    }
+
 }
