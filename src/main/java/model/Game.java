@@ -51,9 +51,7 @@ public class Game {
         if (!(row >= 0 && row < gameMap.getHeight() && col >= 0 && col < gameMap.getWidth())) {
             return false;
         }
-        if (robotAt(row, col) == null) {
-            return true;
-        } else {
+        if (robotAt(row, col) != null) {
             Robot r1 = robotAt(row, col);
             r.setPosition(r1.getPosition());
             // temporary
