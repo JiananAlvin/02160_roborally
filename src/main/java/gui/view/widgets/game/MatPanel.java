@@ -49,7 +49,7 @@ public class MatPanel extends JPanel {
         game.getUser().getCardsInHand().forEach((card) -> this.namesOfCardsInHand.add(card.getClass().getSimpleName()));
 
         // Adding the user information
-        Icon iconRobot = new ImageIcon(new ImageIcon(PATH_TO_ROBOT_ICONS + game.getUser().getRobot().getName() + ".jpg").getImage().getScaledInstance(109, 140, Image.SCALE_DEFAULT));
+        Icon iconRobot = new ImageIcon(new ImageIcon(PATH_TO_ROBOT_ICONS + game.getUser().getRobot().getName() + ".png").getImage().getScaledInstance(105, 130, Image.SCALE_DEFAULT));
         this.lblRobot = new JLabel(iconRobot);
         this.lblRobotLives = new JLabel("Lives: " + game.getUser().getRobot().getLives());
         this.lblRobotLives.setFont(new Font("Default", Font.BOLD, 15));
