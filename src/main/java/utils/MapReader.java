@@ -8,9 +8,7 @@ import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
-/**
- *
- */
+
 public class MapReader {
 
     /**
@@ -22,7 +20,6 @@ public class MapReader {
     private static final String FULLY_QUALIFIED_NAME_OF_CONVEYORBELT = "model.game.board.map.element.ConveyorBelt";
     private static final String FULLY_QUALIFIED_NAME_OF_WALL = "model.game.board.map.element.Wall";
     private static final String FULLY_QUALIFIED_NAME_OF_LASER = "model.game.board.map.element.Laser";
-
 
     /**
      * @ readLineToStringArray: Read the content of .txt file to a string array.

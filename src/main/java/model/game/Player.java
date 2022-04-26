@@ -54,9 +54,13 @@ public class Player {
         if (this.robot.getPosition().equals(checkPoint.getPosition()) // robot at this checkPoint
                 && checkPoint.getCheckPointNum() == ownedTokens + 1 //robot has all the marks before current one
         ) {
+
             this.obtainedCheckpointTokens.add(checkPoint);
             return true;
-        } else return false;
+        } else {
+            System.out.println(ownedTokens);
+            return false;
+        }
     }
 
     /**

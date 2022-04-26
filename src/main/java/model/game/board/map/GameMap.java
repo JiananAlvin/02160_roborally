@@ -1,12 +1,10 @@
 package model.game.board.map;
 
+
 import content.MapNameEnum;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import model.game.board.map.element.CheckPoint;
-import model.game.board.map.element.RebootPoint;
-import model.game.board.map.element.StartPoint;
-import model.game.board.map.element.Tile;
+import model.game.board.map.element.*;
 import utils.MapReader;
 
 import java.io.IOException;
@@ -23,6 +21,9 @@ public class GameMap {
     private ArrayList<RebootPoint> rebootPoints;
     // checkPoints are sorted in numerical order
     private ArrayList<CheckPoint> checkPoints;
+    private int height;
+    private int width;
+
 
     /**
      * GameMap: Initialize an instance of GameMap from the name of MAPNAME.txt
@@ -32,6 +33,8 @@ public class GameMap {
     public GameMap(MapNameEnum mapName) throws IOException {
         this.mapName = mapName.getMapName();
         this.content = MapReader.txtToTileMatrix(mapName);
+        this.height = this.content.length;
+        this.width = this.content[0].length;
         this.startPoints = new ArrayList<>();
         this.rebootPoints = new ArrayList<>();
         this.checkPoints = new ArrayList<>();
@@ -64,5 +67,14 @@ public class GameMap {
 
     public Tile getTileWithPosition(Position position) {
         return content[position.getRow()][position.getCol()];
+    }
+
+
+    public int getHeight() {
+        return this.height;
+    }
+
+    public int getWidth() {
+        return this.width;
     }
 }

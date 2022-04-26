@@ -4,6 +4,7 @@ import content.TileImageEnum;
 import model.game.board.map.Position;
 
 public class RebootPoint extends Tile {
+
     public RebootPoint() {
         super();
         this.tileImageEnum = TileImageEnum.REBOOTPOINT;

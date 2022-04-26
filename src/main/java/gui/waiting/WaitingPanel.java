@@ -109,96 +109,96 @@ public class WaitingPanel extends JPanel {
          * and provide updates to the UI when done
          */
         SwingWorker<JSONObject, Void> updateParticipantsWorker = new SwingWorker<>() {
-                    private long timeStamp;
-                    private int roomNumber;
-                    private RoomController roomController;
 
+            private long timeStamp;
+            private int roomNumber;
+            private RoomController roomController;
+
+            @Override
+            protected JSONObject doInBackground() throws Exception {
+                // getting the room information from server
+                this.roomNumber = parseInt(roomNumberStr);
+                this.roomController = new RoomController();
+                return this.roomController.roomInfo(roomNumber);
+            }
+
+            @SneakyThrows
+            @Override
+            protected void done() {
+                JSONObject roomInfoResponse = get();
+                System.out.println(roomInfoResponse);
+                RobotController robotController = new RobotController();
+
+                // If room is not found, return to the RoomPanel.
+                if (roomInfoResponse.get("status").equals(404)) {
+                    timer.stop();
+                    SwingUtilities.invokeLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            frame.getContentPane().removeAll();
+                            frame.getContentPane().add(new RoomPanel(userName, frame));
+                            frame.setVisible(true);
+                        }
+                    });
+                    return;
+                }
+
+                // If the game started by the owner, initialize GamePanel for participants excluding room owner.
+                if ((!signal.equals("owner")) && roomInfoResponse.get(RoomController.RESPONSE_ROOM_STATUS).equals(RoomController.ROOM_STATUS_START)) {
+                    loadGamePanel(this.roomNumber, roomInfoResponse, userName, frame, signal);
+                }
+
+                /*
+                 * If the room information is obtained successfully.
+                 * initializing the table of participants
+                 */
+                String[][] data = {};
+                String[] columnNames = {"Username", "Robot", "Identity"};
+                tableModel = new DefaultTableModel(data, columnNames) {
+                    // making a JTable non-editable
                     @Override
-                    protected JSONObject doInBackground() throws Exception {
-                        // getting the room information from server
-                        this.roomNumber = parseInt(roomNumberStr);
-                        this.roomController = new RoomController();
-                        return this.roomController.roomInfo(roomNumber);
-                    }
-
-                    @SneakyThrows
-                    @Override
-                    protected void done() {
-                        JSONObject roomInfoResponse = get();
-                        System.out.println(roomInfoResponse);
-                        RobotController robotController = new RobotController();
-
-                        // If room is not found, return to the RoomPanel.
-                        if (roomInfoResponse.get("status").equals(404)) {
-                            timer.stop();
-                            SwingUtilities.invokeLater(new Runnable() {
-                                @Override
-                                public void run() {
-                                    frame.getContentPane().removeAll();
-                                    frame.getContentPane().add(new RoomPanel(userName, frame));
-                                    frame.setVisible(true);
-                                }
-                            });
-                            return;
-                        }
-
-                        // If the game started by the owner, initialize GamePanel for participants excluding room owner.
-                        if ((!signal.equals("owner")) && roomInfoResponse.get(RoomController.RESPONSE_ROOM_STATUS).equals(RoomController.ROOM_STATUS_START)) {
-                            loadGamePanel(this.roomNumber, roomInfoResponse, userName, frame, signal);
-                        }
-
-                        /*
-                         * If the room information is obtained successfully.
-                         * initializing the table of participants
-                         */
-                        String[][] data = {};
-                        String[] columnNames = {"Username", "Robot", "Identity"};
-                        tableModel = new DefaultTableModel(data, columnNames) {
-                            // making a JTable non-editable
-                            @Override
-                            public boolean isCellEditable(int row, int column) {
-                                //all cells false
-                                return false;
-                            }
-                        };
-
-                        // updating the table of participants
-                        long timeStampResponse = roomInfoResponse.getLong(RoomController.RESPONSE_REQUEST_TIME);
-                        if (timeStampResponse > this.timeStamp) {
-                            // updating the stored timeStamp
-                            this.timeStamp = timeStampResponse;
-                            // requesting participants in the room then checking everyone's identity owner/participant
-                            JSONArray users = (JSONArray) roomInfoResponse.get(RoomController.RESPONSE_USERS_IN_ROOM);
-                            for (Object user : users) {
-                                if (Objects.equals(user.toString(), this.roomController.roomInfo(this.roomNumber).getString(RoomController.RESPONSE_ROOM_OWNER))) {
-                                    tableModel.addRow(new Object[]{user.toString(), robotController.getRobotInfo(user.toString()).getString(RobotController.RESPONSE_ROBOT_NAME), "owner"});
-                                } else {
-                                    tableModel.addRow(new Object[]{user.toString(), robotController.getRobotInfo(user.toString()).getString(RobotController.RESPONSE_ROBOT_NAME), "participant"});
-                                }
-                            }
-
-                            tabParticipants = new JTable(tableModel);
-                            // centering all columns
-                            centerRenderer = new DefaultTableCellRenderer();
-                            centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-                            tabParticipants.setDefaultRenderer(Object.class, centerRenderer);
-                            // putting the JTable "tabParticipants" inside a JScrollPane to show the TableHeader
-                            scrollPane = new JScrollPane(tabParticipants);
-                            scrollPane.setBounds(100, 78, 680, 142);
-                            add(scrollPane);
-                        }
+                    public boolean isCellEditable(int row, int column) {
+                        //all cells false
+                        return false;
                     }
                 };
-
-                // fetching room information from server every 0.3 seconds
-                timer = new Timer(300, new ActionListener() {
-                    @SneakyThrows
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        updateParticipantsWorker.execute();
+                // updating the table of participants
+                long timeStampResponse = roomInfoResponse.getLong(RoomController.RESPONSE_REQUEST_TIME);
+                if (timeStampResponse > this.timeStamp) {
+                    // updating the stored timeStamp
+                    this.timeStamp = timeStampResponse;
+                    // requesting participants in the room then checking everyone's identity owner/participant
+                    JSONArray users = (JSONArray) roomInfoResponse.get(RoomController.RESPONSE_USERS_IN_ROOM);
+                    for (Object user : users) {
+                        if (Objects.equals(user.toString(), this.roomController.roomInfo(this.roomNumber).getString(RoomController.RESPONSE_ROOM_OWNER))) {
+                            tableModel.addRow(new Object[]{user.toString(), robotController.getRobotInfo(user.toString()).getString(RobotController.RESPONSE_ROBOT_NAME), "owner"});
+                        } else {
+                            tableModel.addRow(new Object[]{user.toString(), robotController.getRobotInfo(user.toString()).getString(RobotController.RESPONSE_ROBOT_NAME), "participant"});
+                        }
                     }
-                });
-                timer.start();
+
+                    tabParticipants = new JTable(tableModel);
+                    // centering all columns
+                    centerRenderer = new DefaultTableCellRenderer();
+                    centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+                    tabParticipants.setDefaultRenderer(Object.class, centerRenderer);
+                    // putting the JTable "tabParticipants" inside a JScrollPane to show the TableHeader
+                    scrollPane = new JScrollPane(tabParticipants);
+                    scrollPane.setBounds(100, 78, 680, 142);
+                    add(scrollPane);
+                }
+            }
+        };
+
+        // fetching room information from server every 0.3 seconds
+        timer = new Timer(300, new ActionListener() {
+            @SneakyThrows
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                updateParticipantsWorker.execute();
+            }
+        });
+        timer.start();
     }
 
     // initializing game and then loading GamePanel

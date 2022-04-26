@@ -29,6 +29,8 @@ public class MapElementStepsDefinition {
     private Player p3;
     private Card card;
     private Tile tile;
+    private Position initialRobotPosition;
+    private Position initialRobot2Position;
 
     @Before
     public void initMapElement() throws IOException {
@@ -42,12 +44,20 @@ public class MapElementStepsDefinition {
         this.robot = new Robot(RobotNameEnum.valueOf(arg0));
     }
 
+    @Given("there is a game with map {string}")
+    public void thereIsAGameWithMap(String arg0) throws IOException {
+        this.game = new Game();
+        this.game.setGameMap(new GameMap(MapNameEnum.valueOf(arg0)));
+
+    }
+
     @When("the robot gets an initial position randomly")
     public void the_robot_gets_an_initial_position_randomly() {
-        this.robot.setPosition(0, 0);
+        this.robot.setInitialPosition(0, 0);
         // TODO:
         this.robot.setOnBoard(true);
     }
+
 
     @Then("robot is now at a position {string} and {string}")
     public void robotIsNowAtAPositionAnd(String arg0, String arg1) {
@@ -96,10 +106,11 @@ public class MapElementStepsDefinition {
     @When("The robot lives are reduced {string} points of damage by the game")
     public void theRobotLivesAreReducedPointsOfDamageByTheGame(String arg0) throws IOException {
         this.game = new Game();
+//        this.game.setGameMap(new GameMap(MapNameEnum.STARTER));
+//        ArrayList<RebootPoint> rebootPoints = new ArrayList<>();
+//        rebootPoints.add(new RebootPoint(1, 1));
+//        this.game.getGameMap().setRebootPoints(rebootPoints);
         this.game.setGameMap(new GameMap(MapNameEnum.STARTER));
-        ArrayList<RebootPoint> rebootPoints = new ArrayList<>();
-        rebootPoints.add(new RebootPoint(1, 1));
-        this.game.getGameMap().setRebootPoints(rebootPoints);
         this.game.robotTakeDamage(this.robot, Integer.parseInt(arg0));
     }
 
@@ -192,9 +203,9 @@ public class MapElementStepsDefinition {
 
     @When("robotI, robotII and robotIII are placed in \\({string},{string}), \\({string},{string}),\\({string},{string}) respectively")
     public void robotiRobotIIAndRobotIIIArePlacedInRespectively(String arg0, String arg1, String arg2, String arg3, String arg4, String arg5) {
-        this.p1.getRobot().setPosition(Integer.parseInt(arg0), Integer.parseInt(arg1));
-        this.p2.getRobot().setPosition(Integer.parseInt(arg2), Integer.parseInt(arg3));
-        this.p3.getRobot().setPosition(Integer.parseInt(arg4), Integer.parseInt(arg5));
+        this.p1.getRobot().setInitialPosition(Integer.parseInt(arg0), Integer.parseInt(arg1));
+        this.p2.getRobot().setInitialPosition(Integer.parseInt(arg2), Integer.parseInt(arg3));
+        this.p3.getRobot().setInitialPosition(Integer.parseInt(arg4), Integer.parseInt(arg5));
     }
 
     @Then("the priority of these players is {string},{string},{string}")
@@ -254,51 +265,125 @@ public class MapElementStepsDefinition {
     }
 
 
+        //--------------------------------------------------------------------------------------------
+//    @And("The robot has initial position {string} {string} with orientation {string}")
+//    public void theRobotHasInitialPositionWithOrientation(String xPos, String yPos, String orientation) {
+//        this.robot.setInitialPosition(Integer.parseInt(xPos), Integer.parseInt(yPos));
+//        this.robot.setOrientation(Orientation.valueOf(orientation));
+//    }
+//
+//
+//    @When("robot lands on an obstacle status is true")
+//    public void robotLandsOnAnObstacleStatusIsTrue() {
+//        this.game.checkCollisionTemporary(this.robot, this.tile);
+//    }
+
+
+    // below is new
     //--------------------------------------------------------------------------------------------
-    @And("The robot has initial position {string} {string} with orientation {string}")
-    public void theRobotHasInitialPositionWithOrientation(String xPos, String yPos, String orientation) {
-        this.robot.setPosition(Integer.parseInt(xPos), Integer.parseInt(yPos));
-        Orientation o = Orientation.N;
-        switch (orientation) {
-            case "N":
-                o = Orientation.N;
-                break;
-            case "S":
-                o = Orientation.S;
-                break;
-            case "E":
-                o = Orientation.E;
-                break;
-            case "W":
-                o = Orientation.W;
-                break;
-        }
-        this.robot.setOrientation(o);
-    }
-
-    @And("a position {string} {string} on the map indicating the obstacle of type {string}")
-    public void aPositionOnTheMapIndicatingTheObstacle(String xPos, String yPos, String type) {
-        switch (type) {
-            case "wnl":
-                this.tile = new Laser(Integer.parseInt(xPos), Integer.parseInt(yPos), false);
-                break;
-            case "wsl":
-                this.tile = new Laser(Integer.parseInt(xPos), Integer.parseInt(yPos), false);
-                break;
-            case "wel":
-                this.tile = new Laser(Integer.parseInt(xPos), Integer.parseInt(yPos), true);
-                break;
-            case "wwl":
-                this.tile = new Laser(Integer.parseInt(xPos), Integer.parseInt(yPos), true);
-                break;
-            case "sg":
-                this.tile = new StaticGear(Integer.parseInt(xPos), Integer.parseInt(yPos));
-                break;
+    @And("there is a wall at the same position as the robot")
+    public void thereIsAWallAtTheSamePositionAsTheRobot() {
+        this.tile = game.getGameMap().getTileWithPosition(this.robot.getPosition());
+        if (this.tile.getClass().equals(Wall.class)) {
+            System.out.println("wall here");
         }
     }
 
-    @When("robot lands on an obstacle status is true")
-    public void robotLandsOnAnObstacleStatusIsTrue() {
-        this.game.checkCollisionTemporary(this.robot, this.tile);
+    @And("the robot faces the wall")
+    public void theRobotFacesTheWall() {
+        this.robot.setOrientation(this.tile.getOrientation());
+    }
+
+//    @When("robot tries to move forward")
+//    public void robotTriesToMoveForward() {
+//        switch (this.robot.getOrientation()) {
+//            case N:
+//                this.robot.setPosition(this.robot.getPosition().getRow() - 1, this.robot.getPosition().getCol());
+//                break;
+//            case S:
+//                this.robot.setPosition(this.robot.getPosition().getRow() + 1, this.robot.getPosition().getCol());
+//                break;
+//            case E:
+//                this.robot.setPosition(this.robot.getPosition().getRow(), this.robot.getPosition().getCol() + 1);
+//                break;
+//            case W:
+//                this.robot.setPosition(this.robot.getPosition().getRow(), this.robot.getPosition().getCol() - 1);
+//                break;
+//
+//        }
+//    }
+
+//    @Then("robot does not move forward")
+//    public void robotDoesNotMoveForward() {
+//        assertTrue(this.initialRobotPosition.equals(this.robot.getPosition()));
+//    }
+
+
+    //--------------------------------------------------------------------------------------------
+    @And("there is a wall at the next position of the robot")
+    public void thereIsAWallAtTheNextPositionOfTheRobot() {
+        this.tile = game.getGameMap().getTileWithPosition(this.robot.getPosition());
+        if (this.tile.getClass().equals(Wall.class)) {
+            System.out.println(this.robot.getName());
+            System.out.println("wall next position");
+        }
+    }
+
+
+    //--------------------------------------------------------------------------------------------
+    private Robot robot2;
+
+    @And("robot faces another robot {string} with position {string} {string}")
+    public void robotFacesAnotherRobotWithPosition(String arg0, String arg1, String arg2) {
+        this.robot2 = new Robot(arg0, Integer.parseInt(arg1), Integer.parseInt(arg2));
+        this.initialRobot2Position = this.robot2.getPosition();
+        this.robot2.setOrientation(Orientation.E);
+    }
+
+    @When("programming phase is over")
+    public void programmingPhaseIsOver() {
+        this.game.endProgrammingPhase();
+    }
+
+    @Then("robot{int} shoots robot{int}")
+    public void robotShootsRobot(int arg0, int arg1) {
+        int lives = this.robot2.getLives();
+        this.robot.shoot(this.robot2);
+        assertTrue(this.robot2.getLives() == lives - 1);
+    }
+
+
+    //--------------------------------------------------------------------------------------------
+    @And("robot has orientation {string}")
+    public void robotHasOrientation(String arg0) {
+        this.robot.setOrientation(Orientation.valueOf(arg0));
+    }
+
+//    @When("robot tries to move past the board limits")
+//    public void robotTriesToMovePastTheBoardLimits() {
+//        robotTriesToMoveForward();
+//    }
+
+    @Then("robot does not move past the board limits")
+    public void robotDoesNotMovePastTheBoardLimits() {
+        assertTrue(this.initialRobotPosition.equals(this.robot.getPosition()));
+    }
+
+
+    //--------------------------------------------------------------------------------------------  not finished
+    @Then("robot{int} pushes robot{int}")
+    public void robotPushesRobot(int arg0, int arg1) {
+        this.robot.push(this.robot2);
+    }
+
+    @And("robot{int} is at the initial position of robot{int}")
+    public void robotIsAtTheInitialPositionOfRobot(int arg0, int arg1) {
+        assertTrue(this.robot.getPosition().equals(this.initialRobot2Position));
+    }
+
+
+    @And("robot{int} is at a new position")
+    public void robotIsAtANewPosition(int arg0) {
+        assertTrue(!this.robot2.getPosition().equals(this.initialRobot2Position));
     }
 }

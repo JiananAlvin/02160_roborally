@@ -2,6 +2,7 @@ package model.game.board.map.element;
 
 import content.RobotNameEnum;
 import lombok.Data;
+import model.Game;
 import model.game.board.map.Orientation;
 import model.game.board.map.Position;
 import model.game.card.Card;
@@ -13,7 +14,7 @@ public class Robot {
     private String name;
     private boolean onBoard;
     private Orientation orientation;
-    private int lives;
+    private int lives = 5;
     private Position position;
 
     public Robot(RobotNameEnum robotName) {
@@ -30,16 +31,29 @@ public class Robot {
         this.orientation = Orientation.E;
     }
 
-
-    public void setPosition(Position position) {
-        this.position = position;
-    }
-
-    public void setPosition(int row, int col) {
+    public void setInitialPosition(int row, int col) {
         this.position.setRow(row);
         this.position.setCol(col);
     }
 
+    public void setInitialPosition(Position position) {
+        this.position = position;
+    }
+    public void setPosition(Position position) {
+        setPosition(position.getRow(), position.getCol());
+    }
+
+    public void setPosition(int row, int col) {
+        if (Game.validateMovement(this, row, col)) {
+            this.position.setRow(row);
+            this.position.setCol(col);
+        }
+
+//    public void setPosition(int row, int col) {
+//        this.position.setRow(row);
+//        this.position.setCol(col);
+//    }
+    }
     public int distanceToAntenna() {
         return Math.abs(this.position.getRow() - Antenna.getInstance().getPosition().getRow()) + Math.abs(this.position.getCol() - Antenna.getInstance().getPosition().getCol());
     }
@@ -72,6 +86,19 @@ public class Robot {
         if (this.getPosition().getRow() > maxRow || this.getPosition().getCol() > maxCol) {
             return false;
         } else return this.getPosition().getRow() >= 0 && this.getPosition().getCol() >= 0;
+
+    }
+
+
+    public void shoot(Robot robot2) {
+//        if (noObstacleToRobot(robot2)) {
+            robot2.takeDamage(1);
+//        }
+
+    }
+
+    public void push(Robot robot2) {
+        this.setPosition(robot2.getPosition());
     }
 }
 

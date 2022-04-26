@@ -4,6 +4,7 @@ import model.game.board.map.Collision;
 import model.game.board.map.Position;
 
 public class Obstacle extends Tile{
+
     private Position position;
     private int damage = 1;
 //    private boolean verticalLaser;

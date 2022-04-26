@@ -44,16 +44,17 @@ Feature:
 
 
   Scenario Outline: A robot moves according to the programming card
-    Given a robot "<robot_name>" had initial position "<initial_row>" "<initial_col>" with orientation "<orientation>"
+    Given there is a game with map "<map_name>"
+    And a robot "<robot_name>" had initial position "<initial_row>" "<initial_col>" with orientation "<orientation>"
     And a card with movement "<movement>"
     When the card is played
     Then the robot position is "<expected_row>" "<expected_col>"
     Examples:
-      | robot_name  | initial_row | initial_col | orientation | movement | expected_row | expected_col |
-      | SQUASH_BOT  | 1           | 1           | N           | 1        | 0            | 1            |
-      | ZOOM_BOT    | 1           | 1           | S           | 1        | 2            | 1            |
-      | HAMMER_BOT  | 1           | 1           | E           | 2        | 1            | 3            |
-      | TRUNDLE_BOT | 1           | 1           | W           | -1       | 1            | 2            |
+      | robot_name  | initial_row | initial_col | orientation | movement | expected_row | expected_col | map_name |
+      | SQUASH_BOT  | 1           | 1           | N           | 1        | 0            | 1            | BEGINNER |
+      | ZOOM_BOT    | 3           | 0           | E           | 1        | 3            | 1            | BEGINNER |
+      | HAMMER_BOT  | 1           | 1           | E           | 2        | 1            | 3            | BEGINNER |
+      | TRUNDLE_BOT | 1           | 1           | W           | -1       | 1            | 2            | BEGINNER |
 
 
   Scenario Outline: Damage affects robot lives
@@ -62,33 +63,10 @@ Feature:
     Then The robot now has "<final_lives>" lives
     Examples:
       | robot_name | initial_lives | damage_lives | final_lives |
-      | SQUASH_BOT | 1             | 1            | 5           |
+      | SQUASH_BOT | 3             | 2            | 1           |
       | HULK_X90   | 2             | 1            | 1           |
-      | SPIN_BOT   | 1             | 2            | 5           |
+      | SPIN_BOT   | 3             | 1            | 2           |
 
-  # TODO:
-  #  When
-  Scenario Outline: As a robot I want to check if I am inside of the board
-    Given A robot "<robot_name>" has position "<row>" "<col>"
-    Then the expected output is "<expected_output>" in a board that have a maximum size of "<max_row>" "<max_col>"
-    Examples:
-      | robot_name  | row | col | max_row | max_col | expected_output |
-      | ZOOM_BOT    | 1   | -2  | 3       | 3       | false           |
-      | HULK_X90    | 7   | 1   | 4       | 4       | false           |
-      | SPIN_BOT    | 1   | 1   | 1       | 1       | true            |
-      | TRUNDLE_BOT | 4   | -1  | 3       | 3       | false           |
-
-  # This test only have the purpose of mix some of the scenarios, no step definition needed (:
-  Scenario Outline: As a robot I want to move with some cards and check if I'm inside of the board
-    Given a robot "<robot_name>" had initial position "<initial_row>" "<initial_col>" with orientation "<orientation>"
-    And a card with movement "<movement>"
-    When the card is played
-    Then the expected output is "<expected_output>" in a board that have a maximum size of "<max_row>" "<max_col>"
-    Examples:
-      | robot_name | initial_row | initial_col | orientation | movement | expected_output | max_row | max_col |
-      | HAMMER_BOT | 3           | 3           | N           | 2        | true            | 5       | 5       |
-      | SPIN_BOT   | 2           | 0           | E           | -1       | false           | 5       | 5       |
-      | HULK_X90   | 4           | 2           | S           | 3        | false           | 6       | 5       |
 
   Scenario Outline: The game status is checked every time a checkpoint token is taken by a player
     Given "<playerA>" and "<playerB>" are in a game with the map ADVANCED
@@ -116,3 +94,88 @@ Feature:
 #      | SPIN_BOT   | 1             | 2           | 2           | N           | 2            | 2            | wel              | 5           |
 #      | SQUASH_BOT | 3             | 2           | 2           | S           | 2            | 2            | wwl              | 2           |
 #      | HAMMER_BOT | 4             | 2           | 2           | S           | 2            | 2            | sg               | 2           |
+
+
+  Scenario Outline: Robot can not go through wall when wall is at the current position
+    Given there is a game with map "<map_name>"
+    And A robot "<robot_name>" has position "<row>" "<col>"
+    And there is a wall at the same position as the robot
+    And the robot faces the wall
+#    When robot tries to move forward
+#    Then robot does not move forward
+    Examples:
+      | robot_name  | row | col | map_name |
+      | ZOOM_BOT    | 2   | 1   | BEGINNER |
+      | HULK_X90    | 7   | 1   | BEGINNER |
+      | SPIN_BOT    | 6   | 5   | BEGINNER |
+      | TRUNDLE_BOT | 5   | 2   | BEGINNER |
+
+
+#    Scenario Outline: Robot can not go through wall when wall is at next position
+#    Given there is a game with map "<map_name>"
+#    And A robot "<robot_name>" has position "<row>" "<col>"
+#    When robot tries to move forward
+#    And there is a wall at the next position of the robot
+#    Then robot does not move forward
+#    Examples:
+#      | robot_name  | row | col | map_name |
+#      | ZOOM_BOT    | 4   | 2   | BEGINNER |
+#      | SPIN_BOT    | 6   | 5   | BEGINNER |
+#      | TRUNDLE_BOT | 5   | 2   | BEGINNER |
+#      | HULK_X90    | 6   | 7   | BEGINNER |
+
+
+#  Scenario Outline: Robots can shoot each other
+#    Given there is a game with map "<map_name>"
+#    And A robot "<robot_name>" has position "<row>" "<col>"
+#    And robot faces another robot "<robot_name2>" with position "<row2>" "<col2>"
+#    When programming phase is over
+#    Then robot1 shoots robot2
+#    Examples:
+#      positions on map so that there is no obstacle between them
+#      | robot_name | robot_name2 | map_name | row | col | row2 | col2 |
+#      | ZOOM_BOT   | SPIN_BOT    | BEGINNER | 3   | 1   | 3    | 3    |
+#      | HULK_X90   | ZOOM_BOT    | BEGINNER | 1   | 0   | 1    | 3    |
+
+
+#  Scenario Outline: Robot can not go past the board limits
+#    Given there is a game with map "<map_name>"
+#    And A robot "<robot_name>" has position "<row>" "<col>"
+#    And robot has orientation "<orientation>"
+#    When robot tries to move past the board limits
+#    Then robot does not move past the board limits
+#    Examples:
+#    Testing on 4 different borders
+#      | robot_name | row | col | map_name | orientation |
+#      | HULK_X90   | 0   | 0   | BEGINNER | N           |
+#      | ZOOM_BOT   | 0   | 0   | BEGINNER | W           |
+#      | SPIN_BOT   | 9   | 0   | BEGINNER | W           |
+#      | SQUASH_BOT | 8   | 12  | BEGINNER | E           |
+#      | HAMMER_BOT | 0   | 12  | BEGINNER | N           |
+#      | HAMMER_BOT | 0   | 12  | BEGINNER | E           |
+
+# TODO: implement the following scenario
+#    Scenario Outline: Robots can not shoot each other when there is an obstacle between them
+#      Given there is a game with map "<map_name>"
+#      And A robot "<robot_name>" has position "<row>" "<col>"
+#      And robot faces another robot "<robot_name2>" with position "<row2>" "<col2>"
+#      When programming phase is over
+#      Then robot1 shoots robot2
+#      Examples:
+##      positions of robots so that there is an obstacle between them
+#        | robot_name | robot_name2 | map_name | row | col | row2 | col2 |
+#        | ZOOM_BOT   | SPIN_BOT    | BEGINNER | 2   | 1   | 3   | 1   |
+#        | HULK_X90   | ZOOM_BOT    | BEGINNER | 7   | 1   | 2   | 1   |
+#  Scenario Outline: Robots push each other
+#    Given there is a game with map "<map_name>"
+#    And A robot "<robot_name>" has position "<row>" "<col>"
+#    And robot faces another robot "<robot_name2>" with position "<row2>" "<col2>"
+#    When programming phase is over
+#    Then robot1 pushes robot2
+#    And robot1 is at the initial position of robot2
+#    And robot2 is at a new position
+#    Examples:
+#      | robot_name | robot_name2 | map_name | row | col | row2 | col2 |
+#      | ZOOM_BOT   | SPIN_BOT    | BEGINNER | 3   | 1   | 3   | 2   |
+#      | HULK_X90   | ZOOM_BOT    | BEGINNER | 1   | 0   | 1   | 1   |
+#      | SPIN_BOT   | ZOOM_BOT    | BEGINNER | 3   | 0   | 3   | 1   |

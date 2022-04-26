@@ -9,6 +9,7 @@ import model.game.board.map.Position;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class Wall extends Tile {
+
     private Orientation orientation;
 
     public Wall(Position position, Orientation orientation) {
@@ -39,5 +40,9 @@ public class Wall extends Tile {
             default:
                 break;
         }
+    }
+
+    public Orientation getOrientation() {
+        return orientation;
     }
 }
