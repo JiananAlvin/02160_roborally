@@ -96,86 +96,24 @@ Feature:
 #      | HAMMER_BOT | 4             | 2           | 2           | S           | 2            | 2            | sg               | 2           |
 
 
-  Scenario Outline: Robot can not go through wall when wall is at the current position
-    Given there is a game with map "<map_name>"
-    And A robot "<robot_name>" has position "<row>" "<col>"
-    And there is a wall at the same position as the robot
-    And the robot faces the wall
-#    When robot tries to move forward
-#    Then robot does not move forward
-    Examples:
-      | robot_name  | row | col | map_name |
-      | ZOOM_BOT    | 2   | 1   | BEGINNER |
-      | HULK_X90    | 7   | 1   | BEGINNER |
-      | SPIN_BOT    | 6   | 5   | BEGINNER |
-      | TRUNDLE_BOT | 5   | 2   | BEGINNER |
 
 
-#    Scenario Outline: Robot can not go through wall when wall is at next position
-#    Given there is a game with map "<map_name>"
-#    And A robot "<robot_name>" has position "<row>" "<col>"
-#    When robot tries to move forward
-#    And there is a wall at the next position of the robot
-#    Then robot does not move forward
-#    Examples:
-#      | robot_name  | row | col | map_name |
-#      | ZOOM_BOT    | 4   | 2   | BEGINNER |
-#      | SPIN_BOT    | 6   | 5   | BEGINNER |
-#      | TRUNDLE_BOT | 5   | 2   | BEGINNER |
-#      | HULK_X90    | 6   | 7   | BEGINNER |
 
 
-#  Scenario Outline: Robots can shoot each other
-#    Given there is a game with map "<map_name>"
-#    And A robot "<robot_name>" has position "<row>" "<col>"
-#    And robot faces another robot "<robot_name2>" with position "<row2>" "<col2>"
-#    When programming phase is over
-#    Then robot1 shoots robot2
-#    Examples:
-#      positions on map so that there is no obstacle between them
-#      | robot_name | robot_name2 | map_name | row | col | row2 | col2 |
-#      | ZOOM_BOT   | SPIN_BOT    | BEGINNER | 3   | 1   | 3    | 3    |
-#      | HULK_X90   | ZOOM_BOT    | BEGINNER | 1   | 0   | 1    | 3    |
 
 
-#  Scenario Outline: Robot can not go past the board limits
-#    Given there is a game with map "<map_name>"
-#    And A robot "<robot_name>" has position "<row>" "<col>"
-#    And robot has orientation "<orientation>"
-#    When robot tries to move past the board limits
-#    Then robot does not move past the board limits
-#    Examples:
-#    Testing on 4 different borders
-#      | robot_name | row | col | map_name | orientation |
-#      | HULK_X90   | 0   | 0   | BEGINNER | N           |
-#      | ZOOM_BOT   | 0   | 0   | BEGINNER | W           |
-#      | SPIN_BOT   | 9   | 0   | BEGINNER | W           |
-#      | SQUASH_BOT | 8   | 12  | BEGINNER | E           |
-#      | HAMMER_BOT | 0   | 12  | BEGINNER | N           |
-#      | HAMMER_BOT | 0   | 12  | BEGINNER | E           |
 
-# TODO: implement the following scenario
-#    Scenario Outline: Robots can not shoot each other when there is an obstacle between them
-#      Given there is a game with map "<map_name>"
-#      And A robot "<robot_name>" has position "<row>" "<col>"
-#      And robot faces another robot "<robot_name2>" with position "<row2>" "<col2>"
-#      When programming phase is over
-#      Then robot1 shoots robot2
-#      Examples:
-##      positions of robots so that there is an obstacle between them
-#        | robot_name | robot_name2 | map_name | row | col | row2 | col2 |
-#        | ZOOM_BOT   | SPIN_BOT    | BEGINNER | 2   | 1   | 3   | 1   |
-#        | HULK_X90   | ZOOM_BOT    | BEGINNER | 7   | 1   | 2   | 1   |
-#  Scenario Outline: Robots push each other
-#    Given there is a game with map "<map_name>"
-#    And A robot "<robot_name>" has position "<row>" "<col>"
-#    And robot faces another robot "<robot_name2>" with position "<row2>" "<col2>"
-#    When programming phase is over
-#    Then robot1 pushes robot2
-#    And robot1 is at the initial position of robot2
-#    And robot2 is at a new position
-#    Examples:
-#      | robot_name | robot_name2 | map_name | row | col | row2 | col2 |
-#      | ZOOM_BOT   | SPIN_BOT    | BEGINNER | 3   | 1   | 3   | 2   |
-#      | HULK_X90   | ZOOM_BOT    | BEGINNER | 1   | 0   | 1   | 1   |
-#      | SPIN_BOT   | ZOOM_BOT    | BEGINNER | 3   | 0   | 3   | 1   |
+
+
+
+
+
+
+
+
+
+
+
+
+
+
