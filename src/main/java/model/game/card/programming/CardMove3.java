@@ -7,10 +7,7 @@ import model.game.card.Card;
 import model.game.card.programming.behaviour.Movement;
 
 public class CardMove3 extends Card implements Programmable {
-    public void actsOn(Robot robot) {
-        OrientationEnum robotOrientation = robot.getOrientation();
-        Position currentPos = robot.getPosition();
-        Position newPos = Movement.calculateNewPosition(robotOrientation, currentPos, 3);
-        robot.setPosition(newPos);
-    };
+    public Card actsOn(Robot robot) {
+        return (new CardMove1()).actsOn(robot).actsOn(robot).actsOn(robot);
+    }
 }

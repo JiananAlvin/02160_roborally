@@ -20,11 +20,11 @@ public class RebootPoint extends Tile {
         this.tileImageEnum = TileImageEnum.REBOOTPOINT;
     }
 
-    public Position getPosition() {
-        return super.getPosition();
-    }
+//    public Position getPosition() {
+//        return super.getPosition();
+//    }
 
-    public void setPosition(Position position) {
-        super.setPosition(position);
-    }
+//    public void setPosition(Position position) {
+//        super.setPosition(position);
+//    }
 }

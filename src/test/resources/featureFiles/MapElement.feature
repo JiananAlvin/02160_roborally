@@ -45,27 +45,29 @@ Feature:
 
   Scenario Outline: A robot moves according to the programming card
     Given there is a game with map "<map_name>"
-    And a robot "<robot_name>" had initial position "<initial_row>" "<initial_col>" with orientation "<orientation>"
+    And a robot "<robot_name>" with position "<row>" "<col>"
+    And robot has "<orientation>" orientation
     And a card with movement "<movement>"
     When the card is played
     Then the robot position is "<expected_row>" "<expected_col>"
     Examples:
-      | robot_name  | initial_row | initial_col | orientation | movement | expected_row | expected_col | map_name |
-      | SQUASH_BOT  | 1           | 1           | N           | 1        | 0            | 1            | BEGINNER |
-      | ZOOM_BOT    | 3           | 0           | E           | 1        | 3            | 1            | BEGINNER |
-      | HAMMER_BOT  | 1           | 1           | E           | 2        | 1            | 3            | BEGINNER |
-      | TRUNDLE_BOT | 1           | 1           | W           | -1       | 1            | 2            | BEGINNER |
+      | robot_name  | row | col | orientation | movement | expected_row | expected_col | map_name |
+      | SQUASH_BOT  | 1   | 1   | N           | 1        | 0            | 1            | BEGINNER |
+      | ZOOM_BOT    | 3   | 0   | E           | 1        | 3            | 1            | BEGINNER |
+      | HAMMER_BOT  | 1   | 1   | E           | 2        | 1            | 3            | BEGINNER |
+      | TRUNDLE_BOT | 1   | 1   | W           | -1       | 1            | 2            | BEGINNER |
 
 
   Scenario Outline: Damage affects robot lives
-    Given a robot "<robot_name>" had "<initial_lives>" lives
+    Given a robot "<robot_name>"
+    And robot has "<lives>" lives
     When the robot lives are reduced "<damage_lives>" points of damage by the game
     Then the robot now has "<final_lives>" lives
     Examples:
-      | robot_name | initial_lives | damage_lives | final_lives |
-      | SQUASH_BOT | 3             | 2            | 1           |
-      | HULK_X90   | 2             | 1            | 1           |
-      | SPIN_BOT   | 3             | 1            | 2           |
+      | robot_name | lives | damage_lives | final_lives |
+      | SQUASH_BOT | 3     | 2            | 1           |
+      | HULK_X90   | 2     | 1            | 1           |
+      | SPIN_BOT   | 3     | 1            | 2           |
 
 
   Scenario Outline: The game status is checked every time a checkpoint token is taken by a player
@@ -81,42 +83,90 @@ Feature:
       | Ion     | Durdija | 1            | unfinished  |
 
 
-#  Scenario Outline: Player lands on an Obstacle
-#    Given A robot "<robot_name>" had "<initial_lives>" lives
-#    And The robot has initial position "<initial_row>" "<initial_col>" with orientation "<orientation>"
-#    And a position "<obstacle_row>" "<obstacle_col>" on the map indicating the obstacle of type "<type_of_obstacle>"
-#    When robot lands on an obstacle status is true
-#    Then The robot now has "<final_lives>" lives
-#    Examples:
-#      | robot_name | initial_lives | initial_row | initial_col | orientation | obstacle_row | obstacle_col | type_of_obstacle | final_lives |
-#      | ZOOM_BOT   | 2             | 2           | 2           | N           | 2            | 2            | wnl              | 1           |
-#      | HULK_X90   | 2             | 3           | 2           | N           | 2            | 2            | wsl              | 2           |
-#      | SPIN_BOT   | 1             | 2           | 2           | N           | 2            | 2            | wel              | 5           |
-#      | SQUASH_BOT | 3             | 2           | 2           | S           | 2            | 2            | wwl              | 2           |
-#      | HAMMER_BOT | 4             | 2           | 2           | S           | 2            | 2            | sg               | 2           |
-
-
-#  Scenario Outline: Player lands on an Obstacle
-#    Given a robot "<robot_name>" had "<initial_lives>" lives
-#    And the robot had initial position <initial_posX> <initial_posY> with orientation "<orientation>"
-#    And a position "<obstacle_posX>" "<obstacle_posY>" on the map indicating the obstacle of type "<type_of_obstacle>"
-#    When robot lands on an obstacle status is true
-#    Then the robot now has <final_lives> lives
-#    Examples:
-#      | robot_name   | initial_lives | initial_posX | initial_posY | orientation | obstacle_posX | obstacle_posY | type_of_obstacle | final_lives |
-#      | ZOOM_BOT     | 4             | 2            | 2            | S           | 2             | 2             | sg               | 2           |
-#      | HULK_X90     | 4             | 2            | 2            | S           | 2             | 2             | pit              | 5           |
-#      | HAMMER_BOT   | 3             | 2            | 2            | S           | 2             | 2             | ch               | 4           |
-
-
-  Scenario Outline: Player lands on an Obstacle
-    Given a robot "<robot_name>" had "<initial_lives>" lives
-    And the robot had initial position <initial_posX> <initial_posY> with orientation "<orientation>"
-    And a position "<obstacle_posX>" "<obstacle_posY>" on the map indicating the obstacle of type "<type_of_obstacle>"
-    When robot lands on an obstacle status is true
-    Then the robot now has "<final_orientation>" orientation
+#    Robot interaction with elements:
+#    In the following scenarios by "land on" means that robot moves forward according to the orientation
+  Scenario Outline: Robot lands on a static gear
+    Given there is a game with map "<map_name>"
+    And a robot "<robot_name>" with position "<row>" "<col>"
+    And robot has "<orientation>" orientation
+    And robot has "<lives>" lives
+    When robot lands on a static gear
+    Then the robot now has "<lives1>" lives
     Examples:
-      | robot_name    | initial_lives | initial_posX | initial_posY | orientation | obstacle_posX | obstacle_posY | type_of_obstacle | final_orientation |
-      | SPIN_BOT      | 4             | 2            | 2            | S           | 2             | 2             | rgR              | W                 |
-      | SQUASH_BOT    | 4             | 2            | 2            | N           | 2             | 2             | rgL              | W                 |
+      | map_name | robot_name | row | col | orientation | lives | lives1 |
+      | STARTER  | ZOOM_BOT   | 2   | 2   | N           | 2     | 1      |
 
+  Scenario Outline: Robot lands on a rotating gear
+    Given there is a game with map "<map_name>"
+    And a robot "<robot_name>" with position "<row>" "<col>"
+    And robot has "<orientation>" orientation
+    When robot lands on a rotating gear
+    Then robot has "<final_orientation>" orientation
+    Examples:
+      | map_name | robot_name | row | col | orientation | final_orientation |
+      | STARTER  | ZOOM_BOT   | 2   | 2   | N           | E                 |
+
+  Scenario Outline: Robot lands on a pit
+    Given there is a game with map "<map_name>"
+    And a robot "<robot_name>" with position "<row>" "<col>"
+    And robot has "<orientation>" orientation
+    When robot lands on a pit
+    Then robot is sent to the reboot point
+    And the robot now has "<lives>" lives
+    Examples:
+      | map_name | robot_name | row | col | orientation | lives |
+      | STARTER  | ZOOM_BOT   | 2   | 2   | N           | 5     |
+
+  Scenario Outline: Robot lands on a laser tile
+    Given there is a game with map "<map_name>"
+    And a robot "<robot_name>" with position "<row>" "<col>"
+    And robot has "<orientation>" orientation
+    And robot has "<lives>" lives
+    When robot lands on a laser tile
+    Then the robot now has "<lives1>" lives
+
+    Examples:
+      | robot_name | row | col | orientation | lives | lives1 | map_name |
+      | ZOOM_BOT   | 3   | 5   | E           | 2     | 1      | STARTER  |
+      | ZOOM_BOT   | 6   | 10  | W           | 2     | 1      | STARTER  |
+      | ZOOM_BOT   | 7   | 6   | N           | 2     | 1      | STARTER  |
+
+
+  Scenario Outline: Robots cannot go through a wall when wall is at next position
+    Given there is a game with map "<map_name>"
+    And a robot "<robot_name>" with position "<row>" "<col>"
+    And robot has "<orientation>" orientation
+    When robot tries to move forward and there is a wall
+    Then robot does not move forward
+    Examples:
+      | robot_name | row | col | orientation | map_name |
+      | ZOOM_BOT   | 1   | 1   | S           | STARTER  |
+      | ZOOM_BOT   | 4   | 3   | W           | STARTER  |
+      | ZOOM_BOT   | 8   | 1   | N           | STARTER  |
+
+  Scenario Outline: Robots cannot go through a wall when wall is at current position
+    Given there is a game with map "<map_name>"
+    And a robot "<robot_name>" with position "<row>" "<col>"
+    And robot has "<orientation>" orientation
+    When robot tries to move forward and there is a wall
+    Then robot does not move forward
+    Examples:
+      | robot_name | row | col | orientation | map_name |
+      | ZOOM_BOT   | 2   | 1   | N           | STARTER  |
+      | ZOOM_BOT   | 5   | 6   | N           | STARTER  |
+      | ZOOM_BOT   | 7   | 9   | N           | STARTER  |
+      | ZOOM_BOT   | 6   | 5   | E           | STARTER  |
+
+  Scenario Outline: Robots cannot go over the board
+    Given there is a game with map "<map_name>"
+    And a robot "<robot_name>" with position "<row>" "<col>"
+    And robot has "<orientation>" orientation
+    When robot tries to move forward and there is void
+    Then robot does not move forward
+    Examples:
+      | robot_name | row | col | orientation | map_name |
+      | ZOOM_BOT   | 0   | 0   | N           | STARTER  |
+      | ZOOM_BOT   | 0   | 0   | W           | STARTER  |
+      | ZOOM_BOT   | 9   | 0   | S           | STARTER  |
+      | ZOOM_BOT   | 9   | 12  | E           | STARTER  |
+      | ZOOM_BOT   | 9   | 12  | S           | STARTER  |

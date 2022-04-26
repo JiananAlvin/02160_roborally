@@ -8,32 +8,28 @@ import model.game.board.map.Position;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class RotatingGear extends Tile implements Obstacle {
-
-    private Position position;
     private boolean rotate;
 
     public RotatingGear() {
-        this.position = new Position();
+        super(new Position());
     }
 
     public RotatingGear(Position position) {
-        this.position = position;
+        super(position);
     }
 
     public RotatingGear(int x, int y, boolean rotate) {
-        this.position = new Position(x, y);
-        this.rotate = rotate;
+        super(new Position(x, y));
+        setRotate(rotate);
     }
 
-    public void robotInteraction(Robot r){
+    public void robotInteraction(Robot r) {
         OrientationEnum orientation;
         if (rotate)
             orientation = OrientationEnum.matchOrientation((r.getOrientation().getAngle() + 90) % 360);
         else
             orientation = OrientationEnum.matchOrientation((r.getOrientation().getAngle() + 270) % 360);
-
         r.setOrientation(orientation);
-
     }
 
     public void setRotate(boolean rotate) {

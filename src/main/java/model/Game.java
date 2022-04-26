@@ -48,27 +48,9 @@ public class Game {
         if (!(row >= 0 && row < gameMap.getHeight() && col >= 0 && col < gameMap.getWidth())) {
             return false;
         }
-        if (robotAt(row, col) != null) {
-            Robot r1 = robotAt(row, col);
-            r.setPosition(r1.getPosition());
-            // temporary
-            switch (r.getOrientation()) {
-                case N:
-                    r1.setPosition(new Position(r.getPosition().getRow() - 1, r.getPosition().getCol()));
-                    break;
-                case S:
-                    r1.setPosition(new Position(r.getPosition().getRow() + 1, r.getPosition().getCol()));
-                    break;
-                case E:
-                    r1.setPosition(new Position(r.getPosition().getRow(), r.getPosition().getCol() + 1));
-                    break;
-                case W:
-                    r1.setPosition(new Position(r.getPosition().getRow(), r.getPosition().getCol() - 1));
-                    break;
 
-            }
-        }
         Tile tile = gameMap.getTileWithPosition(r.getPosition());
+//        if (tile instanceof )
 
         if (tile instanceof Wall) { // current position is a wall
             return !((Wall) tile).getOrientation().equals(r.getOrientation());
@@ -81,21 +63,21 @@ public class Game {
         return true;
     }
 
-    private static Robot robotAt(int row, int col) {
-        for (Player p : participants) {
-            if (p.getRobot().getPosition().getRow() == row && p.getRobot().getPosition().getCol() == col) {
-                return p.getRobot();
-            }
-        }
-        return null;
-    }
+//    private static Robot robotAt(int row, int col) {
+//        for (Player p : participants) {
+//            if (p.getRobot().getPosition().getRow() == row && p.getRobot().getPosition().getCol() == col) {
+//                return p.getRobot();
+//            }
+//        }
+//        return null;
+//    }
 
     public ArrayList<Player> getParticipants() {
         return participants;
     }
 
 
-    public GameMap getGameMap() {
+    public static GameMap getGameMap() {
         return gameMap;
     }
 

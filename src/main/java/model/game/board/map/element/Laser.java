@@ -20,8 +20,6 @@ public class Laser extends Tile implements Obstacle{
     }
 
     private void init(Boolean isVertical) {
-        //    if it is true, it is vertical laser
-        boolean isVertical1 = isVertical;
         if (isVertical)
             this.tileImageEnum = TileImageEnum.LASERVERTICAL;
         else this.tileImageEnum = TileImageEnum.LASERHORIZONTAL;
