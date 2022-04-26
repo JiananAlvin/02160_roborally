@@ -5,7 +5,8 @@ import model.game.card.Card;
 import gui.game.OrientationEnum;
 
 public class CardTurnLeft extends Card implements Programmable {
-    public void actsOn(Robot robot) {
+    public Card actsOn(Robot robot) {
         robot.setOrientation(OrientationEnum.matchOrientation((robot.getOrientation().getAngle() + 270) % 360));
+        return this;
     }
 }

@@ -1,8 +1,9 @@
 package model.game.board.map.element;
 
+import model.Game;
 import model.game.board.map.Position;
 
-public class Pit extends Tile{
+public class Pit extends Tile implements Obstacle{
 
     public Pit() { super();}
 
@@ -14,13 +15,8 @@ public class Pit extends Tile{
         super(x, y);
     }
 
-    public Position getPosition() {
-        return super.getPosition();
+    public void robotInteraction(Robot r) {
+        r.takeDamage(5);
     }
-
-    public void setPosition(Position position) {
-        super.setPosition(position);
-    }
-
 }
 

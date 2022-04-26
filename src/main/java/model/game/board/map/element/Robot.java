@@ -6,8 +6,10 @@ import model.Game;
 import gui.game.OrientationEnum;
 import model.game.board.map.Position;
 import model.game.card.Card;
+import model.game.card.programming.behaviour.Movement;
 
 import java.lang.Math;
+import java.util.ArrayList;
 
 @Data
 public class Robot {
@@ -16,6 +18,7 @@ public class Robot {
     private OrientationEnum orientation;
     private int lives = 5;
     private Position position;
+    private ArrayList<CheckPoint> checkpoints;
 
     public Robot(RobotNameEnum robotName) {
         this.name = robotName.getName();
@@ -39,21 +42,25 @@ public class Robot {
     public void setInitialPosition(Position position) {
         this.position = position;
     }
-    public void setPosition(Position position) {
-        setPosition(position.getRow(), position.getCol());
-    }
-
-    public void setPosition(int row, int col) {
-        if (Game.validateMovement(this, row, col)) {
-            this.position.setRow(row);
-            this.position.setCol(col);
+    public void setPosition(Position position) { this.position = position; }
+    public Position getPosition() { return this.position; }
+    public boolean tryMove(Position newPos) {
+        if (Game.validateMovement(this, newPos.getRow(), newPos.getCol())) {
+            Tile t = Game.getGameMap().getTileWithPosition(newPos);
+            move(newPos,t);
+            return true;
         }
-
-//    public void setPosition(int row, int col) {
-//        this.position.setRow(row);
-//        this.position.setCol(col);
-//    }
+        return false;
     }
+
+    public void move(Position newPos,Tile t) {
+        this.position = newPos;
+        if(t instanceof Obstacle){
+            Obstacle o = (Obstacle) t;
+            o.robotInteraction(this);
+        }
+    }
+
     public int distanceToAntenna() {
         return Math.abs(this.position.getRow() - Antenna.getInstance().getPosition().getRow()) + Math.abs(this.position.getCol() - Antenna.getInstance().getPosition().getCol());
     }
@@ -77,9 +84,15 @@ public class Robot {
 
     private boolean checkAlive() {
         if (this.lives <= 0) {
-            return false; //here we reboot
+            this.reboot();
+            return false;
         }
-        return true; // here nothing happens
+        return true;
+    }
+
+    private void reboot() {
+        this.position = Game.getGameMap().getARandomRebootPoint().getPosition();
+        this.setLives(5);
     }
 
     public boolean imInsideBoard(int maxRow, int maxCol) {
@@ -89,15 +102,26 @@ public class Robot {
 
     }
 
-    public void shoot(Robot robot2) {
-//        if (noObstacleToRobot(robot2)) {
-            robot2.takeDamage(1);
-//        }
-
+    public void setLives(int lives) {
+        if (lives <= 5)
+            this.lives = lives;
     }
 
-    public void push(Robot robot2) {
-        this.setPosition(robot2.getPosition());
+    public int getLives(int lives) {
+        return this.lives;
+    }
+
+
+    public void checkIn(CheckPoint checkPoint) {
+        this.checkpoints.add(checkPoint);
+    }
+
+    public void restoreCheckpoints() {
+        this.checkpoints = new ArrayList<CheckPoint>();
+    }
+
+    public void robotInteraction(Robot robot) {
+        // push robot
     }
 }
 
