@@ -6,6 +6,7 @@ import model.game.card.Card;
 import javax.swing.*;
 import java.awt.*;
 
+
 /*
  * The whole GamePanel is like this
  * _______________________
@@ -39,7 +40,8 @@ public class ParticipantInfoPanel extends JPanel {
         super(true);
         this.setLayout(null);
 
-        Icon iconRobot = new ImageIcon(new ImageIcon("src/main/resources/images/robots/" + participant.getRobot().getName() + ".jpg").getImage().getScaledInstance(105, 142, Image.SCALE_DEFAULT));
+        Icon iconRobot = new ImageIcon(new ImageIcon("src/main/resources/images/robots/" + participant.getRobot().getName() + ".png").getImage().getScaledInstance(100, 110, Image.SCALE_DEFAULT));
+        System.out.println("(ParticipantsPanel)src/main/resources/images/robots/" + participant.getRobot().getName() + ".png");
         this.lblRobot = new JLabel();
         this.lblRobot.setIcon(iconRobot);
         this.lblRobot.setBorder(BorderFactory.createLineBorder(Color.gray));
@@ -85,7 +87,7 @@ public class ParticipantInfoPanel extends JPanel {
 //            public void run() {
 //                JFrame frame = new JFrame("GridBagLayoutDemo");
 //                //Set up the content pane.
-//                frame.add(new ParticipantInfoPanel(new Player("Wenjie", new Robot("TRUNDLE_BOT"))));
+//                frame.add(new ParticipantInfoPanel(new Player("Wenjie", new Robot(RobotName.valueOf("TRUNDLE_BOT")))));
 //                //Display the window.
 //                frame.pack();
 //                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
