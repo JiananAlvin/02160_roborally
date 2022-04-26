@@ -5,7 +5,6 @@ import gui.game.GamePanel;
 import lombok.Data;
 import model.game.board.map.Collision;
 import model.game.board.map.GameMap;
-import model.game.board.map.Orientation;
 import model.game.board.map.Position;
 import model.game.board.map.element.*;
 import model.game.Player;
@@ -125,21 +124,6 @@ public class Game {
         this.assignColorToParticipants();
     }
 
-
-//    /**
-//     * @param orderOfPlayers the arraylist of players sorted by their robots' distances to antenna
-//     * @param registerNum    it represents the register that is activated now (e.g. 1st register, 2nd register... not the general round)
-//     */
-//    @SneakyThrows
-//    public void executeRegisters(int registerNum, ArrayList<Player> orderOfPlayers) {
-//        for (Player player : orderOfPlayers) {
-//            this.currentPlayer = player;
-//            player.getRobot().applyCard(player.getRegisterArea().getCard(registerNum));
-//            if (this.gameMap.getTileWithPosition(player.getRobot().getPosition()).getClass().equals(CheckPoint.class))
-//                this.currentPlayer.takeToken((CheckPoint) this.gameMap.getTileWithPosition(player.getRobot().getPosition()));
-//        }
-//    }
-
     /**
      * In case two robots have the same distance to the antenna. Imagine an invisible line
      * pointing straight out from the antenna's dish, once this line reaches the tied robots,
@@ -222,6 +206,7 @@ public class Game {
         }
     }
 
+
     public void reboot(Robot r1) {
         r1.setLives(5);
         // the gameMap is null, so in order to test our functions is going to remain commented
@@ -261,21 +246,22 @@ public class Game {
         Position pos = r.getPosition();
         Collision collision = new Collision();
         if (tile.getPosition().equals(r.getPosition())) {
-            if (collision.checkCollision(tile) == 1) { //laser/gear case
-                // WallNorthLaser laser = (WallNorthLaser) tile ;
-                robotTakeDamage(r, ((Obstacle) tile).getDamage());
+           int collisionNumber = (collision.checkCollision(tile));
+            switch (collisionNumber) {
+                case 1: // laser, static gear
+                    ((Obstacle) tile).robotInteraction(r);
+                    break;
+                case 3:
+                    // this.currentPlayer.resetCheckpoints();
+                    this.reboot(r);
+                    break;
             }
         }
-    }
-
-    public void endProgrammingPhase() {
-        this.programmingPhaseOver = true;
     }
 
     public void setParticipants(ArrayList<Player> orderOfPlayers) {
         participants = orderOfPlayers;
     }
-
 
 //    public boolean validMovement(Robot r, Position newPos) {
 //        switch (gameMap.getContent()[r.getPosition().getRow()][r.getPosition().getCol()].getType()) {

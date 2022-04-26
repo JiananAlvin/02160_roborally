@@ -24,9 +24,9 @@ Feature:
 
 
   Scenario Outline: As a robot, I want to change my direction according to the input angle value
-    Given A robot was facing "<previous_orientation>"
-    When The robot changes its orientation by using the programming card "<programming_card>"
-    Then The robot is now facing "<new_orientation>"
+    Given a robot was facing "<previous_orientation>"
+    When the robot changes its orientation by using the programming card "<programming_card>"
+    Then the robot is now facing "<new_orientation>"
     Examples:
       | previous_orientation | programming_card | new_orientation |
       | N                    | CardTurnLeft     | W               |
@@ -58,9 +58,9 @@ Feature:
 
 
   Scenario Outline: Damage affects robot lives
-    Given A robot "<robot_name>" had "<initial_lives>" lives
-    When The robot lives are reduced "<damage_lives>" points of damage by the game
-    Then The robot now has "<final_lives>" lives
+    Given a robot "<robot_name>" had "<initial_lives>" lives
+    When the robot lives are reduced "<damage_lives>" points of damage by the game
+    Then the robot now has "<final_lives>" lives
     Examples:
       | robot_name | initial_lives | damage_lives | final_lives |
       | SQUASH_BOT | 3             | 2            | 1           |
@@ -96,24 +96,27 @@ Feature:
 #      | HAMMER_BOT | 4             | 2           | 2           | S           | 2            | 2            | sg               | 2           |
 
 
+#  Scenario Outline: Player lands on an Obstacle
+#    Given a robot "<robot_name>" had "<initial_lives>" lives
+#    And the robot had initial position <initial_posX> <initial_posY> with orientation "<orientation>"
+#    And a position "<obstacle_posX>" "<obstacle_posY>" on the map indicating the obstacle of type "<type_of_obstacle>"
+#    When robot lands on an obstacle status is true
+#    Then the robot now has <final_lives> lives
+#    Examples:
+#      | robot_name   | initial_lives | initial_posX | initial_posY | orientation | obstacle_posX | obstacle_posY | type_of_obstacle | final_lives |
+#      | ZOOM_BOT     | 4             | 2            | 2            | S           | 2             | 2             | sg               | 2           |
+#      | HULK_X90     | 4             | 2            | 2            | S           | 2             | 2             | pit              | 5           |
+#      | HAMMER_BOT   | 3             | 2            | 2            | S           | 2             | 2             | ch               | 4           |
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  Scenario Outline: Player lands on an Obstacle
+    Given a robot "<robot_name>" had "<initial_lives>" lives
+    And the robot had initial position <initial_posX> <initial_posY> with orientation "<orientation>"
+    And a position "<obstacle_posX>" "<obstacle_posY>" on the map indicating the obstacle of type "<type_of_obstacle>"
+    When robot lands on an obstacle status is true
+    Then the robot now has "<final_orientation>" orientation
+    Examples:
+      | robot_name    | initial_lives | initial_posX | initial_posY | orientation | obstacle_posX | obstacle_posY | type_of_obstacle | final_orientation |
+      | SPIN_BOT      | 4             | 2            | 2            | S           | 2             | 2             | rgR              | W                 |
+      | SQUASH_BOT    | 4             | 2            | 2            | N           | 2             | 2             | rgL              | W                 |
 

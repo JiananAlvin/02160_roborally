@@ -3,26 +3,26 @@ package model.game.board.map.element;
 import content.TileImageEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import model.game.board.map.Orientation;
+import gui.game.OrientationEnum;
 import model.game.board.map.Position;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class Wall extends Tile {
 
-    private Orientation orientation;
+    private OrientationEnum orientation;
 
-    public Wall(Position position, Orientation orientation) {
+    public Wall(Position position, OrientationEnum orientation) {
         super(position);
         this.init(orientation);
     }
 
-    public Wall(Integer x, Integer y, Orientation orientation) {
+    public Wall(Integer x, Integer y, OrientationEnum orientation) {
         super(x, y);
         this.init(orientation);
     }
 
-    private void init(Orientation orientation) {
+    private void init(OrientationEnum orientation) {
         this.orientation = orientation;
         switch (orientation) {
             case N:
@@ -42,7 +42,7 @@ public class Wall extends Tile {
         }
     }
 
-    public Orientation getOrientation() {
+    public OrientationEnum getOrientation() {
         return orientation;
     }
 }

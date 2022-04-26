@@ -63,6 +63,10 @@ public class Player {
         }
     }
 
+    public void resetCheckpoints() {
+        this.obtainedCheckpointTokens.clear();
+    }
+
     /**
      * In each round, A player draws 9 cards from his programming deck. If there are fewer than 9 to draw from, he should take
      * what is available. Then shuffles the discard pile to replenish his programming deck, and draws until he has nine cards.

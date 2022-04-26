@@ -5,12 +5,10 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.Random;
 
 import javax.swing.JPanel;
 
 import content.TileImageEnum;
-import model.game.board.map.Orientation;
 import model.game.board.map.element.Tile;
 import net.coobird.thumbnailator.Thumbnails;
 
@@ -21,7 +19,7 @@ public class TilePanel extends JPanel {
     private BufferedImage image;
     private BufferedImage imageArrow;
     private boolean containsRobot = false;
-    private Orientation direction;
+    private OrientationEnum direction;
     private Color backgroundColor;
 
     public TilePanel(Tile tile) {
@@ -38,7 +36,7 @@ public class TilePanel extends JPanel {
         setPreferredSize(getMinimumSize());
     }
 
-    public void setRobot(Orientation direction, Color bgColor) {
+    public void setRobot(OrientationEnum direction, Color bgColor) {
         this.containsRobot = true;
         this.direction = direction;
         this.backgroundColor = bgColor;

@@ -10,7 +10,7 @@ import io.cucumber.java.en.When;
 import model.Game;
 import model.game.Player;
 import model.game.board.map.GameMap;
-import model.game.board.map.Orientation;
+import gui.game.OrientationEnum;
 import model.game.board.map.Position;
 import model.game.board.map.element.*;
 import model.game.card.Card;
@@ -65,13 +65,14 @@ public class MapElementStepsDefinition {
     }
 
 
-    @Given("A robot was facing {string}")
+    //--------------------------------------------------------------------------------------------
+    @Given("a robot was facing {string}")
     public void aRobotWasFacing(String arg0) {
         robot = new Robot(RobotNameEnum.HAMMER_BOT);
-        robot.setOrientation(Orientation.valueOf(arg0));
+        robot.setOrientation(OrientationEnum.valueOf(arg0));
     }
 
-    @When("The robot changes its orientation by using the programming card {string}")
+    @When("the robot changes its orientation by using the programming card {string}")
     public void theRobotChangesItsOrientationByUsingTheProgrammingCard(String arg0) {
         Card card;
         switch (arg0) {
@@ -90,20 +91,20 @@ public class MapElementStepsDefinition {
         robot.applyCard(card);
     }
 
-    @Then("The robot is now facing {string}")
+    @Then("the robot is now facing {string}")
     public void theRobotIsNowFacing(String arg0) {
-        assertEquals(Orientation.valueOf(arg0), robot.getOrientation());
+        assertEquals(OrientationEnum.valueOf(arg0), robot.getOrientation());
     }
 
 
     //--------------------------------------------------------------------------------------------
-    @Given("A robot {string} had {string} lives")
+    @Given("a robot {string} had {string} lives")
     public void aRobotHasLives(String arg0, String arg1) {
         this.robot = new Robot(RobotNameEnum.valueOf(arg0));
         this.robot.setLives(Integer.parseInt(arg1));
     }
 
-    @When("The robot lives are reduced {string} points of damage by the game")
+    @When("the robot lives are reduced {string} points of damage by the game")
     public void theRobotLivesAreReducedPointsOfDamageByTheGame(String arg0) throws IOException {
         this.game = new Game();
 //        this.game.setGameMap(new GameMap(MapNameEnum.STARTER));
@@ -114,29 +115,30 @@ public class MapElementStepsDefinition {
         this.game.robotTakeDamage(this.robot, Integer.parseInt(arg0));
     }
 
-    @Then("The robot now has {string} lives")
+    @Then("the robot now has {string} lives")
     public void the_robot_has_lives(String lives) {
         assertEquals(Integer.parseInt(lives), this.robot.getLives());
     }
 
 
+    //--------------------------------------------------------------------------------------------
     @Given("a robot {string} had initial position {string} {string} with orientation {string}")
     public void aRobotHadInitialPositionWithOrientation(String robotName, String xPos, String yPos, String orientation) {
         this.robot = new Robot(RobotNameEnum.valueOf(robotName));
         this.robot.setPosition(Integer.parseInt(xPos), Integer.parseInt(yPos));
-        Orientation o = Orientation.N;
+        OrientationEnum o = OrientationEnum.N;
         switch (orientation) {
             case "N":
-                o = Orientation.N;
+                o = OrientationEnum.N;
                 break;
             case "S":
-                o = Orientation.S;
+                o = OrientationEnum.S;
                 break;
             case "E":
-                o = Orientation.E;
+                o = OrientationEnum.E;
                 break;
             case "W":
-                o = Orientation.W;
+                o = OrientationEnum.W;
                 break;
         }
         this.robot.setOrientation(o);
@@ -170,18 +172,6 @@ public class MapElementStepsDefinition {
     public void theRobotPositionIs(String expectedXPos, String expectedYPos) {
         assertEquals(Integer.parseInt(expectedXPos), robot.getPosition().getRow());
         assertEquals(Integer.parseInt(expectedYPos), robot.getPosition().getCol());
-    }
-
-    @Given("A robot {string} has position {string} {string}")
-    public void aRobotHasPosition(String robotName, String xPos, String yPos) {
-        this.robot = new Robot(RobotNameEnum.valueOf(robotName));
-        this.robot.setPosition(Integer.parseInt(xPos), Integer.parseInt(yPos));
-    }
-
-    @Then("the expected output is {string} in a board that have a maximum size of {string} {string}")
-    public void theExpectedOutputIsInABoardThatHaveAMaximumSizeOf(String output, String maxX, String maxY) {
-        boolean aux = this.robot.imInsideBoard(Integer.parseInt(maxX), Integer.parseInt(maxY));
-        assertEquals(Boolean.valueOf(output), aux);
     }
 
 
@@ -265,4 +255,49 @@ public class MapElementStepsDefinition {
     }
 
 
+    //--------------------------------------------------------------------------------------------
+    @And("the robot had initial position {int} {int} with orientation {string}")
+    public void theRobotHadInitialPositionWithOrientation(int arg0, int arg1, String arg2) {
+        this.robot.setPosition(arg0, arg1);
+        this.robot.setOrientation(OrientationEnum.valueOf(arg2));
+    }
+
+    @And("a position {string} {string} on the map indicating the obstacle of type {string}")
+    public void aPositionOnTheMapIndicatingTheObstacle(String xPos, String yPos, String type) {
+        switch (type) {
+            case "sg":
+                this.tile = new StaticGear(Integer.parseInt(xPos), Integer.parseInt(yPos));
+                break;
+            case "pit":
+                this.tile = new Pit(Integer.parseInt(xPos), Integer.parseInt(yPos));
+                break;
+            case "rgR":
+                this.tile = new RotatingGear(Integer.parseInt(xPos), Integer.parseInt(yPos), true);
+                break;
+            case "rgL":
+                this.tile = new RotatingGear(Integer.parseInt(xPos), Integer.parseInt(yPos), false);
+                break;
+            case "ch":
+                this.tile = new Charger(Integer.parseInt(xPos), Integer.parseInt(yPos));
+                break;
+
+        }
+    }
+
+    @When("robot lands on an obstacle status is true")
+    public void robotLandsOnAnObstacleStatusIsTrue() {
+        this.game.checkCollisionTemporary(this.robot, this.tile);
+    }
+
+//    @Then("the robot now has {int} lives")
+//    public void theRobotNowHasLives(int arg0) {
+//        assertEquals(arg0, this.robot.getLives());
+//    }
+
+    
+    //--------------------------------------------------------------------------------------------
+    @Then("the robot now has {string} orientation")
+    public void theRobotNowHasOrientation(String arg0) {
+        assertEquals(OrientationEnum.valueOf(arg0), this.robot.getOrientation());
+    }
 }

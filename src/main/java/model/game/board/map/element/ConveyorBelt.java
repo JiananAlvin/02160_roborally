@@ -3,27 +3,27 @@ package model.game.board.map.element;
 import content.TileImageEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import model.game.board.map.Orientation;
+import gui.game.OrientationEnum;
 import model.game.board.map.Position;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class ConveyorBelt extends Tile {
 
-    private Orientation orientation;
+    private OrientationEnum orientation;
     private int distance;
 
-    public ConveyorBelt(Integer row, Integer col, Orientation orientation, Integer distance) {
+    public ConveyorBelt(Integer row, Integer col, OrientationEnum orientation, Integer distance) {
         super(row, col);
         this.init(orientation, distance);
     }
 
-    public ConveyorBelt(Position position, Orientation orientation, Integer distance) {
+    public ConveyorBelt(Position position, OrientationEnum orientation, Integer distance) {
         super(position);
         this.init(orientation, distance);
     }
 
-    private void init(Orientation orientation, int distance) {
+    private void init(OrientationEnum orientation, int distance) {
         this.orientation = orientation;
         this.distance = distance;
         switch (this.orientation) {

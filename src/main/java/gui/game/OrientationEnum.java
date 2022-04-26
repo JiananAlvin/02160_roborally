@@ -1,11 +1,11 @@
-package model.game.board.map;
+package gui.game;
 
-public enum Orientation {
+public enum OrientationEnum {
     N(0), S(180), E(90), W(270);
 
     private int angle;
 
-    Orientation(int angle) {
+    OrientationEnum(int angle) {
         this.angle = angle;
     }
 
@@ -13,7 +13,7 @@ public enum Orientation {
         return angle;
     }
 
-    public static Orientation matchOrientation(int angle) {
+    public static OrientationEnum matchOrientation(int angle) {
         switch (angle) {
             case 0:
                 return N;
@@ -28,7 +28,7 @@ public enum Orientation {
         }
     }
 
-    public Orientation getOpposite() {
+    public OrientationEnum getOpposite() {
         this.angle += 180;
         minimizeAngle();
         return matchOrientation(angle);

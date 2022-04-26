@@ -2,7 +2,7 @@ package model.game.board.map.element;
 
 import content.TileImageEnum;
 import lombok.Data;
-import model.game.board.map.Orientation;
+import gui.game.OrientationEnum;
 import model.game.board.map.Position;
 
 @Data
@@ -10,7 +10,7 @@ public abstract class Tile {
 
     private Position position;
     protected TileImageEnum tileImageEnum;
-    private Orientation orientation;
+    private OrientationEnum orientation;
 
     public Tile() {
         this.position = new Position();

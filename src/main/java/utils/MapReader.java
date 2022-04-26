@@ -1,7 +1,7 @@
 package utils;
 
 import content.MapNameEnum;
-import model.game.board.map.Orientation;
+import gui.game.OrientationEnum;
 import model.game.board.map.element.*;
 
 import java.io.*;
@@ -51,29 +51,29 @@ public class MapReader {
                 checkPoint.setCheckPointNum(Integer.parseInt("" + str.charAt(str.length() - 1)));
                 return checkPoint;
             } else if (str.equals("EastOne")) {
-                return createConveyorBelt(row, col, Orientation.E, 1);
+                return createConveyorBelt(row, col, OrientationEnum.E, 1);
             } else if (str.equals("EastTwo")) {
-                return createConveyorBelt(row, col, Orientation.E, 2);
+                return createConveyorBelt(row, col, OrientationEnum.E, 2);
             } else if (str.equals("WestOne")) {
-                return createConveyorBelt(row, col, Orientation.W, 1);
+                return createConveyorBelt(row, col, OrientationEnum.W, 1);
             } else if (str.equals("WestTwo")) {
-                return createConveyorBelt(row, col, Orientation.W, 2);
+                return createConveyorBelt(row, col, OrientationEnum.W, 2);
             } else if (str.equals("NorthOne")) {
-                return createConveyorBelt(row, col, Orientation.N, 1);
+                return createConveyorBelt(row, col, OrientationEnum.N, 1);
             } else if (str.equals("NorthTwo")) {
-                return createConveyorBelt(row, col, Orientation.N, 2);
+                return createConveyorBelt(row, col, OrientationEnum.N, 2);
             } else if (str.equals("SouthOne")) {
-                return createConveyorBelt(row, col, Orientation.S, 1);
+                return createConveyorBelt(row, col, OrientationEnum.S, 1);
             } else if (str.equals("SouthTwo")) {
-                return createConveyorBelt(row, col, Orientation.S, 2);
+                return createConveyorBelt(row, col, OrientationEnum.S, 2);
             } else if (str.equals("WallEast")) {
-                return createWall(row, col, Orientation.E);
+                return createWall(row, col, OrientationEnum.E);
             } else if (str.equals("WallNorth")) {
-                return createWall(row, col, Orientation.N);
+                return createWall(row, col, OrientationEnum.N);
             } else if (str.equals("WallWest")) {
-                return createWall(row, col, Orientation.W);
+                return createWall(row, col, OrientationEnum.W);
             } else if (str.equals("WallSouth")) {
-                return createWall(row, col, Orientation.S);
+                return createWall(row, col, OrientationEnum.S);
             } else if (str.equals("LaserVertical")) {
                 return createLaser(row, col, true);
             } else if (str.equals("LaserHorizontal")) {
@@ -94,15 +94,15 @@ public class MapReader {
         return laser;
     }
 
-    private static ConveyorBelt createConveyorBelt(int row, int col, Orientation orientation, int distance) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+    private static ConveyorBelt createConveyorBelt(int row, int col, OrientationEnum orientation, int distance) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         Class<?> clz = Class.forName(FULLY_QUALIFIED_NAME_OF_CONVEYORBELT);
-        ConveyorBelt conveyorBelt = (ConveyorBelt) clz.getDeclaredConstructor(Integer.class, Integer.class, Orientation.class, Integer.class).newInstance(row, col, orientation, distance);
+        ConveyorBelt conveyorBelt = (ConveyorBelt) clz.getDeclaredConstructor(Integer.class, Integer.class, OrientationEnum.class, Integer.class).newInstance(row, col, orientation, distance);
         return conveyorBelt;
     }
 
-    private static Wall createWall(int row, int col, Orientation orientation) throws NoSuchMethodException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException {
+    private static Wall createWall(int row, int col, OrientationEnum orientation) throws NoSuchMethodException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException {
         Class<?> clz = Class.forName(FULLY_QUALIFIED_NAME_OF_WALL);
-        Wall wall = (Wall) clz.getDeclaredConstructor(Integer.class, Integer.class, Orientation.class).newInstance(row, col, orientation);
+        Wall wall = (Wall) clz.getDeclaredConstructor(Integer.class, Integer.class, OrientationEnum.class).newInstance(row, col, orientation);
         return wall;
     }
 

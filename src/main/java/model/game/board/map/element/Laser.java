@@ -1,9 +1,13 @@
 package model.game.board.map.element;
 
 import content.TileImageEnum;
+import lombok.Data;
 import model.game.board.map.Position;
 
-public class Laser extends Tile {
+@Data
+public class Laser extends Tile implements Obstacle{
+
+    private int damage = 1;
 
     public Laser(Position position, Boolean isVertical) {
         super(position);
@@ -21,5 +25,9 @@ public class Laser extends Tile {
         if (isVertical)
             this.tileImageEnum = TileImageEnum.LASERVERTICAL;
         else this.tileImageEnum = TileImageEnum.LASERHORIZONTAL;
+    }
+
+    public void robotInteraction(Robot r){
+        r.takeDamage(this.damage);
     }
 }
