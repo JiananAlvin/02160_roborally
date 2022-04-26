@@ -33,9 +33,9 @@ import java.util.ArrayList;
 
 
 public class InfoPanel extends JPanel {
-
+    // TODO have deleted scroll area
+//    the textArea can scroll
     private ArrayList<ParticipantInfoPanel> participantsPanels;
-    private ScrollPane logPanel;
     private TextArea logArea;
 
     public InfoPanel(ArrayList<Player> participants, Player user) {
@@ -57,10 +57,15 @@ public class InfoPanel extends JPanel {
         // showing game logs on the right side of the ParticipantInfoPanel
         this.logArea = new TextArea("[System Log]:\n Welcome to this game!\n[System Log]:\n The programming phase of 1st rount starts!", 20, 55, TextArea.SCROLLBARS_VERTICAL_ONLY);
         this.logArea.setEditable(false);
-        this.logPanel = new ScrollPane();
-        this.logPanel.add(this.logArea);
-        this.logPanel.setBounds(475, 0, 250, 300);
-        this.add(logPanel);
+        this.logArea.setBounds(475, 0, 250, 300);
+        this.add(this.logArea);
+    }
+
+    public void addLogToLogPanel(String logContent, Player logFrom) {
+        String currentLog = logContent;
+        if (logFrom == null) currentLog = "[SystemLog]:" + logContent + "\n\n";
+        else currentLog = "[" + logFrom.getName() + "]:" + logContent + "\n\n";
+        this.logArea.append(currentLog);
     }
 
     public static void main(String[] args) {

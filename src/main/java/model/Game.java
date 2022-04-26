@@ -3,6 +3,7 @@ package model;
 import content.RobotNameEnum;
 import gui.game.GamePanel;
 import lombok.Data;
+import model.game.Room;
 import model.game.board.map.Collision;
 import model.game.board.map.GameMap;
 import model.game.board.map.Position;

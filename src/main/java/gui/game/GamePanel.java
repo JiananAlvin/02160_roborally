@@ -5,7 +5,7 @@ import content.MapNameEnum;
 import content.RobotNameEnum;
 import lombok.SneakyThrows;
 import model.Game;
-import model.Room;
+import model.game.Room;
 import model.game.Player;
 import model.game.board.map.GameMap;
 import model.game.board.map.element.Robot;
@@ -44,28 +44,37 @@ public class GamePanel extends JPanel {
     public static final Color[] userColors = new Color[]{Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.CYAN, Color.MAGENTA};
     private Timer programmingTimer;
     private Timer activationPhaseTimer;
+    //    TODO move it down
     private SwingWorker<JSONArray, Void> progRecordsWorker;
     public static final int MAX_PROGRAMMING_TIME = 10;
 
     public GamePanel(Game game) {
         super(true);
 
-        this.matPanel = new MatPanel(game);
         this.infoPanel = new InfoPanel(game.getParticipants(), game.getUser());
         this.boardPanel = new BoardPanel(game);
-
         this.setLayout(null);
+
         this.boardPanel.setBounds(0, 0, 780, 600);
         this.infoPanel.setBounds(800, 0, 725, 600);
-        this.matPanel.setBounds(0, 600, 1650, 500);
 
         this.add(this.boardPanel);
         this.add(this.infoPanel);
-        this.add(this.matPanel);
+
         this.setSize(1650, 1080);
 
         this.programmingTimer = this.invokeProgrammingTimer(game);
         this.programmingTimer.start();
+    }
+
+    private void refreshMatPanel(Game game) {
+        if (this.matPanel != null)
+            this.remove(matPanel);
+        this.matPanel = new MatPanel(game);
+        this.matPanel.setBounds(0, 600, 1650, 500);
+        this.add(this.matPanel);
+        this.revalidate();
+        this.repaint();
     }
 
     public static void init(JFrame frame, Game game) {
@@ -84,13 +93,18 @@ public class GamePanel extends JPanel {
             int remainingTime = MAX_PROGRAMMING_TIME;
 
             public void actionPerformed(ActionEvent e) {
-                remainingTime--;
-                matPanel.getLblTimer().setText("<html><br/>" + remainingTime + "&nbsp</html>");
-                if (remainingTime <= 0) {
+                if (remainingTime-- == MAX_PROGRAMMING_TIME) {
+//                    the first
+                    game.getUser().drawCards();
+                    refreshMatPanel(game);
+                }
+                if (remainingTime >= 0)
+                    matPanel.getLblTimer().setText("<html><br/>" + remainingTime + "&nbsp</html>");
+                if (remainingTime < 0) {
                     game.getUser().getRegisterArea().setRegisters(new ArrayList<>(game.getUser().getCardsInHand().subList(0, RegisterArea.REGISTER_QUEUE_SIZE)));
-                    for (Card c : new ArrayList<>(game.getUser().getCardsInHand().subList(0, RegisterArea.REGISTER_QUEUE_SIZE)))
-                        System.out.println(c.getClass().getSimpleName());
-                    game.getUser().discard(new ArrayList<>(game.getUser().getCardsInHand().subList(RegisterArea.REGISTER_QUEUE_SIZE, ProgrammingDeck.NUMBER_OF_CARDS_DRAWN_IN_EACH_ROUND)));
+//                    game.getUser().discard(new ArrayList<>(game.getUser().getCardsInHand().subList(RegisterArea.REGISTER_QUEUE_SIZE, ProgrammingDeck.NUMBER_OF_CARDS_DRAWN_IN_EACH_ROUND)));
+//                 TODO    bug fixed:
+                    game.getUser().discard(new ArrayList<>(game.getUser().getCardsInHand().subList(0, ProgrammingDeck.NUMBER_OF_CARDS_DRAWN_IN_EACH_ROUND)));
                     game.getUser().getCardsInHand().removeAll(game.getUser().getCardsInHand());
                     new ProgrammingRecordController().createProgrammingRecord(
                             game.getUser().getName(),
@@ -105,7 +119,9 @@ public class GamePanel extends JPanel {
                     programmingTimer.stop();
                     excuteProgRecordsWorker(game);
                     remainingTime = MAX_PROGRAMMING_TIME;
-                    System.out.println("Start programming phase");
+//                    System.out.println("Programming phase done and inform worker to communicate with server");
+//                    TODO print to system log
+                    infoPanel.addLogToLogPanel("Programming phase done and inform worker to communicate with server", null);
                 }
             }
         });
@@ -132,13 +148,15 @@ public class GamePanel extends JPanel {
             protected void done() {
                 // TODO
                 updateParticipantRegisters(get(), game);
-                System.out.println("ProgRecordsWorker done and start activation phase");
+//                System.out.println("ProgRecordsWorker done and start activation phase");
+                infoPanel.addLogToLogPanel("ProgRecordsWorker done and start activation phase", null);
                 activationPhaseTimer = invokeActivationPhaseTimer(game);
                 activationPhaseTimer.start();
             }
         };
         // executes the swingworker on worker thread
-        System.out.println("updateProgRecordsWorker starts");
+//        System.out.println("updateProgRecordsWorker starts");
+        infoPanel.addLogToLogPanel("updateProgRecordsWorker starts", null);
         progRecordsWorker.execute();
     }
 
@@ -159,9 +177,7 @@ public class GamePanel extends JPanel {
                 boardPanel.getBoard()[currentPlayer.getRobot().getPosition().getRow()][currentPlayer.getRobot().getPosition().getCol()].unsetRobot();
                 currentRegisterCard.actsOn(currentPlayer.getRobot());
                 boardPanel.getBoard()[currentPlayer.getRobot().getPosition().getRow()][currentPlayer.getRobot().getPosition().getCol()].setRobot(currentPlayer.getRobot().getOrientation(), currentPlayer.getUserColor());
-
                 boardPanel.repaint();
-
                 game.setCurrentPlayerOrderedIndex(++currenPlayerIndex);
                 if (currenPlayerIndex == game.getParticipants().size()) {
                     game.setCurrentRegisterNum(++registerIndex);
@@ -169,14 +185,13 @@ public class GamePanel extends JPanel {
                 }
                 if (registerIndex == RegisterArea.REGISTER_QUEUE_SIZE) {
                     game.setCurrentRoundNum(++round);
+//                    TODO debug
+                    System.out.println(round);
                     game.setCurrentRegisterNum(0);
                     activationPhaseTimer.stop();
-                    System.out.println("activation phase done and start programming phase");
-//                    remove(matPanel);
-//                    matPanel = new MatPanel(game);
-//                    add(matPanel);
-//                    revalidate();
-//                    repaint();
+//                    System.out.println("activation phase done and start programming phase");
+                    infoPanel.addLogToLogPanel("activation phase done and start programming phase", null);
+                    programmingTimer = invokeProgrammingTimer(game);
                     programmingTimer.start();
                 }
             }
@@ -189,7 +204,7 @@ public class GamePanel extends JPanel {
 
     private void updateParticipantRegisters(JSONArray programmingRecords, Game game) {
         for (Object record : programmingRecords) {
-            ArrayList<Card> cards = new ArrayList<>(){
+            ArrayList<Card> cards = new ArrayList<>() {
                 {
                     add(createCardInstance(((JSONObject) record).getString(ProgrammingRecordController.RESPONSE_REGISTER1)));
                     add(createCardInstance(((JSONObject) record).getString(ProgrammingRecordController.RESPONSE_REGISTER2)));
@@ -220,14 +235,14 @@ public class GamePanel extends JPanel {
         UserController userController = new UserController();
         userController.deleteUser("SpongeBob");
         userController.createUser("SpongeBob");
-        userController.createUser("PatrickStar");
+//        userController.createUser("PatrickStar");
         //RobotController robotController = new RobotController();
         userController.chooseRobot(user.getName(), user.getRobot().getName());
-        userController.chooseRobot("PatrickStar", "ZOOM_BOT");
+//        userController.chooseRobot("PatrickStar", "ZOOM_BOT");
         RoomController roomController = new RoomController();
         System.out.println(roomController.createRoom(user.getName(), "STARTER"));
         int roomNumber = roomController.createRoom(user.getName(), "STARTER").getInt("room_number");
-        userController.joinRoom("PatrickStar", roomNumber);
+//        userController.joinRoom("PatrickStar", roomNumber);
         GameMap gameMap = new GameMap(MapNameEnum.STARTER);
         Room room = new Room(roomNumber);
         Game game = new Game();
@@ -241,7 +256,7 @@ public class GamePanel extends JPanel {
                 frame.setSize(1650, 1080);
                 frame.add(new GamePanel(game));
                 frame.setVisible(true);
-                roomController.deleteRoom(roomNumber);
+//                roomController.deleteRoom(roomNumber);
             }
         });
 

@@ -6,7 +6,7 @@ import gui.game.GamePanel;
 import gui.room.RoomPanel;
 import lombok.SneakyThrows;
 import model.Game;
-import model.Room;
+import model.game.Room;
 import model.game.Player;
 import model.game.board.map.GameMap;
 import model.game.board.map.element.Robot;

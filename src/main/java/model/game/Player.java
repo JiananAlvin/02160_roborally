@@ -74,20 +74,22 @@ public class Player {
      * @return an arraylist of 9 cards that is 9 cards in the player's hand.
      */
     public void drawCards() {
+        System.out.println("cards in deck:"+this.programmingDeck.getCards().size());
+        System.out.println("cards in trash:"+ this.discardPile.getDiscards().size());
         this.cardsInHand = new ArrayList<>();
         if (this.programmingDeck.getCards().size() < ProgrammingDeck.NUMBER_OF_CARDS_DRAWN_IN_EACH_ROUND) {
+//            if there are fewer than 9 cards left in Programming Deck
+//            fetch all the cards left
             this.cardsInHand = new ArrayList<>(this.programmingDeck.getCards());
-            //this.discardPile.getDiscards().addAll(cardsInHand);
             this.programmingDeck.getCards().removeAll(this.programmingDeck.getCards());
+            //            TODO ensure the logic of there is no card
             this.replenishProgrammingDeck();
             ArrayList<Card> complements = new ArrayList<>(this.programmingDeck.getCards().subList(0, ProgrammingDeck.NUMBER_OF_CARDS_DRAWN_IN_EACH_ROUND - this.cardsInHand.size()));
             this.programmingDeck.getCards().subList(0, ProgrammingDeck.NUMBER_OF_CARDS_DRAWN_IN_EACH_ROUND - this.cardsInHand.size()).clear();
             this.cardsInHand.addAll(complements);
-            //this.discardPile.getDiscards().addAll(cardsInHand);
         } else {
             this.cardsInHand = new ArrayList<>(this.programmingDeck.getCards().subList(0, ProgrammingDeck.NUMBER_OF_CARDS_DRAWN_IN_EACH_ROUND));
             this.programmingDeck.getCards().subList(0, ProgrammingDeck.NUMBER_OF_CARDS_DRAWN_IN_EACH_ROUND).clear();
-            //this.discardPile.getDiscards().addAll(cardsInHand);
         }
     }
 
@@ -95,10 +97,12 @@ public class Player {
      * <p>This method replenishes a player's programming deck with all cards in his discard pile, and then shuffles the
      * programming deck.
      */
-    public void replenishProgrammingDeck() {
+    private void replenishProgrammingDeck() {
         this.programmingDeck.getCards().addAll(this.discardPile.getDiscards());
         this.discardPile.getDiscards().removeAll(this.discardPile.getDiscards());
         this.programmingDeck.shuffle(this.programmingDeck.getCards());
+//        TODO here is the problem
+//        this.discardPile.getDiscards().addAll(this.cardsInHand);
     }
 
     /**

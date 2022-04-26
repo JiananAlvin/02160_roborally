@@ -2,8 +2,10 @@ package model.game.board.map.element;
 
 import lombok.Data;
 import gui.game.OrientationEnum;
+import lombok.EqualsAndHashCode;
 import model.game.board.map.Position;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class RotatingGear extends Tile implements Obstacle {
 

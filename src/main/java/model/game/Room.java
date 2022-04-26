@@ -1,4 +1,4 @@
-package model;
+package model.game;
 
 import lombok.Data;
 import model.game.Player;
