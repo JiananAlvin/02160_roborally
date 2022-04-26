@@ -2,7 +2,7 @@ package model.game.card.programming;
 
 import model.game.board.map.element.Robot;
 import model.game.card.Card;
-import gui.game.OrientationEnum;
+import content.OrientationEnum;
 
 public class CardTurnLeft extends Card implements Programmable {
     public Card actsOn(Robot robot) {

@@ -33,8 +33,7 @@ import java.util.ArrayList;
 
 
 public class InfoPanel extends JPanel {
-    // TODO have deleted scroll area
-//    the textArea can scroll
+
     private ArrayList<ParticipantInfoPanel> participantsPanels;
     private TextArea logArea;
 
@@ -62,10 +61,11 @@ public class InfoPanel extends JPanel {
     }
 
     public void addLogToLogPanel(String logContent, Player logFrom) {
-        String currentLog = logContent;
-        if (logFrom == null) currentLog = "[SystemLog]:" + logContent + "\n\n";
-        else currentLog = "[" + logFrom.getName() + "]:" + logContent + "\n\n";
-        this.logArea.append(currentLog);
+        if (logFrom == null)
+            logContent = "[SystemLog]:" + logContent + "\n\n";
+        else
+            logContent = "[" + logFrom.getName() + "]:" + logContent + "\n\n";
+        this.logArea.append(logContent);
     }
 
     public static void main(String[] args) {

@@ -8,19 +8,20 @@ public class StaticGear extends Tile implements Obstacle {
 
     public StaticGear() {
         super(new Position());
+        this.tileImageEnum = TileImageEnum.STATIC_GEAR;
+
     }
 
     public StaticGear(Position position) {
         super(position);
+        this.tileImageEnum = TileImageEnum.STATIC_GEAR;
     }
 
     public StaticGear(Integer x, Integer y) {
         super(x, y);
+        this.tileImageEnum = TileImageEnum.STATIC_GEAR;
     }
 
-    public StaticGear(int x, int y) {
-        super(new Position(x, y));
-    }
 
     public void robotInteraction(Robot r) {
         r.takeDamage(this.damage);

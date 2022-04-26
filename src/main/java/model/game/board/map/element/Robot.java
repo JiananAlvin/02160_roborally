@@ -3,10 +3,9 @@ package model.game.board.map.element;
 import content.RobotNameEnum;
 import lombok.Data;
 import model.Game;
-import gui.game.OrientationEnum;
+import content.OrientationEnum;
 import model.game.board.map.Position;
 import model.game.card.Card;
-import model.game.card.programming.behaviour.Movement;
 
 import java.lang.Math;
 import java.util.ArrayList;

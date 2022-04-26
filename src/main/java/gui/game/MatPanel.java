@@ -42,7 +42,6 @@ public class MatPanel extends JPanel {
 
 
     public MatPanel(Game game) {
-
         // adding the user's information
         Icon iconRobot = new ImageIcon(RobotImageEnum.valueOf(game.getUser().getRobot().getName()).getImage().getScaledInstance(109, 140, Image.SCALE_DEFAULT));
         this.lblRobot = new JLabel(iconRobot);

@@ -44,8 +44,6 @@ public class GamePanel extends JPanel {
     public static final Color[] userColors = new Color[]{Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.CYAN, Color.MAGENTA};
     private Timer programmingTimer;
     private Timer activationPhaseTimer;
-    //    TODO move it down
-    private SwingWorker<JSONArray, Void> progRecordsWorker;
     public static final int MAX_PROGRAMMING_TIME = 10;
 
     public GamePanel(Game game) {
@@ -67,7 +65,7 @@ public class GamePanel extends JPanel {
         this.programmingTimer.start();
     }
 
-    private void refreshMatPanel(Game game) {
+    private void reloadMatPanel(Game game) {
         if (this.matPanel != null)
             this.remove(matPanel);
         this.matPanel = new MatPanel(game);
@@ -94,16 +92,14 @@ public class GamePanel extends JPanel {
 
             public void actionPerformed(ActionEvent e) {
                 if (remainingTime-- == MAX_PROGRAMMING_TIME) {
-//                    the first
+                    // the user draws cards
                     game.getUser().drawCards();
-                    refreshMatPanel(game);
+                    reloadMatPanel(game);
                 }
                 if (remainingTime >= 0)
                     matPanel.getLblTimer().setText("<html><br/>" + remainingTime + "&nbsp</html>");
                 if (remainingTime < 0) {
                     game.getUser().getRegisterArea().setRegisters(new ArrayList<>(game.getUser().getCardsInHand().subList(0, RegisterArea.REGISTER_QUEUE_SIZE)));
-//                    game.getUser().discard(new ArrayList<>(game.getUser().getCardsInHand().subList(RegisterArea.REGISTER_QUEUE_SIZE, ProgrammingDeck.NUMBER_OF_CARDS_DRAWN_IN_EACH_ROUND)));
-//                 TODO    bug fixed:
                     game.getUser().discard(new ArrayList<>(game.getUser().getCardsInHand().subList(0, ProgrammingDeck.NUMBER_OF_CARDS_DRAWN_IN_EACH_ROUND)));
                     game.getUser().getCardsInHand().removeAll(game.getUser().getCardsInHand());
                     new ProgrammingRecordController().createProgrammingRecord(
@@ -119,8 +115,6 @@ public class GamePanel extends JPanel {
                     programmingTimer.stop();
                     excuteProgRecordsWorker(game);
                     remainingTime = MAX_PROGRAMMING_TIME;
-//                    System.out.println("Programming phase done and inform worker to communicate with server");
-//                    TODO print to system log
                     infoPanel.addLogToLogPanel("Programming phase done and inform worker to communicate with server", null);
                 }
             }
@@ -129,7 +123,7 @@ public class GamePanel extends JPanel {
 
     private void excuteProgRecordsWorker(Game game) {
 
-        this.progRecordsWorker = new SwingWorker<>() {
+        SwingWorker<JSONArray, Void> progRecordsWorker = new SwingWorker<>() {
 
             @Override
             protected JSONArray doInBackground() throws Exception {
@@ -146,16 +140,13 @@ public class GamePanel extends JPanel {
             @SneakyThrows
             @Override
             protected void done() {
-                // TODO
                 updateParticipantRegisters(get(), game);
-//                System.out.println("ProgRecordsWorker done and start activation phase");
                 infoPanel.addLogToLogPanel("ProgRecordsWorker done and start activation phase", null);
                 activationPhaseTimer = invokeActivationPhaseTimer(game);
                 activationPhaseTimer.start();
             }
         };
         // executes the swingworker on worker thread
-//        System.out.println("updateProgRecordsWorker starts");
         infoPanel.addLogToLogPanel("updateProgRecordsWorker starts", null);
         progRecordsWorker.execute();
     }
@@ -176,7 +167,7 @@ public class GamePanel extends JPanel {
                 Card currentRegisterCard = currentPlayer.getRegisterArea().getCard(registerIndex);
                 boardPanel.getBoard()[currentPlayer.getRobot().getPosition().getRow()][currentPlayer.getRobot().getPosition().getCol()].unsetRobot();
                 currentRegisterCard.actsOn(currentPlayer.getRobot());
-                boardPanel.getBoard()[currentPlayer.getRobot().getPosition().getRow()][currentPlayer.getRobot().getPosition().getCol()].setRobot(currentPlayer.getRobot().getOrientation(), currentPlayer.getUserColor());
+                boardPanel.getBoard()[currentPlayer.getRobot().getPosition().getRow()][currentPlayer.getRobot().getPosition().getCol()].setRobot(currentPlayer.getRobot().getOrientation(), currentPlayer);
                 boardPanel.repaint();
                 game.setCurrentPlayerOrderedIndex(++currenPlayerIndex);
                 if (currenPlayerIndex == game.getParticipants().size()) {
@@ -189,7 +180,6 @@ public class GamePanel extends JPanel {
                     System.out.println(round);
                     game.setCurrentRegisterNum(0);
                     activationPhaseTimer.stop();
-//                    System.out.println("activation phase done and start programming phase");
                     infoPanel.addLogToLogPanel("activation phase done and start programming phase", null);
                     programmingTimer = invokeProgrammingTimer(game);
                     programmingTimer.start();
@@ -240,10 +230,10 @@ public class GamePanel extends JPanel {
         userController.chooseRobot(user.getName(), user.getRobot().getName());
 //        userController.chooseRobot("PatrickStar", "ZOOM_BOT");
         RoomController roomController = new RoomController();
-        System.out.println(roomController.createRoom(user.getName(), "STARTER"));
-        int roomNumber = roomController.createRoom(user.getName(), "STARTER").getInt("room_number");
+        System.out.println(roomController.createRoom(user.getName(), "BEGINNER"));
+        int roomNumber = roomController.createRoom(user.getName(), "BEGINNER").getInt("room_number");
 //        userController.joinRoom("PatrickStar", roomNumber);
-        GameMap gameMap = new GameMap(MapNameEnum.STARTER);
+        GameMap gameMap = new GameMap(MapNameEnum.ADVANCED);
         Room room = new Room(roomNumber);
         Game game = new Game();
         game.init(user, room, gameMap, roomController.roomInfo(roomNumber));

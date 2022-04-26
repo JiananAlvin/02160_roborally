@@ -1,7 +1,7 @@
 package utils;
 
 import content.MapNameEnum;
-import gui.game.OrientationEnum;
+import content.OrientationEnum;
 import model.game.board.map.element.*;
 
 import java.io.*;

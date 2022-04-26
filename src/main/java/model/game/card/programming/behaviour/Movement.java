@@ -1,6 +1,6 @@
 package model.game.card.programming.behaviour;
 
-import gui.game.OrientationEnum;
+import content.OrientationEnum;
 import model.game.board.map.Position;
 
 public class Movement {

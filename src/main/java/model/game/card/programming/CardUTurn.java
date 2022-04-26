@@ -1,6 +1,6 @@
 package model.game.card.programming;
 
-import gui.game.OrientationEnum;
+import content.OrientationEnum;
 import model.game.board.map.element.Robot;
 import model.game.card.Card;
 

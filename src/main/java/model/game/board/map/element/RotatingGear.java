@@ -1,7 +1,8 @@
 package model.game.board.map.element;
 
+import content.TileImageEnum;
 import lombok.Data;
-import gui.game.OrientationEnum;
+import content.OrientationEnum;
 import lombok.EqualsAndHashCode;
 import model.game.board.map.Position;
 
@@ -12,15 +13,24 @@ public class RotatingGear extends Tile implements Obstacle {
 
     public RotatingGear() {
         super(new Position());
+        this.tileImageEnum = TileImageEnum.ROTATING_GEAR;
     }
 
     public RotatingGear(Position position) {
         super(position);
+        this.tileImageEnum = TileImageEnum.ROTATING_GEAR;
     }
 
-    public RotatingGear(int x, int y, boolean rotate) {
+    public RotatingGear(Integer x, Integer y) {
+        super(new Position(x, y));
+        this.tileImageEnum = TileImageEnum.ROTATING_GEAR;
+    }
+
+    public RotatingGear(Integer x, Integer y, Boolean rotate) {
         super(new Position(x, y));
         setRotate(rotate);
+        this.tileImageEnum = TileImageEnum.ROTATING_GEAR;
+
     }
 
     public void robotInteraction(Robot r) {

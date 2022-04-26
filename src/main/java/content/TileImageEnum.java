@@ -9,16 +9,12 @@ public enum TileImageEnum {
     BLANK("src/main/resources/images/tiles/blank.png"),
     CHARGER("src/main/resources/images/tiles/charger.png"),
     CHECKPOINT1("src/main/resources/images/tiles/check_point1.png"),
-    //    TODO change it to checkpoint2 image
-    CHECKPOINT2("src/main/resources/images/tiles/check_point1.png"),
-    //    TODO change it to checkpoint3 image
-    CHECKPOINT3("src/main/resources/images/tiles/check_point1.png"),
+    CHECKPOINT2("src/main/resources/images/tiles/check_point2.png"),
+    CHECKPOINT3("src/main/resources/images/tiles/check_point3.png"),
     REBOOTPOINT("src/main/resources/images/tiles/reboot_point.png"),
-    // TODO change the path
-    SOUTHONE("src/main/resources/images/tiles/south_two.png"),
+    SOUTHONE("src/main/resources/images/tiles/south_one.png"),
     SOUTHTWO("src/main/resources/images/tiles/south_two.png"),
-    // TODO change the path
-    WESTONE("src/main/resources/images/tiles/west_two.png"),
+    WESTONE("src/main/resources/images/tiles/west_one.png"),
     WESTTWO("src/main/resources/images/tiles/west_two.png"),
     EASTONE("src/main/resources/images/tiles/east_one.png"),
     EASTTWO("src/main/resources/images/tiles/east_two.png"),
@@ -32,7 +28,9 @@ public enum TileImageEnum {
     WALLWEST("src/main/resources/images/tiles/wall_west.png"),
     WALLEAST("src/main/resources/images/tiles/wall_east.png"),
     WALLNORTH("src/main/resources/images/tiles/wall_north.png"),
-    ARROW("src/main/resources/images/robots/arrow.png");
+    PIT("src/main/resources/images/tiles/pit.png"),
+    STATIC_GEAR("src/main/resources/images/tiles/static_gear.png"),
+    ROTATING_GEAR("src/main/resources/images/tiles/rotating_gear.png");
 
     private final BufferedImage image;
 

@@ -3,7 +3,7 @@ package model.game.board.map.element;
 import content.TileImageEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import gui.game.OrientationEnum;
+import content.OrientationEnum;
 import model.game.board.map.Position;
 
 @EqualsAndHashCode(callSuper = true)

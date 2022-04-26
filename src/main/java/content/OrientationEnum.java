@@ -1,4 +1,4 @@
-package gui.game;
+package content;
 
 public enum OrientationEnum {
     N(0), S(180), E(90), W(270);

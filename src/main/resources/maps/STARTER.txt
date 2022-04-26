@@ -1,6 +1,6 @@
 Blank,Blank,EastOne,Blank,SouthTwo,SouthTwo,Blank,Blank,Blank,Blank,Blank,Blank,Charger
 Blank,StartPoint,Blank,Blank,SouthTwo,WestTwo,WestTwo,WestTwo,WestTwo,WestTwo,WestTwo,WestTwo,WestTwo
-Blank,WallNorth,Blank,Blank,SouthTwo,Charger,WallSouth,Blank,Blank,Blank,Blank,NorthTwo,WestTwo
+Blank,WallNorth,Blank,Blank,SouthTwo,Charger,WallSouth,RebootPoint,Blank,Blank,Blank,NorthTwo,WestTwo
 StartPoint,Blank,Blank,Blank,SouthTwo,Blank,LaserVertical,WallEast,LaserHorizontal,LaserHorizontal,WallWest,NorthTwo,CheckPoint1
 Antenna,StartPoint,WallEast,Blank,SouthTwo,Blank,LaserVertical,Blank,Charger,WallSouth,Blank,NorthTwo,Blank
 Blank,StartPoint,WallEast,Blank,SouthTwo,Blank,WallNorth,Charger,Blank,LaserVertical,Blank,NorthTwo,Blank

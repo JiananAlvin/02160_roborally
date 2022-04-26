@@ -45,7 +45,7 @@ public class BoardPanel extends JPanel {
         }
         for (Player player : game.getParticipants()) {
             Robot r = player.getRobot();
-            board[r.getPosition().getRow()][r.getPosition().getCol()].setRobot(r.getOrientation(), player.getUserColor());
+            board[r.getPosition().getRow()][r.getPosition().getCol()].setRobot(r.getOrientation(), player);
         }
     }
 

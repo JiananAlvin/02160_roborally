@@ -10,7 +10,7 @@ import io.cucumber.java.en.When;
 import model.Game;
 import model.game.Player;
 import model.game.board.map.GameMap;
-import gui.game.OrientationEnum;
+import content.OrientationEnum;
 import model.game.board.map.Position;
 import model.game.board.map.element.*;
 import model.game.card.Card;
