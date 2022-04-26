@@ -7,7 +7,7 @@ import model.game.card.Card;
 import model.game.card.programming.behaviour.Movement;
 
 public class CardBackUp extends Card implements Programmable{
-    public void action(Robot robot){
+    public void actsOn(Robot robot){
         Orientation robotOrientation = robot.getOrientation();
         Position currentPos = robot.getPosition();
         Position newPos = Movement.calculateNewPosition(robotOrientation, currentPos, -1);

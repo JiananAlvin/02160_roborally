@@ -4,13 +4,12 @@ import java.awt.*;
 import java.util.ArrayList;
 
 import lombok.Data;
-import model.Game;
 import model.game.board.map.element.CheckPoint;
 import model.game.board.map.element.Tile;
-import model.game.board.mat.element.ProgrammingDeck;
-import model.game.board.mat.element.DiscardPile;
+import model.game.board.mat.ProgrammingDeck;
+import model.game.board.mat.DiscardPile;
 import model.game.board.map.element.Robot;
-import model.game.board.mat.element.RegisterArea;
+import model.game.board.mat.RegisterArea;
 import model.game.card.Card;
 
 @Data

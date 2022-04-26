@@ -11,5 +11,10 @@ import model.game.board.map.element.Robot;
  */
 public abstract class Card {
 
-    public abstract void action(Robot robot);
+    public abstract void actsOn(Robot robot);
+
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName();
+    }
 }

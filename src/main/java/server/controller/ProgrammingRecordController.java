@@ -16,7 +16,7 @@ public class ProgrammingRecordController extends ServerConnection {
     public static final String RESPONSE_REGISTER3 = "register3";
     public static final String RESPONSE_REGISTER4 = "register4";
     public static final String RESPONSE_REGISTER5 = "register5";
-    public static final String RESPONSE = "response";
+    public static final String RESPONSE_PROGRAMMING_RECORDS = "response";
 
     public JSONObject getProgrammingRecords(int roomNumber, int round) {
         this.setPath("/getProgrammingRecords/" + roomNumber + "/" + round);

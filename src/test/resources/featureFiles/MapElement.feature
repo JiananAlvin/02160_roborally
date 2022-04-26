@@ -90,48 +90,29 @@ Feature:
       | SPIN_BOT   | 2           | 0           | E           | -1       | false           | 5       | 5       |
       | HULK_X90   | 4           | 2           | S           | 3        | false           | 6       | 5       |
 
-  # A robot can take a checkpoint token only when it stops on a checkpoint and it has taken checkpoint tokens from all previous checkpoints numerically
-  Scenario Outline: A robot can take a checkpoint token only when it stops on a checkpoint and it has taken checkpoint tokens from all previous checkpoints numerically
-    Given there is a game with map "<map_name>"
-    And there are players "<playerA>" and "<playerB>" in this game
-    And this is "<playerA>" turn
-    And this player's robot stops on the checkpoint <point_number>
-    And this player's robot has taken checkpoint tokens from all previous checkpoints numerically and did not take a checkpoint token from this checkpoint <point_number>
-    When this player's turn ends and the robot stops on this checkpoint <point_number>
-    Then this player gets a checkpoint token from this checkpoint successfully and now has <point_number> checkpoint tokens
-    Examples:
-      | map_name     | playerA | playerB | point_number |
-      | ADVANCED     | Jianan  | Wenjie  | 2            |
-      | INTERMEDIATE | Anna    | Raul    | 3            |
-      | INTERMEDIATE | Ion     | Durdija | 1            |
-
-
   Scenario Outline: The game status is checked every time a checkpoint token is taken by a player
-    Given there is a game with map "<map_name>"
-    And there are players "<playerA>" and "<playerB>" in this game
-    And this is "<playerA>" turn
-    And this player's robot stops on the checkpoint <point_number>
-    And this player's robot has taken checkpoint tokens from all previous checkpoints numerically and did not take a checkpoint token from this checkpoint <point_number>
-    And this player's turn ends and the robot stops on this checkpoint <point_number>
-    When this player gets a checkpoint token from this checkpoint successfully and now has <point_number> checkpoint tokens
-    Then this game checks game status and now the game status is "<is_finished>"
+    Given "<playerA>" and "<playerB>" are in a game with the map ADVANCED
+    And playerA's robot has taken checkpoint tokens from all previous checkpoints numerically except <point_number>
+    When playerA's turn ends and his robot stops on the checkpoint <point_number>
+    Then  playerA gets a checkpoint token from this checkpoint successfully and now has <point_number> checkpoint tokens
+    And this game checks game status and now the game status is "<game_status>"
     Examples:
-      | map_name     | playerA | playerB | point_number | is_finished |
-      | ADVANCED     | Jianan  | Wenjie  | 2            | unfinished  |
-      | ADVANCED     | Anna    | Raul    | 3            | finished    |
-      | INTERMEDIATE | Ion     | Durdija | 1            | unfinished  |
+      | playerA | playerB | point_number | game_status |
+      | Jianan  | Wenjie  | 2            | unfinished  |
+      | Anna    | Raul    | 3            | finished    |
+      | Ion     | Durdija | 1            | unfinished  |
 
 
-  Scenario Outline: Player lands on an Obstacle
-    Given A robot "<robot_name>" had "<initial_lives>" lives
-    And The robot has initial position "<initial_row>" "<initial_col>" with orientation "<orientation>"
-    And a position "<obstacle_row>" "<obstacle_col>" on the map indicating the obstacle of type "<type_of_obstacle>"
-    When robot lands on an obstacle status is true
-    Then The robot now has "<final_lives>" lives
-    Examples:
-      | robot_name | initial_lives | initial_row | initial_col | orientation | obstacle_row | obstacle_col | type_of_obstacle | final_lives |
-      | ZOOM_BOT   | 2             | 2           | 2           | N           | 2            | 2            | wnl              | 1           |
-      | HULK_X90   | 2             | 3           | 2           | N           | 2            | 2            | wsl              | 2           |
-      | SPIN_BOT   | 1             | 2           | 2           | N           | 2            | 2            | wel              | 5           |
-      | SQUASH_BOT | 3             | 2           | 2           | S           | 2            | 2            | wwl              | 2           |
-      | HAMMER_BOT | 4             | 2           | 2           | S           | 2            | 2            | sg               | 2           |
+#  Scenario Outline: Player lands on an Obstacle
+#    Given A robot "<robot_name>" had "<initial_lives>" lives
+#    And The robot has initial position "<initial_row>" "<initial_col>" with orientation "<orientation>"
+#    And a position "<obstacle_row>" "<obstacle_col>" on the map indicating the obstacle of type "<type_of_obstacle>"
+#    When robot lands on an obstacle status is true
+#    Then The robot now has "<final_lives>" lives
+#    Examples:
+#      | robot_name | initial_lives | initial_row | initial_col | orientation | obstacle_row | obstacle_col | type_of_obstacle | final_lives |
+#      | ZOOM_BOT   | 2             | 2           | 2           | N           | 2            | 2            | wnl              | 1           |
+#      | HULK_X90   | 2             | 3           | 2           | N           | 2            | 2            | wsl              | 2           |
+#      | SPIN_BOT   | 1             | 2           | 2           | N           | 2            | 2            | wel              | 5           |
+#      | SQUASH_BOT | 3             | 2           | 2           | S           | 2            | 2            | wwl              | 2           |
+#      | HAMMER_BOT | 4             | 2           | 2           | S           | 2            | 2            | sg               | 2           |

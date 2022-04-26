@@ -6,7 +6,7 @@ import model.game.card.Card;
 public class CardAgain extends Card implements Programmable{
     private Card lastCard;
 
-    public void action(Robot robot){
+    public void actsOn(Robot robot){
 
     }
 }

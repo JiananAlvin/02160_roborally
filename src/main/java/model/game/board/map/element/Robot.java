@@ -1,6 +1,6 @@
 package model.game.board.map.element;
 
-import content.RobotName;
+import content.RobotNameEnum;
 import lombok.Data;
 import model.game.board.map.Orientation;
 import model.game.board.map.Position;
@@ -16,7 +16,7 @@ public class Robot {
     private int lives;
     private Position position;
 
-    public Robot(RobotName robotName) {
+    public Robot(RobotNameEnum robotName) {
         this.name = robotName.getName();
         this.onBoard = false;
         this.position = new Position();
@@ -50,7 +50,7 @@ public class Robot {
     }
 
     public void applyCard(Card card) {
-        card.action(this);
+        card.actsOn(this);
     }
 
     /**

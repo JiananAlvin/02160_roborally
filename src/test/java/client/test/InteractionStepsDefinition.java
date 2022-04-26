@@ -1,6 +1,6 @@
 package client.test;
 
-import content.RobotName;
+import content.RobotNameEnum;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -9,8 +9,8 @@ import io.cucumber.java.en.When;
 import lombok.SneakyThrows;
 import model.game.Player;
 import model.game.board.map.element.Robot;
-import model.game.board.mat.element.ProgrammingDeck;
-import model.game.board.mat.element.RegisterArea;
+import model.game.board.mat.ProgrammingDeck;
+import model.game.board.mat.RegisterArea;
 import model.game.card.Card;
 
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ public class InteractionStepsDefinition {
 
     @Before
     public void init() {
-        this.p1 = new Player("group10", new Robot(RobotName.valueOf("HULK_X90")));
+        this.p1 = new Player("group10", new Robot(RobotNameEnum.valueOf("HULK_X90")));
     }
 
     @Given("a player had {string} cards in his programming deck")

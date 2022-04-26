@@ -1,8 +1,8 @@
 package client.test;
 
 import content.Application;
-import content.MapName;
-import content.RobotName;
+import content.MapNameEnum;
+import content.RobotNameEnum;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
@@ -124,7 +124,7 @@ public class InitializationStepsDefinition {
 
     @When("the player chooses a robot {string}")
     public void thePlayerChoosesARobot(String string) {
-        this.robot = new Robot(RobotName.valueOf(string));
+        this.robot = new Robot(RobotNameEnum.valueOf(string));
         this.user.setRobot(this.robot);
         this.response = new UserController().chooseRobot(this.user.getName(), string);
     }
@@ -147,7 +147,7 @@ public class InitializationStepsDefinition {
     public void thePlayerCreatesANewRoomAndChoosesAMap(String mapName) {
         this.room = new Room();
         this.game.setRoom(this.room);
-        this.game.setGameMap(new GameMap(MapName.valueOf(mapName)));
+        this.game.setGameMap(new GameMap(MapNameEnum.valueOf(mapName)));
         assertEquals(mapName, this.game.getGameMap().getMapName());
         this.response = new RoomController().createRoom(this.user.getName(), mapName);
         this.game.getRoom().setRoomNumber((Integer) response.get(RoomController.RESPONSE_ROOM_NUMBER));
@@ -189,21 +189,21 @@ public class InitializationStepsDefinition {
     @SneakyThrows
     @Given("a room owner {string} created a new room with map {string} and chose robot {string}")
     public void aRoomOwnerCreatedANewRoomWithMapAndChoseRobot(String ownerName, String mapName, String robotName) {
-        this.roomOwner = new Player(ownerName, new Robot(RobotName.valueOf(robotName)));
+        this.roomOwner = new Player(ownerName, new Robot(RobotNameEnum.valueOf(robotName)));
         assertEquals(200, new UserController().createUser(ownerName).get(ServerConnection.RESPONSE_STATUS));
         assertEquals(200, new UserController().chooseRobot(ownerName, robotName).get(ServerConnection.RESPONSE_STATUS));
         JSONObject createRoomResponse = new RoomController().createRoom(ownerName, mapName);
         assertEquals(200, createRoomResponse.get(ServerConnection.RESPONSE_STATUS));
         this.room = new Room();
-        this.game.setGameMap(new GameMap(MapName.valueOf(mapName)));
+        this.game.setGameMap(new GameMap(MapNameEnum.valueOf(mapName)));
         this.room.setRoomNumber((Integer) createRoomResponse.get(RoomController.RESPONSE_ROOM_NUMBER));
     }
 
     @And("player1 {string} player2 {string} and player3 {string} chose robot1 {string} robot2 {string} and robot3 {string} respectively")
     public void playerPlayerAndPlayerChoseRobotRobotAndRobotRespectively(String player1Name, String player2Name, String player3Name, String robot1Name, String robot2Name, String robot3Name) {
-        this.player1 = new Player(player1Name, new Robot(RobotName.valueOf(robot1Name)));
-        this.player2 = new Player(player2Name, new Robot(RobotName.valueOf(robot2Name)));
-        this.player3 = new Player(player3Name, new Robot(RobotName.valueOf(robot3Name)));
+        this.player1 = new Player(player1Name, new Robot(RobotNameEnum.valueOf(robot1Name)));
+        this.player2 = new Player(player2Name, new Robot(RobotNameEnum.valueOf(robot2Name)));
+        this.player3 = new Player(player3Name, new Robot(RobotNameEnum.valueOf(robot3Name)));
         assertEquals(200, new UserController().createUser(this.player1.getName()).get(ServerConnection.RESPONSE_STATUS));
         assertEquals(200, new UserController().chooseRobot(this.player1.getName(), this.player1.getRobot().getName()).get(ServerConnection.RESPONSE_STATUS));
         assertEquals(200, new UserController().createUser(this.player2.getName()).get(ServerConnection.RESPONSE_STATUS));

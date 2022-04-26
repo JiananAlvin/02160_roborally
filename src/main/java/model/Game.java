@@ -1,7 +1,7 @@
 package model;
 
-import content.RobotName;
-import gui.view.widgets.game.GamePanel;
+import content.RobotNameEnum;
+import gui.game.GamePanel;
 import lombok.Data;
 import model.game.board.map.Collision;
 import model.game.board.map.GameMap;
@@ -16,7 +16,6 @@ import server.controller.RoomController;
 import java.util.*;
 
 @Data
-
 public class Game {
     /**
      * @ Player user: the user of this application
@@ -33,13 +32,10 @@ public class Game {
     private GameMap gameMap;
     private int currentRoundNum;
     private int currentRegisterNum;
-
     private Player winner;
-
+    private int currentPlayerOrderedIndex;
     // TODO delete currentPlayer
     private Player currentPlayer;
-
-    private int currentPlayerOrderedIndex;
 
     public Game() {
         this.participants = new ArrayList<>();
@@ -62,7 +58,7 @@ public class Game {
         // generate initial positions for all robots, only when the user is a room owner
         if (user.getName().equals(roomInfoResponse.getString(RoomController.RESPONSE_ROOM_OWNER)))
             this.generateRandomPositionsForAllParticipants();
-//        give User different color
+        // give User different color
         this.assignColorToParticipants();
     }
 
@@ -109,16 +105,6 @@ public class Game {
     }
 
     /**
-     * This method is used to add a new player p1 to the participants in this game.
-     * In the real game process, this method would not be used because there is another method called `initParticipants` in this class.
-     *
-     * @param p1 the player you want to add to participants.
-     */
-    public void addParticipant(Player p1) {
-        this.participants.add(p1);
-    }
-
-    /**
      * This method creates new players according to the information in
      * JSONObject(Response of GET:/RoomInfo/[room_number]) and add them to participants
      *
@@ -131,7 +117,7 @@ public class Game {
         List<Object> userList = users.toList();
         for (Object userName : userList) {
             JSONObject robotInfo = new RobotController().getRobotInfo(userName.toString());
-            Robot robot = new Robot(RobotName.valueOf((String) robotInfo.get(RobotController.RESPONSE_ROBOT_NAME)));
+            Robot robot = new Robot(RobotNameEnum.valueOf((String) robotInfo.get(RobotController.RESPONSE_ROBOT_NAME)));
             try {
                 // if JSONObject["x"] not found, it means there is no initial position
                 int x = (int) robotInfo.get(RobotController.RESPONSE_ROBOT_XCOORD);

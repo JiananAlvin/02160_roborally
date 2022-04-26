@@ -1,6 +1,6 @@
 package model.game.board.map;
 
-import content.MapName;
+import content.MapNameEnum;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import model.game.board.map.element.CheckPoint;
@@ -29,7 +29,7 @@ public class GameMap {
      *
      * @param mapName the name of this map. Such as 'STARTER', 'BEGINNER' represent the map stored in 'STARTER.txt' and 'BEGINNER.txt'.
      */
-    public GameMap(MapName mapName) throws IOException {
+    public GameMap(MapNameEnum mapName) throws IOException {
         this.mapName = mapName.getMapName();
         this.content = MapReader.txtToTileMatrix(mapName);
         this.startPoints = new ArrayList<>();
