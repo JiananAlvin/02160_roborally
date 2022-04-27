@@ -10,7 +10,6 @@ import java.util.UUID;
 public class Room {
 
     private int roomNumber;
-
     public Room(){};
     public Room(int roomNumber) {
         this.roomNumber = roomNumber;

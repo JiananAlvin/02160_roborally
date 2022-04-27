@@ -100,16 +100,6 @@ public class MapElementStepsDefinition {
 
     //--------------------------------------------------------------------------------------------
 
-    @When("the robot lives are reduced {string} points of damage by the game")
-    public void theRobotLivesAreReducedPointsOfDamageByTheGame(String arg0) throws IOException {
-        this.game = new Game();
-//        this.game.setGameMap(new GameMap(MapNameEnum.STARTER));
-//        ArrayList<RebootPoint> rebootPoints = new ArrayList<>();
-//        rebootPoints.add(new RebootPoint(1, 1));
-//        this.game.getGameMap().setRebootPoints(rebootPoints);
-        this.game.setGameMap(new GameMap(MapNameEnum.STARTER));
-        this.game.robotTakeDamage(this.robot, Integer.parseInt(arg0));
-    }
 
     @Then("the robot now has {string} lives")
     public void the_robot_has_lives(String lives) {
@@ -280,15 +270,6 @@ public class MapElementStepsDefinition {
         }
     }
 
-    @When("robot lands on an obstacle status is true")
-    public void robotLandsOnAnObstacleStatusIsTrue() {
-        this.game.checkCollisionTemporary(this.robot, this.tile);
-    }
-
-//    @Then("the robot now has {int} lives")
-//    public void theRobotNowHasLives(int arg0) {
-//        assertEquals(arg0, this.robot.getLives());
-//    }
 
 
     //--------------------------------------------------------------------------------------------
@@ -303,8 +284,6 @@ public class MapElementStepsDefinition {
 //        Move according to the orientation
         Card actionCard = new CardMove1();
         actionCard.actsOn(this.robot);
-//        Figure out what is this
-        this.game.checkCollisionTemporary(this.robot, this.tile); // change this later
     }
 
 
@@ -381,5 +360,10 @@ public class MapElementStepsDefinition {
     public void robotDies() {
         assertEquals(this.robot.getCheckpoints().size(), 0);
         assertEquals(this.robot.getLives(), 5);
+    }
+
+    @When("the robot lives are reduced {string} points of damage by the game")
+    public void theRobotLivesAreReducedPointsOfDamageByTheGame(String arg0) {
+        this.robot.takeDamage(Integer.parseInt(arg0));
     }
 }

@@ -8,7 +8,6 @@ import model.game.card.Card;
 
 @Data
 public class DiscardPile {
-
 	private Player player;
 	private ArrayList<Card> discards;
 

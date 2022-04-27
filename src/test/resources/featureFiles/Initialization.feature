@@ -69,3 +69,35 @@ Feature:
     Examples:
       | room_owner_name | map_name | room_owner_robot | player1_name | player2_name | player3_name | player1_robot | player2_robot | player3_robot |
       | Wenjie          | STARTER  | SQUASH_BOT       | Jianan       | Ion          | Durjia       | ZOOM_BOT      | HAMMER_BOT    | SPIN_BOT      |
+
+
+  Scenario Outline: As a player I want to exit a room
+    Given a player has a name "<name>"
+    And a room owner "<room_owner_name>" creates a new room with map "<map_name>"
+    And player is in this room
+    When player want to exit this room
+    Then player is not in a room
+    Examples:
+      | room_owner_name | room_owner_name | map_name |
+      | test2           | test1           | STARTER  |
+
+
+  Scenario Outline: Default room status
+    Given a player has a name "<name>"
+    When the player creates a new room and chooses a map "<map_name>"
+    Then the status of the room is "WAITING"
+    Examples:
+      | name   | map_name |
+      | Ion    | STARTER  |
+      | Jianan | BEGINNER |
+
+  Scenario Outline: Room status can be updated
+    Given a player has a name "<name>"
+    And a room owner "<room_owner_name>" creates a new room with map "<map_name>"
+    When status of the room is updated to "<status>"
+    Then the status of the room is "<status>"
+    Examples:
+      | room_owner_name | map_name | status  |
+      | test1           | STARTER  | START   |
+      | test1           | STARTER  | WAITING |
+      | test1           | STARTER  | END     |

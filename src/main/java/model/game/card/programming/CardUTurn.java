@@ -8,6 +8,5 @@ public class CardUTurn extends Card implements Programmable {
     public Card actsOn(Robot robot) {
         robot.setOrientation(OrientationEnum.matchOrientation((robot.getOrientation().getAngle() + 180) % 360));
         return this;
-
     }
 }

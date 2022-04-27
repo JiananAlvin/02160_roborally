@@ -1,6 +1,7 @@
 package model.game.card.programming;
 
 import model.game.board.map.element.Robot;
+import model.game.card.Card;
 
 /**
  * @ interface: Programmable
@@ -8,5 +9,4 @@ import model.game.board.map.element.Robot;
  */
 
 public interface Programmable  {
-
 }

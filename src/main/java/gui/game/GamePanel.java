@@ -173,6 +173,7 @@ public class GamePanel extends JPanel {
 //                System.out.println("Acted on");
                 boardPanel.getBoard()[currentPlayer.getRobot().getPosition().getRow()][currentPlayer.getRobot().getPosition().getCol()].setRobot(currentPlayer.getRobot().getOrientation(), currentPlayer);
                 boardPanel.repaint();
+
                 infoPanel.addLogToLogPanel(currentPlayer.getRobot().getName() + ": " + currentPlayer.getRobot().getOrientation().toString(), currentPlayer );
                 game.setCurrentPlayerOrderedIndex(++currenPlayerIndex);
                 if (currenPlayerIndex == game.getParticipants().size()) {
