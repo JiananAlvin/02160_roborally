@@ -256,6 +256,9 @@ public class Game {
         participants = orderOfPlayers;
     }
 
+    public void addParticipant(Player player) {
+        participants.add(player);
+    }
 //    public boolean validMovement(Robot r, Position newPos) {
 //        switch (gameMap.getContent()[r.getPosition().getRow()][r.getPosition().getCol()].getType()) {
 //            case WallWest:

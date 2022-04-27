@@ -12,11 +12,8 @@ public class CardMove1 extends Card implements Programmable {
         Position currentPos = robot.getPosition();
         //This function gets the orientation, current position and the amount of movement (1, 2, 3, -1...), and gets
         // as a result the new position that the robot should have after playing those cards
-        System.out.println(robot.getPosition());
         Position newPos = Movement.calculateNewPosition(robotOrientation, currentPos, 1);
-        System.out.println(newPos);
         robot.tryMove(newPos);
-        // wait 1 second
 
 
         return this;

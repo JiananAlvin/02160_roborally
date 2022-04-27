@@ -7,6 +7,7 @@ import content.OrientationEnum;
 import model.game.board.map.Position;
 import model.game.card.Card;
 import model.game.card.programming.CardMove1;
+import model.game.card.programming.behaviour.Movement;
 
 import java.lang.Math;
 import java.util.ArrayList;
@@ -54,22 +55,27 @@ public class Robot {
     public boolean tryMove(Position newPos) {
         if (Game.validateMovement(this, newPos.getRow(), newPos.getCol())) {
             Tile t = Game.getGameMap().getTileWithPosition(newPos);
-            move(newPos, t);
+            this.move(newPos, t);
             return true;
         }
         return false;
     }
 
     public void move(Position newPos, Tile t) {
+        Robot robotAtPos = Game.getRobotAtPosition(newPos);
+        if (robotAtPos != null) {
+            this.push(robotAtPos);
+        }
         this.position = newPos;
         if (t instanceof Obstacle) {
             Obstacle o = (Obstacle) t;
             o.robotInteraction(this);
         }
-//        Robot robotAtPos = Game.getRobotAtPosition(newPos);
-//        if (robotAtPos != null) {
-//            this.robotInteraction(robotAtPos);
-//        }
+
+    }
+
+    private void push(Robot robotAtPos) {
+        robotAtPos.tryMove(Movement.calculateNewPosition(this.getOrientation(), robotAtPos.getPosition(), 1));
     }
 
 
