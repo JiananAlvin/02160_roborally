@@ -66,10 +66,10 @@ public class Robot {
             Obstacle o = (Obstacle) t;
             o.robotInteraction(this);
         }
-        Robot robotAtPos = Game.getRobotAtPosition(newPos);
-        if (robotAtPos != null) {
-            this.robotInteraction(robotAtPos);
-        }
+//        Robot robotAtPos = Game.getRobotAtPosition(newPos);
+//        if (robotAtPos != null) {
+//            this.robotInteraction(robotAtPos);
+//        }
     }
 
 
@@ -104,7 +104,10 @@ public class Robot {
 
     private void reboot() {
         this.position = Game.getGameMap().getARandomRebootPoint().getPosition();
+        this.restoreCheckpoints();
         this.setLives(5);
+        // clean register
+
     }
 
     public boolean imInsideBoard(int maxRow, int maxCol) {
@@ -139,6 +142,7 @@ public class Robot {
         c.actsOn(this);
         this.orientation = initialOrientation;
     }
+
 }
 
 

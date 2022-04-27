@@ -12,7 +12,7 @@ import java.nio.charset.StandardCharsets;
 public class ServerConnection {
     private String method;
     private String path;
-    private static final String SERVER_URL = "https://dry-brushlands-54922.herokuapp.com";
+    private static final String SERVER_URL = "http://localhost:3000";
     private JSONObject response = new JSONObject();
     public static final String RESPONSE_STATUS = "status";
 

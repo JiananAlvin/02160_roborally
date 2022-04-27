@@ -43,6 +43,7 @@ public class RoomPanel<IntField> extends JPanel {
             RoomController roomController = new RoomController();
             JSONObject response = roomController.createRoom(userName, this.jcbMapName.getSelectedItem().toString());
             String roomNumberStr = response.get("room_number").toString();
+            System.out.println(roomNumberStr);
             roomController.updateStatus(Integer.parseInt(roomNumberStr), RoomController.ROOM_STATUS_WAITING);
             frame.getContentPane().removeAll();
             frame.getContentPane().add(new WaitingPanel(roomNumberStr, "owner", frame, userName));

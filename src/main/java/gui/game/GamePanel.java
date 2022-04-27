@@ -44,7 +44,7 @@ public class GamePanel extends JPanel {
     public static final Color[] userColors = new Color[]{Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.CYAN, Color.MAGENTA};
     private Timer programmingTimer;
     private Timer activationPhaseTimer;
-    public static final int MAX_PROGRAMMING_TIME = 10;
+    public static final int MAX_PROGRAMMING_TIME = 30;
 
     public GamePanel(Game game) {
         super(true);
@@ -166,9 +166,14 @@ public class GamePanel extends JPanel {
                 Player currentPlayer = game.getParticipants().get(currenPlayerIndex);
                 Card currentRegisterCard = currentPlayer.getRegisterArea().getCard(registerIndex);
                 boardPanel.getBoard()[currentPlayer.getRobot().getPosition().getRow()][currentPlayer.getRobot().getPosition().getCol()].unsetRobot();
+
                 currentRegisterCard.actsOn(currentPlayer.getRobot());
+
+//                System.out.println(currentRegisterCard);
+//                System.out.println("Acted on");
                 boardPanel.getBoard()[currentPlayer.getRobot().getPosition().getRow()][currentPlayer.getRobot().getPosition().getCol()].setRobot(currentPlayer.getRobot().getOrientation(), currentPlayer);
                 boardPanel.repaint();
+                infoPanel.addLogToLogPanel(currentPlayer.getRobot().getName() + ": " + currentPlayer.getRobot().getOrientation().toString(), currentPlayer );
                 game.setCurrentPlayerOrderedIndex(++currenPlayerIndex);
                 if (currenPlayerIndex == game.getParticipants().size()) {
                     game.setCurrentRegisterNum(++registerIndex);

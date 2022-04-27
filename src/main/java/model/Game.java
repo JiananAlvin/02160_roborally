@@ -46,6 +46,7 @@ public class Game {
     public static boolean validateMovement(Robot r, int row, int col) {
 
         if (!(row >= 0 && row < gameMap.getHeight() && col >= 0 && col < gameMap.getWidth())) {
+            r.takeDamage(5);
             return false;
         }
 
@@ -202,6 +203,7 @@ public class Game {
             this.reboot(r);
         }
     }
+
 
     // TODO:
     // Prototype about how collisions will work

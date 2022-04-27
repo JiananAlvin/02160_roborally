@@ -169,7 +169,7 @@ Feature:
     And a robot "<robot_name>" with position "<row>" "<col>"
     And robot has "<orientation>" orientation
     When robot tries to move forward and there is void
-    Then robot does not move forward
+    Then robot dies
     Examples:
       | robot_name | row | col | orientation | map_name |
       | ZOOM_BOT   | 0   | 0   | N           | STARTER  |

@@ -378,4 +378,10 @@ public class MapElementStepsDefinition {
         assertEquals(this.robot1.getPosition(), Movement.calculateNewPosition(this.robot.getOrientation(),this.robot1.getPosition(), 1));
 
     }
+
+    @Then("robot dies")
+    public void robotDies() {
+        assertEquals(this.robot.getCheckpoints().size(), 0);
+        assertEquals(this.robot.getLives(), 5);
+    }
 }
