@@ -29,7 +29,7 @@ public enum TileImageEnum {
     WALLEAST("src/main/resources/images/tiles/wall_east.png"),
     WALLNORTH("src/main/resources/images/tiles/wall_north.png"),
     PIT("src/main/resources/images/tiles/pit.png"),
-    STATIC_GEAR("src/main/resources/images/tiles/static_gear.png"),
+    OIL_STAIN("src/main/resources/images/tiles/oil_stain.png"),
     ROTATING_GEAR("src/main/resources/images/tiles/rotating_gear.png");
 
     private final BufferedImage image;

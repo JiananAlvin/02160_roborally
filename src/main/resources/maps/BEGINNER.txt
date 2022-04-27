@@ -4,7 +4,7 @@ Blank,WallNorth,Blank,NorthOne,Blank,Blank,Blank,Blank,Blank,NorthOne,Blank,Sout
 StartPoint,Blank,Blank,WestOne,WestOne,WestOne,WestOne,Blank,Blank,NorthOne,Blank,SouthTwo,Blank
 Antenna,StartPoint,WallEast,Blank,Blank,RebootPoint,Blank,Blank,Blank,Blank,Blank,Pit,Blank
 Blank,StartPoint,WallEast,Charger,Pit,Blank,Blank,Blank,Blank,Blank,Blank,Charger,Blank
-StartPoint,Blank,Blank,Blank,NorthTwo,Blank,SouthOne,StaticGear,Blank,EastTwo,EastTwo,EastTwo,SouthTwo
+StartPoint,Blank,Blank,Blank,NorthTwo,Blank,SouthOne,OilStain,Blank,EastTwo,EastTwo,EastTwo,SouthTwo
 Blank,WallSouth,Blank,Blank,NorthTwo,Blank,SouthOne,Blank,Blank,Blank,Blank,Blank,SouthTwo
 Blank,StartPoint,Blank,EastTwo,EastTwo,Charger,SouthOne,Blank,Pit,WestTwo,WestTwo,WestTwo,EastTwo
 Blank,Blank,EastOne,Blank,SouthOne,WestOne,WestOne,Blank,Blank,CheckPoint3,Charger,NorthTwo,CheckPoint1

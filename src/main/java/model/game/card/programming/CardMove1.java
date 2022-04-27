@@ -6,7 +6,7 @@ import model.game.board.map.element.Robot;
 import model.game.card.Card;
 import model.game.card.programming.behaviour.Movement;
 
-public class CardMove1 extends Card implements Programmable {
+public class CardMove1 extends Card {
     public CardMove1 actsOn(Robot robot) {
         OrientationEnum robotOrientation = robot.getOrientation();
         Position currentPos = robot.getPosition();

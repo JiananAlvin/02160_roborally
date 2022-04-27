@@ -261,7 +261,7 @@ public class MapElementStepsDefinition {
     public void aPositionOnTheMapIndicatingTheObstacle(String xPos, String yPos, String type) {
         switch (type) {
             case "sg":
-                this.tile = new StaticGear(Integer.parseInt(xPos), Integer.parseInt(yPos));
+                this.tile = new OilStain(Integer.parseInt(xPos), Integer.parseInt(yPos));
                 break;
             case "pit":
                 this.tile = new Pit(Integer.parseInt(xPos), Integer.parseInt(yPos));
