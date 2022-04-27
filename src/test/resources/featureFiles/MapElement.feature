@@ -93,8 +93,11 @@ Feature:
     When robot lands on a static gear
     Then the robot now has "<lives1>" lives
     Examples:
-      | map_name | robot_name | row | col | orientation | lives | lives1 |
-      | STARTER  | ZOOM_BOT   | 2   | 2   | N           | 2     | 1      |
+      | map_name     | robot_name | row | col | orientation | lives | lives1 |
+      | INTERMEDIATE | ZOOM_BOT   | 4   | 4   | E           | 5     | 3      |
+      | INTERMEDIATE | ZOOM_BOT   | 5   | 5   | N           | 4     | 2      |
+      | INTERMEDIATE | ZOOM_BOT   | 5   | 11  | W           | 3     | 1      |
+      | INTERMEDIATE | ZOOM_BOT   | 5   | 11  | W           | 2     | 5      |
 
   Scenario Outline: Robot lands on a rotating gear
     Given there is a game with map "<map_name>"
@@ -103,8 +106,10 @@ Feature:
     When robot lands on a rotating gear
     Then robot has "<final_orientation>" orientation
     Examples:
-      | map_name | robot_name | row | col | orientation | final_orientation |
-      | STARTER  | ZOOM_BOT   | 2   | 2   | N           | E                 |
+      | map_name     | robot_name | row | col | orientation | final_orientation |
+      | INTERMEDIATE | ZOOM_BOT   | 5   | 4   | E           | S                 |
+      | INTERMEDIATE | ZOOM_BOT   | 5   | 6   | E           | S                 |
+      | INTERMEDIATE | ZOOM_BOT   | 5   | 6   | W           | N                 |
 
   Scenario Outline: Robot lands on a pit
     Given there is a game with map "<map_name>"
@@ -114,8 +119,10 @@ Feature:
     Then robot is sent to the reboot point
     And the robot now has "<lives>" lives
     Examples:
-      | map_name | robot_name | row | col | orientation | lives |
-      | STARTER  | ZOOM_BOT   | 2   | 2   | N           | 5     |
+      | map_name     | robot_name | row | col | orientation | lives |
+      | INTERMEDIATE | ZOOM_BOT   | 2   | 5   | E           | 5     |
+      | INTERMEDIATE | ZOOM_BOT   | 2   | 7   | W           | 5     |
+      | INTERMEDIATE | ZOOM_BOT   | 1   | 6   | S           | 5     |
 
   Scenario Outline: Robot lands on a laser tile
     Given there is a game with map "<map_name>"
@@ -170,3 +177,27 @@ Feature:
       | ZOOM_BOT   | 9   | 0   | S           | STARTER  |
       | ZOOM_BOT   | 9   | 12  | E           | STARTER  |
       | ZOOM_BOT   | 9   | 12  | S           | STARTER  |
+
+  Scenario Outline: Robot gets 1 live when it lands on a charger tile
+    Given there is a game with map "<map_name>"
+    And a robot "<robot_name>" with position "<row>" "<col>"
+    And robot has "<orientation>" orientation
+    And robot has "<lives>" lives
+    When robot lands on a charger tile
+    Then the robot now has "<lives1>" lives
+    Examples:
+      | robot_name | row | col | orientation | lives | lives1 | map_name |
+      | ZOOM_BOT   | 2   | 4   | E           | 2     | 3      | STARTER  |
+      | ZOOM_BOT   | 2   | 4   | E           | 5     | 5      | STARTER  |
+      | ZOOM_BOT   | 4   | 7   | E           | 5     | 5      | STARTER  |
+      | ZOOM_BOT   | 4   | 9   | W           | 3     | 4      | STARTER  |
+
+#    Scenario Outline: Robot pushes another robot
+#      Given there is a game with map "<map_name>"
+#      And a robot "<robot_name>" with position "<row>" "<col>"
+#      And robot has "<orientation>" orientation
+#      When there is a robot in the position first robot moves on
+#      Then fist robot pushes the second robot
+#      Examples:
+#      | robot_name | row | col | orientation | map_name |
+#      | ZOOM_BOT   | 2   | 4   | E           | STARTER  |

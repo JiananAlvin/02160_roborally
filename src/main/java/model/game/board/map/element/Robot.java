@@ -6,6 +6,7 @@ import model.Game;
 import content.OrientationEnum;
 import model.game.board.map.Position;
 import model.game.card.Card;
+import model.game.card.programming.CardMove1;
 
 import java.lang.Math;
 import java.util.ArrayList;
@@ -41,24 +42,36 @@ public class Robot {
     public void setInitialPosition(Position position) {
         this.position = position;
     }
-    public void setPosition(Position position) { this.position = position; }
-    public Position getPosition() { return this.position; }
+
+    public void setPosition(Position position) {
+        this.position = position;
+    }
+
+    public Position getPosition() {
+        return this.position;
+    }
+
     public boolean tryMove(Position newPos) {
         if (Game.validateMovement(this, newPos.getRow(), newPos.getCol())) {
             Tile t = Game.getGameMap().getTileWithPosition(newPos);
-            move(newPos,t);
+            move(newPos, t);
             return true;
         }
         return false;
     }
 
-    public void move(Position newPos,Tile t) {
+    public void move(Position newPos, Tile t) {
         this.position = newPos;
-        if(t instanceof Obstacle){
+        if (t instanceof Obstacle) {
             Obstacle o = (Obstacle) t;
             o.robotInteraction(this);
         }
+        Robot robotAtPos = Game.getRobotAtPosition(newPos);
+        if (robotAtPos != null) {
+            this.robotInteraction(robotAtPos);
+        }
     }
+
 
     public int distanceToAntenna() {
         return Math.abs(this.position.getRow() - Antenna.getInstance().getPosition().getRow()) + Math.abs(this.position.getCol() - Antenna.getInstance().getPosition().getCol());
@@ -120,7 +133,11 @@ public class Robot {
     }
 
     public void robotInteraction(Robot robot) {
-        // push robot
+        OrientationEnum initialOrientation = this.orientation;
+        this.orientation = robot.orientation;
+        Card c = new CardMove1();
+        c.actsOn(this);
+        this.orientation = initialOrientation;
     }
 }
 

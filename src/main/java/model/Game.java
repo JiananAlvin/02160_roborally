@@ -241,6 +241,14 @@ public class Game {
             }
         }
     }
+    public static Robot getRobotAtPosition(Position newPos) {
+        for (Player player : participants) {
+            if (player.getRobot().getPosition().equals(newPos)) {
+                return player.getRobot();
+            }
+        }
+        return null;
+    }
 
     public void setParticipants(ArrayList<Player> orderOfPlayers) {
         participants = orderOfPlayers;

@@ -15,6 +15,7 @@ import model.game.board.map.Position;
 import model.game.board.map.element.*;
 import model.game.card.Card;
 import model.game.card.programming.*;
+import model.game.card.programming.behaviour.Movement;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -349,5 +350,32 @@ public class MapElementStepsDefinition {
     public void robotTriesToMoveForwardAndThereIsVoid() {
         Card actionCard = new CardMove1();
         actionCard.actsOn(this.robot);
+    }
+
+
+    @When("robot lands on a charger tile")
+    public void robotLandsOnAChargerTile() {
+        Card actionCard = new CardMove1();
+        actionCard.actsOn(this.robot);
+    }
+
+    private Robot robot1;
+    @When("there is a robot in the position first robot moves on")
+    public void thereIsARobotInThePositionFirstRobotMovesOn() {
+        Position newPos = Movement.calculateNewPosition(this.robot.getOrientation(), this.robot.getPosition(),1);
+        this.robot1 = new Robot("TEST", newPos.getRow(),newPos.getCol());
+//        System.out.println(this.robot1.getPosition());
+        Card actionCard = new CardMove1();
+        actionCard.actsOn(this.robot);
+        System.out.println(this.robot.getPosition());
+        this.initialRobot2Position = newPos;
+    }
+
+    @Then("fist robot pushes the second robot")
+    public void fistRobotPushesTheSecondRobot() {
+        assertEquals(this.robot.getPosition(), initialRobot2Position);
+        System.out.println("Robot2 position: " + this.robot1.getPosition());
+        assertEquals(this.robot1.getPosition(), Movement.calculateNewPosition(this.robot.getOrientation(),this.robot1.getPosition(), 1));
+
     }
 }
