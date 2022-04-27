@@ -1,8 +1,9 @@
 package gui.game;
 
-import content.Application;
+import content.App;
 import content.MapNameEnum;
 import content.RobotNameEnum;
+import lombok.Data;
 import lombok.SneakyThrows;
 import model.Game;
 import model.game.Room;
@@ -12,6 +13,7 @@ import model.game.board.map.element.Robot;
 import model.game.board.mat.ProgrammingDeck;
 import model.game.board.mat.RegisterArea;
 import model.game.card.Card;
+import model.game.proxy.ShootingPhaseManager;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import server.controller.ProgrammingRecordController;
@@ -36,6 +38,8 @@ import java.util.ArrayList;
  * |       MatPanel       |
  * |______________________|
  */
+
+@Data
 public class GamePanel extends JPanel {
 
     private BoardPanel boardPanel;
@@ -45,6 +49,7 @@ public class GamePanel extends JPanel {
     private Timer programmingTimer;
     private Timer activationPhaseTimer;
     public static final int MAX_PROGRAMMING_TIME = 30;
+    public static final int ACTIVATION_PHASE_TIME = 2000;//2s
 
     public GamePanel(Game game) {
         super(true);
@@ -153,7 +158,7 @@ public class GamePanel extends JPanel {
 
     //TODO
     private Timer invokeActivationPhaseTimer(Game game) {
-        return new Timer(1000, new ActionListener() {
+        return new Timer(ACTIVATION_PHASE_TIME, new ActionListener() {
             @SneakyThrows
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -161,6 +166,7 @@ public class GamePanel extends JPanel {
                 int registerIndex = game.getCurrentRegisterNum();
                 int currenPlayerIndex = game.getCurrentPlayerOrderedIndex();
                 if (registerIndex == 0 && currenPlayerIndex == 0) {
+                    // the game starts
                     game.setParticipants(game.orderOfPlayers());
                 }
                 Player currentPlayer = game.getParticipants().get(currenPlayerIndex);
@@ -169,20 +175,23 @@ public class GamePanel extends JPanel {
 
                 currentRegisterCard.actsOn(currentPlayer.getRobot());
 
-//                System.out.println(currentRegisterCard);
-//                System.out.println("Acted on");
                 boardPanel.getBoard()[currentPlayer.getRobot().getPosition().getRow()][currentPlayer.getRobot().getPosition().getCol()].setRobot(currentPlayer.getRobot().getOrientation(), currentPlayer);
                 boardPanel.repaint();
-                infoPanel.addLogToLogPanel(currentPlayer.getRobot().getName() + ": " + currentPlayer.getRobot().getOrientation().toString(), currentPlayer );
+//                infoPanel.addLogToLogPanel(currentPlayer.getRobot().getName() + ": " + currentPlayer.getRobot().getOrientation().toString(), currentPlayer);
                 game.setCurrentPlayerOrderedIndex(++currenPlayerIndex);
                 if (currenPlayerIndex == game.getParticipants().size()) {
+                    // all players' one register finish
                     game.setCurrentRegisterNum(++registerIndex);
                     game.setCurrentPlayerOrderedIndex(0);
+                    // TODO add something here
+                    infoPanel.addLogToLogPanel("Robots start shooting",null);
+                    ShootingPhaseManager.INSTANCE.setupInstance(game);
+                    ShootingPhaseManager.INSTANCE.executeRobotsShooting(infoPanel);
                 }
                 if (registerIndex == RegisterArea.REGISTER_QUEUE_SIZE) {
+                    // one round finish
                     game.setCurrentRoundNum(++round);
 //                    TODO debug
-                    System.out.println(round);
                     game.setCurrentRegisterNum(0);
                     activationPhaseTimer.stop();
                     infoPanel.addLogToLogPanel("activation phase done and start programming phase", null);
@@ -235,7 +244,6 @@ public class GamePanel extends JPanel {
         userController.chooseRobot(user.getName(), user.getRobot().getName());
 //        userController.chooseRobot("PatrickStar", "ZOOM_BOT");
         RoomController roomController = new RoomController();
-        System.out.println(roomController.createRoom(user.getName(), "BEGINNER"));
         int roomNumber = roomController.createRoom(user.getName(), "BEGINNER").getInt("room_number");
 //        userController.joinRoom("PatrickStar", roomNumber);
         GameMap gameMap = new GameMap(MapNameEnum.ADVANCED);
@@ -247,7 +255,7 @@ public class GamePanel extends JPanel {
         //creating and showing this application's GUI.
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                JFrame frame = new JFrame(Application.APP_TITLE);
+                JFrame frame = new JFrame(App.APP_TITLE);
                 frame.setSize(1650, 1080);
                 frame.add(new GamePanel(game));
                 frame.setVisible(true);

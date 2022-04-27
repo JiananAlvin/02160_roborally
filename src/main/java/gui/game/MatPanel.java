@@ -183,7 +183,6 @@ public class MatPanel extends JPanel {
 //        userController.chooseRobot(user.getName(), user.getRobot().getName());
 //        userController.chooseRobot("PatrickStar", "ZOOM_BOT");
 //        RoomController roomController = new RoomController();
-//        System.out.println(roomController.createRoom(user.getName(), "STARTER"));
 //        int roomNumber = roomController.createRoom(user.getName(), "STARTER").getInt("room_number");
 //        userController.joinRoom("PatrickStar", roomNumber);
 //        GameMap gameMap = new GameMap(MapNameEnum.valueOf("STARTER"));

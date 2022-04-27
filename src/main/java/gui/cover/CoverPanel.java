@@ -1,6 +1,5 @@
 package gui.cover;
 
-import content.Application;
 import content.RobotImageEnum;
 
 import javax.swing.*;

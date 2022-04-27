@@ -1,6 +1,6 @@
 package client.test;
 
-import content.Application;
+import content.App;
 import content.MapNameEnum;
 import content.RobotNameEnum;
 import io.cucumber.java.After;
@@ -89,7 +89,7 @@ public class InitializationStepsDefinition {
     //------------------------------------------------------------------------------------
     @Given("a player opened the application")
     public void a_player_opened_the_application() {
-        assertTrue(Application.getApplicationInstance().run());
+        assertTrue(App.getApplicationInstance().run());
     }
 
     @When("the player inputs a name {string}")

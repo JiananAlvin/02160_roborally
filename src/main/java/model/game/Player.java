@@ -58,7 +58,6 @@ public class Player {
             this.obtainedCheckpointTokens.add(checkPoint);
             return true;
         } else {
-            System.out.println(ownedTokens);
             return false;
         }
     }

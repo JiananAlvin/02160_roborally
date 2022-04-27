@@ -13,17 +13,17 @@ import java.awt.event.ActionListener;
 /**
  * This class is an entrance for our user application
  */
-public class Application {
+public class App {
 
     private Game game;
     private Player user;
     private CoverPanel coverPanel;
     private LoginPanel loginPanel;
     private JFrame frame;
-    private static Application applicationInstance;
+    private static App appInstance;
     public final static String APP_TITLE = "RoboRally Group10 v1.0";
 
-    private Application() {
+    private App() {
         // Initialize all the elements in an APP
         this.frame = new JFrame(APP_TITLE);
         this.game = new Game();
@@ -32,19 +32,19 @@ public class Application {
         this.loginPanel = new LoginPanel(frame);
     }
 
-    public static Application getApplicationInstance() {
-        if (Application.applicationInstance == null)
-            Application.applicationInstance = new Application();
-        return Application.applicationInstance;
+    public static App getApplicationInstance() {
+        if (App.appInstance == null)
+            App.appInstance = new App();
+        return App.appInstance;
     }
 
     public boolean run() {
-        return Application.applicationInstance != null;
+        return App.appInstance != null;
     }
 
     @SneakyThrows
     public static void main(String[] args) {
-        Application app = Application.getApplicationInstance();
+        App app = App.getApplicationInstance();
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {

@@ -28,8 +28,8 @@ public class Robot {
         this.orientation = OrientationEnum.E;
     }
 
-    public Robot(String name, int row, int col) {
-        this.name = name;
+    public Robot(RobotNameEnum robotName, int row, int col) {
+        this.name = robotName.getName();
         this.onBoard = false;
         this.position = new Position(row, col);
         this.orientation = OrientationEnum.E;
@@ -126,10 +126,6 @@ public class Robot {
     public void setLives(int lives) {
         if (lives <= 5)
             this.lives = lives;
-    }
-
-    public int getLives(int lives) {
-        return this.lives;
     }
 
 

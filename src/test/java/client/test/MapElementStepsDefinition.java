@@ -16,6 +16,7 @@ import model.game.board.map.element.*;
 import model.game.card.Card;
 import model.game.card.programming.*;
 import model.game.card.programming.behaviour.Movement;
+import model.game.proxy.ShootingPhaseManager;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -115,6 +116,7 @@ public class MapElementStepsDefinition {
     public void the_robot_has_lives(String lives) {
         assertEquals(Integer.parseInt(lives), this.robot.getLives());
     }
+
     @And("robot has {string} lives")
     public void robotHasLives(String arg0) {
         this.robot.setLives(Integer.parseInt(arg0));
@@ -127,6 +129,7 @@ public class MapElementStepsDefinition {
     public void aRobot(String arg0) {
         this.robot = new Robot(RobotNameEnum.valueOf(arg0));
     }
+
     @And("a robot {string} with position {string} {string}")
     public void aRobotWithPosition(String arg0, String arg1, String arg2) {
         this.robot = new Robot(RobotNameEnum.valueOf(arg0));
@@ -134,12 +137,13 @@ public class MapElementStepsDefinition {
         this.initialRobotPosition = this.robot.getPosition();
         this.game.addParticipant(new Player("test1", this.robot));
 
-        if(this.game.getGameMap()!=null) {
+        if (this.game.getGameMap() != null) {
             this.tile = this.game.getGameMap().getTileWithPosition(this.robot.getPosition());
         } else {
             this.tile = new Blank(this.robot.getPosition());
         }
     }
+
     @And("robot has {string} orientation")
     public void robotHasOrientation(String arg0) {
         this.robot.setOrientation(OrientationEnum.valueOf(arg0));
@@ -249,8 +253,6 @@ public class MapElementStepsDefinition {
         if (this.p1.getObtainedCheckpointTokens().size() == this.game.getGameMap().getCheckPoints().size())
             this.game.setWinner(this.p1);
         if (arg0.equals("finished")) {
-            System.out.println(this.p1.getName());
-            //System.out.println(this.game.getWinner().getName());
             assertEquals(this.p1, this.game.getWinner());
         } else assertNull(this.game.getWinner());
     }
@@ -335,7 +337,6 @@ public class MapElementStepsDefinition {
     }
 
 
-
     @Then("robot does not move forward")
     public void robotDoesNotMoveForward() {
         assertEquals(this.robot.getPosition(), this.initialRobotPosition);
@@ -361,10 +362,11 @@ public class MapElementStepsDefinition {
     }
 
     private Robot robot1;
+
     @When("there is a robot in the position first robot moves on")
     public void thereIsARobotInThePositionFirstRobotMovesOn() {
-        Position newPos = Movement.calculateNewPosition(this.robot.getOrientation(), this.robot.getPosition(),1);
-        this.robot1 = new Robot("TEST", newPos.getRow(),newPos.getCol());
+        Position newPos = Movement.calculateNewPosition(this.robot.getOrientation(), this.robot.getPosition(), 1);
+        this.robot1 = new Robot(RobotNameEnum.HAMMER_BOT, newPos.getRow(), newPos.getCol());
         this.game.addParticipant(new Player("test1", this.robot1));
         Card actionCard = new CardMove1();
         actionCard.actsOn(this.robot);
@@ -374,7 +376,7 @@ public class MapElementStepsDefinition {
     @Then("fist robot pushes the second robot")
     public void fistRobotPushesTheSecondRobot() {
         assertEquals(this.robot.getPosition(), this.initialRobot2Position);
-        assertEquals(this.robot1.getPosition(), Movement.calculateNewPosition(this.robot.getOrientation(),initialRobot2Position, 1));
+        assertEquals(this.robot1.getPosition(), Movement.calculateNewPosition(this.robot.getOrientation(), initialRobot2Position, 1));
     }
 
     @Then("robot dies")
@@ -382,4 +384,41 @@ public class MapElementStepsDefinition {
         assertEquals(this.robot.getCheckpoints().size(), 0);
         assertEquals(this.robot.getLives(), 5);
     }
+
+    //-----------------
+    @And("a robot1 {string} with position {int} {int} and orientation {string}")
+    public void aRobotWithPositionRowColAndOrientation(String arg1, int row, int col, String arg2) {
+        Robot robot = new Robot(RobotNameEnum.valueOf(arg1), row, col);
+        robot.setOrientation(OrientationEnum.valueOf(arg2));
+        this.game.addParticipant(new Player("Player1", robot));
+    }
+
+    @And("robot2 {string} with position {int} {int} orientation {string}")
+    public void robotWithPositionRowColOrientation(String arg1, int row, int col, String arg2) {
+        Robot robot = new Robot(RobotNameEnum.valueOf(arg1), row, col);
+        robot.setOrientation(OrientationEnum.valueOf(arg2));
+        this.game.addParticipant(new Player("Player2", robot));
+    }
+
+    @And("robot3 {string} with position {int} {int} orientation {string}")
+    public void robotOrientation(String arg1, int row, int col, String arg2) {
+        Robot robot = new Robot(RobotNameEnum.valueOf(arg1), row, col);
+        robot.setOrientation(OrientationEnum.valueOf(arg2));
+        this.game.addParticipant(new Player("Player3", robot));
+    }
+
+    @When("shooting phase starts")
+    public void shootingPhaseStarts() {
+        ShootingPhaseManager.INSTANCE.setupInstance(game);
+        ShootingPhaseManager.INSTANCE.executeRobotsShooting();
+    }
+
+    @Then("robot1 has {int} and robot2 has {int} and robot3 has {int}")
+    public void robotHasRobot_livesAndRobotHasRobot_livesAndRobotHasRobot_lives(int arg0, int arg1, int arg2) {
+        assertEquals(arg0,this.game.getParticipants().get(0).getRobot().getLives());
+        assertEquals(arg1,this.game.getParticipants().get(1).getRobot().getLives());
+        assertEquals(arg2,this.game.getParticipants().get(2).getRobot().getLives());
+    }
+
+
 }
