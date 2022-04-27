@@ -108,6 +108,7 @@ public class MatPanel extends JPanel {
         // the first row adds the icons of the nine cards that the user "drew"
         Object[][] iconsCardInHand = new Icon[1][ProgrammingDeck.NUMBER_OF_CARDS_DRAWN_IN_EACH_ROUND];
         for (int i = 0; i < ProgrammingDeck.NUMBER_OF_CARDS_DRAWN_IN_EACH_ROUND; i++) {
+            System.out.println(game.getUser().getCardsInHand().get(i).toString());
             iconsCardInHand[0][i] = new ImageIcon(CardImageEnum.valueOf(game.getUser().getCardsInHand().get(i).toString()).getImage().getScaledInstance(75, 105, Image.SCALE_DEFAULT));
         }
         this.tableModel = new DefaultTableModel(iconsCardInHand, columnNames);

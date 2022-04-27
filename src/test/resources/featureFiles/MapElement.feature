@@ -192,12 +192,14 @@ Feature:
       | ZOOM_BOT   | 4   | 7   | E           | 5     | 5      | STARTER  |
       | ZOOM_BOT   | 4   | 9   | W           | 3     | 4      | STARTER  |
 
-#    Scenario Outline: Robot pushes another robot
-#      Given there is a game with map "<map_name>"
-#      And a robot "<robot_name>" with position "<row>" "<col>"
-#      And robot has "<orientation>" orientation
-#      When there is a robot in the position first robot moves on
-#      Then fist robot pushes the second robot
-#      Examples:
-#      | robot_name | row | col | orientation | map_name |
-#      | ZOOM_BOT   | 2   | 4   | E           | STARTER  |
+    Scenario Outline: Robot pushes another robot
+      Given there is a game with map "<map_name>"
+      And a robot "<robot_name>" with position "<row>" "<col>"
+      And robot has "<orientation>" orientation
+      When there is a robot in the position first robot moves on
+      Then fist robot pushes the second robot
+      Examples:
+      | robot_name | row | col | orientation | map_name |
+      | ZOOM_BOT   | 4   | 0   | E           | STARTER  |
+      | ZOOM_BOT   | 2   | 1   | E           | STARTER  |
+      | ZOOM_BOT   | 3   | 5   | W           | STARTER  |

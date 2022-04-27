@@ -1,10 +1,10 @@
 package model;
 
+import content.OrientationEnum;
 import content.RobotNameEnum;
 import gui.game.GamePanel;
 import lombok.Data;
 import model.game.Room;
-import model.game.board.map.Collision;
 import model.game.board.map.GameMap;
 import model.game.board.map.Position;
 import model.game.board.map.element.*;
@@ -44,34 +44,35 @@ public class Game {
     }
 
     public static boolean validateMovement(Robot r, int row, int col) {
-
+        boolean flag = false;
+        if (r.getPosition().getRow() == 2) {
+            flag = true;
+        }
         if (!(row >= 0 && row < gameMap.getHeight() && col >= 0 && col < gameMap.getWidth())) {
             r.takeDamage(5);
             return false;
         }
-
         Tile tile = gameMap.getTileWithPosition(r.getPosition());
-//        if (tile instanceof )
-
         if (tile instanceof Wall) { // current position is a wall
+            if (flag) System.out.println("wall current position?????");
             return !((Wall) tile).getOrientation().equals(r.getOrientation());
         }
         tile = gameMap.getTileWithPosition(new Position(row, col));
 
         if (tile instanceof Wall) {  // next position is wall
-            return !((Wall) tile).getOrientation().getOpposite().equals(r.getOrientation());
+            OrientationEnum tileOrientation = ((Wall) tile).getOrientation();
+            if (flag) {
+                System.out.println("wall next position?????");
+                System.out.println("tileOrientation: " + tileOrientation);
+                System.out.println("left orientation: " + r.getOrientation().getLeft());
+                System.out.println("right orientation: " + r.getOrientation().getRight());
+            }
+            return (tileOrientation.equals(r.getOrientation().getLeft()) || tileOrientation.equals(r.getOrientation().getRight()))
+                    || (tileOrientation.equals(r.getOrientation()));
         }
         return true;
     }
 
-//    private static Robot robotAt(int row, int col) {
-//        for (Player p : participants) {
-//            if (p.getRobot().getPosition().getRow() == row && p.getRobot().getPosition().getCol() == col) {
-//                return p.getRobot();
-//            }
-//        }
-//        return null;
-//    }
 
     public ArrayList<Player> getParticipants() {
         return participants;
@@ -99,12 +100,10 @@ public class Game {
         this.user = user;
         this.gameMap = gameMap;
         this.currentRoundNum = 1;
-
         this.initParticipants(roomInfoResponse);
         // generate initial positions for all robots, only when the user is a room owner
         if (user.getName().equals(roomInfoResponse.getString(RoomController.RESPONSE_ROOM_OWNER)))
             this.generateRandomPositionsForAllParticipants();
-        // give User different color
         this.assignColorToParticipants();
     }
 
@@ -190,59 +189,6 @@ public class Game {
         }
     }
 
-
-    public void reboot(Robot r1) {
-        r1.setLives(5);
-        // the gameMap is null, so in order to test our functions is going to remain commented
-        if (this.gameMap != null)
-            r1.setInitialPosition(this.gameMap.getARandomRebootPoint().getPosition());
-    }
-
-    public void robotTakeDamage(Robot r, int damage) {
-        if (!r.takeDamage(damage)) {
-            this.reboot(r);
-        }
-    }
-
-
-    // TODO:
-    // Prototype about how collisions will work
-    private void checkCollision(Player p1) {
-        Position pos = p1.getRobot().getPosition();
-
-        for (Tile[] tileArray : gameMap.getContent()) {
-            for (Tile tile : tileArray) {
-                if (tile.getPosition().equals(pos)) {
-                    //do some stuff
-                    Collision collision = new Collision();
-                    switch (collision.checkCollision(tile)) {
-                        case 1:
-                            // WallNorthLaser laser = (WallNorthLaser) tile ;
-                            robotTakeDamage(p1.getRobot(), 1);
-                            break;
-                    }
-                }
-            }
-        }
-    }
-
-    // this function is a test from the one above
-    public void checkCollisionTemporary(Robot r, Tile tile) {
-        Position pos = r.getPosition();
-        Collision collision = new Collision();
-        if (tile.getPosition().equals(r.getPosition())) {
-           int collisionNumber = (collision.checkCollision(tile));
-            switch (collisionNumber) {
-                case 1: // laser, static gear
-                    ((Obstacle) tile).robotInteraction(r);
-                    break;
-                case 3:
-                    // this.currentPlayer.resetCheckpoints();
-                    this.reboot(r);
-                    break;
-            }
-        }
-    }
     public static Robot getRobotAtPosition(Position newPos) {
         for (Player player : participants) {
             if (player.getRobot().getPosition().equals(newPos)) {
@@ -252,14 +198,13 @@ public class Game {
         return null;
     }
 
+
     public void setParticipants(ArrayList<Player> orderOfPlayers) {
         participants = orderOfPlayers;
     }
 
-//    public boolean validMovement(Robot r, Position newPos) {
-//        switch (gameMap.getContent()[r.getPosition().getRow()][r.getPosition().getCol()].getType()) {
-//            case WallWest:
-//                if (r.getOrientation()) {
-//        }
-//    }
+    public void addParticipant(Player player) {
+        participants.add(player);
+    }
+
 }

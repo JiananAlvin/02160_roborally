@@ -100,16 +100,6 @@ public class MapElementStepsDefinition {
 
     //--------------------------------------------------------------------------------------------
 
-    @When("the robot lives are reduced {string} points of damage by the game")
-    public void theRobotLivesAreReducedPointsOfDamageByTheGame(String arg0) throws IOException {
-        this.game = new Game();
-//        this.game.setGameMap(new GameMap(MapNameEnum.STARTER));
-//        ArrayList<RebootPoint> rebootPoints = new ArrayList<>();
-//        rebootPoints.add(new RebootPoint(1, 1));
-//        this.game.getGameMap().setRebootPoints(rebootPoints);
-        this.game.setGameMap(new GameMap(MapNameEnum.STARTER));
-        this.game.robotTakeDamage(this.robot, Integer.parseInt(arg0));
-    }
 
     @Then("the robot now has {string} lives")
     public void the_robot_has_lives(String lives) {
@@ -132,6 +122,7 @@ public class MapElementStepsDefinition {
         this.robot = new Robot(RobotNameEnum.valueOf(arg0));
         this.robot.setInitialPosition(Integer.parseInt(arg1), Integer.parseInt(arg2));
         this.initialRobotPosition = this.robot.getPosition();
+        this.game.addParticipant(new Player("test1", this.robot));
 
         if(this.game.getGameMap()!=null) {
             this.tile = this.game.getGameMap().getTileWithPosition(this.robot.getPosition());
@@ -279,15 +270,6 @@ public class MapElementStepsDefinition {
         }
     }
 
-    @When("robot lands on an obstacle status is true")
-    public void robotLandsOnAnObstacleStatusIsTrue() {
-        this.game.checkCollisionTemporary(this.robot, this.tile);
-    }
-
-//    @Then("the robot now has {int} lives")
-//    public void theRobotNowHasLives(int arg0) {
-//        assertEquals(arg0, this.robot.getLives());
-//    }
 
 
     //--------------------------------------------------------------------------------------------
@@ -302,8 +284,6 @@ public class MapElementStepsDefinition {
 //        Move according to the orientation
         Card actionCard = new CardMove1();
         actionCard.actsOn(this.robot);
-//        Figure out what is this
-        this.game.checkCollisionTemporary(this.robot, this.tile); // change this later
     }
 
 
@@ -364,24 +344,26 @@ public class MapElementStepsDefinition {
     public void thereIsARobotInThePositionFirstRobotMovesOn() {
         Position newPos = Movement.calculateNewPosition(this.robot.getOrientation(), this.robot.getPosition(),1);
         this.robot1 = new Robot("TEST", newPos.getRow(),newPos.getCol());
-//        System.out.println(this.robot1.getPosition());
+        this.game.addParticipant(new Player("test1", this.robot1));
         Card actionCard = new CardMove1();
         actionCard.actsOn(this.robot);
-        System.out.println(this.robot.getPosition());
         this.initialRobot2Position = newPos;
     }
 
     @Then("fist robot pushes the second robot")
     public void fistRobotPushesTheSecondRobot() {
-        assertEquals(this.robot.getPosition(), initialRobot2Position);
-        System.out.println("Robot2 position: " + this.robot1.getPosition());
-        assertEquals(this.robot1.getPosition(), Movement.calculateNewPosition(this.robot.getOrientation(),this.robot1.getPosition(), 1));
-
+        assertEquals(this.robot.getPosition(), this.initialRobot2Position);
+        assertEquals(this.robot1.getPosition(), Movement.calculateNewPosition(this.robot.getOrientation(),initialRobot2Position, 1));
     }
 
     @Then("robot dies")
     public void robotDies() {
         assertEquals(this.robot.getCheckpoints().size(), 0);
         assertEquals(this.robot.getLives(), 5);
+    }
+
+    @When("the robot lives are reduced {string} points of damage by the game")
+    public void theRobotLivesAreReducedPointsOfDamageByTheGame(String arg0) {
+        this.robot.takeDamage(Integer.parseInt(arg0));
     }
 }

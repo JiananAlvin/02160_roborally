@@ -15,13 +15,6 @@ public class RobotController extends ServerConnection {
         return this.getResponse();
     }
 
-    public JSONObject updateDirection(String username, String dir) {
-        this.setPath("/updateRobotDirection/" + username + "/" + dir);
-        this.setMethod("PUT");
-        this.connect();
-        return this.getResponse();
-    }
-
     public JSONObject getRobotInfo(String username) {
         this.setPath("/getRobotInfo/" + username);
         this.setMethod("GET");
