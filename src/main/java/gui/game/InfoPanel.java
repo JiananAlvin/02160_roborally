@@ -66,18 +66,19 @@ public class InfoPanel extends JPanel {
                 "the incoming activation phase. You\n" +
                 "have only 30 seconds to sort the\n " +
                 "following 9 cards by dragging and\n" +
-                "dropping card headers. The cards placed\n" +
-                "in the first 5 Registers (green) will\n" +
-                "act on your robot in order. The\n" +
-                "remaining 4 cards (leaving in red area)\n"+
-                "will not be used in this round. Think\n"+
-                "and act fast, paying attention on the\n" +
+                "dropping card headers. The cards\n" +
+                "placed in the first 5 Registers\n" +
+                "(green) will act on your robot in\n" +
+                " order. The remaining 4 cards\n"+
+                "(leaving in red area) will not be\n"+
+                "used in this round. Think and act\n" +
+                "fast, paying attention on the\n" +
                 "remaining time!", 13, 50, 3);
         this.taInstructions.setBackground(Color.ORANGE);
         this.taInstructions.setFont(new Font("Calibri", Font.PLAIN, 15));
         this.logArea.setBounds(475, 0, 250, 300);
         this.lblRules.setBounds(550, 320, 250, 20);
-        this.taInstructions.setBounds(475, 320, 250, 300);
+        this.taInstructions.setBounds(475, 340, 250, 300);
         this.add(this.logArea);
         this.add(this.lblRules);
         this.add(this.taInstructions);

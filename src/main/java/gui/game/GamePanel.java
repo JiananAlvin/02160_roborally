@@ -1,8 +1,9 @@
 package gui.game;
 
-import content.Application;
+import content.App;
 import content.MapNameEnum;
 import content.RobotNameEnum;
+import lombok.Data;
 import lombok.SneakyThrows;
 import model.Game;
 import model.game.Room;
@@ -12,6 +13,7 @@ import model.game.board.map.element.Robot;
 import model.game.board.mat.ProgrammingDeck;
 import model.game.board.mat.RegisterArea;
 import model.game.card.Card;
+import model.game.proxy.PhaseManager;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import server.controller.ProgrammingRecordController;
@@ -36,6 +38,8 @@ import java.util.ArrayList;
  * |       MatPanel       |
  * |______________________|
  */
+
+@Data
 public class GamePanel extends JPanel {
 
     private BoardPanel boardPanel;
@@ -45,6 +49,7 @@ public class GamePanel extends JPanel {
     private Timer programmingTimer;
     private Timer activationPhaseTimer;
     public static final int MAX_PROGRAMMING_TIME = 10;
+    public static final int ACTIVATION_PHASE_TIME = 2000;
 
     public GamePanel(Game game) {
         super(true);
@@ -154,7 +159,7 @@ public class GamePanel extends JPanel {
 
     //TODO
     private Timer invokeActivationPhaseTimer(Game game) {
-        return new Timer(1000, new ActionListener() {
+        return new Timer(ACTIVATION_PHASE_TIME, new ActionListener() {
             @SneakyThrows
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -162,6 +167,7 @@ public class GamePanel extends JPanel {
                 int registerIndex = game.getCurrentRegisterNum();
                 int currenPlayerIndex = game.getCurrentPlayerIndex();
                 if (registerIndex == 0 && currenPlayerIndex == 0) {
+                    // the game starts
                     game.setParticipants(game.orderOfPlayers());
                 }
                 Player currentPlayer = game.getParticipants().get(currenPlayerIndex);
@@ -170,29 +176,45 @@ public class GamePanel extends JPanel {
                 boardPanel.getBoard()[currentPlayer.getRobot().getPosition().getRow()][currentPlayer.getRobot().getPosition().getCol()].unsetRobot();
 
                 // performing the card and updating the robot Lives and checkpoint tokens of the user
-                currentRegisterCard.actsOn(currentPlayer.getRobot());
-//                game.getUser().getRobot().setLives(registerIndex);
+                // If the Again card is put in the first register, perform nothing(the logic in CardAgain) on the robot.
+                // Otherwise, perform the previous card on the robot.
+                System.out.println(currentRegisterCard.toString());
+                if ((currentRegisterCard.toString()).equals("CardAgain")) {
+                    if (registerIndex != 0)
+                        currentPlayer.getRegisterArea().getCard(registerIndex - 1).actsOn(currentPlayer.getRobot());
+                } else {
+                    currentRegisterCard.actsOn(currentPlayer.getRobot());
+                }
+
                 if ((currentPlayer.getName()).equals(game.getUser().getName())) {
                     infoPanel.addLogToLogPanel("Lives" + currentPlayer.getRobot().getLives(), null);
                     matPanel.getLblRobotLives().setText("Lives: " + currentPlayer.getRobot().getLives());
                     matPanel.getLblCheckpointToken().setText("<html><br/>" + currentPlayer.getObtainedCheckpointTokens().size() + "</html>");
+                    matPanel.getLblDeckCards().setText("Programing Deck: " + game.getUser().getProgrammingDeck().getCards().size());
+                    matPanel.getLblDiscardCards().setText("Discard Pile: " + game.getUser().getDiscardPile().getDiscards().size());
                 }
 
-//                System.out.println(currentRegisterCard);
-//                System.out.println("Acted on");
                 boardPanel.getBoard()[currentPlayer.getRobot().getPosition().getRow()][currentPlayer.getRobot().getPosition().getCol()].setRobot(currentPlayer.getRobot().getOrientation(), currentPlayer);
                 boardPanel.repaint();
 
-                infoPanel.addLogToLogPanel(currentPlayer.getRobot().getName() + ": " + currentPlayer.getRobot().getOrientation().toString(), currentPlayer );
+                infoPanel.addLogToLogPanel(currentPlayer.getRobot().getName() + ": " + currentPlayer.getRobot().getOrientation().toString(), currentPlayer);
                 game.setCurrentPlayerIndex(++currenPlayerIndex);
+
                 if (currenPlayerIndex == game.getParticipants().size()) {
+                    // all players' one register finish
                     game.setCurrentRegisterNum(++registerIndex);
+
                     game.setCurrentPlayerIndex(0);
+
+                    // TODO add something here
+                    infoPanel.addLogToLogPanel("Robots start shooting", null);
+                    PhaseManager.INSTANCE.executeRobotsShooting(game);
+
                 }
                 if (registerIndex == RegisterArea.REGISTER_QUEUE_SIZE) {
+                    // one round finish
                     game.setCurrentRoundNum(++round);
-//                    TODO debug
-                    System.out.println(round);
+                    // TODO debug
                     game.setCurrentRegisterNum(0);
                     activationPhaseTimer.stop();
                     infoPanel.addLogToLogPanel("activation phase done and start programming phase", null);

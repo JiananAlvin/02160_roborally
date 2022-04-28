@@ -192,14 +192,29 @@ Feature:
       | ZOOM_BOT   | 4   | 7   | E           | 5     | 5      | STARTER  |
       | ZOOM_BOT   | 4   | 9   | W           | 3     | 4      | STARTER  |
 
-    Scenario Outline: Robot pushes another robot
-      Given there is a game with map "<map_name>"
-      And a robot "<robot_name>" with position "<row>" "<col>"
-      And robot has "<orientation>" orientation
-      When there is a robot in the position first robot moves on
-      Then fist robot pushes the second robot
-      Examples:
+  Scenario Outline: Robot pushes another robot
+    Given there is a game with map "<map_name>"
+    And a robot "<robot_name>" with position "<row>" "<col>"
+    And robot has "<orientation>" orientation
+    When there is a robot in the position first robot moves on
+    Then fist robot pushes the second robot
+    Examples:
       | robot_name | row | col | orientation | map_name |
       | ZOOM_BOT   | 4   | 0   | E           | STARTER  |
       | ZOOM_BOT   | 2   | 1   | E           | STARTER  |
       | ZOOM_BOT   | 3   | 5   | W           | STARTER  |
+
+
+  Scenario Outline: Robot shoots a laser at another robot
+    Given there is a game with map "<map_name>"
+    And a robot1 "<robot_name>" with position <row> <col> and orientation "<orientation>" and robot2 "<robot_name2>" with position <row2> <col2> orientation "<orientation2>" and robot3 "<robot_name3>" with position <row3> <col3> orientation "<orientation3>"
+    When shooting phase starts
+    Then robot1 has <robot1_lives> and robot2 has <robot2_lives> and robot3 has <robot3_lives>
+    Examples:
+      | map_name | robot_name | row | col | orientation | robot_name2 | row2 | col2 | orientation2 | robot_name3 | row3 | col3 | orientation3 | robot1_lives | robot2_lives | robot3_lives |
+#      There is not a wall between robot1 robot2
+      | STARTER  | ZOOM_BOT   | 6   | 0   | E           | HAMMER_BOT  | 6    | 1    | N            | HULK_X90    | 6    | 2    | N            | 5            | 4            | 5            |
+      | STARTER  | ZOOM_BOT   | 6   | 0   | E           | HAMMER_BOT  | 6    | 1    | W            | HULK_X90    | 6    | 2    | W            | 4            | 3            | 5            |
+#      There is a wall between robot1 and robot2
+      | STARTER  | ZOOM_BOT   | 2   | 0   | E           | HAMMER_BOT  | 2    | 2    | W            | HULK_X90    | 2    | 3    | W            | 5            | 4           | 5            |
+      | STARTER  | ZOOM_BOT   | 1   | 1   | S           | HAMMER_BOT  | 2    | 1    | N            | HULK_X90    | 3    | 1    | N            | 5            | 4           | 5            |

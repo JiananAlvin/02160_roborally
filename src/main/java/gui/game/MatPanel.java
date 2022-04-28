@@ -3,11 +3,19 @@ package gui.game;
 import content.*;
 import lombok.Data;
 import model.Game;
+import model.game.Player;
+import model.game.Room;
+import model.game.board.map.GameMap;
+import model.game.board.map.element.Robot;
 import model.game.board.mat.ProgrammingDeck;
+import server.controller.RoomController;
+import server.controller.UserController;
+
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
@@ -26,6 +34,10 @@ public class MatPanel extends JPanel {
     private JLabel lblRobotLives;
     private JLabel lblInfo;
     private JLabel lblCheckpointToken;
+    private JLabel lblDeck;
+    private JLabel lblDiscard;
+    private JLabel lblDeckCards;
+    private JLabel lblDiscardCards;
 
     private boolean dragComplete;
     private int fromRegisterIndex;
@@ -36,14 +48,14 @@ public class MatPanel extends JPanel {
 
     private JLabel lblRound;
     private JLabel lblRegister;
-    private JLabel lblDiscard;
+    private JLabel lblDiscardPile;
     private JLabel lblRegisters;
     private JLabel lblTimer;
 
 
     public MatPanel(Game game) {
         // adding the user's information
-        Icon iconRobot = new ImageIcon(RobotImageEnum.valueOf(game.getUser().getRobot().getName()).getImage().getScaledInstance(109, 155, Image.SCALE_DEFAULT));
+        Icon iconRobot = new ImageIcon(RobotImageEnum.valueOf(game.getUser().getRobot().getName()).getImage().getScaledInstance(109, 140, Image.SCALE_DEFAULT));
         this.lblRobot = new JLabel(iconRobot);
         this.lblRobot.setOpaque(true);
         this.lblRobot.setBackground(game.getUser().getPlayerColor());
@@ -60,6 +72,14 @@ public class MatPanel extends JPanel {
         this.lblCheckpointToken.setVerticalTextPosition(JLabel.CENTER);
         this.lblCheckpointToken.setForeground(Color.WHITE);
         this.lblCheckpointToken.setFont(new Font("Default", Font.BOLD, 20));
+        Icon iconDeck = new ImageIcon(new ImageIcon(PATH_TO_DECORATION_ICONS + "deck.png").getImage().getScaledInstance(100, 140, Image.SCALE_DEFAULT));
+        this.lblDeck = new JLabel(iconDeck);
+        Icon iconDiscardPile = new ImageIcon(new ImageIcon(PATH_TO_DECORATION_ICONS + "discard.png").getImage().getScaledInstance(100, 140, Image.SCALE_DEFAULT));
+        this.lblDiscardPile = new JLabel(iconDiscardPile);
+        this.lblDeckCards = new JLabel("Programing Deck: " + game.getUser().getProgrammingDeck().getCards().size());
+        this.lblDiscardCards = new JLabel("Discard Pile: " + game.getUser().getDiscardPile().getDiscards().size());
+        this.lblDeckCards.setFont(new Font("Default", Font.BOLD, 13));
+        this.lblDiscardCards.setFont(new Font("Default", Font.BOLD, 13));
         this.lblRound = new JLabel("Round: " + game.getCurrentRoundNum());
         this.lblRound.setFont(new Font("Calibri", Font.BOLD, 20));
 
@@ -81,6 +101,10 @@ public class MatPanel extends JPanel {
         this.lblRobotLives.setBounds(20, 160, 60, 20);
         this.lblInfo.setBounds(137, 20, 200, 40);
         this.lblCheckpointToken.setBounds(157, 70, 90, 90);
+        this.lblDeck.setBounds(340, 50, 100, 140);
+        this.lblDiscardPile.setBounds(490, 50, 100, 140);
+        this.lblDeckCards.setBounds(340, 5, 200, 50);
+        this.lblDiscardCards.setBounds(490, 5, 200, 50);
         this.lblRound.setBounds(700, 0, 200, 50);
         this.scrollPane.setBounds(700, 40, 675, 130);
         this.lblRegister.setBounds(702, 170, 500, 20);
@@ -88,8 +112,12 @@ public class MatPanel extends JPanel {
         this.lblTimer.setBounds(1400, 40, 117, 127);
         this.add(this.lblRobot);
         this.add(this.lblRobotLives);
-        this.add(lblInfo);
-        this.add(lblCheckpointToken);
+        this.add(this.lblInfo);
+        this.add(this.lblCheckpointToken);
+        this.add(this.lblDeck);
+        this.add(this.lblDiscardPile);
+        this.add(this.lblDeckCards);
+        this.add(this.lblDiscardCards);
         this.add(this.lblRound);
         this.add(this.scrollPane);
         this.add(this.lblRegister);
@@ -110,7 +138,6 @@ public class MatPanel extends JPanel {
         // the first row adds the icons of the nine cards that the user "drew"
         Object[][] iconsCardInHand = new Icon[1][ProgrammingDeck.NUMBER_OF_CARDS_DRAWN_IN_EACH_ROUND];
         for (int i = 0; i < ProgrammingDeck.NUMBER_OF_CARDS_DRAWN_IN_EACH_ROUND; i++) {
-            System.out.println(game.getUser().getCardsInHand().get(i).toString());
             iconsCardInHand[0][i] = new ImageIcon(CardImageEnum.valueOf(game.getUser().getCardsInHand().get(i).toString()).getImage().getScaledInstance(75, 105, Image.SCALE_DEFAULT));
         }
         this.tableModel = new DefaultTableModel(iconsCardInHand, columnNames);
@@ -177,7 +204,8 @@ public class MatPanel extends JPanel {
         public void columnSelectionChanged(ListSelectionEvent e) {
         }
     }
-//    public static void main(String[] args) throws IOException {
+
+//    public static void main(String[] args) throws IOException, IOException {
 //        Player user = new Player("SpongeBob", new Robot(RobotNameEnum.valueOf("SQUASH_BOT")));
 //        UserController userController = new UserController();
 //        userController.createUser("SpongeBob");
@@ -186,15 +214,14 @@ public class MatPanel extends JPanel {
 //        userController.chooseRobot(user.getName(), user.getRobot().getName());
 //        userController.chooseRobot("PatrickStar", "ZOOM_BOT");
 //        RoomController roomController = new RoomController();
-//        System.out.println(roomController.createRoom(user.getName(), "STARTER"));
 //        int roomNumber = roomController.createRoom(user.getName(), "STARTER").getInt("room_number");
 //        userController.joinRoom("PatrickStar", roomNumber);
 //        GameMap gameMap = new GameMap(MapNameEnum.valueOf("STARTER"));
 //        Room room = new Room(roomNumber);
 //        Game game = new Game();
-//        game.init(user, room, gameMap, roomController.roomInfo(roomNumber));
+//        game.init("SpongeBob", room, gameMap, roomController.roomInfo(roomNumber));
 //
-//        JFrame frame = new JFrame(Application.APP_TITLE);
+//        JFrame frame = new JFrame(App.APP_TITLE);
 //        frame.setSize(1650, 1080);
 //        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 //        MatPanel MatPanel = new MatPanel(game);

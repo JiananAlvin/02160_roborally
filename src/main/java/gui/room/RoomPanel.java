@@ -1,5 +1,6 @@
 package gui.room;
 
+import gui.login.LoginPanel;
 import gui.waiting.WaitingPanel;
 import server.controller.RoomController;
 import server.controller.UserController;
@@ -20,6 +21,7 @@ public class RoomPanel<IntField> extends JPanel {
         JLabel lblRoomNumber = new JLabel("Room number");
         this.roomNumber = new JTextField();
         JToggleButton btJoinRoom = new JToggleButton("Join room");
+        JToggleButton btBack = new JToggleButton("Back");
         this.setLayout(null);
         lblMapName.setBounds(200, 50, 70, 20);
         this.jcbMapName.setBounds(200, 78, 190, 28);
@@ -27,12 +29,14 @@ public class RoomPanel<IntField> extends JPanel {
         lblRoomNumber.setBounds(200, 200, 100, 20);
         this.roomNumber.setBounds(200, 228, 190, 28);
         btJoinRoom.setBounds(450, 228, 150, 30);
+        btBack.setBounds(620, 228, 150, 30);
         this.add(lblMapName);
         this.add(this.jcbMapName);
         this.add(btCreateRoom);
         this.add(lblRoomNumber);
         this.add(this.roomNumber);
         this.add(btJoinRoom);
+        this.add(btBack);
 
         // adding listeners for "Create room" and "Join room" buttons
         btCreateRoom.addActionListener(e -> {
@@ -64,6 +68,15 @@ public class RoomPanel<IntField> extends JPanel {
             } else if (userController.getResponse().get("status").equals(400)) {
                 JOptionPane.showMessageDialog(frame, "Room does not exist.", "Error", JOptionPane.ERROR_MESSAGE);
             }
+        });
+
+        btBack.addActionListener(e -> {
+            // deleting the user in database and returning to LoginPanel
+            UserController userController = new UserController();
+            userController.deleteUser(userName);
+            frame.getContentPane().removeAll();
+            frame.getContentPane().add(new LoginPanel(frame));
+            frame.setVisible(true);
         });
     }
 

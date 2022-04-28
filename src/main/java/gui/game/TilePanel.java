@@ -26,7 +26,6 @@ public class TilePanel extends JPanel {
 
     public TilePanel(Tile tile) {
         super(true);
-        System.out.println(tile.getClass().getSimpleName());
         this.imageTile = tile.getTileImageEnum().getImage();
         this.tile = tile;
         setMinimumSize(new Dimension(PIXEL_SIZE, PIXEL_SIZE));

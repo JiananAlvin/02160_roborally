@@ -41,8 +41,6 @@ public class ProgrammingRecordController extends ServerConnection {
     }
 
 //    public static void main(String[] args) {
-//        System.out.println(new ProgrammingRecordController().getProgrammingRecords(100, 1));
-//        System.out.println(new ProgrammingRecordController().createProgrammingRecord("ion", 100, 2, "Move1", "Move1", "Move1", "Move1", "Move1"));
 //    }
 
 }

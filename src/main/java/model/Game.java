@@ -35,8 +35,6 @@ public class Game {
     private int currentRegisterNum;
     private Player winner;
     private int currentPlayerIndex;
-    // TODO delete currentPlayer
-    private Player currentPlayer;
 
     public Game() {
         this.participants = new ArrayList<>();
@@ -73,7 +71,7 @@ public class Game {
     }
 
     public Player getUser() {
-        for (Player participant : participants) {
+        for (Player participant : this.participants) {
             Player user = new Player();
             if (userName.equals(participant.getName())) {
                 return participant;
@@ -82,24 +80,12 @@ public class Game {
         return null;
     }
 
-    public ArrayList<Player> getParticipants() {
-        return participants;
-    }
-
-    public static GameMap getGameMap() {
-        return gameMap;
-    }
-
-    public void setGameMap(GameMap gameMap) {
-        this.gameMap = gameMap;
-    }
-
     /**
      * This method is used to init the whole game when the game starts.
      * For the room owner, the game starts only when room owner starts it.
      *
      * @param room
-     * @param user
+     * @param userName
      * @param gameMap
      */
     public void init(String userName, Room room, GameMap gameMap, JSONObject roomInfoResponse) {
@@ -205,13 +191,19 @@ public class Game {
         return null;
     }
 
-
     public void setParticipants(ArrayList<Player> orderOfPlayers) {
         participants = orderOfPlayers;
     }
 
-    public void addParticipant(Player player) {
-        participants.add(player);
+    public ArrayList<Player> getParticipants() {
+        return this.participants;
     }
 
+    public static GameMap getGameMap() {
+        return gameMap;
+    }
+
+    public void setGameMap(GameMap map) {
+        this.gameMap = map;
+    }
 }

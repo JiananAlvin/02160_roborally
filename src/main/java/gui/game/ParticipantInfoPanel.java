@@ -41,7 +41,6 @@ public class ParticipantInfoPanel extends JPanel {
         this.setLayout(null);
 
         Icon iconRobot = new ImageIcon(new ImageIcon("src/main/resources/images/robots/" + participant.getRobot().getName() + ".png").getImage().getScaledInstance(100, 110, Image.SCALE_DEFAULT));
-        System.out.println("(ParticipantsPanel)src/main/resources/images/robots/" + participant.getRobot().getName() + ".png");
         this.lblRobot = new JLabel();
         this.lblRobot.setIcon(iconRobot);
         this.lblRobot.setBorder(BorderFactory.createLineBorder(Color.gray));

@@ -14,7 +14,6 @@ public class CardMove1 extends Card {
         // as a result the new position that the robot should have after playing those cards
         Position newPos = Movement.calculateNewPosition(robotOrientation, currentPos, 1);
         robot.tryMove(newPos);
-
         return this;
     }
 }

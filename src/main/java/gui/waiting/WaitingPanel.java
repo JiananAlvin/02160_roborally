@@ -31,33 +31,30 @@ import static java.lang.Integer.parseUnsignedInt;
 
 public class WaitingPanel extends JPanel {
 
-    private JLabel lblRoomNumber;
     private JScrollPane scrollPane;
     private DefaultTableModel tableModel;
     private JTable tabParticipants;
     private DefaultTableCellRenderer centerRenderer;
-    private JToggleButton btStart;
-    private JToggleButton btQuit;
-    private JLabel lblTip;
     private Timer timer;
 
-
     public WaitingPanel(String roomNumberStr, String signal, JFrame frame, String userName) {
+        JToggleButton btQuit;
+        JLabel lblRoomNumber;
         if (Objects.equals(signal, "owner")) {
-            this.lblRoomNumber = new JLabel("Room Number: " + roomNumberStr);
-            this.lblRoomNumber.setFont(new Font("Calibri", Font.BOLD, 20));
-            this.btStart = new JToggleButton("Start");
-            this.btQuit = new JToggleButton("Quit");
+            lblRoomNumber = new JLabel("Room Number: " + roomNumberStr);
+            lblRoomNumber.setFont(new Font("Calibri", Font.BOLD, 20));
+            JToggleButton btStart = new JToggleButton("Start");
+            btQuit = new JToggleButton("Quit");
             loadParticipantsTable(userName, roomNumberStr, frame, signal);
 
             this.setLayout(null);
-            this.lblRoomNumber.setBounds(100, 28, 780, 20);
-            this.btStart.setBounds(100, 270, 80, 30);
-            this.btQuit.setBounds(300, 270, 80, 30);
-            this.add(this.lblRoomNumber);
-            this.add(this.btStart);
-            this.add(this.btQuit);
-            this.btQuit.addActionListener(new ActionListener() {
+            lblRoomNumber.setBounds(100, 28, 780, 20);
+            btStart.setBounds(100, 270, 80, 30);
+            btQuit.setBounds(300, 270, 80, 30);
+            this.add(lblRoomNumber);
+            this.add(btStart);
+            this.add(btQuit);
+            btQuit.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent arg0) {
                     // delete room and return to the RoomPanel
@@ -67,7 +64,7 @@ public class WaitingPanel extends JPanel {
                 }
             });
 
-            this.btStart.addActionListener(new ActionListener() {
+            btStart.addActionListener(new ActionListener() {
                 @SneakyThrows
                 @Override
                 public void actionPerformed(ActionEvent arg0) {
@@ -77,21 +74,21 @@ public class WaitingPanel extends JPanel {
                 }
             });
         } else {
-            this.lblRoomNumber = new JLabel("Room Number: " + roomNumberStr);
-            this.lblRoomNumber.setFont(new Font("Calibri", Font.BOLD, 20));
-            this.btQuit = new JToggleButton("Quit");
-            this.lblTip = new JLabel("Please wait for the owner to start the game.");
-            this.lblTip.setFont(new Font("Calibri", Font.PLAIN, 15));
+            lblRoomNumber = new JLabel("Room Number: " + roomNumberStr);
+            lblRoomNumber.setFont(new Font("Calibri", Font.BOLD, 20));
+            btQuit = new JToggleButton("Quit");
+            JLabel lblTip = new JLabel("Please wait for the owner to start the game.");
+            lblTip.setFont(new Font("Calibri", Font.PLAIN, 15));
             this.loadParticipantsTable(userName, roomNumberStr, frame, signal);
             this.setLayout(null);
-            this.lblRoomNumber.setBounds(100, 28, 780, 20);
-            this.btQuit.setBounds(100, 270, 80, 30);
-            this.lblTip.setBounds(300, 275, 580, 30);
-            this.add(this.lblRoomNumber);
-            this.add(this.btQuit);
-            this.add(this.lblTip);
+            lblRoomNumber.setBounds(100, 28, 780, 20);
+            btQuit.setBounds(100, 270, 80, 30);
+            lblTip.setBounds(300, 275, 580, 30);
+            this.add(lblRoomNumber);
+            this.add(btQuit);
+            this.add(lblTip);
 
-            this.btQuit.addActionListener(new ActionListener() {
+            btQuit.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent arg0) {
                     // exit room and return to the RoomPanel
@@ -104,9 +101,7 @@ public class WaitingPanel extends JPanel {
                 }
             });
         }
-
     }
-
 
     private void loadParticipantsTable(String userName, String roomNumberStr, JFrame frame, String signal) {
 
@@ -203,7 +198,4 @@ public class WaitingPanel extends JPanel {
             }
         });
     }
-
-
-
 }

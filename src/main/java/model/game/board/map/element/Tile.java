@@ -10,7 +10,6 @@ public abstract class Tile {
 
     private Position position;
     protected TileImageEnum tileImageEnum;
-    private OrientationEnum orientation;
 
     public Tile() {
         this.position = new Position();
