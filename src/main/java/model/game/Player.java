@@ -22,7 +22,7 @@ public class Player {
     private DiscardPile discardPile;
     private RegisterArea registerArea;
     private ArrayList<Card> cardsInHand;
-    private Color userColor;
+    private Color playerColor;
 
 
 

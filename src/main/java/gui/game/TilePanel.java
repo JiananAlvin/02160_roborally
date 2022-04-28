@@ -37,7 +37,7 @@ public class TilePanel extends JPanel {
     public void setRobot(OrientationEnum direction, Player player) {
         this.containsRobot = true;
         this.direction = direction;
-        this.backgroundColor = player.getUserColor();
+        this.backgroundColor = player.getPlayerColor();
         try {
             this.imageRobot = resize(RobotImageEnum.valueOf(player.getRobot().getName()).getImage(), PIXEL_SIZE, PIXEL_SIZE);
         } catch (IOException e) {

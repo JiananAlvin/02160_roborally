@@ -27,15 +27,14 @@ public class Game {
      * @ int currentRegisterNum: the nth register that is activated currently
      * @ Player currentPlayer: whose turn of activation
      */
-    private Player user;
+    private String userName;
     private static ArrayList<Player> participants;
     private Room room;
     private static GameMap gameMap;
     private int currentRoundNum;
     private int currentRegisterNum;
-    private boolean programmingPhaseOver;
     private Player winner;
-    private int currentPlayerOrderedIndex;
+    private int currentPlayerIndex;
     // TODO delete currentPlayer
     private Player currentPlayer;
 
@@ -73,11 +72,19 @@ public class Game {
         return true;
     }
 
+    public Player getUser() {
+        for (Player participant : participants) {
+            Player user = new Player();
+            if (userName.equals(participant.getName())) {
+                return participant;
+            }
+        }
+        return null;
+    }
 
     public ArrayList<Player> getParticipants() {
         return participants;
     }
-
 
     public static GameMap getGameMap() {
         return gameMap;
@@ -95,14 +102,14 @@ public class Game {
      * @param user
      * @param gameMap
      */
-    public void init(Player user, Room room, GameMap gameMap, JSONObject roomInfoResponse) {
+    public void init(String userName, Room room, GameMap gameMap, JSONObject roomInfoResponse) {
         this.room = room;
-        this.user = user;
+        this.userName = userName;
         this.gameMap = gameMap;
         this.currentRoundNum = 1;
         this.initParticipants(roomInfoResponse);
         // generate initial positions for all robots, only when the user is a room owner
-        if (user.getName().equals(roomInfoResponse.getString(RoomController.RESPONSE_ROOM_OWNER)))
+        if (userName.equals(roomInfoResponse.getString(RoomController.RESPONSE_ROOM_OWNER)))
             this.generateRandomPositionsForAllParticipants();
         this.assignColorToParticipants();
     }
@@ -185,7 +192,7 @@ public class Game {
         });
         int i = 0;
         for (Player player : participants) {
-            player.setUserColor(GamePanel.userColors[i++]);
+            player.setPlayerColor(GamePanel.userColors[i++]);
         }
     }
 

@@ -44,7 +44,7 @@ public class GamePanel extends JPanel {
     public static final Color[] userColors = new Color[]{Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.CYAN, Color.MAGENTA};
     private Timer programmingTimer;
     private Timer activationPhaseTimer;
-    public static final int MAX_PROGRAMMING_TIME = 30;
+    public static final int MAX_PROGRAMMING_TIME = 10;
 
     public GamePanel(Game game) {
         super(true);
@@ -69,6 +69,7 @@ public class GamePanel extends JPanel {
         if (this.matPanel != null)
             this.remove(matPanel);
         this.matPanel = new MatPanel(game);
+        //this.matPanel.getLblRobot().setBackground(game.getUser().getPlayerColor());
         this.matPanel.setBounds(0, 600, 1650, 500);
         this.add(this.matPanel);
         this.revalidate();
@@ -159,15 +160,23 @@ public class GamePanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 int round = game.getCurrentRoundNum();
                 int registerIndex = game.getCurrentRegisterNum();
-                int currenPlayerIndex = game.getCurrentPlayerOrderedIndex();
+                int currenPlayerIndex = game.getCurrentPlayerIndex();
                 if (registerIndex == 0 && currenPlayerIndex == 0) {
                     game.setParticipants(game.orderOfPlayers());
                 }
                 Player currentPlayer = game.getParticipants().get(currenPlayerIndex);
+
                 Card currentRegisterCard = currentPlayer.getRegisterArea().getCard(registerIndex);
                 boardPanel.getBoard()[currentPlayer.getRobot().getPosition().getRow()][currentPlayer.getRobot().getPosition().getCol()].unsetRobot();
 
+                // performing the card and updating the robot Lives and checkpoint tokens of the user
                 currentRegisterCard.actsOn(currentPlayer.getRobot());
+//                game.getUser().getRobot().setLives(registerIndex);
+                if ((currentPlayer.getName()).equals(game.getUser().getName())) {
+                    infoPanel.addLogToLogPanel("Lives" + currentPlayer.getRobot().getLives(), null);
+                    matPanel.getLblRobotLives().setText("Lives: " + currentPlayer.getRobot().getLives());
+                    matPanel.getLblCheckpointToken().setText("<html><br/>" + currentPlayer.getObtainedCheckpointTokens().size() + "</html>");
+                }
 
 //                System.out.println(currentRegisterCard);
 //                System.out.println("Acted on");
@@ -175,10 +184,10 @@ public class GamePanel extends JPanel {
                 boardPanel.repaint();
 
                 infoPanel.addLogToLogPanel(currentPlayer.getRobot().getName() + ": " + currentPlayer.getRobot().getOrientation().toString(), currentPlayer );
-                game.setCurrentPlayerOrderedIndex(++currenPlayerIndex);
+                game.setCurrentPlayerIndex(++currenPlayerIndex);
                 if (currenPlayerIndex == game.getParticipants().size()) {
                     game.setCurrentRegisterNum(++registerIndex);
-                    game.setCurrentPlayerOrderedIndex(0);
+                    game.setCurrentPlayerIndex(0);
                 }
                 if (registerIndex == RegisterArea.REGISTER_QUEUE_SIZE) {
                     game.setCurrentRoundNum(++round);
@@ -225,37 +234,35 @@ public class GamePanel extends JPanel {
         return (Card) clz.getDeclaredConstructor().newInstance();
     }
 
-    @SneakyThrows
-    public static void main(String[] args) {
-        Player user = new Player("SpongeBob", new Robot(RobotNameEnum.SQUASH_BOT));
-        UserController userController = new UserController();
-        userController.deleteUser("SpongeBob");
-        userController.createUser("SpongeBob");
-//        userController.createUser("PatrickStar");
-        //RobotController robotController = new RobotController();
-        userController.chooseRobot(user.getName(), user.getRobot().getName());
-//        userController.chooseRobot("PatrickStar", "ZOOM_BOT");
-        RoomController roomController = new RoomController();
-        System.out.println(roomController.createRoom(user.getName(), "BEGINNER"));
-        int roomNumber = roomController.createRoom(user.getName(), "BEGINNER").getInt("room_number");
-//        userController.joinRoom("PatrickStar", roomNumber);
-        GameMap gameMap = new GameMap(MapNameEnum.ADVANCED);
-        Room room = new Room(roomNumber);
-        Game game = new Game();
-        game.init(user, room, gameMap, roomController.roomInfo(roomNumber));
-
-        //Schedule a job for the event-dispatching thread:
-        //creating and showing this application's GUI.
-        javax.swing.SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                JFrame frame = new JFrame(Application.APP_TITLE);
-                frame.setSize(1650, 1080);
-                frame.add(new GamePanel(game));
-                frame.setVisible(true);
-//                roomController.deleteRoom(roomNumber);
-            }
-        });
-
-    }
-
+//    @SneakyThrows
+//    public static void main(String[] args) {
+//        Player user = new Player("SpongeBob", new Robot(RobotNameEnum.SQUASH_BOT));
+//        UserController userController = new UserController();
+//        userController.deleteUser("SpongeBob");
+//        userController.createUser("SpongeBob");
+////        userController.createUser("PatrickStar");
+//        //RobotController robotController = new RobotController();
+//        userController.chooseRobot(user.getName(), user.getRobot().getName());
+////        userController.chooseRobot("PatrickStar", "ZOOM_BOT");
+//        RoomController roomController = new RoomController();
+//        System.out.println(roomController.createRoom(user.getName(), "BEGINNER"));
+//        int roomNumber = roomController.createRoom(user.getName(), "BEGINNER").getInt("room_number");
+////        userController.joinRoom("PatrickStar", roomNumber);
+//        GameMap gameMap = new GameMap(MapNameEnum.ADVANCED);
+//        Room room = new Room(roomNumber);
+//        Game game = new Game();
+//        game.init(user, room, gameMap, roomController.roomInfo(roomNumber));
+//
+//        //Schedule a job for the event-dispatching thread:
+//        //creating and showing this application's GUI.
+//        javax.swing.SwingUtilities.invokeLater(new Runnable() {
+//            public void run() {
+//                JFrame frame = new JFrame(Application.APP_TITLE);
+//                frame.setSize(1650, 1080);
+//                frame.add(new GamePanel(game));
+//                frame.setVisible(true);
+////                roomController.deleteRoom(roomNumber);
+//            }
+//        });
+//    }
 }
