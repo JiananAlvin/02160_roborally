@@ -26,11 +26,7 @@ public class RegisterArea {
      * <p> This method converts the arraylist of cards' names to the arraylist of {@code Card} elements that is {@code registers}.
      * @param cardNames the arraylist of names of cards in the 5 finished registers.
      */
-    public void addCard(ArrayList<String> cardNames) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-        for (String cardName : cardNames) {
-            this.registers.add(createCardInstance(cardName));
-        }
-    }
+
 
     /**
      * @param index an integer n
@@ -45,8 +41,9 @@ public class RegisterArea {
     /**
      * A player who is not finished programming must randomly fill the unfinished registers with the programming
      * cards still in his hand.
+     *
      * @param namesOfCardsInRegisters the arraylist of names of cards in the finished registers.
-     * @param namesOfRemainingCards the arraylist of names of cards still in the player's hand.
+     * @param namesOfRemainingCards   the arraylist of names of cards still in the player's hand.
      */
     public void addRandomCard(ArrayList<String> namesOfCardsInRegisters, ArrayList<String> namesOfRemainingCards) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         for (String cardName : namesOfCardsInRegisters) {
@@ -61,6 +58,7 @@ public class RegisterArea {
     /**
      * Each string of card name corresponds to a simple name of card class.
      * <p>This method creates a {@code card} instance corresponding to the passed card name.
+     *
      * @param cardName A string of card name
      * @return the corresponding {@code Card} instance
      */

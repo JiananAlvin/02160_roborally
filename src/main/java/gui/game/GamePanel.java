@@ -13,7 +13,7 @@ import model.game.board.map.element.Robot;
 import model.game.board.mat.ProgrammingDeck;
 import model.game.board.mat.RegisterArea;
 import model.game.card.Card;
-import model.game.proxy.ShootingPhaseManager;
+import model.game.proxy.PhaseManager;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import server.controller.ProgrammingRecordController;
@@ -177,16 +177,18 @@ public class GamePanel extends JPanel {
 
                 boardPanel.getBoard()[currentPlayer.getRobot().getPosition().getRow()][currentPlayer.getRobot().getPosition().getCol()].setRobot(currentPlayer.getRobot().getOrientation(), currentPlayer);
                 boardPanel.repaint();
+
 //                infoPanel.addLogToLogPanel(currentPlayer.getRobot().getName() + ": " + currentPlayer.getRobot().getOrientation().toString(), currentPlayer);
+
                 game.setCurrentPlayerOrderedIndex(++currenPlayerIndex);
                 if (currenPlayerIndex == game.getParticipants().size()) {
                     // all players' one register finish
                     game.setCurrentRegisterNum(++registerIndex);
                     game.setCurrentPlayerOrderedIndex(0);
                     // TODO add something here
-                    infoPanel.addLogToLogPanel("Robots start shooting",null);
-                    ShootingPhaseManager.INSTANCE.setupInstance(game);
-                    ShootingPhaseManager.INSTANCE.executeRobotsShooting(infoPanel);
+                    infoPanel.addLogToLogPanel("Robots start shooting", null);
+
+                    PhaseManager.INSTANCE.executeRobotsShooting(game);
                 }
                 if (registerIndex == RegisterArea.REGISTER_QUEUE_SIZE) {
                     // one round finish

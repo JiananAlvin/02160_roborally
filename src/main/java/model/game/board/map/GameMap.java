@@ -55,11 +55,6 @@ public class GameMap {
         });
     }
 
-    public StartPoint getARandomStartPoint() {
-        int randomSeed = new Random().nextInt(this.startPoints.size());
-        return this.startPoints.get(randomSeed);
-    }
-
     public RebootPoint getARandomRebootPoint() {
         int randomSeed = new Random().nextInt(this.rebootPoints.size());
         return this.rebootPoints.get(randomSeed);

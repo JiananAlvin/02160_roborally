@@ -36,6 +36,8 @@ public class InfoPanel extends JPanel {
 
     private ArrayList<ParticipantInfoPanel> participantsPanels;
     private TextArea logArea;
+    private JLabel lblRules;
+    private TextArea taInstructions;
 
     public InfoPanel(ArrayList<Player> participants, Player user) {
         super(true);
@@ -56,8 +58,30 @@ public class InfoPanel extends JPanel {
         // showing game logs on the right side of the ParticipantInfoPanel
         this.logArea = new TextArea("[System Log]:\n Welcome to this game!\n[System Log]:\n The programming phase of 1st rount starts!", 20, 55, TextArea.SCROLLBARS_VERTICAL_ONLY);
         this.logArea.setEditable(false);
+        this.lblRules = new JLabel("Instructions");
+        this.lblRules.setFont(new Font("Calibri", Font.BOLD, 20));
+        this.taInstructions = new TextArea("There are 9 cards in front of you.\n" +
+                "Look at the position of your robot\n" +
+                "and think fast about its moves for\n" +
+                "the incoming activation phase. You\n" +
+                "have only 30 seconds to sort the\n " +
+                "following 9 cards by dragging and\n" +
+                "dropping card headers. The cards placed\n" +
+                "in the first 5 Registers (green) will\n" +
+                "act on your robot in order. The\n" +
+                "remaining 4 cards (leaving in red area)\n"+
+                "will not be used in this round. Think\n"+
+                "and act fast, paying attention on the\n" +
+                "remaining time!", 13, 50, 3);
+        this.taInstructions.setBackground(Color.ORANGE);
+        this.taInstructions.setFont(new Font("Calibri", Font.PLAIN, 15));
         this.logArea.setBounds(475, 0, 250, 300);
+        this.lblRules.setBounds(550, 320, 250, 20);
+        this.taInstructions.setBounds(475, 320, 250, 300);
         this.add(this.logArea);
+        this.add(this.lblRules);
+        this.add(this.taInstructions);
+        this.add(this.lblRules);
     }
 
     public void addLogToLogPanel(String logContent, Player logFrom) {

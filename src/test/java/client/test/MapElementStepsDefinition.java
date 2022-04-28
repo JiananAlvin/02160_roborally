@@ -16,7 +16,7 @@ import model.game.board.map.element.*;
 import model.game.card.Card;
 import model.game.card.programming.*;
 import model.game.card.programming.behaviour.Movement;
-import model.game.proxy.ShootingPhaseManager;
+import model.game.proxy.PhaseManager;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -101,16 +101,6 @@ public class MapElementStepsDefinition {
 
     //--------------------------------------------------------------------------------------------
 
-    @When("the robot lives are reduced {string} points of damage by the game")
-    public void theRobotLivesAreReducedPointsOfDamageByTheGame(String arg0) throws IOException {
-        this.game = new Game();
-//        this.game.setGameMap(new GameMap(MapNameEnum.STARTER));
-//        ArrayList<RebootPoint> rebootPoints = new ArrayList<>();
-//        rebootPoints.add(new RebootPoint(1, 1));
-//        this.game.getGameMap().setRebootPoints(rebootPoints);
-        this.game.setGameMap(new GameMap(MapNameEnum.STARTER));
-        this.game.robotTakeDamage(this.robot, Integer.parseInt(arg0));
-    }
 
     @Then("the robot now has {string} lives")
     public void the_robot_has_lives(String lives) {
@@ -264,7 +254,7 @@ public class MapElementStepsDefinition {
     public void aPositionOnTheMapIndicatingTheObstacle(String xPos, String yPos, String type) {
         switch (type) {
             case "sg":
-                this.tile = new StaticGear(Integer.parseInt(xPos), Integer.parseInt(yPos));
+                this.tile = new OilStain(Integer.parseInt(xPos), Integer.parseInt(yPos));
                 break;
             case "pit":
                 this.tile = new Pit(Integer.parseInt(xPos), Integer.parseInt(yPos));
@@ -282,15 +272,6 @@ public class MapElementStepsDefinition {
         }
     }
 
-    @When("robot lands on an obstacle status is true")
-    public void robotLandsOnAnObstacleStatusIsTrue() {
-        this.game.checkCollisionTemporary(this.robot, this.tile);
-    }
-
-//    @Then("the robot now has {int} lives")
-//    public void theRobotNowHasLives(int arg0) {
-//        assertEquals(arg0, this.robot.getLives());
-//    }
 
 
     //--------------------------------------------------------------------------------------------
@@ -305,8 +286,6 @@ public class MapElementStepsDefinition {
 //        Move according to the orientation
         Card actionCard = new CardMove1();
         actionCard.actsOn(this.robot);
-//        Figure out what is this
-        this.game.checkCollisionTemporary(this.robot, this.tile); // change this later
     }
 
 
@@ -409,8 +388,7 @@ public class MapElementStepsDefinition {
 
     @When("shooting phase starts")
     public void shootingPhaseStarts() {
-        ShootingPhaseManager.INSTANCE.setupInstance(game);
-        ShootingPhaseManager.INSTANCE.executeRobotsShooting();
+        PhaseManager.INSTANCE.executeRobotsShooting(game);
     }
 
     @Then("robot1 has {int} and robot2 has {int} and robot3 has {int}")
@@ -421,4 +399,10 @@ public class MapElementStepsDefinition {
     }
 
 
+//----------------------------------------------------------------
+    @When("the robot lives are reduced {string} points of damage by the game")
+    public void theRobotLivesAreReducedPointsOfDamageByTheGame(String arg0) {
+        this.robot.takeDamage(Integer.parseInt(arg0));
+    }
 }
+

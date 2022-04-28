@@ -10,7 +10,6 @@ import model.game.board.map.element.Robot;
  * 3. Upgrade cards(Not finished)
  */
 public abstract class Card {
-
     public abstract Card actsOn(Robot robot);
 
     @Override

@@ -23,6 +23,7 @@ import server.controller.RobotController;
 import server.controller.RoomController;
 import server.controller.UserController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -251,6 +252,37 @@ public class InitializationStepsDefinition {
         assertFalse(0 == jsonObject1.getInt(RobotController.RESPONSE_ROBOT_XCOORD) && 0 == jsonObject1.getInt(RobotController.RESPONSE_ROBOT_YCOORD));
         assertFalse(0 == jsonObject2.getInt(RobotController.RESPONSE_ROBOT_XCOORD) && 0 == jsonObject2.getInt(RobotController.RESPONSE_ROBOT_YCOORD));
         assertFalse(0 == jsonObject3.getInt(RobotController.RESPONSE_ROBOT_XCOORD) && 0 == jsonObject3.getInt(RobotController.RESPONSE_ROBOT_YCOORD));
+    }
+
+    @When("player want to exit this room")
+    public void playerWantToExitThisRoom() {
+        UserController userController = new UserController();
+        assertEquals(200, userController.exitRoom(this.user.getName()).get(ServerConnection.RESPONSE_STATUS));
+    }
+
+    @And("player is in this room")
+    public void playerIsInThisRoom() {
+        assertEquals(200, new UserController().joinRoom(this.user.getName(), this.room.getRoomNumber()).get(ServerConnection.RESPONSE_STATUS));
+    }
+
+    @Then("player is not in a room")
+    public void playerIsNotInARoom() {
+        JSONObject roomInfo = new RoomController().roomInfo(this.room.getRoomNumber());
+        JSONArray users = (JSONArray) roomInfo.get(RoomController.RESPONSE_USERS_IN_ROOM);
+        List<Object> userList = users.toList();
+        for(Object user : userList) {
+            assertNotEquals(this.user.getName(), user);
+        }
+    }
+
+    @Then("the status of the room is {string}")
+    public void theStatusOfTheRoomIs(String arg0) {
+        assertTrue(new RoomController().roomInfo(this.room.getRoomNumber()).get(RoomController.RESPONSE_ROOM_STATUS).equals(arg0));
+    }
+
+    @When("status of the room is updated to {string}")
+    public void statusOfTheRoomIsUpdatedTo(String arg0) {
+        assertTrue(new RoomController().updateStatus(this.room.getRoomNumber(), arg0).get(ServerConnection.RESPONSE_STATUS).equals(200));
     }
 }
 

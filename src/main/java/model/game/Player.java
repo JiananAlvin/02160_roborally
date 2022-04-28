@@ -24,6 +24,8 @@ public class Player {
     private ArrayList<Card> cardsInHand;
     private Color userColor;
 
+
+
     public Player(String name, Robot robot) {
         this.name = name;
         this.robot = robot;
@@ -54,16 +56,11 @@ public class Player {
         if (this.robot.getPosition().equals(checkPoint.getPosition()) // robot at this checkPoint
                 && checkPoint.getCheckPointNum() == ownedTokens + 1 //robot has all the marks before current one
         ) {
-
             this.obtainedCheckpointTokens.add(checkPoint);
             return true;
         } else {
             return false;
         }
-    }
-
-    public void resetCheckpoints() {
-        this.obtainedCheckpointTokens.clear();
     }
 
     /**
@@ -98,14 +95,14 @@ public class Player {
         this.discardPile.getDiscards().removeAll(this.discardPile.getDiscards());
         this.programmingDeck.shuffle(this.programmingDeck.getCards());
     }
-
+    public void discard(ArrayList<Card> cards) {
+        this.discardPile.getDiscards().addAll(cards);
+    }
     /**
      * After a player has placed programming cards in each of the five registers, he should
      * place the remaining 4 programming cards in his hand in the discard pile.
      * <p>This method places an arraylist of cards in the player's discard pile.
      */
-    public void discard(ArrayList<Card> cards) {
-        this.discardPile.getDiscards().addAll(cards);
-    }
+
 }
 

@@ -2,8 +2,8 @@ Blank,Blank,EastOne,WallSouth,Blank,Blank,Blank,WallWest,WallEast,Blank,Blank,Bl
 Blank,StartPoint,Blank,LaserVertical,EastTwo,EastTwo,EastTwo,Charger,Blank,WestTwo,WestTwo,WestTwo,WestTwo
 Blank,WallNorth,Blank,LaserVertical,Blank,RotatingGear,SouthTwo,Blank,Blank,SouthTwo,RotatingGear,Blank,Blank
 StartPoint,Blank,Blank,WallNorth,Blank,Pit,Pit,WallNorth,CheckPoint3,Pit,Pit,WestOne,Blank
-Antenna,StartPoint,WallEast,Charger,Blank,Blank,StaticGear,Blank,Blank,StaticGear,Blank,NorthTwo,Blank
-Blank,StartPoint,WallEast,Blank,SouthOne,Blank,StaticGear,Blank,Charger,StaticGear,Blank,Blank,WallSouth
+Antenna,StartPoint,WallEast,Charger,Blank,Blank,OilStain,Blank,Blank,OilStain,Blank,NorthTwo,Blank
+Blank,StartPoint,WallEast,Blank,SouthOne,Blank,OilStain,Blank,Charger,OilStain,Blank,Blank,WallSouth
 StartPoint,Blank,Blank,Blank,EastOne,Pit,Pit,RotatingGear,CheckPoint1,Pit,Pit,Blank,LaserVertical
 Blank,WallSouth,Blank,Blank,Blank,RotatingGear,NorthTwo,Blank,Blank,NorthTwo,RotatingGear,Blank,LaserVertical
 Blank,StartPoint,Blank,EastTwo,EastTwo,EastTwo,NorthTwo,Blank,Blank,NorthTwo,WestTwo,WestTwo,WallNorth
