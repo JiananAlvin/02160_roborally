@@ -110,8 +110,15 @@ public class InitializationStepsDefinition {
     public void thereIsANewRecordInTheCollectionUserWithUsername(String arg0) throws InterruptedException {
         assertEquals(200, response.get(ServerConnection.RESPONSE_STATUS));
     }
+    @When("the player creates a room with number {int}")
+    public void thePlayerCreatesARoomWithNumber(int arg0) {
+        this.room = new Room(arg0);
+    }
 
-
+    @Then("there is a new room with number {int}")
+    public void thereIsANewRoomWithNumber(int arg0) {
+        assertTrue(this.room.getRoomNumber() == arg0);
+    }
     //------------------------------------------------------------------------------------
     @Given("a player has a name {string}")
     public void aPlayerHasAName(String arg0) throws InterruptedException {
@@ -312,6 +319,8 @@ public class InitializationStepsDefinition {
         Thread.sleep(100);
         assertTrue(new RoomController().updateStatus(this.room.getRoomNumber(), arg0).get(ServerConnection.RESPONSE_STATUS).equals(200));
     }
+
+
 }
 
 

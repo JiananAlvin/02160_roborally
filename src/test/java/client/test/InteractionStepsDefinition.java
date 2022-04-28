@@ -105,6 +105,14 @@ public class InteractionStepsDefinition {
         }
     }
 
+//    @When("the player discards {string} random cards")
+//    public void thePlayerDiscardsCards(String arg0) {
+//        for(int i = 0; i < Integer.parseInt(arg0); i++) {
+//            this.p1.discard();
+//        }
+//    }
+
+
 //    @And("the programming result will be put to sever")
 //    public void theProgrammingResultWillBePutToSever() {
 //

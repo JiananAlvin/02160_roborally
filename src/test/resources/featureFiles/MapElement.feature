@@ -55,6 +55,7 @@ Feature:
       | SQUASH_BOT  | 1   | 1   | N           | 1        | 0            | 1            | BEGINNER |
       | ZOOM_BOT    | 3   | 0   | E           | 1        | 3            | 1            | BEGINNER |
       | HAMMER_BOT  | 1   | 1   | E           | 2        | 1            | 3            | BEGINNER |
+      | TRUNDLE_BOT | 1   | 1   | E           | 3        | 1            | 4            | BEGINNER |
       | TRUNDLE_BOT | 1   | 1   | W           | -1       | 1            | 2            | BEGINNER |
 
 

@@ -106,7 +106,6 @@ public class MapElementStepsDefinition {
     public void the_robot_has_lives(String lives) {
         assertEquals(Integer.parseInt(lives), this.robot.getLives());
     }
-
     @And("robot has {string} lives")
     public void robotHasLives(String arg0) {
         this.robot.setLives(Integer.parseInt(arg0));
@@ -119,7 +118,6 @@ public class MapElementStepsDefinition {
     public void aRobot(String arg0) {
         this.robot = new Robot(RobotNameEnum.valueOf(arg0));
     }
-
     @And("a robot {string} with position {string} {string}")
     public void aRobotWithPosition(String arg0, String arg1, String arg2) {
         this.robot = new Robot(RobotNameEnum.valueOf(arg0));
@@ -131,13 +129,12 @@ public class MapElementStepsDefinition {
             }
         });
 
-        if (this.game.getGameMap() != null) {
+        if(this.game.getGameMap()!=null) {
             this.tile = this.game.getGameMap().getTileWithPosition(this.robot.getPosition());
         } else {
             this.tile = new Blank(this.robot.getPosition());
         }
     }
-
     @And("robot has {string} orientation")
     public void robotHasOrientation(String arg0) {
         this.robot.setOrientation(OrientationEnum.valueOf(arg0));
@@ -247,6 +244,8 @@ public class MapElementStepsDefinition {
         if (this.p1.getObtainedCheckpointTokens().size() == this.game.getGameMap().getCheckPoints().size())
             this.game.setWinner(this.p1);
         if (arg0.equals("finished")) {
+            System.out.println(this.p1.getName());
+            //System.out.println(this.game.getWinner().getName());
             assertEquals(this.p1, this.game.getWinner());
         } else assertNull(this.game.getWinner());
     }
@@ -256,12 +255,13 @@ public class MapElementStepsDefinition {
 
     @And("a position {string} {string} on the map indicating the obstacle of type {string}")
     public void aPositionOnTheMapIndicatingTheObstacle(String xPos, String yPos, String type) {
+        Position pos = new Position(Integer.parseInt(xPos), Integer.parseInt(yPos));
         switch (type) {
             case "sg":
                 this.tile = new OilStain(Integer.parseInt(xPos), Integer.parseInt(yPos));
                 break;
             case "pit":
-                this.tile = new Pit(Integer.parseInt(xPos), Integer.parseInt(yPos));
+                this.tile = new Pit(pos);
                 break;
             case "rgR":
                 this.tile = new RotatingGear(Integer.parseInt(xPos), Integer.parseInt(yPos), true);
@@ -270,7 +270,7 @@ public class MapElementStepsDefinition {
                 this.tile = new RotatingGear(Integer.parseInt(xPos), Integer.parseInt(yPos), false);
                 break;
             case "ch":
-                this.tile = new Charger(Integer.parseInt(xPos), Integer.parseInt(yPos));
+                this.tile = new Charger(pos);
                 break;
 
         }
@@ -320,6 +320,8 @@ public class MapElementStepsDefinition {
     }
 
 
+
+
     @Then("robot does not move forward")
     public void robotDoesNotMoveForward() {
         assertEquals(this.robot.getPosition(), this.initialRobotPosition);
@@ -345,7 +347,6 @@ public class MapElementStepsDefinition {
     }
 
     private Robot robot1;
-
     @When("there is a robot in the position first robot moves on")
     public void thereIsARobotInThePositionFirstRobotMovesOn() {
         Position newPos = Movement.calculateNewPosition(this.robot.getOrientation(), this.robot.getPosition(), 1);
@@ -410,4 +411,3 @@ public class MapElementStepsDefinition {
         this.robot.takeDamage(Integer.parseInt(arg0));
     }
 }
-
