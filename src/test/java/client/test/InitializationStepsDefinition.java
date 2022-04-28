@@ -112,8 +112,15 @@ public class InitializationStepsDefinition {
         this.response = userController.createUser(arg0);
         assertEquals(400, response.get(ServerConnection.RESPONSE_STATUS));
     }
+    @When("the player creates a room with number {int}")
+    public void thePlayerCreatesARoomWithNumber(int arg0) {
+        this.room = new Room(arg0);
+    }
 
-
+    @Then("there is a new room with number {int}")
+    public void thereIsANewRoomWithNumber(int arg0) {
+        assertTrue(this.room.getRoomNumber() == arg0);
+    }
     //------------------------------------------------------------------------------------
     @Given("a player has a name {string}")
     public void aPlayerHasAName(String arg0) {
@@ -284,6 +291,8 @@ public class InitializationStepsDefinition {
     public void statusOfTheRoomIsUpdatedTo(String arg0) {
         assertTrue(new RoomController().updateStatus(this.room.getRoomNumber(), arg0).get(ServerConnection.RESPONSE_STATUS).equals(200));
     }
+
+
 }
 
 

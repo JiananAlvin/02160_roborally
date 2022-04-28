@@ -11,20 +11,11 @@ import model.game.board.map.Position;
 public class RotatingGear extends Tile implements Obstacle {
     private boolean rotate;
 
-    public RotatingGear() {
-        super(new Position());
-        this.tileImageEnum = TileImageEnum.ROTATING_GEAR;
-    }
-
-    public RotatingGear(Position position) {
-        super(position);
-        this.tileImageEnum = TileImageEnum.ROTATING_GEAR;
-    }
-
     public RotatingGear(Integer x, Integer y) {
         super(new Position(x, y));
         this.tileImageEnum = TileImageEnum.ROTATING_GEAR;
     }
+
 
     public RotatingGear(Integer x, Integer y, Boolean rotate) {
         super(new Position(x, y));

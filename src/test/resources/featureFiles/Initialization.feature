@@ -13,6 +13,12 @@ Feature:
       | Durdija |
       | Simona  |
 
+  Scenario: Player can create a room
+    Given a player opened the application
+    When the player creates a room with number 142
+    Then there is a new room with number 142
+
+
 
   Scenario Outline: Player chooses a robot character
     Given a player has a name "<name>"
@@ -101,3 +107,5 @@ Feature:
       | test1           | STARTER  | START   |
       | test1           | STARTER  | WAITING |
       | test1           | STARTER  | END     |
+
+
