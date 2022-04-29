@@ -7,6 +7,7 @@ import javax.swing.*;
 import lombok.Data;
 import model.Game;
 import model.game.Player;
+import model.game.board.map.GameMap;
 import model.game.board.map.element.Robot;
 import model.game.board.map.element.Tile;
 
@@ -17,11 +18,9 @@ public class BoardPanel extends JPanel {
     private int rows;
     private int cols;
     private TilePanel[][] board;
-    private Game game;
 
-    public BoardPanel(Game game) {
-        this.game = game;
-        this.mapMatrix = game.getGameMap().getContent();
+    public BoardPanel() {
+        this.mapMatrix = GameMap.getInstance().getContent();
         this.rows = mapMatrix.length;
         this.cols = mapMatrix[0].length;
         this.board = new TilePanel[rows][cols];
@@ -43,7 +42,7 @@ public class BoardPanel extends JPanel {
                 add(t);
             }
         }
-        for (Player player : game.getParticipants()) {
+        for (Player player : Game.getInstance().getParticipants()) {
             Robot r = player.getRobot();
             board[r.getPosition().getRow()][r.getPosition().getCol()].setRobot(r.getOrientation(), player);
         }

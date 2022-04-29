@@ -5,6 +5,7 @@ import lombok.Data;
 import model.Game;
 import content.OrientationEnum;
 import model.game.Player;
+import model.game.board.map.GameMap;
 import model.game.board.map.Position;
 import model.game.card.behaviour.Movement;
 
@@ -48,8 +49,8 @@ public class Robot {
     }
 
     public void move(Position newPos, int movement) {
-        Tile t = Game.getGameMap().getTileWithPosition(newPos);
-        Robot robotAtPos = Game.getRobotAtPosition(newPos);
+        Tile t = GameMap.getInstance().getTileWithPosition(newPos);
+        Robot robotAtPos = Game.getInstance().getRobotAtPosition(newPos);
         if (robotAtPos != null) {
             this.push(robotAtPos, movement);
         }
@@ -96,18 +97,18 @@ public class Robot {
     }
 
     private void reboot() {
-        this.position = Game.getGameMap().getARandomRebootPoint().getPosition();
+        this.position = GameMap.getInstance().getARandomRebootPoint().getPosition();
         this.restoreCheckpoints();
         this.setLives(5);
         // clean register
 
     }
 
-    public boolean imInsideBoard(int maxRow, int maxCol) {
-        if (this.getPosition().getRow() > maxRow || this.getPosition().getCol() > maxCol) {
-            return false;
-        } else return this.getPosition().getRow() >= 0 && this.getPosition().getCol() >= 0;
-    }
+//    public boolean imInsideBoard(int maxRow, int maxCol) {
+//        if (this.getPosition().getRow() > maxRow || this.getPosition().getCol() > maxCol) {
+//            return false;
+//        } else return this.getPosition().getRow() >= 0 && this.getPosition().getCol() >= 0;
+//    }
 
     public void setLives(int lives) {
         if (lives <= 5)
@@ -212,8 +213,7 @@ public class Robot {
      * @return if there is wall
      */
     private boolean checkWall(Robot laserFrom, Robot laserTo) {
-        //TODO why it must be a static?????
-        Tile[][] mapContent = Game.getGameMap().getContent();
+        Tile[][] mapContent = GameMap.getInstance().getContent();
         switch (laserFrom.getOrientation()) {
             case N:
             case S: {

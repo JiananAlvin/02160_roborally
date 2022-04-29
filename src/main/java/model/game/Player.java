@@ -25,20 +25,19 @@ public class Player {
     private Color playerColor;
 
 
-
     public Player(String name, Robot robot) {
         this.name = name;
         this.robot = robot;
         this.obtainedCheckpointTokens = new ArrayList<>();
-        this.programmingDeck = new ProgrammingDeck(this);
-        this.discardPile = new DiscardPile(this);
+        this.programmingDeck = new ProgrammingDeck();
+        this.discardPile = new DiscardPile();
         this.registerArea = new RegisterArea();
     }
 
     public Player() {
         this.obtainedCheckpointTokens = new ArrayList<>();
-        this.programmingDeck = new ProgrammingDeck(this);
-        this.discardPile = new DiscardPile(this);
+        this.programmingDeck = new ProgrammingDeck();
+        this.discardPile = new DiscardPile();
         this.registerArea = new RegisterArea();
     }
 
@@ -68,7 +67,6 @@ public class Player {
      * In each round, A player draws 9 cards from his programming deck. If there are fewer than 9 to draw from, he should take
      * what is available. Then shuffles the discard pile to replenish his programming deck, and draws until he has nine cards.
      *
-     * @return an arraylist of 9 cards that is 9 cards in the player's hand.
      */
     public void drawCards() {
         this.cardsInHand = new ArrayList<>();
@@ -96,14 +94,16 @@ public class Player {
         this.discardPile.getDiscards().removeAll(this.discardPile.getDiscards());
         this.programmingDeck.shuffle(this.programmingDeck.getCards());
     }
-    public void discard(ArrayList<Card> cards) {
-        this.discardPile.getDiscards().addAll(cards);
-    }
+
     /**
      * After a player has placed programming cards in each of the five registers, he should
      * place the remaining 4 programming cards in his hand in the discard pile.
      * <p>This method places an arraylist of cards in the player's discard pile.
      */
+    public void discard(ArrayList<Card> cards) {
+        this.discardPile.getDiscards().addAll(cards);
+    }
+
 
 }
 

@@ -31,7 +31,6 @@ import static org.junit.Assert.*;
 
 
 public class InitializationStepsDefinition {
-    private Game game;
     private Player user;
     private Robot robot;
     private Room room;
@@ -44,7 +43,7 @@ public class InitializationStepsDefinition {
     @Before
     public void init() {
         this.user = new Player();
-        this.game = new Game();
+        // TODO
     }
 
     /**
@@ -62,7 +61,7 @@ public class InitializationStepsDefinition {
         } catch (Exception ignored) {
         }
         try {
-            new RoomController().deleteRoom(this.game.getRoom().getRoomNumber());
+            new RoomController().deleteRoom(Game.getInstance().getRoom().getRoomNumber());
         } catch (Exception ignored) {
         }
         try {
@@ -85,8 +84,9 @@ public class InitializationStepsDefinition {
             new UserController().deleteUser(this.player3.getName());
         } catch (Exception ignored) {
         }
+        Game.getInstance().removeData();
+        GameMap.getInstance().removeData();
     }
-
 
     //1.------------------------------------------------------------------------------------
     @Given("a player opened the application")
@@ -120,7 +120,7 @@ public class InitializationStepsDefinition {
 
     @Then("there is a new room with number {int}")
     public void thereIsANewRoomWithNumber(int arg0) {
-        assertTrue(this.room.getRoomNumber() == arg0);
+        assertEquals(this.room.getRoomNumber(), arg0);
     }
 
 
@@ -160,12 +160,12 @@ public class InitializationStepsDefinition {
     @When("the player creates a new room and chooses a map {string}")
     public void thePlayerCreatesANewRoomAndChoosesAMap(String mapName) throws IOException, InterruptedException {
         this.room = new Room();
-        this.game.setRoom(this.room);
-        this.game.setGameMap(new GameMap(MapNameEnum.valueOf(mapName)));
-        assertEquals(mapName, this.game.getGameMap().getMapName());
+        Game.getInstance().setRoom(this.room);
+        GameMap.getInstance().init(MapNameEnum.valueOf(mapName));
+        assertEquals(mapName, GameMap.getInstance().getMapName());
         Thread.sleep(200);
         this.response = new RoomController().createRoom(this.user.getName(), mapName);
-        this.game.getRoom().setRoomNumber((Integer) response.get(RoomController.RESPONSE_ROOM_NUMBER));
+        Game.getInstance().getRoom().setRoomNumber((Integer) response.get(RoomController.RESPONSE_ROOM_NUMBER));
     }
 
     @Then("there is a new room record in the collection room")
@@ -217,7 +217,9 @@ public class InitializationStepsDefinition {
         JSONObject createRoomResponse = new RoomController().createRoom(ownerName, mapName);
         assertEquals(200, createRoomResponse.get(ServerConnection.RESPONSE_STATUS));
         this.room = new Room();
-        this.game.setGameMap(new GameMap(MapNameEnum.valueOf(mapName)));
+        GameMap.getInstance().init(MapNameEnum.valueOf(mapName));
+//        TODO
+//        this.game.setGameMap(new GameMap());
         this.room.setRoomNumber((Integer) createRoomResponse.get(RoomController.RESPONSE_ROOM_NUMBER));
     }
 
@@ -258,13 +260,14 @@ public class InitializationStepsDefinition {
         JSONArray users = (JSONArray) roomInfoResponse.get(RoomController.RESPONSE_USERS_IN_ROOM);
         List<Object> userList = users.toList();
         assertEquals(4, userList.size());
-        this.game.initParticipants(roomInfoResponse);
-        this.game.generateRandomPositionsForAllParticipants();
+        Game.getInstance().init(roomOwner.getName(), this.room, MapNameEnum.valueOf(GameMap.getInstance().getMapName()),roomInfoResponse);
+//        Game.getInstance().initParticipants(roomInfoResponse);
+//        Game.getInstance().generateRandomPositionsForAllParticipants();
     }
 
     @Then("the client of room owner generates all the initial positions and puts them to server")
     public void theClientOfRoomOwnerWillGenerateAllTheInitialPositionsAndPutsThemToServer() throws InterruptedException {
-        for (Player player : this.game.getParticipants()) {
+        for (Player player : Game.getInstance().getParticipants()) {
             // To check every player's robot gets initial position
             // If the server fails to assign a new position to this robot, the position of this robot is (0,0)
             Thread.sleep(100);
@@ -317,7 +320,7 @@ public class InitializationStepsDefinition {
     @Then("the status of the room is {string}")
     public void theStatusOfTheRoomIs(String arg0) throws InterruptedException {
         Thread.sleep(100);
-        assertTrue(new RoomController().roomInfo(this.room.getRoomNumber()).get(RoomController.RESPONSE_ROOM_STATUS).equals(arg0));
+        assertEquals(new RoomController().roomInfo(this.room.getRoomNumber()).get(RoomController.RESPONSE_ROOM_STATUS), arg0);
     }
 
 
@@ -325,7 +328,7 @@ public class InitializationStepsDefinition {
     @When("update the status of the room to {string}")
     public void updateTheStatusOfTheRoomTo(String arg0) throws InterruptedException {
         Thread.sleep(100);
-        assertTrue(new RoomController().updateStatus(this.room.getRoomNumber(), arg0).get(ServerConnection.RESPONSE_STATUS).equals(200));
+        assertEquals(200, new RoomController().updateStatus(this.room.getRoomNumber(), arg0).get(ServerConnection.RESPONSE_STATUS));
 
     }
 }

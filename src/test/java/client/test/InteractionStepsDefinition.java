@@ -7,11 +7,14 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import lombok.SneakyThrows;
+import model.Game;
 import model.game.Player;
+import model.game.board.map.GameMap;
 import model.game.board.map.element.Robot;
 import model.game.board.mat.ProgrammingDeck;
 import model.game.board.mat.RegisterArea;
 import model.game.card.Card;
+import org.junit.After;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -27,6 +30,12 @@ public class InteractionStepsDefinition {
     @Before
     public void init() {
         this.p1 = new Player("group10", new Robot(RobotNameEnum.valueOf("HULK_X90")));
+    }
+
+    @After
+    public void remove() {
+        Game.getInstance().removeData();
+        GameMap.getInstance().removeData();
     }
 
 
@@ -102,7 +111,7 @@ public class InteractionStepsDefinition {
     @And("he now has {string} cards in each of registers")
     public void heNowHasCardsInEachOfRegisters(String arg0) {
         assertTrue(Integer.parseInt(arg0) == this.p1.getRegisterArea().getRegisters().size());
-        for (Card register: this.p1.getRegisterArea().getRegisters()) {
+        for (Card register : this.p1.getRegisterArea().getRegisters()) {
             assertNotEquals("null", register.getClass().getSimpleName());
         }
     }

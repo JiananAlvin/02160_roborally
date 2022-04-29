@@ -16,7 +16,6 @@ import java.awt.event.ActionListener;
  */
 public class App {
 
-    private Game game;
     private Player user;
     private CoverPanel coverPanel;
     private LoginPanel loginPanel;
@@ -27,7 +26,6 @@ public class App {
     private App() {
         // Initialize all the elements in an APP
         this.frame = new JFrame(APP_TITLE);
-        this.game = new Game();
         this.user = new Player();
         this.coverPanel = new CoverPanel();
         this.loginPanel = new LoginPanel(frame);

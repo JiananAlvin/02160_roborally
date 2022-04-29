@@ -7,12 +7,11 @@ import model.game.Player;
 import model.game.card.Card;
 
 @Data
+//TODO delete the Player player in this class
 public class DiscardPile {
-	private Player player;
 	private ArrayList<Card> discards;
 
-	public DiscardPile(Player player) {
-		this.player = player;
+	public DiscardPile() {
 		this.discards = new ArrayList<>();
 	}
 }

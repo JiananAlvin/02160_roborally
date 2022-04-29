@@ -18,7 +18,6 @@ public class CheckPoint extends Tile {
 
     public void setCheckPointNum(int checkPointNum) {
         this.checkPointNum = checkPointNum;
-        // TODO add more checkPoint Images
         switch (checkPointNum) {
             case 1:
                 this.tileImageEnum = TileImageEnum.CHECKPOINT1;

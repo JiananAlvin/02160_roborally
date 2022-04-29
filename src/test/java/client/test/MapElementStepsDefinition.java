@@ -16,6 +16,7 @@ import model.game.board.map.element.*;
 import model.game.card.*;
 import model.game.card.behaviour.Movement;
 import model.game.proxy.PhaseManager;
+import org.junit.After;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,21 +25,25 @@ import static org.junit.Assert.*;
 
 public class MapElementStepsDefinition {
     private Robot robot;
-    private Game game;
     private Player p1;
     private Player p2;
     private Player p3;
     private Card card;
-    private Tile tile;
     private Position initialRobotPosition;
     private Position initialRobot2Position;
 
     @Before
     public void initMapElement() throws IOException {
-        this.game = new Game();
-        this.game.setGameMap(new GameMap(MapNameEnum.ADVANCED));
+//        TODO
+//        this.game = new Game();
+//        this.game.setGameMap(new GameMap(MapNameEnum.ADVANCED));
     }
 
+    @After
+    public void removeData() {
+        Game.getInstance().removeData();
+        GameMap.getInstance().removeData();
+    }
 
     //1.----------------------------------------------------------------
     @Given("an antenna and three robots {string}, {string} and {string} chosen by {string}, {string} and {string} respectively")
@@ -53,7 +58,7 @@ public class MapElementStepsDefinition {
                 add(p3);
             }
         };
-        this.game.setParticipants(participants);
+        Game.getInstance().setParticipants(participants);
     }
 
     @When("robotI, robotII and robotIII are placed in \\({string},{string}), \\({string},{string}),\\({string},{string}) respectively")
@@ -65,9 +70,9 @@ public class MapElementStepsDefinition {
 
     @Then("the priority of these players is {string},{string},{string}")
     public void thePriorityOfThesePlayersIs(String arg0, String arg1, String arg2) {
-        assertEquals(arg0, this.game.orderOfPlayers().get(0).getName());
-        assertEquals(arg1, this.game.orderOfPlayers().get(1).getName());
-        assertEquals(arg2, this.game.orderOfPlayers().get(2).getName());
+        assertEquals(arg0, Game.getInstance().orderOfPlayers().get(0).getName());
+        assertEquals(arg1, Game.getInstance().orderOfPlayers().get(1).getName());
+        assertEquals(arg2, Game.getInstance().orderOfPlayers().get(2).getName());
     }
 
 
@@ -125,8 +130,7 @@ public class MapElementStepsDefinition {
     //4.----------------------------------------------------------------
     @Given("there is a game with map {string}")
     public void thereIsAGameWithMap(String arg0) throws IOException {
-        this.game = new Game();
-        this.game.setGameMap(new GameMap(MapNameEnum.valueOf(arg0)));
+        GameMap.getInstance().init(MapNameEnum.valueOf(arg0));
     }
 
     @And("a robot {string} with position {string} {string}")
@@ -134,16 +138,17 @@ public class MapElementStepsDefinition {
         this.robot = new Robot(RobotNameEnum.valueOf(arg0));
         this.robot.setPosition(Integer.parseInt(arg1), Integer.parseInt(arg2));
         this.initialRobotPosition = this.robot.getPosition();
-        this.game.setParticipants(new ArrayList<>() {
+        Game.getInstance().setParticipants(new ArrayList<>() {
             {
                 add(new Player("test1", robot));
             }
         });
 
-        if (this.game.getGameMap() != null) {
-            this.tile = this.game.getGameMap().getTileWithPosition(this.robot.getPosition());
+        Tile tile;
+        if (GameMap.getInstance() != null) {
+            tile = GameMap.getInstance().getTileWithPosition(this.robot.getPosition());
         } else {
-            this.tile = new Blank(this.robot.getPosition());
+            tile = new Blank(this.robot.getPosition());
         }
     }
 
@@ -215,13 +220,14 @@ public class MapElementStepsDefinition {
                 add(p2);
             }
         };
-        this.game.setParticipants(participants);
+        Game.getInstance().setParticipants(participants);
+        GameMap.getInstance().init(MapNameEnum.ADVANCED);
     }
 
     @And("playerA's robot has taken checkpoint tokens from all previous checkpoints numerically except {int}")
     public void playeraSRobotHasTakenCheckpointTokensFromAllPreviousCheckpointsNumericallyExceptPoint_number(int arg0) {
         int i = 1;
-        for (CheckPoint checkPoint : this.game.getGameMap().getCheckPoints()) {
+        for (CheckPoint checkPoint : GameMap.getInstance().getCheckPoints()) {
             if (i < arg0)
                 this.p1.getObtainedCheckpointTokens().add(checkPoint);
             i++;
@@ -231,8 +237,8 @@ public class MapElementStepsDefinition {
 
     @When("playerA's turn ends and his robot stops on the checkpoint {int}")
     public void playeraSTurnEndsAndHisRobotStopsOnTheCheckpointPoint_number(int arg0) {
-        this.p1.getRobot().setPosition(this.game.getGameMap().getCheckPoints().get(arg0 - 1).getPosition());
-        assertTrue(this.p1.takeToken(this.game.getGameMap().getCheckPoints().get(arg0 - 1)));
+        this.p1.getRobot().setPosition(GameMap.getInstance().getCheckPoints().get(arg0 - 1).getPosition());
+        assertTrue(this.p1.takeToken(GameMap.getInstance().getCheckPoints().get(arg0 - 1)));
     }
 
     @Then("playerA gets a checkpoint token from this checkpoint successfully and now has {int} checkpoint tokens")
@@ -242,13 +248,11 @@ public class MapElementStepsDefinition {
 
     @Then("this game checks game status and now the game status is {string}")
     public void thisGameChecksGameStatusAndNowTheGameStatusIs(String arg0) {
-        if (this.p1.getObtainedCheckpointTokens().size() == this.game.getGameMap().getCheckPoints().size())
-            this.game.setWinner(this.p1);
+        if (this.p1.getObtainedCheckpointTokens().size() == GameMap.getInstance().getCheckPoints().size())
+            Game.getInstance().setWinner(this.p1);
         if (arg0.equals("finished")) {
-            System.out.println(this.p1.getName());
-            //System.out.println(this.game.getWinner().getName());
-            assertEquals(this.p1, this.game.getWinner());
-        } else assertNull(this.game.getWinner());
+            assertEquals(this.p1, Game.getInstance().getWinner());
+        } else assertNull(Game.getInstance().getWinner());
     }
 
 
@@ -280,7 +284,7 @@ public class MapElementStepsDefinition {
 
     @Then("robot is sent to the reboot point")
     public void robotIsSentToTheRebootPoint() {
-        assertTrue(game.getGameMap().getTileWithPosition(this.robot.getPosition()) instanceof RebootPoint);
+        assertTrue(GameMap.getInstance().getTileWithPosition(this.robot.getPosition()) instanceof RebootPoint);
     }
 
 
@@ -334,7 +338,7 @@ public class MapElementStepsDefinition {
     public void thereIsARobotInThePositionFirstRobotMovesOn() {
         Position newPos = Movement.calculateNewPosition(this.robot.getOrientation(), this.robot.getPosition(), 1);
         this.robot1 = new Robot(RobotNameEnum.HAMMER_BOT, newPos.getRow(), newPos.getCol());
-        this.game.getParticipants().add(new Player("test", this.robot1));
+        Game.getInstance().getParticipants().add(new Player("test", this.robot1));
         Card actionCard = new CardMove1();
         actionCard.actsOn(this.robot);
         this.initialRobot2Position = newPos;
@@ -360,7 +364,7 @@ public class MapElementStepsDefinition {
         robot2.setOrientation(OrientationEnum.valueOf(arg4));
         Robot robot3 = new Robot(RobotNameEnum.valueOf(arg5), row3, col3);
         robot3.setOrientation(OrientationEnum.valueOf(arg6));
-        this.game.setParticipants(new ArrayList<>() {
+        Game.getInstance().setParticipants(new ArrayList<>() {
             {
                 add(new Player("Player1", robot1));
                 add(new Player("Player2", robot2));
@@ -371,21 +375,22 @@ public class MapElementStepsDefinition {
 
     @When("shooting phase starts")
     public void shootingPhaseStarts() {
-        PhaseManager.INSTANCE.executeRobotsShooting(game);
+        PhaseManager.getInstance().executeRobotsShooting(Game.getInstance());
     }
 
     @Then("robot1 has {int} and robot2 has {int} and robot3 has {int}")
     public void robotHasRobot_livesAndRobotHasRobot_livesAndRobotHasRobot_lives(int arg0, int arg1, int arg2) {
-        assertEquals(arg0, this.game.getParticipants().get(0).getRobot().getLives());
-        assertEquals(arg1, this.game.getParticipants().get(1).getRobot().getLives());
-        assertEquals(arg2, this.game.getParticipants().get(2).getRobot().getLives());
+        assertEquals(arg0, Game.getInstance().getParticipants().get(0).getRobot().getLives());
+        assertEquals(arg1, Game.getInstance().getParticipants().get(1).getRobot().getLives());
+        assertEquals(arg2, Game.getInstance().getParticipants().get(2).getRobot().getLives());
     }
-//-------------------------------------------------------------------------
+
+    //-------------------------------------------------------------------------
     @When("first robot moves back and there is a robot in the position")
     public void firstRobotMovesBackAndThereIsARobotInThePosition() {
         Position newPos = Movement.calculateNewPosition(this.robot.getOrientation(), this.robot.getPosition(), -1);
         this.robot1 = new Robot(RobotNameEnum.HAMMER_BOT, newPos.getRow(), newPos.getCol());
-        this.game.getParticipants().add(new Player("test", this.robot1));
+        Game.getInstance().getParticipants().add(new Player("test", this.robot1));
         Card actionCard = new CardBackUp();
         actionCard.actsOn(this.robot);
         this.initialRobot2Position = newPos;

@@ -1,16 +1,11 @@
 package gui.waiting;
 
 import content.MapNameEnum;
-import content.RobotNameEnum;
 import gui.game.GamePanel;
 import gui.room.RoomPanel;
 import lombok.SneakyThrows;
 import model.Game;
-
-import model.game.Player;
 import model.game.Room;
-import model.game.board.map.GameMap;
-import model.game.board.map.element.Robot;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import server.controller.RobotController;
@@ -27,7 +22,6 @@ import java.io.IOException;
 import java.util.Objects;
 
 import static java.lang.Integer.parseInt;
-import static java.lang.Integer.parseUnsignedInt;
 
 public class WaitingPanel extends JPanel {
 
@@ -54,23 +48,20 @@ public class WaitingPanel extends JPanel {
             this.add(lblRoomNumber);
             this.add(btStart);
             this.add(btQuit);
-            btQuit.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent arg0) {
-                    // delete room and return to the RoomPanel
-                    RoomController roomController = new RoomController();
-                    roomController.deleteRoom(parseInt(roomNumberStr));
+            btQuit.addActionListener(arg0 -> {
+                // delete room and return to the RoomPanel
+                RoomController roomController = new RoomController();
+                roomController.deleteRoom(parseInt(roomNumberStr));
 
-                }
             });
 
-            btStart.addActionListener(new ActionListener() {
-                @SneakyThrows
-                @Override
-                public void actionPerformed(ActionEvent arg0) {
-                    int roomNumber = parseInt(roomNumberStr);
-                    JSONObject roomInfoResponse = new RoomController().roomInfo(roomNumber);
+            btStart.addActionListener(arg0 -> {
+                int roomNumber = parseInt(roomNumberStr);
+                JSONObject roomInfoResponse = new RoomController().roomInfo(roomNumber);
+                try {
                     startGamePanel(roomNumber, roomInfoResponse, userName, frame, signal);
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             });
         } else {
@@ -88,23 +79,18 @@ public class WaitingPanel extends JPanel {
             this.add(btQuit);
             this.add(lblTip);
 
-            btQuit.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent arg0) {
-                    // exit room and return to the RoomPanel
-                    UserController userController = new UserController();
-                    userController.exitRoom(userName);
-                    frame.getContentPane().removeAll();
-                    frame.getContentPane().add(new RoomPanel(userName, frame));
-                    frame.setVisible(true);
-
-                }
+            btQuit.addActionListener(arg0 -> {
+                // exit room and return to the RoomPanel
+                UserController userController = new UserController();
+                userController.exitRoom(userName);
+                frame.getContentPane().removeAll();
+                frame.getContentPane().add(new RoomPanel(userName, frame));
+                frame.setVisible(true);
             });
         }
     }
 
     private void loadParticipantsTable(String userName, String roomNumberStr, JFrame frame, String signal) {
-
         timer = new Timer(300, new ActionListener() {
             long timeStamp;
 
@@ -131,13 +117,10 @@ public class WaitingPanel extends JPanel {
 
                 if (roomInfoResponse.get("status").equals(404)) {
                     timer.stop();
-                    SwingUtilities.invokeLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            frame.getContentPane().removeAll();
-                            frame.getContentPane().add(new RoomPanel(userName, frame));
-                            frame.setVisible(true);
-                        }
+                    SwingUtilities.invokeLater(() -> {
+                        frame.getContentPane().removeAll();
+                        frame.getContentPane().add(new RoomPanel(userName, frame));
+                        frame.setVisible(true);
                     });
                     return;
                 }
@@ -160,19 +143,16 @@ public class WaitingPanel extends JPanel {
                         }
                     }
 
-                    SwingUtilities.invokeLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            tabParticipants = new JTable(tableModel);
-                            // centering all columns
-                            centerRenderer = new DefaultTableCellRenderer();
-                            centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-                            tabParticipants.setDefaultRenderer(Object.class, centerRenderer);
-                            // putting the JTable "tabParticipants" inside a JScrollPane to show the TableHeader
-                            scrollPane = new JScrollPane(tabParticipants);
-                            scrollPane.setBounds(100, 78, 680, 142);
-                            add(scrollPane);
-                        }
+                    SwingUtilities.invokeLater(() -> {
+                        tabParticipants = new JTable(tableModel);
+                        // centering all columns
+                        centerRenderer = new DefaultTableCellRenderer();
+                        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+                        tabParticipants.setDefaultRenderer(Object.class, centerRenderer);
+                        // putting the JTable "tabParticipants" inside a JScrollPane to show the TableHeader
+                        scrollPane = new JScrollPane(tabParticipants);
+                        scrollPane.setBounds(100, 78, 680, 142);
+                        add(scrollPane);
                     });
                 }
             }
@@ -185,17 +165,11 @@ public class WaitingPanel extends JPanel {
         if (signal.equals("owner")) {
             new RoomController().updateStatus(roomNumber, "START");
         }
-        Game game = new Game();
 //                JSONObject roomInfoResponse = new RoomController().roomInfo(Integer.parseInt(roomNumberStr));
         String mapName = roomInfoResponse.getString(RoomController.RESPONSE_MAP_NAME);
 //                int roomNumber = roomInfoResponse.getInt(RoomController.RESPONSE_ROOM_NUMBER);
         String robotName = (String) new RobotController().getRobotInfo(userName).get(RobotController.RESPONSE_ROBOT_NAME);
-        game.init(userName, new Room(roomNumber), new GameMap(MapNameEnum.valueOf(mapName)), roomInfoResponse);
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                GamePanel.init(frame, game);
-            }
-        });
+        Game.getInstance().init(userName, new Room(roomNumber), MapNameEnum.valueOf(mapName), roomInfoResponse);
+        SwingUtilities.invokeLater(() -> GamePanel.init(frame));
     }
 }

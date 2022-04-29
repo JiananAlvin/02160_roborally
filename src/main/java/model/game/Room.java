@@ -8,7 +8,6 @@ import java.util.UUID;
 
 @Data
 public class Room {
-
     private int roomNumber;
     public Room(){};
     public Room(int roomNumber) {

@@ -69,8 +69,8 @@ public class InfoPanel extends JPanel {
                 "dropping card headers. The cards\n" +
                 "placed in the first 5 Registers\n" +
                 "(green) will act on your robot in\n" +
-                " order. The remaining 4 cards\n"+
-                "(leaving in red area) will not be\n"+
+                " order. The remaining 4 cards\n" +
+                "(leaving in red area) will not be\n" +
                 "used in this round. Think and act\n" +
                 "fast, paying attention on the\n" +
                 "remaining time!", 13, 50, 3);
@@ -91,29 +91,5 @@ public class InfoPanel extends JPanel {
         else
             logContent = "[" + logFrom.getName() + "]:" + logContent + "\n\n";
         this.logArea.append(logContent);
-    }
-
-    public static void main(String[] args) {
-        //Schedule a job for the event-dispatching thread:
-        //creating and showing this application's GUI.
-        javax.swing.SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                JFrame frame = new JFrame("GridBagLayoutDemo");
-                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                frame.setSize(frame.getPreferredSize());
-                //Set up the content pane.
-                ArrayList<Player> participants = new ArrayList<>();
-                participants.add(new Player("Test1", new Robot(RobotNameEnum.HAMMER_BOT)));
-                participants.add(new Player("Test2", new Robot(RobotNameEnum.HULK_X90)));
-                participants.add(new Player("Test3", new Robot(RobotNameEnum.SPIN_BOT)));
-                participants.add(new Player("Test4", new Robot(RobotNameEnum.SQUASH_BOT)));
-                participants.add(new Player("Test5", new Robot(RobotNameEnum.TRUNDLE_BOT)));
-                participants.add(new Player("Test6", new Robot(RobotNameEnum.ZOOM_BOT)));
-                frame.add(new InfoPanel(participants, new Player("Test1", new Robot(RobotNameEnum.HAMMER_BOT))));
-                //Display the window.
-                frame.pack();
-                frame.setVisible(true);
-            }
-        });
     }
 }

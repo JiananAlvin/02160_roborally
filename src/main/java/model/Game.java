@@ -1,5 +1,6 @@
 package model;
 
+import content.MapNameEnum;
 import content.OrientationEnum;
 import content.RobotNameEnum;
 import gui.game.GamePanel;
@@ -18,6 +19,20 @@ import java.util.*;
 
 @Data
 public class Game {
+
+    private static Game INSTANCE;
+
+    public static Game getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new Game();
+        }
+        return INSTANCE;
+    }
+
+    public void removeData() {
+        INSTANCE = new Game();
+    }
+
     /**
      * @ Player user: the user of this application
      * @ ArrayList<Player> participants: the participants in this game
@@ -28,24 +43,23 @@ public class Game {
      * @ Player currentPlayer: whose turn of activation
      */
     private String userName;
-    private static ArrayList<Player> participants;
+    private ArrayList<Player> participants;
     private Room room;
-    private static GameMap gameMap;
     private int currentRoundNum;
     private int currentRegisterNum;
     private Player winner;
     private int currentPlayerIndex;
 
-    public Game() {
-        this.participants = new ArrayList<>();
+    private Game() {
+
     }
 
     public static boolean validateMovement(Robot r, int row, int col, int movement) {
-        if (!(row >= 0 && row < gameMap.getHeight() && col >= 0 && col < gameMap.getWidth())) {
+        if (!(row >= 0 && row < GameMap.getInstance().getHeight() && col >= 0 && col < GameMap.getInstance().getWidth())) {
             r.takeDamage(5);
             return false;
         }
-        Tile tile = gameMap.getTileWithPosition(r.getPosition());
+        Tile tile = GameMap.getInstance().getTileWithPosition(r.getPosition());
         if (tile instanceof Wall) { // current position is a wall
             if (movement == 1) {
                 return !((Wall) tile).getOrientation().equals(r.getOrientation());
@@ -53,7 +67,7 @@ public class Game {
                 return !((Wall) tile).getOrientation().getOpposite().equals(r.getOrientation());
             }
         }
-        tile = gameMap.getTileWithPosition(new Position(row, col));
+        tile = GameMap.getInstance().getTileWithPosition(new Position(row, col));
 
         if (tile instanceof Wall) {  // next position is wall
             OrientationEnum tileOrientation = ((Wall) tile).getOrientation();
@@ -84,12 +98,13 @@ public class Game {
      *
      * @param room
      * @param userName
-     * @param gameMap
+     * @param mapName
      */
-    public void init(String userName, Room room, GameMap gameMap, JSONObject roomInfoResponse) {
+    public void init(String userName, Room room, MapNameEnum mapName, JSONObject roomInfoResponse) {
+        this.participants = new ArrayList<>();
         this.room = room;
         this.userName = userName;
-        this.gameMap = gameMap;
+        GameMap.getInstance().init(mapName);
         this.currentRoundNum = 1;
         this.initParticipants(roomInfoResponse);
         // generate initial positions for all robots, only when the user is a room owner
@@ -156,7 +171,7 @@ public class Game {
      * Only the room owner has the privilege to assign random positions for all robots.
      */
     public void generateRandomPositionsForAllParticipants() {
-        ArrayList<StartPoint> startPoints = new ArrayList<>(this.gameMap.getStartPoints());
+        ArrayList<StartPoint> startPoints = new ArrayList<>(GameMap.getInstance().getStartPoints());
         for (Player player : this.participants) {
             StartPoint assignedStartPoint = startPoints.remove(new Random().nextInt(startPoints.size()));
             player.getRobot().setPosition(assignedStartPoint.getPosition());
@@ -180,7 +195,7 @@ public class Game {
         }
     }
 
-    public static Robot getRobotAtPosition(Position newPos) {
+    public Robot getRobotAtPosition(Position newPos) {
         for (Player player : participants) {
             if (player.getRobot().getPosition().equals(newPos)) {
                 return player.getRobot();
@@ -197,11 +212,4 @@ public class Game {
         return this.participants;
     }
 
-    public static GameMap getGameMap() {
-        return gameMap;
-    }
-
-    public void setGameMap(GameMap map) {
-        this.gameMap = map;
-    }
 }

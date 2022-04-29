@@ -53,8 +53,9 @@ public class MatPanel extends JPanel {
     private JLabel lblTimer;
 
 
-    public MatPanel(Game game) {
+    public MatPanel() {
         // adding the user's information
+        Game game = Game.getInstance();
         Icon iconRobot = new ImageIcon(RobotImageEnum.valueOf(game.getUser().getRobot().getName()).getImage().getScaledInstance(109, 140, Image.SCALE_DEFAULT));
         this.lblRobot = new JLabel(iconRobot);
         this.lblRobot.setOpaque(true);
@@ -83,7 +84,7 @@ public class MatPanel extends JPanel {
         this.lblRound = new JLabel("Round: " + game.getCurrentRoundNum());
         this.lblRound.setFont(new Font("Calibri", Font.BOLD, 20));
 
-        loadRegisterTable(game);
+        loadRegisterTable();
 
         this.lblRegister = new JLabel("<html><span bgcolor=\"green\">|Register1  Register2 Register3 Register4 Register5|</span></html>");
         this.lblDiscard = new JLabel("<html><span bgcolor=\"red\">|-------------------------Discard------------------------|</html>");
@@ -128,8 +129,9 @@ public class MatPanel extends JPanel {
     /**
      * This method initializes register area.
      */
-    private void loadRegisterTable(Game game) {
+    private void loadRegisterTable() {
         // table header
+        Game game = Game.getInstance();
         String[] columnNames = new String[ProgrammingDeck.NUMBER_OF_CARDS_DRAWN_IN_EACH_ROUND];
         for (int i = 0; i < ProgrammingDeck.NUMBER_OF_CARDS_DRAWN_IN_EACH_ROUND; i++) {
             String cardName = game.getUser().getCardsInHand().get(i).toString();

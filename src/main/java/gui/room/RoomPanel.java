@@ -8,7 +8,7 @@ import org.json.JSONObject;
 
 import javax.swing.*;
 
-public class RoomPanel<IntField> extends JPanel {
+public class RoomPanel extends JPanel {
 
     private final JComboBox<String> jcbMapName;
     private final JTextField roomNumber;
@@ -47,7 +47,6 @@ public class RoomPanel<IntField> extends JPanel {
             RoomController roomController = new RoomController();
             JSONObject response = roomController.createRoom(userName, this.jcbMapName.getSelectedItem().toString());
             String roomNumberStr = response.get("room_number").toString();
-            roomController.updateStatus(Integer.parseInt(roomNumberStr), RoomController.ROOM_STATUS_WAITING);
             frame.getContentPane().removeAll();
             frame.getContentPane().add(new WaitingPanel(roomNumberStr, "owner", frame, userName));
             frame.setVisible(true);
@@ -79,12 +78,5 @@ public class RoomPanel<IntField> extends JPanel {
             frame.setVisible(true);
         });
     }
-
-//    public static void main(String[] args) {
-//        JFrame frame = new JFrame(Application.APP_TITLE);
-//        frame.setSize(880, 400);
-//        RoomPanel roomPanel = new RoomPanel("ddd", frame);
-//        frame.add(roomPanel);
-//        frame.setVisible(true);
-//    }
+    
 }

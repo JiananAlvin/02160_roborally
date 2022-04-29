@@ -60,12 +60,12 @@ public class TilePanel extends JPanel {
             AffineTransform old2 = g2d.getTransform();
             // draw background
             g2d.setColor(this.backgroundColor);
-            Ellipse2D.Double circle = new Ellipse2D.Double((int) (PIXEL_SIZE / 4), (int) (PIXEL_SIZE / 4), (int) (PIXEL_SIZE / 2), (int) (PIXEL_SIZE / 2));
+            Ellipse2D.Double circle = new Ellipse2D.Double((int) (PIXEL_SIZE / 8), (int) (PIXEL_SIZE / 8), (int) (PIXEL_SIZE * 0.75), (int) (PIXEL_SIZE * 0.75));
             g2d.fill(circle);
             // draw arrow
 
             g2d.rotate(Math.toRadians(direction.getAngle()), (int) (PIXEL_SIZE / 2), (int) (PIXEL_SIZE / 2));
-            g2d.drawImage(this.imageRobot, 0, 0, null);
+            g2d.drawImage(this.imageRobot, (PIXEL_SIZE - this.imageRobot.getWidth()) / 2, (PIXEL_SIZE - this.imageRobot.getHeight()) / 2, null);
             g2d.setTransform(old2);
         }
     }

@@ -12,9 +12,16 @@ import model.game.board.map.element.Wall;
 /**
  * This class is used to manage all robots' shooting after the activation phase
  */
-public enum PhaseManager {
+public class PhaseManager {
 
-    INSTANCE;
+    private static PhaseManager INSTANCE;
+
+    public static PhaseManager getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new PhaseManager();
+        }
+        return INSTANCE;
+    }
 
     public void executeRobotsShooting(Game game) {
         for (Player player1 : game.getParticipants()) {
