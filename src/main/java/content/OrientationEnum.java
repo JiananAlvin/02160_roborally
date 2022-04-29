@@ -6,12 +6,13 @@ public enum OrientationEnum {
     N(0), S(180), E(90), W(270);
 
     private int angle;
-    private int right, left;
+    private int right, left, opposite;
 
     OrientationEnum(int angle) {
         this.angle = angle;
         this.right = angle + 90;
         this.left = angle - 90;
+        this.opposite = angle + 180;
         this.normalizeAngles();
     }
 
@@ -54,6 +55,15 @@ public enum OrientationEnum {
         if (this.left < 0) {
             this.left += 360;
         }
+        this.opposite %= 360;
+        if (this.opposite < 0) {
+            this.opposite += 360;
+        }
+    }
+
+
+    public OrientationEnum getOpposite() {
+        return matchOrientation(this.opposite);
     }
 
 

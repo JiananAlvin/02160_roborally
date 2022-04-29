@@ -135,13 +135,13 @@ public class MapElementStepsDefinition {
         this.robot = new Robot(RobotNameEnum.valueOf(arg0));
         this.robot.setInitialPosition(Integer.parseInt(arg1), Integer.parseInt(arg2));
         this.initialRobotPosition = this.robot.getPosition();
-        this.game.setParticipants(new ArrayList<>(){
+        this.game.setParticipants(new ArrayList<>() {
             {
                 add(new Player("test1", robot));
             }
         });
 
-        if(this.game.getGameMap()!=null) {
+        if (this.game.getGameMap() != null) {
             this.tile = this.game.getGameMap().getTileWithPosition(this.robot.getPosition());
         } else {
             this.tile = new Blank(this.robot.getPosition());
@@ -293,7 +293,6 @@ public class MapElementStepsDefinition {
     }
 
 
-
     //10&11.----------------------------------------------------------------
     @When("robot tries to move forward and there is a wall")
     public void robotMovesForwardAndThereIsAWall() {
@@ -331,24 +330,25 @@ public class MapElementStepsDefinition {
 
     //14.----------------------------------------------------------------
     private Robot robot1;
+
     @When("there is a robot in the position first robot moves on")
     public void thereIsARobotInThePositionFirstRobotMovesOn() {
         Position newPos = Movement.calculateNewPosition(this.robot.getOrientation(), this.robot.getPosition(), 1);
         this.robot1 = new Robot(RobotNameEnum.HAMMER_BOT, newPos.getRow(), newPos.getCol());
-        this.game.setParticipants(new ArrayList<>(){
-            {
-                add(new Player("test1", robot));
-            }
-        });
+        this.game.getParticipants().add(new Player("test", this.robot1));
         Card actionCard = new CardMove1();
         actionCard.actsOn(this.robot);
         this.initialRobot2Position = newPos;
     }
 
-    @Then("fist robot pushes the second robot")
-    public void fistRobotPushesTheSecondRobot() {
+    @Then("fist robot pushes the second robot scenario {int}")
+    public void fistRobotPushesTheSecondRobot(int int1) {
         assertEquals(this.robot.getPosition(), this.initialRobot2Position);
-        assertEquals(this.robot1.getPosition(), Movement.calculateNewPosition(this.robot.getOrientation(), initialRobot2Position, 1));
+        if(int1  == 1) {
+            assertEquals(this.robot1.getPosition(), Movement.calculateNewPosition(this.robot.getOrientation(), this.robot.getPosition(), 1));
+        } else {
+            assertEquals(this.robot1.getPosition(), Movement.calculateNewPosition(this.robot.getOrientation(), this.robot.getPosition(), -1));
+        }
     }
 
 
@@ -361,7 +361,7 @@ public class MapElementStepsDefinition {
         robot2.setOrientation(OrientationEnum.valueOf(arg4));
         Robot robot3 = new Robot(RobotNameEnum.valueOf(arg5), row3, col3);
         robot3.setOrientation(OrientationEnum.valueOf(arg6));
-        this.game.setParticipants(new ArrayList<>(){
+        this.game.setParticipants(new ArrayList<>() {
             {
                 add(new Player("Player1", robot1));
                 add(new Player("Player2", robot2));
@@ -377,9 +377,30 @@ public class MapElementStepsDefinition {
 
     @Then("robot1 has {int} and robot2 has {int} and robot3 has {int}")
     public void robotHasRobot_livesAndRobotHasRobot_livesAndRobotHasRobot_lives(int arg0, int arg1, int arg2) {
-        assertEquals(arg0,this.game.getParticipants().get(0).getRobot().getLives());
-        assertEquals(arg1,this.game.getParticipants().get(1).getRobot().getLives());
-        assertEquals(arg2,this.game.getParticipants().get(2).getRobot().getLives());
+        assertEquals(arg0, this.game.getParticipants().get(0).getRobot().getLives());
+        assertEquals(arg1, this.game.getParticipants().get(1).getRobot().getLives());
+        assertEquals(arg2, this.game.getParticipants().get(2).getRobot().getLives());
+    }
+
+    @When("first robot moves back and there is a robot in the position")
+    public void firstRobotMovesBackAndThereIsARobotInThePosition() {
+        Position newPos = Movement.calculateNewPosition(this.robot.getOrientation(), this.robot.getPosition(), -1);
+        this.robot1 = new Robot(RobotNameEnum.HAMMER_BOT, newPos.getRow(), newPos.getCol());
+        this.game.getParticipants().add(new Player("test", this.robot1));
+        Card actionCard = new CardBackUp();
+        actionCard.actsOn(this.robot);
+        this.initialRobot2Position = newPos;
+    }
+
+    @When("robot tries to move backward and there is a wall")
+    public void robotTriesToMoveBackwardAndThereIsAWall() {
+        Card actionCard = new CardBackUp();
+        actionCard.actsOn(this.robot);
+    }
+
+    @Then("robot does not move backward")
+    public void robotDoesNotMoveBackward() {
+        assertEquals(this.robot.getPosition(), this.initialRobotPosition);
     }
 
 

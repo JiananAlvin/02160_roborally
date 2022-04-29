@@ -45,19 +45,19 @@ public class Robot {
         this.position = position;
     }
 
-    public boolean tryMove(Position newPos) {
-        if (Game.validateMovement(this, newPos.getRow(), newPos.getCol())) {
-            Tile t = Game.getGameMap().getTileWithPosition(newPos);
-            this.move(newPos, t);
+    public boolean tryMove(Position newPos, int movement) {
+        if (Game.validateMovement(this, newPos.getRow(), newPos.getCol(), movement)) {
+            this.move(newPos, movement);
             return true;
         }
         return false;
     }
 
-    public void move(Position newPos, Tile t) {
+    public void move(Position newPos, int movement) {
+        Tile t = Game.getGameMap().getTileWithPosition(newPos);
         Robot robotAtPos = Game.getRobotAtPosition(newPos);
         if (robotAtPos != null) {
-            this.push(robotAtPos);
+            this.push(robotAtPos, movement);
         }
         this.position = newPos;
         if (t instanceof Interactive) {
@@ -66,8 +66,12 @@ public class Robot {
         }
     }
 
-    private void push(Robot robotAtPos) {
-        robotAtPos.tryMove(Movement.calculateNewPosition(this.getOrientation(), robotAtPos.getPosition(), 1));
+    private void push(Robot robotAtPos, int movement) {
+        if (movement == 1) {
+            robotAtPos.tryMove(Movement.calculateNewPosition(this.getOrientation(), robotAtPos.getPosition(), 1), 1);
+        } else if (movement == -1) {
+            robotAtPos.tryMove(Movement.calculateNewPosition(this.getOrientation().getOpposite(), robotAtPos.getPosition(), 1), -1);
+        }
     }
 
 

@@ -165,6 +165,18 @@ Feature:
       | ZOOM_BOT   | 7   | 9   | N           | STARTER  |
       | ZOOM_BOT   | 6   | 5   | E           | STARTER  |
 
+  Scenario Outline: Robots cannot go back through a wall
+    Given there is a game with map "<map_name>"
+    And a robot "<robot_name>" with position "<row>" "<col>"
+    And robot has "<orientation>" orientation
+    When robot tries to move backward and there is a wall
+    Then robot does not move backward
+    Examples:
+      | robot_name | row | col | orientation | map_name |
+      | ZOOM_BOT   | 4   | 6   | N           | STARTER  |
+      | ZOOM_BOT   | 5   | 3   | E           | STARTER  |
+      | ZOOM_BOT   | 5   | 2   | W           | STARTER  |
+
   Scenario Outline: Robots cannot go over the board
     Given there is a game with map "<map_name>"
     And a robot "<robot_name>" with position "<row>" "<col>"
@@ -198,12 +210,26 @@ Feature:
     And a robot "<robot_name>" with position "<row>" "<col>"
     And robot has "<orientation>" orientation
     When there is a robot in the position first robot moves on
-    Then fist robot pushes the second robot
+    Then fist robot pushes the second robot scenario 1
     Examples:
       | robot_name | row | col | orientation | map_name |
       | ZOOM_BOT   | 4   | 0   | E           | STARTER  |
       | ZOOM_BOT   | 2   | 1   | E           | STARTER  |
       | ZOOM_BOT   | 3   | 5   | W           | STARTER  |
+  Scenario Outline: Robot pushes another robot when move back is executed
+    Given there is a game with map "<map_name>"
+    And a robot "<robot_name>" with position "<row>" "<col>"
+    And robot has "<orientation>" orientation
+    When first robot moves back and there is a robot in the position
+    Then fist robot pushes the second robot scenario 2
+    Examples:
+      | robot_name | row | col | orientation | map_name |
+      | ZOOM_BOT   | 4   | 0   | N           | STARTER  |
+      | ZOOM_BOT   | 1   | 1   | W           | STARTER  |
+      | ZOOM_BOT   | 3   | 4   | W           | STARTER  |
+      | ZOOM_BOT   | 6   | 3   | E           | STARTER  |
+      | ZOOM_BOT   | 3   | 5   | W           | STARTER  |
+
 
 
   Scenario Outline: Robot shoots a laser at another robot
