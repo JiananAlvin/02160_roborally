@@ -18,8 +18,6 @@ Feature:
     When the player creates a room with number 142
     Then there is a new room with number 142
 
-
-
   Scenario Outline: Player chooses a robot character
     Given a player has a name "<name>"
     When the player chooses a robot "<robot_name>"
@@ -100,7 +98,7 @@ Feature:
   Scenario Outline: Room status can be updated
     Given a player has a name "<name>"
     And a room owner "<room_owner_name>" creates a new room with map "<map_name>"
-    When status of the room is updated to "<status>"
+    When update the status of the room to "<status>"
     Then the status of the room is "<status>"
     Examples:
       | room_owner_name | map_name | status  |

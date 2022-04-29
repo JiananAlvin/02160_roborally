@@ -20,6 +20,7 @@ public class MapReader {
     private static final String FULLY_QUALIFIED_NAME_OF_CONVEYORBELT = "model.game.board.map.element.ConveyorBelt";
     private static final String FULLY_QUALIFIED_NAME_OF_WALL = "model.game.board.map.element.Wall";
     private static final String FULLY_QUALIFIED_NAME_OF_LASER = "model.game.board.map.element.Laser";
+    private static final String FULLY_QUALIFIED_NAME_OF_ROTATING_GEAR = "model.game.board.map.element.RotatingGear";
 
     /**
      * @ readLineToStringArray: Read the content of .txt file to a string array.
@@ -78,6 +79,10 @@ public class MapReader {
                 return createLaser(row, col, true);
             } else if (str.equals("LaserHorizontal")) {
                 return createLaser(row, col, false);
+            } else if (str.equals("RotatingGearClockwise")) {
+                return createRotatingGear(row, col, true);
+            } else if (str.equals("RotatingGearCounterclockwise")) {
+                return createRotatingGear(row, col, false);
             } else {
                 Class<?> clz = Class.forName(FULLY_QUALIFIED_NAME_OF_ELEMENT + str);
                 return (Tile) clz.getDeclaredConstructor(Integer.class, Integer.class).newInstance(row, col);
@@ -104,6 +109,12 @@ public class MapReader {
         Class<?> clz = Class.forName(FULLY_QUALIFIED_NAME_OF_WALL);
         Wall wall = (Wall) clz.getDeclaredConstructor(Integer.class, Integer.class, OrientationEnum.class).newInstance(row, col, orientation);
         return wall;
+    }
+
+    private static RotatingGear createRotatingGear(int row, int col, boolean isClockwise) throws NoSuchMethodException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        Class<?> clz = Class.forName(FULLY_QUALIFIED_NAME_OF_ROTATING_GEAR);
+        RotatingGear rotatingGear = (RotatingGear) clz.getDeclaredConstructor(Integer.class, Integer.class, Boolean.class).newInstance(row, col, isClockwise);
+        return rotatingGear;
     }
 
     /**

@@ -45,14 +45,6 @@ public class Robot {
         this.position = position;
     }
 
-    public void setPosition(Position position) {
-        this.position = position;
-    }
-
-    public Position getPosition() {
-        return this.position;
-    }
-
     public boolean tryMove(Position newPos) {
         if (Game.validateMovement(this, newPos.getRow(), newPos.getCol())) {
             Tile t = Game.getGameMap().getTileWithPosition(newPos);
@@ -68,11 +60,10 @@ public class Robot {
             this.push(robotAtPos);
         }
         this.position = newPos;
-        if (t instanceof Obstacle) {
-            Obstacle o = (Obstacle) t;
+        if (t instanceof Interactive) {
+            Interactive o = (Interactive) t;
             o.robotInteraction(this);
         }
-
     }
 
     private void push(Robot robotAtPos) {
@@ -87,10 +78,6 @@ public class Robot {
     @Override
     public String toString() {
         return this.name;
-    }
-
-    public void applyCard(Card card) {
-        card.actsOn(this);
     }
 
     /**
@@ -145,7 +132,6 @@ public class Robot {
         c.actsOn(this);
         this.orientation = initialOrientation;
     }
-
 
     public void shoot(Game game) {
         // 1.Check if there is a robot in the robots orientation

@@ -37,4 +37,9 @@ public class Position {
             return false;
         }
     }
+
+    @Override
+    public String toString() {
+        return "row:" + this.row + ",col:" + this.col;
+    }
 }

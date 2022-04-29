@@ -88,7 +88,7 @@ public class InitializationStepsDefinition {
     }
 
 
-    //------------------------------------------------------------------------------------
+    //1.------------------------------------------------------------------------------------
     @Given("a player opened the application")
     public void a_player_opened_the_application() {
         assertTrue(App.getApplicationInstance().run());
@@ -110,6 +110,9 @@ public class InitializationStepsDefinition {
     public void thereIsANewRecordInTheCollectionUserWithUsername(String arg0) throws InterruptedException {
         assertEquals(200, response.get(ServerConnection.RESPONSE_STATUS));
     }
+
+
+    //2.------------------------------------------------------------------------------------
     @When("the player creates a room with number {int}")
     public void thePlayerCreatesARoomWithNumber(int arg0) {
         this.room = new Room(arg0);
@@ -119,7 +122,9 @@ public class InitializationStepsDefinition {
     public void thereIsANewRoomWithNumber(int arg0) {
         assertTrue(this.room.getRoomNumber() == arg0);
     }
-    //------------------------------------------------------------------------------------
+
+
+    //3.------------------------------------------------------------------------------------
     @Given("a player has a name {string}")
     public void aPlayerHasAName(String arg0) throws InterruptedException {
         this.user.setName(arg0);
@@ -151,14 +156,14 @@ public class InitializationStepsDefinition {
     }
 
 
-    //------------------------------------------------------------------------------------
+    //4.------------------------------------------------------------------------------------
     @When("the player creates a new room and chooses a map {string}")
     public void thePlayerCreatesANewRoomAndChoosesAMap(String mapName) throws IOException, InterruptedException {
         this.room = new Room();
         this.game.setRoom(this.room);
         this.game.setGameMap(new GameMap(MapNameEnum.valueOf(mapName)));
         assertEquals(mapName, this.game.getGameMap().getMapName());
-        Thread.sleep(100);
+        Thread.sleep(200);
         this.response = new RoomController().createRoom(this.user.getName(), mapName);
         this.game.getRoom().setRoomNumber((Integer) response.get(RoomController.RESPONSE_ROOM_NUMBER));
     }
@@ -169,7 +174,7 @@ public class InitializationStepsDefinition {
     }
 
 
-    //----------------------------------------------------------------------------checked
+    //5.------------------------------------------------------------------------------------
     @Given("a room owner {string} creates a new room with map {string}")
     public void a_room_owner_creates_a_new_room_with_map(String string, String string2) throws InterruptedException {
         Thread.sleep(100);
@@ -177,7 +182,7 @@ public class InitializationStepsDefinition {
         assertEquals(200, this.response.get(ServerConnection.RESPONSE_STATUS));
         this.roomOwner = new Player();
         this.roomOwner.setName(string);
-        Thread.sleep(100);
+        Thread.sleep(200);
         this.response = new RoomController().createRoom(string, string2);
         assertEquals(200, this.response.get(ServerConnection.RESPONSE_STATUS));
         this.room = new Room();
@@ -199,7 +204,7 @@ public class InitializationStepsDefinition {
     }
 
 
-    //------------------------------------------------------------------------------------
+    //6.------------------------------------------------------------------------------------
     @SneakyThrows
     @Given("a room owner {string} created a new room with map {string} and chose robot {string}")
     public void aRoomOwnerCreatedANewRoomWithMapAndChoseRobot(String ownerName, String mapName, String robotName) {
@@ -268,8 +273,6 @@ public class InitializationStepsDefinition {
         }
     }
 
-
-    //------------------------------------------------------------------------------------
     @Then("player1 player2 and player3 successfully get their robot info from server")
     public void player1Player2AndPlayer3SuccessfullyGetTheirRobotInfoFromServer() throws InterruptedException {
         // Mock participants are trying to pull information from server
@@ -284,17 +287,18 @@ public class InitializationStepsDefinition {
         assertFalse(0 == jsonObject3.getInt(RobotController.RESPONSE_ROBOT_XCOORD) && 0 == jsonObject3.getInt(RobotController.RESPONSE_ROBOT_YCOORD));
     }
 
+    //7.------------------------------------------------------------------------------------
+    @And("player is in this room")
+    public void playerIsInThisRoom() throws InterruptedException {
+        Thread.sleep(100);
+        assertEquals(200, new UserController().joinRoom(this.user.getName(), this.room.getRoomNumber()).get(ServerConnection.RESPONSE_STATUS));
+    }
+
     @When("player want to exit this room")
     public void playerWantToExitThisRoom() throws InterruptedException {
         Thread.sleep(100);
         UserController userController = new UserController();
         assertEquals(200, userController.exitRoom(this.user.getName()).get(ServerConnection.RESPONSE_STATUS));
-    }
-
-    @And("player is in this room")
-    public void playerIsInThisRoom() throws InterruptedException {
-        Thread.sleep(100);
-        assertEquals(200, new UserController().joinRoom(this.user.getName(), this.room.getRoomNumber()).get(ServerConnection.RESPONSE_STATUS));
     }
 
     @Then("player is not in a room")
@@ -308,19 +312,22 @@ public class InitializationStepsDefinition {
         }
     }
 
+
+    //8.------------------------------------------------------------------------------------
     @Then("the status of the room is {string}")
     public void theStatusOfTheRoomIs(String arg0) throws InterruptedException {
         Thread.sleep(100);
         assertTrue(new RoomController().roomInfo(this.room.getRoomNumber()).get(RoomController.RESPONSE_ROOM_STATUS).equals(arg0));
     }
 
-    @When("status of the room is updated to {string}")
-    public void statusOfTheRoomIsUpdatedTo(String arg0) throws InterruptedException {
+
+    //9.------------------------------------------------------------------------------------
+    @When("update the status of the room to {string}")
+    public void updateTheStatusOfTheRoomTo(String arg0) throws InterruptedException {
         Thread.sleep(100);
         assertTrue(new RoomController().updateStatus(this.room.getRoomNumber(), arg0).get(ServerConnection.RESPONSE_STATUS).equals(200));
+
     }
-
-
 }
 
 

@@ -72,6 +72,4 @@ public class GameMap {
     public int getWidth() {
         return this.width;
     }
-
-
 }

@@ -30,7 +30,8 @@ public enum TileImageEnum {
     WALLNORTH("src/main/resources/images/tiles/wall_north.png"),
     PIT("src/main/resources/images/tiles/pit.png"),
     OIL_STAIN("src/main/resources/images/tiles/oil_stain.png"),
-    ROTATING_GEAR("src/main/resources/images/tiles/rotating_gear.png");
+    ROTATING_GEAR_CLOCKWISE("src/main/resources/images/tiles/rotating_gear_clockwise.png"),
+    ROTATING_GEAR_COUNTERCLOCKWISE("src/main/resources/images/tiles/rotating_gear_counterclockwise.png");
 
     private final BufferedImage image;
 

@@ -5,7 +5,7 @@ import lombok.Data;
 import model.game.board.map.Position;
 
 @Data
-public class Laser extends Tile implements Obstacle{
+public class Laser extends Tile implements Interactive {
 
     private int damage = 1;
 

@@ -8,32 +8,33 @@ import model.game.board.map.Position;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class RotatingGear extends Tile implements Obstacle {
-    private boolean rotate;
+public class RotatingGear extends Tile implements Interactive {
+    private boolean isClockwise; // true: clockwise; false: counterclockwise
 
-    public RotatingGear(Integer x, Integer y) {
-        super(new Position(x, y));
-        this.tileImageEnum = TileImageEnum.ROTATING_GEAR;
+    public RotatingGear(Position position, Boolean isClockwise) {
+        super(position);
+        init(isClockwise);
     }
 
-
-    public RotatingGear(Integer x, Integer y, Boolean rotate) {
+    public RotatingGear(Integer x, Integer y, Boolean isClockwise) {
         super(new Position(x, y));
-        setRotate(rotate);
-        this.tileImageEnum = TileImageEnum.ROTATING_GEAR;
-
+        init(isClockwise);
     }
 
     public void robotInteraction(Robot r) {
         OrientationEnum orientation;
-        if (rotate)
+        if (this.isClockwise)
             orientation = OrientationEnum.matchOrientation((r.getOrientation().getAngle() + 90) % 360);
         else
             orientation = OrientationEnum.matchOrientation((r.getOrientation().getAngle() + 270) % 360);
         r.setOrientation(orientation);
     }
 
-    public void setRotate(boolean rotate) {
-        this.rotate = rotate;
+    private void init(boolean isClockwise) {
+        this.isClockwise = isClockwise;
+        if (isClockwise)
+            this.tileImageEnum = TileImageEnum.ROTATING_GEAR_CLOCKWISE;
+        else
+            this.tileImageEnum = TileImageEnum.ROTATING_GEAR_COUNTERCLOCKWISE;
     }
 }

@@ -5,6 +5,7 @@ import gui.login.LoginPanel;
 import lombok.SneakyThrows;
 import model.Game;
 import model.game.Player;
+import model.game.board.map.element.Interactive;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -21,7 +22,7 @@ public class App {
     private LoginPanel loginPanel;
     private JFrame frame;
     private static App appInstance;
-    public final static String APP_TITLE = "RoboRally Group10 v1.0";
+    public final static String APP_TITLE = "RoboRally Group10 v2.0";
 
     private App() {
         // Initialize all the elements in an APP

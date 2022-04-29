@@ -3,7 +3,7 @@ package model.game.board.map.element;
 import content.TileImageEnum;
 import model.game.board.map.Position;
 
-public class Charger extends Tile implements Obstacle{
+public class Charger extends Tile implements Interactive {
 
     public Charger(Position position) {
         super(position);

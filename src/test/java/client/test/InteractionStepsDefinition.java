@@ -29,6 +29,8 @@ public class InteractionStepsDefinition {
         this.p1 = new Player("group10", new Robot(RobotNameEnum.valueOf("HULK_X90")));
     }
 
+
+    //1.--------------------------------------------------------------------------------------------
     @Given("a player had {string} cards in his programming deck")
     public void aPlayerHadCardsInHisProgrammingDeck(String arg0) {
         ArrayList<Card> discards = new ArrayList<>(this.p1.getProgrammingDeck().getCards().subList(0, this.p1.getProgrammingDeck().getCards().size() - Integer.parseInt(arg0)));
@@ -57,7 +59,7 @@ public class InteractionStepsDefinition {
     }
 
 
-    //--------------------------------------------------------------------------------------------
+    //2.--------------------------------------------------------------------------------------------
     @Given("a player had nine cards in his hands")
     public void aPlayerHadNineCardsInHisHands() {
         ArrayList<Card> cardsInHand = new ArrayList<>(this.p1.getProgrammingDeck().getCards().subList(0, ProgrammingDeck.NUMBER_OF_CARDS_DRAWN_IN_EACH_ROUND));
@@ -104,20 +106,4 @@ public class InteractionStepsDefinition {
             assertNotEquals("null", register.getClass().getSimpleName());
         }
     }
-
-//    @When("the player discards {string} random cards")
-//    public void thePlayerDiscardsCards(String arg0) {
-//        for(int i = 0; i < Integer.parseInt(arg0); i++) {
-//            this.p1.discard();
-//        }
-//    }
-
-
-//    @And("the programming result will be put to sever")
-//    public void theProgrammingResultWillBePutToSever() {
-//
-//    }
-
-
-
 }

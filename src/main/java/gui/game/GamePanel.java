@@ -48,7 +48,7 @@ public class GamePanel extends JPanel {
     public static final Color[] userColors = new Color[]{Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.CYAN, Color.MAGENTA};
     private Timer programmingTimer;
     private Timer activationPhaseTimer;
-    public static final int MAX_PROGRAMMING_TIME = 10;
+    public static final int MAX_PROGRAMMING_TIME = 30;
     public static final int ACTIVATION_PHASE_TIME = 2000;
 
     public GamePanel(Game game) {
@@ -178,7 +178,6 @@ public class GamePanel extends JPanel {
                 // performing the card and updating the robot Lives and checkpoint tokens of the user
                 // If the Again card is put in the first register, perform nothing(the logic in CardAgain) on the robot.
                 // Otherwise, perform the previous card on the robot.
-                System.out.println(currentRegisterCard.toString());
                 if ((currentRegisterCard.toString()).equals("CardAgain")) {
                     if (registerIndex != 0)
                         currentPlayer.getRegisterArea().getCard(registerIndex - 1).actsOn(currentPlayer.getRobot());

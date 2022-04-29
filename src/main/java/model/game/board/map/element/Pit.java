@@ -1,12 +1,12 @@
 package model.game.board.map.element;
 
 import content.TileImageEnum;
-import model.Game;
 import model.game.board.map.Position;
 
-public class Pit extends Tile implements Obstacle{
+public class Pit extends Tile implements Interactive {
 
-    public Pit() { super();
+    public Pit() {
+        super();
         this.tileImageEnum = TileImageEnum.PIT;
     }
 

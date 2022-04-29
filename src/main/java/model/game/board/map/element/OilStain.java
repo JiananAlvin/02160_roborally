@@ -3,7 +3,7 @@ package model.game.board.map.element;
 import content.TileImageEnum;
 import model.game.board.map.Position;
 
-public class OilStain extends Tile implements Obstacle {
+public class OilStain extends Tile implements Interactive {
     private int damage = 2;
 
     public OilStain() {
@@ -21,7 +21,6 @@ public class OilStain extends Tile implements Obstacle {
         super(x, y);
         this.tileImageEnum = TileImageEnum.OIL_STAIN;
     }
-
 
     public void robotInteraction(Robot r) {
         r.takeDamage(this.damage);

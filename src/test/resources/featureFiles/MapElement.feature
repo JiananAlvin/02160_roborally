@@ -25,7 +25,7 @@ Feature:
 
   Scenario Outline: As a robot, I want to change my direction according to the input angle value
     Given a robot was facing "<previous_orientation>"
-    When the robot changes its orientation by using the programming card "<programming_card>"
+    When perform the programming card "<programming_card>" on the robot
     Then the robot is now facing "<new_orientation>"
     Examples:
       | previous_orientation | programming_card | new_orientation |
@@ -91,7 +91,7 @@ Feature:
     And a robot "<robot_name>" with position "<row>" "<col>"
     And robot has "<orientation>" orientation
     And robot has "<lives>" lives
-    When robot lands on a static gear
+    When robot lands on an oil stain
     Then the robot now has "<lives1>" lives
     Examples:
       | map_name     | robot_name | row | col | orientation | lives | lives1 |
