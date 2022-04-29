@@ -216,6 +216,7 @@ Feature:
       | ZOOM_BOT   | 4   | 0   | E           | STARTER  |
       | ZOOM_BOT   | 2   | 1   | E           | STARTER  |
       | ZOOM_BOT   | 3   | 5   | W           | STARTER  |
+
   Scenario Outline: Robot pushes another robot when move back is executed
     Given there is a game with map "<map_name>"
     And a robot "<robot_name>" with position "<row>" "<col>"
@@ -228,8 +229,7 @@ Feature:
       | ZOOM_BOT   | 1   | 1   | W           | STARTER  |
       | ZOOM_BOT   | 3   | 4   | W           | STARTER  |
       | ZOOM_BOT   | 6   | 3   | E           | STARTER  |
-      | ZOOM_BOT   | 3   | 5   | W           | STARTER  |
-
+      | ZOOM_BOT   | 5   | 8   | W           | STARTER  |
 
 
   Scenario Outline: Robot shoots a laser at another robot
@@ -243,5 +243,5 @@ Feature:
       | STARTER  | ZOOM_BOT   | 6   | 0   | E           | HAMMER_BOT  | 6    | 1    | N            | HULK_X90    | 6    | 2    | N            | 5            | 4            | 5            |
       | STARTER  | ZOOM_BOT   | 6   | 0   | E           | HAMMER_BOT  | 6    | 1    | W            | HULK_X90    | 6    | 2    | W            | 4            | 3            | 5            |
 #      There is a wall between robot1 and robot2
-      | STARTER  | ZOOM_BOT   | 2   | 0   | E           | HAMMER_BOT  | 2    | 2    | W            | HULK_X90    | 2    | 3    | W            | 5            | 4           | 5            |
-      | STARTER  | ZOOM_BOT   | 1   | 1   | S           | HAMMER_BOT  | 2    | 1    | N            | HULK_X90    | 3    | 1    | N            | 5            | 4           | 5            |
+      | STARTER  | ZOOM_BOT   | 2   | 0   | E           | HAMMER_BOT  | 2    | 2    | W            | HULK_X90    | 2    | 3    | W            | 5            | 4            | 5            |
+      | STARTER  | ZOOM_BOT   | 1   | 1   | S           | HAMMER_BOT  | 2    | 1    | N            | HULK_X90    | 3    | 1    | N            | 5            | 4            | 5            |

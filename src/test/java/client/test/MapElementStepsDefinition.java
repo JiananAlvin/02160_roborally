@@ -343,9 +343,9 @@ public class MapElementStepsDefinition {
     @Then("fist robot pushes the second robot scenario {int}")
     public void fistRobotPushesTheSecondRobot(int int1) {
         assertEquals(this.robot.getPosition(), this.initialRobot2Position);
-        if(int1  == 1) {
+        if (int1 == 1) {
             assertEquals(this.robot1.getPosition(), Movement.calculateNewPosition(this.robot.getOrientation(), this.robot.getPosition(), 1));
-        } else {
+        } else if (int1 == 2) {
             assertEquals(this.robot1.getPosition(), Movement.calculateNewPosition(this.robot.getOrientation(), this.robot.getPosition(), -1));
         }
     }
@@ -380,7 +380,7 @@ public class MapElementStepsDefinition {
         assertEquals(arg1, this.game.getParticipants().get(1).getRobot().getLives());
         assertEquals(arg2, this.game.getParticipants().get(2).getRobot().getLives());
     }
-
+//-------------------------------------------------------------------------
     @When("first robot moves back and there is a robot in the position")
     public void firstRobotMovesBackAndThereIsARobotInThePosition() {
         Position newPos = Movement.calculateNewPosition(this.robot.getOrientation(), this.robot.getPosition(), -1);
