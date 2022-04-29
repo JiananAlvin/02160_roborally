@@ -6,13 +6,13 @@ import content.OrientationEnum;
 import model.game.board.map.Position;
 
 @Data
-public abstract class Tile {
+public class Tile {
 
     private Position position;
     protected TileImageEnum tileImageEnum;
 
     public Tile() {
-        this.position = new Position();
+        this.position = new Position(0,0);
     }
 
     public Tile(Position position) {

@@ -6,12 +6,6 @@ import model.game.board.map.Position;
 public class OilStain extends Tile implements Interactive {
     private int damage = 2;
 
-    public OilStain() {
-        super(new Position());
-        this.tileImageEnum = TileImageEnum.OIL_STAIN;
-
-    }
-
     public OilStain(Position position) {
         super(position);
         this.tileImageEnum = TileImageEnum.OIL_STAIN;

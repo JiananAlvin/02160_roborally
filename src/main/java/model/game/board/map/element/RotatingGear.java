@@ -21,6 +21,14 @@ public class RotatingGear extends Tile implements Interactive {
         init(isClockwise);
     }
 
+    private void init(boolean isClockwise) {
+        this.isClockwise = isClockwise;
+        if (isClockwise)
+            this.tileImageEnum = TileImageEnum.ROTATING_GEAR_CLOCKWISE;
+        else
+            this.tileImageEnum = TileImageEnum.ROTATING_GEAR_COUNTERCLOCKWISE;
+    }
+
     public void robotInteraction(Robot r) {
         OrientationEnum orientation;
         if (this.isClockwise)
@@ -28,13 +36,5 @@ public class RotatingGear extends Tile implements Interactive {
         else
             orientation = OrientationEnum.matchOrientation((r.getOrientation().getAngle() + 270) % 360);
         r.setOrientation(orientation);
-    }
-
-    private void init(boolean isClockwise) {
-        this.isClockwise = isClockwise;
-        if (isClockwise)
-            this.tileImageEnum = TileImageEnum.ROTATING_GEAR_CLOCKWISE;
-        else
-            this.tileImageEnum = TileImageEnum.ROTATING_GEAR_COUNTERCLOCKWISE;
     }
 }

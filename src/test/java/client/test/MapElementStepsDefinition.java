@@ -13,9 +13,8 @@ import model.game.board.map.GameMap;
 import content.OrientationEnum;
 import model.game.board.map.Position;
 import model.game.board.map.element.*;
-import model.game.card.Card;
-import model.game.card.programming.*;
-import model.game.card.programming.behaviour.Movement;
+import model.game.card.*;
+import model.game.card.behaviour.Movement;
 import model.game.proxy.PhaseManager;
 
 import java.io.IOException;
@@ -59,9 +58,9 @@ public class MapElementStepsDefinition {
 
     @When("robotI, robotII and robotIII are placed in \\({string},{string}), \\({string},{string}),\\({string},{string}) respectively")
     public void robotiRobotIIAndRobotIIIArePlacedInRespectively(String arg0, String arg1, String arg2, String arg3, String arg4, String arg5) {
-        this.p1.getRobot().setInitialPosition(Integer.parseInt(arg0), Integer.parseInt(arg1));
-        this.p2.getRobot().setInitialPosition(Integer.parseInt(arg2), Integer.parseInt(arg3));
-        this.p3.getRobot().setInitialPosition(Integer.parseInt(arg4), Integer.parseInt(arg5));
+        this.p1.getRobot().setPosition(Integer.parseInt(arg0), Integer.parseInt(arg1));
+        this.p2.getRobot().setPosition(Integer.parseInt(arg2), Integer.parseInt(arg3));
+        this.p3.getRobot().setPosition(Integer.parseInt(arg4), Integer.parseInt(arg5));
     }
 
     @Then("the priority of these players is {string},{string},{string}")
@@ -80,7 +79,7 @@ public class MapElementStepsDefinition {
 
     @When("the robot gets an initial position randomly")
     public void the_robot_gets_an_initial_position_randomly() {
-        this.robot.setInitialPosition(0, 0);
+        this.robot.setPosition(0, 0);
         // TODO:
         this.robot.setOnBoard(true);
     }
@@ -133,7 +132,7 @@ public class MapElementStepsDefinition {
     @And("a robot {string} with position {string} {string}")
     public void aRobotWithPosition(String arg0, String arg1, String arg2) {
         this.robot = new Robot(RobotNameEnum.valueOf(arg0));
-        this.robot.setInitialPosition(Integer.parseInt(arg1), Integer.parseInt(arg2));
+        this.robot.setPosition(Integer.parseInt(arg1), Integer.parseInt(arg2));
         this.initialRobotPosition = this.robot.getPosition();
         this.game.setParticipants(new ArrayList<>(){
             {

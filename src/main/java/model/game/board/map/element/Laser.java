@@ -25,7 +25,7 @@ public class Laser extends Tile implements Interactive {
         else this.tileImageEnum = TileImageEnum.LASERHORIZONTAL;
     }
 
-    public void robotInteraction(Robot r){
+    public void robotInteraction(Robot r) {
         r.takeDamage(this.damage);
     }
 }

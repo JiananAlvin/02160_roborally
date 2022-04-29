@@ -1,4 +1,4 @@
-package model.game.card.programming.behaviour;
+package model.game.card.behaviour;
 
 import content.OrientationEnum;
 import model.game.board.map.Position;

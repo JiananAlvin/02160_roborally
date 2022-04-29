@@ -3,9 +3,8 @@ package model.game.board.mat;
 import java.util.ArrayList;
 
 import lombok.Data;
-import model.game.card.programming.*;
+import model.game.card.*;
 import model.game.Player;
-import model.game.card.Card;
 
 import java.util.Collections;
 

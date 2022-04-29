@@ -3,7 +3,8 @@ package model.game.board.map.element;
 import content.TileImageEnum;
 import model.game.board.map.Position;
 
-public class StartPoint extends Tile{
+public class StartPoint extends Tile {
+
 
     public StartPoint(Position position) {
         super(position);
@@ -14,4 +15,5 @@ public class StartPoint extends Tile{
         super(x, y);
         this.tileImageEnum = TileImageEnum.STARTPOINT;
     }
+
 }

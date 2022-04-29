@@ -1,10 +1,9 @@
-package model.game.card.programming;
+package model.game.card;
 
 import content.OrientationEnum;
 import model.game.board.map.Position;
 import model.game.board.map.element.Robot;
-import model.game.card.Card;
-import model.game.card.programming.behaviour.Movement;
+import model.game.card.behaviour.Movement;
 
 public class CardMove1 extends Card {
     public CardMove1 actsOn(Robot robot) {

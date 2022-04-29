@@ -6,9 +6,7 @@ import model.Game;
 import content.OrientationEnum;
 import model.game.Player;
 import model.game.board.map.Position;
-import model.game.card.Card;
-import model.game.card.programming.CardMove1;
-import model.game.card.programming.behaviour.Movement;
+import model.game.card.behaviour.Movement;
 
 import java.lang.Math;
 import java.util.ArrayList;
@@ -36,13 +34,9 @@ public class Robot {
         this.orientation = OrientationEnum.E;
     }
 
-    public void setInitialPosition(int row, int col) {
-        this.position.setRow(row);
-        this.position.setCol(col);
-    }
 
-    public void setInitialPosition(Position position) {
-        this.position = position;
+    public void setPosition(int row, int col) {
+        this.position = new Position(row, col);
     }
 
     public boolean tryMove(Position newPos) {
@@ -66,7 +60,7 @@ public class Robot {
         }
     }
 
-    private void push(Robot robotAtPos) {
+    public void push(Robot robotAtPos) {
         robotAtPos.tryMove(Movement.calculateNewPosition(this.getOrientation(), robotAtPos.getPosition(), 1));
     }
 
@@ -108,7 +102,6 @@ public class Robot {
         if (this.getPosition().getRow() > maxRow || this.getPosition().getCol() > maxCol) {
             return false;
         } else return this.getPosition().getRow() >= 0 && this.getPosition().getCol() >= 0;
-
     }
 
     public void setLives(int lives) {
@@ -116,21 +109,12 @@ public class Robot {
             this.lives = lives;
     }
 
-
     public void checkIn(CheckPoint checkPoint) {
         this.checkpoints.add(checkPoint);
     }
 
     public void restoreCheckpoints() {
         this.checkpoints = new ArrayList<CheckPoint>();
-    }
-
-    public void robotInteraction(Robot robot) {
-        OrientationEnum initialOrientation = this.orientation;
-        this.orientation = robot.orientation;
-        Card c = new CardMove1();
-        c.actsOn(this);
-        this.orientation = initialOrientation;
     }
 
     public void shoot(Game game) {

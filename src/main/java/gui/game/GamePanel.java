@@ -250,7 +250,7 @@ public class GamePanel extends JPanel {
 
     @SneakyThrows
     private Card createCardInstance(String className) {
-        final String PATH_TO_CARD_CLASS = "model.game.card.programming.";
+        final String PATH_TO_CARD_CLASS = "model.game.card.";
         Class<?> clz = Class.forName(PATH_TO_CARD_CLASS + className);
         return (Card) clz.getDeclaredConstructor().newInstance();
     }

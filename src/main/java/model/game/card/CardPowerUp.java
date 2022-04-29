@@ -1,4 +1,4 @@
-package model.game.card.programming;
+package model.game.card;
 
 import model.game.board.map.element.Robot;
 import model.game.card.Card;

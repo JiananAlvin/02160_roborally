@@ -143,11 +143,11 @@ public class Game {
             Robot robot = new Robot(RobotNameEnum.valueOf((String) robotInfo.get(RobotController.RESPONSE_ROBOT_NAME)));
             try {
                 // if JSONObject["x"] not found, it means there is no initial position
-                int x = (int) robotInfo.get(RobotController.RESPONSE_ROBOT_XCOORD);
-                int y = (int) robotInfo.get(RobotController.RESPONSE_ROBOT_YCOORD);
-                robot.setInitialPosition(x, y);
+                int row = (int) robotInfo.get(RobotController.RESPONSE_ROBOT_XCOORD);
+                int col = (int) robotInfo.get(RobotController.RESPONSE_ROBOT_YCOORD);
+                robot.setPosition(row, col);
             } catch (Exception e) {
-                robot.setInitialPosition(0, 0);
+                robot.setPosition(0, 0);
             }
             this.participants.add(new Player(userName.toString(), robot));
         }
@@ -161,7 +161,7 @@ public class Game {
         ArrayList<StartPoint> startPoints = new ArrayList<>(this.gameMap.getStartPoints());
         for (Player player : this.participants) {
             StartPoint assignedStartPoint = startPoints.remove(new Random().nextInt(startPoints.size()));
-            player.getRobot().setInitialPosition(assignedStartPoint.getPosition());
+            player.getRobot().setPosition(assignedStartPoint.getPosition());
             new RobotController().updatePosition(player.getName(), player.getRobot().getPosition().getRow(), player.getRobot().getPosition().getCol());
         }
     }
