@@ -10,7 +10,7 @@ public class CardBackUp extends Card {
         OrientationEnum robotOrientation = robot.getOrientation();
         Position currentPos = robot.getPosition();
         Position newPos = Movement.calculateNewPosition(robotOrientation, currentPos, -1);
-        robot.tryMove(newPos);
+        robot.tryMove(newPos,-1);
         return this;
     }
 }

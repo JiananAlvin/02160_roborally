@@ -6,7 +6,7 @@ import model.game.card.Card;
 
 public class CardUTurn extends Card {
     public Card actsOn(Robot robot) {
-        robot.setOrientation(robot.getOrientation().getUTurn());
+        robot.setOrientation(robot.getOrientation().getOpposite());
         return this;
     }
 }

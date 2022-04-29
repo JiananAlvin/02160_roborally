@@ -49,19 +49,19 @@ public class ConveyorBelt extends Tile implements Interactive {
     }
 
     public void robotInteraction(Robot r) {
-        System.out.println("belt" + this.orientation.getAngle());
-        System.out.println("ro" + r.getOrientation().getAngle());
-        if (this.orientation.getAngle() == r.getOrientation().getAngle()) {
-            Position newPos = Movement.calculateNewPosition(r.getOrientation(), r.getPosition(), this.distance);
-            if (Game.validateMovement(r, newPos.getRow(), newPos.getCol())) {
-                Robot robotAtPos = Game.getRobotAtPosition(newPos);
-                if (robotAtPos != null) {
-                    // TODO: push!!!!
-                    r.push(robotAtPos);
-                }
-            } else {
-                r.setPosition(newPos);
-            }
-        }
+//        System.out.println("belt" + this.orientation.getAngle());
+//        System.out.println("ro" + r.getOrientation().getAngle());
+//        if (this.orientation.getAngle() == r.getOrientation().getAngle()) {
+//            Position newPos = Movement.calculateNewPosition(r.getOrientation(), r.getPosition(), this.distance);
+//            if (Game.validateMovement(r, newPos.getRow(), newPos.getCol())) {
+//                Robot robotAtPos = Game.getRobotAtPosition(newPos);
+//                if (robotAtPos != null) {
+//                    // TODO: push!!!!
+//                    r.push(robotAtPos);
+//                }
+//            } else {
+//                r.setPosition(newPos);
+//            }
+//        }
     }
 }

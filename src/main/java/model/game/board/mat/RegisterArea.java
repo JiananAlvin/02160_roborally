@@ -14,7 +14,7 @@ import java.util.*;
 public class RegisterArea {
     private ArrayList<Card> registers;
     public static final int REGISTER_QUEUE_SIZE = 5;
-    private static final String FULLY_QUALIFIED_NAME_OF_PROGRAMMING = "model.game.card.programming.";
+    private static final String FULLY_QUALIFIED_NAME_OF_PROGRAMMING = "model.game.card.";
 
     public RegisterArea() {
         this.registers = new ArrayList<>();

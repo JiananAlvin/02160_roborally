@@ -28,14 +28,14 @@ public enum OrientationEnum {
     }
 
     public OrientationEnum getRight() {
-        return matchOrientation((this.angle+90)%360);
+        return matchOrientation((this.angle + 90) % 360);
     }
 
     public OrientationEnum getLeft() {
-        return matchOrientation((this.angle+270)%360);
+        return matchOrientation((this.angle + 270) % 360);
     }
 
-    public OrientationEnum getUTurn() {
-        return matchOrientation((this.angle+180)%360);
+    public OrientationEnum getOpposite() {
+        return matchOrientation((this.angle + 180) % 360);
     }
 }

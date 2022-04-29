@@ -40,32 +40,30 @@ public class Game {
         this.participants = new ArrayList<>();
     }
 
-    public static boolean validateMovement(Robot r, int row, int col) {
-        boolean flag = false;
-        if (r.getPosition().getRow() == 2) {
-            flag = true;
-        }
+    public static boolean validateMovement(Robot r, int row, int col, int movement) {
         if (!(row >= 0 && row < gameMap.getHeight() && col >= 0 && col < gameMap.getWidth())) {
             r.takeDamage(5);
             return false;
         }
         Tile tile = gameMap.getTileWithPosition(r.getPosition());
         if (tile instanceof Wall) { // current position is a wall
-            if (flag) System.out.println("wall current position?????");
-            return !((Wall) tile).getOrientation().equals(r.getOrientation());
+            if (movement == 1) {
+                return !((Wall) tile).getOrientation().equals(r.getOrientation());
+            } else if (movement == -1) {
+                return !((Wall) tile).getOrientation().getOpposite().equals(r.getOrientation());
+            }
         }
         tile = gameMap.getTileWithPosition(new Position(row, col));
 
         if (tile instanceof Wall) {  // next position is wall
             OrientationEnum tileOrientation = ((Wall) tile).getOrientation();
-            if (flag) {
-                System.out.println("wall next position?????");
-                System.out.println("tileOrientation: " + tileOrientation);
-                System.out.println("left orientation: " + r.getOrientation().getLeft());
-                System.out.println("right orientation: " + r.getOrientation().getRight());
+            if (movement == 1) {
+                return tileOrientation.equals(r.getOrientation().getLeft()) || tileOrientation.equals(r.getOrientation().getRight())
+                        || (tileOrientation.equals(r.getOrientation()));
+            } else if (movement == -1) {
+                return tileOrientation.equals(r.getOrientation().getLeft()) || tileOrientation.equals(r.getOrientation().getRight())
+                        || (tileOrientation.equals(r.getOrientation().getOpposite()));
             }
-            return (tileOrientation.equals(r.getOrientation().getLeft()) || tileOrientation.equals(r.getOrientation().getRight()))
-                    || (tileOrientation.equals(r.getOrientation()));
         }
         return true;
     }
