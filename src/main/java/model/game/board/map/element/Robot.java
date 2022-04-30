@@ -1,6 +1,7 @@
 package model.game.board.map.element;
 
 import content.RobotNameEnum;
+import io.cucumber.java.bs.A;
 import lombok.Data;
 import model.Game;
 import content.OrientationEnum;
@@ -26,6 +27,7 @@ public class Robot {
         this.onBoard = false;
         this.position = new Position();
         this.orientation = OrientationEnum.E;
+        this.checkpoints = new ArrayList<>();
     }
 
     public Robot(RobotNameEnum robotName, int row, int col) {
@@ -33,6 +35,7 @@ public class Robot {
         this.onBoard = false;
         this.position = new Position(row, col);
         this.orientation = OrientationEnum.E;
+        this.checkpoints = new ArrayList<>();
     }
 
 
@@ -115,9 +118,15 @@ public class Robot {
             this.lives = lives;
     }
 
-    public void checkIn(CheckPoint checkPoint) {
-        this.checkpoints.add(checkPoint);
+    public boolean takeTokens() {
+        CheckPoint nextCheckPoint = GameMap.getInstance().getCheckPoints().get(this.checkpoints.size());
+        if (this.position.equals(nextCheckPoint.getPosition())) {
+            this.checkpoints.add(nextCheckPoint);
+            return true;// successfully add new token
+        }
+        return false; // fail to add new token
     }
+
 
     public void restoreCheckpoints() {
         this.checkpoints = new ArrayList<CheckPoint>();

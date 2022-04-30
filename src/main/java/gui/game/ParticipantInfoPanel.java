@@ -45,7 +45,7 @@ public class ParticipantInfoPanel extends JPanel {
         this.lblRobot.setIcon(iconRobot);
         this.lblRobot.setBorder(BorderFactory.createLineBorder(Color.gray));
         this.registers = new JLabel[5];
-        this.labelTokenNumber = new JLabel("Token:" + participant.getObtainedCheckpointTokens().size());
+        this.labelTokenNumber = new JLabel("Token:" + participant.getRobot().getCheckpoints().size());
         this.labelLive = new JLabel("Lives:" + participant.getRobot().getLives());
         this.labelUserName = new JLabel(participant.getName());
         this.labelRobotName = new JLabel(participant.getRobot().getName().replace("_", " "));

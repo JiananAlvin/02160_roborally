@@ -68,7 +68,7 @@ public class MatPanel extends JPanel {
         Icon iconCheckpointToken = new ImageIcon(new ImageIcon(PATH_TO_DECORATION_ICONS + "checkpoint_tokens.png").getImage().getScaledInstance(90, 90, Image.SCALE_DEFAULT));
         this.lblCheckpointToken.setIcon(iconCheckpointToken);
         this.lblInfo.setFont(new Font("Default", Font.BOLD, 15));
-        this.lblCheckpointToken.setText("<html><br/>" + game.getUser().getObtainedCheckpointTokens().size() + "</html>");
+        this.lblCheckpointToken.setText("<html><br/>" + game.getUser().getRobot().getCheckpoints().size() + "</html>");
         this.lblCheckpointToken.setHorizontalTextPosition(JLabel.CENTER);
         this.lblCheckpointToken.setVerticalTextPosition(JLabel.CENTER);
         this.lblCheckpointToken.setForeground(Color.WHITE);

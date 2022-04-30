@@ -71,18 +71,18 @@ Feature:
       | SPIN_BOT   | 3     | 1            | 2           |
 
 
-  Scenario Outline: The game status is checked every time a checkpoint token is taken by a player
-    Given "<playerA>" and "<playerB>" are in a game with the map ADVANCED
+  Scenario Outline: The game status is checked every time a checkpoint token is taken by a player on map
+    Given "<playerA>" and "<playerB>" are in a game with the map "<mapName>"
     And playerA's robot has taken checkpoint tokens from all previous checkpoints numerically except <point_number>
     When playerA's turn ends and his robot stops on the checkpoint <point_number>
     Then  playerA gets a checkpoint token from this checkpoint successfully and now has <point_number> checkpoint tokens
     And this game checks game status and now the game status is "<game_status>"
     Examples:
-      | playerA | playerB | point_number | game_status |
-      | Jianan  | Wenjie  | 2            | unfinished  |
-      | Anna    | Raul    | 3            | finished    |
-      | Ion     | Durdija | 1            | unfinished  |
-
+      | playerA | playerB | point_number | game_status | mapName  |
+      | Jianan  | Wenjie  | 2            | unfinished  | ADVANCED |
+      | Anna    | Raul    | 3            | finished    | ADVANCED |
+      | Ion     | Durdija | 1            | unfinished  | ADVANCED |
+      | Ion     | Durdija | 1            | finished    | STARTER  |
 
 #    Robot interaction with elements:
 #    In the following scenarios by "land on" means that robot moves forward according to the orientation
