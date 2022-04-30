@@ -48,20 +48,21 @@ public class ConveyorBelt extends Tile implements Interactive {
         }
     }
 
+    /**
+     * conveyor belt: (1) The green one transmits robot to the next tile directly.
+     * (2) When robot moves in the same direction as the blue conveyor belt, it moves twice fast.
+     * @param r A robot
+     */
     public void robotInteraction(Robot r) {
-//        System.out.println("belt" + this.orientation.getAngle());
-//        System.out.println("ro" + r.getOrientation().getAngle());
-//        if (this.orientation.getAngle() == r.getOrientation().getAngle()) {
-//            Position newPos = Movement.calculateNewPosition(r.getOrientation(), r.getPosition(), this.distance);
-//            if (Game.validateMovement(r, newPos.getRow(), newPos.getCol())) {
-//                Robot robotAtPos = Game.getRobotAtPosition(newPos);
-//                if (robotAtPos != null) {
-//                    // TODO: push!!!!
-//                    r.push(robotAtPos);
-//                }
-//            } else {
-//                r.setPosition(newPos);
-//            }
-//        }
+        if (this.orientation.getAngle() == r.getOrientation().getAngle()) {
+            Position newPos = Movement.calculateNewPosition(r.getOrientation(), r.getPosition(), 1);
+            if (Movement.validateMovement(r, newPos.getRow(), newPos.getCol(), 1)) {
+                Robot robotAtPos = Game.getInstance().getRobotAtPosition(newPos);
+                if (robotAtPos != null) {
+                    r.push(robotAtPos, 1);
+                }
+                r.setPosition(newPos);
+            }
+        }
     }
 }

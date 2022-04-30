@@ -48,20 +48,20 @@ public class WaitingPanel extends JPanel {
             this.add(lblRoomNumber);
             this.add(btStart);
             this.add(btQuit);
-            btQuit.addActionListener(arg0 -> {
+            btQuit.addActionListener(e -> {
                 // delete room and return to the RoomPanel
                 RoomController roomController = new RoomController();
                 roomController.deleteRoom(parseInt(roomNumberStr));
 
             });
 
-            btStart.addActionListener(arg0 -> {
+            btStart.addActionListener(e -> {
                 int roomNumber = parseInt(roomNumberStr);
                 JSONObject roomInfoResponse = new RoomController().roomInfo(roomNumber);
                 try {
                     startGamePanel(roomNumber, roomInfoResponse, userName, frame, signal);
-                } catch (IOException e) {
-                    e.printStackTrace();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
                 }
             });
         } else {
@@ -79,7 +79,7 @@ public class WaitingPanel extends JPanel {
             this.add(btQuit);
             this.add(lblTip);
 
-            btQuit.addActionListener(arg0 -> {
+            btQuit.addActionListener(e -> {
                 // exit room and return to the RoomPanel
                 UserController userController = new UserController();
                 userController.exitRoom(userName);
@@ -165,10 +165,7 @@ public class WaitingPanel extends JPanel {
         if (signal.equals("owner")) {
             new RoomController().updateStatus(roomNumber, "START");
         }
-//                JSONObject roomInfoResponse = new RoomController().roomInfo(Integer.parseInt(roomNumberStr));
         String mapName = roomInfoResponse.getString(RoomController.RESPONSE_MAP_NAME);
-//                int roomNumber = roomInfoResponse.getInt(RoomController.RESPONSE_ROOM_NUMBER);
-        String robotName = (String) new RobotController().getRobotInfo(userName).get(RobotController.RESPONSE_ROBOT_NAME);
         Game.getInstance().init(userName, new Room(roomNumber), MapNameEnum.valueOf(mapName), roomInfoResponse);
         SwingUtilities.invokeLater(() -> GamePanel.init(frame));
     }

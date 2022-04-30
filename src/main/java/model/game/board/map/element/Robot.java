@@ -35,41 +35,36 @@ public class Robot {
         this.orientation = OrientationEnum.E;
     }
 
-
     public void setPosition(int row, int col) {
         this.position = new Position(row, col);
     }
 
-    public boolean tryMove(Position newPos, int movement) {
-        if (Game.validateMovement(this, newPos.getRow(), newPos.getCol(), movement)) {
+    public void tryMove(Position newPos, int movement) {
+        if (Movement.validateMovement(this, newPos.getRow(), newPos.getCol(), movement)) {
             this.move(newPos, movement);
-            return true;
         }
-        return false;
     }
 
     public void move(Position newPos, int movement) {
-        Tile t = GameMap.getInstance().getTileWithPosition(newPos);
+        Tile tile = GameMap.getInstance().getTileAtPosition(newPos);
         Robot robotAtPos = Game.getInstance().getRobotAtPosition(newPos);
         if (robotAtPos != null) {
             this.push(robotAtPos, movement);
         }
         this.position = newPos;
-        if (t instanceof Interactive) {
-            Interactive o = (Interactive) t;
-            o.robotInteraction(this);
+        if (tile instanceof Interactive) {
+            Interactive element = (Interactive) tile;
+            element.robotInteraction(this);
         }
     }
 
-
-    private void push(Robot robotAtPos, int movement) {
+    public void push(Robot robotAtPos, int movement) {
         if (movement == 1) {
             robotAtPos.tryMove(Movement.calculateNewPosition(this.getOrientation(), robotAtPos.getPosition(), 1), 1);
         } else if (movement == -1) {
             robotAtPos.tryMove(Movement.calculateNewPosition(this.getOrientation().getOpposite(), robotAtPos.getPosition(), 1), -1);
         }
     }
-
 
     public int distanceToAntenna() {
         return Math.abs(this.position.getRow() - Antenna.getInstance().getPosition().getRow()) + Math.abs(this.position.getCol() - Antenna.getInstance().getPosition().getCol());
@@ -103,12 +98,6 @@ public class Robot {
         // clean register
 
     }
-
-//    public boolean imInsideBoard(int maxRow, int maxCol) {
-//        if (this.getPosition().getRow() > maxRow || this.getPosition().getCol() > maxCol) {
-//            return false;
-//        } else return this.getPosition().getRow() >= 0 && this.getPosition().getCol() >= 0;
-//    }
 
     public void setLives(int lives) {
         if (lives <= 5)

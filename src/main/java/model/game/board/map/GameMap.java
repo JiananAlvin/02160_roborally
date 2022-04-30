@@ -29,9 +29,7 @@ public class GameMap {
         INSTANCE = new GameMap();
     }
 
-    private GameMap() {
-
-    }
+    private GameMap() {}
 
     private String mapName;
     private Tile[][] content;
@@ -79,7 +77,7 @@ public class GameMap {
         return this.rebootPoints.get(randomSeed);
     }
 
-    public Tile getTileWithPosition(Position position) {
+    public Tile getTileAtPosition(Position position) {
         return content[position.getRow()][position.getCol()];
     }
 

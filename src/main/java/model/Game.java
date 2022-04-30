@@ -33,6 +33,9 @@ public class Game {
         INSTANCE = new Game();
     }
 
+
+    private Game() {}
+
     /**
      * @ Player user: the user of this application
      * @ ArrayList<Player> participants: the participants in this game
@@ -49,38 +52,6 @@ public class Game {
     private int currentRegisterNum;
     private Player winner;
     private int currentPlayerIndex;
-
-    private Game() {
-
-    }
-
-    public static boolean validateMovement(Robot r, int row, int col, int movement) {
-        if (!(row >= 0 && row < GameMap.getInstance().getHeight() && col >= 0 && col < GameMap.getInstance().getWidth())) {
-            r.takeDamage(5);
-            return false;
-        }
-        Tile tile = GameMap.getInstance().getTileWithPosition(r.getPosition());
-        if (tile instanceof Wall) { // current position is a wall
-            if (movement == 1) {
-                return !((Wall) tile).getOrientation().equals(r.getOrientation());
-            } else if (movement == -1) {
-                return !((Wall) tile).getOrientation().getOpposite().equals(r.getOrientation());
-            }
-        }
-        tile = GameMap.getInstance().getTileWithPosition(new Position(row, col));
-
-        if (tile instanceof Wall) {  // next position is wall
-            OrientationEnum tileOrientation = ((Wall) tile).getOrientation();
-            if (movement == 1) {
-                return tileOrientation.equals(r.getOrientation().getLeft()) || tileOrientation.equals(r.getOrientation().getRight())
-                        || (tileOrientation.equals(r.getOrientation()));
-            } else if (movement == -1) {
-                return tileOrientation.equals(r.getOrientation().getLeft()) || tileOrientation.equals(r.getOrientation().getRight())
-                        || (tileOrientation.equals(r.getOrientation().getOpposite()));
-            }
-        }
-        return true;
-    }
 
     public Player getUser() {
         for (Player participant : this.participants) {
@@ -211,5 +182,4 @@ public class Game {
     public ArrayList<Player> getParticipants() {
         return this.participants;
     }
-
 }

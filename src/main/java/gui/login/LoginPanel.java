@@ -122,14 +122,6 @@ public class LoginPanel extends JPanel {
             }
         }
     }
-
-//    public static void main(String[] args) {
-//        JFrame frame = new JFrame(Application.APP_TITLE);
-//        frame.setSize(880, 400);
-//        LoginPanel loginPanel = new LoginPanel(frame);
-//        frame.add(loginPanel);
-//        frame.setVisible(true);
-//    }
 }
 
 

@@ -78,5 +78,4 @@ public class RoomPanel extends JPanel {
             frame.setVisible(true);
         });
     }
-    
 }

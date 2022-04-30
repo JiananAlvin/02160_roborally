@@ -47,21 +47,4 @@ public class BoardPanel extends JPanel {
             board[r.getPosition().getRow()][r.getPosition().getCol()].setRobot(r.getOrientation(), player);
         }
     }
-
-//    public static void main(String[] args) {
-////        CardinalPoints currentDirection = CardinalPoints.N;
-//
-//        BoardPanel board = new BoardPanel("map1");
-////        board.setRobot(initialRow, initialColumn, currentDirection);
-//
-////        ControlPanel control = new ControlPanel(board, initialRow, initialColumn, currentDirection);
-//
-//        JFrame f = new JFrame(Application.APP_TITLE);
-//        f.setLayout(new FlowLayout(FlowLayout.CENTER));
-//        f.add(board);
-////        f.add(control);
-//        f.setSize(900, 700);
-//        f.setVisible(true);
-//        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//    }
 }

@@ -146,7 +146,7 @@ public class MapElementStepsDefinition {
 
         Tile tile;
         if (GameMap.getInstance() != null) {
-            tile = GameMap.getInstance().getTileWithPosition(this.robot.getPosition());
+            tile = GameMap.getInstance().getTileAtPosition(this.robot.getPosition());
         } else {
             tile = new Blank(this.robot.getPosition());
         }
@@ -284,7 +284,7 @@ public class MapElementStepsDefinition {
 
     @Then("robot is sent to the reboot point")
     public void robotIsSentToTheRebootPoint() {
-        assertTrue(GameMap.getInstance().getTileWithPosition(this.robot.getPosition()) instanceof RebootPoint);
+        assertTrue(GameMap.getInstance().getTileAtPosition(this.robot.getPosition()) instanceof RebootPoint);
     }
 
 

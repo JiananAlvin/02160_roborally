@@ -2,20 +2,13 @@ package gui.game;
 
 import content.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import model.Game;
-import model.game.Player;
-import model.game.Room;
-import model.game.board.map.GameMap;
-import model.game.board.map.element.Robot;
 import model.game.board.mat.ProgrammingDeck;
-import server.controller.RoomController;
-import server.controller.UserController;
-
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
@@ -26,6 +19,7 @@ import javax.swing.event.TableColumnModelEvent;
 import javax.swing.event.TableColumnModelListener;
 import javax.swing.table.DefaultTableModel;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class MatPanel extends JPanel {
 
