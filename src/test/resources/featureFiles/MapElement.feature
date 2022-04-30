@@ -5,10 +5,10 @@ Feature:
     Given an antenna and three robots "<robot-name1>", "<robot-name2>" and "<robot-name3>" chosen by "<player1>", "<player2>" and "<player3>" respectively
     When robotI, robotII and robotIII are placed in ("<row1>","<col1>"), ("<row2>","<col2>"),("<row3>","<col3>") respectively
     Then the priority of these players is "<result_name1>","<result_name2>","<result_name3>"
-    Examples: # (0,4) antenna
+    Examples: # (4,0) antenna
       | player1 | player2 | player3 | robot-name1 | robot-name2 | robot-name3 | row1 | col1 | row2 | col2 | row3 | col3 | result_name1 | result_name2 | result_name3 |
       | Raul    | Simona  | Durdija | SQUASH_BOT  | ZOOM_BOT    | HAMMER_BOT  | 5    | 3    | 7    | 5    | 12   | 4    | Raul         | Simona       | Durdija      |
-      | Wenjie  | Anna    | Ion     | SQUASH_BOT  | ZOOM_BOT    | HAMMER_BOT  | 5    | 3    | 5    | 5    | 12   | 4    | Anna         | Wenjie       | Ion          |
+      | Wenjie  | Anna    | Ion     | SQUASH_BOT  | ZOOM_BOT    | HAMMER_BOT  | 5    | 3    | 5    | 5    | 12   | 4    | Wenjie         | Anna       | Ion          |
 
  #####################             ROBOT SCENARIOS          #######################################
   Scenario Outline: A robot gets an initial position
@@ -55,7 +55,7 @@ Feature:
       | SQUASH_BOT  | 1   | 1   | N           | 1        | 0            | 1            | BEGINNER |
       | ZOOM_BOT    | 3   | 0   | E           | 1        | 3            | 1            | BEGINNER |
       | HAMMER_BOT  | 1   | 1   | E           | 2        | 1            | 3            | BEGINNER |
-      | TRUNDLE_BOT | 1   | 1   | E           | 3        | 1            | 4            | BEGINNER |
+      | TRUNDLE_BOT | 2   | 2   | E           | 3        | 2            | 5            | BEGINNER |
       | TRUNDLE_BOT | 1   | 1   | W           | -1       | 1            | 2            | BEGINNER |
 
 
@@ -216,6 +216,8 @@ Feature:
       | ZOOM_BOT   | 4   | 0   | E           | STARTER  |
       | ZOOM_BOT   | 2   | 1   | E           | STARTER  |
       | ZOOM_BOT   | 3   | 5   | W           | STARTER  |
+      | ZOOM_BOT   | 6   | 2   | N           | STARTER  |
+
 
   Scenario Outline: Robot pushes another robot when move back is executed
     Given there is a game with map "<map_name>"

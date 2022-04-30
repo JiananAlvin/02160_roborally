@@ -10,9 +10,8 @@ public class Charger extends Tile implements Interactive {
         this.tileImageEnum = TileImageEnum.CHARGER;
     }
 
-    public Charger(Integer x, Integer y) {
-        super(x, y);
-        this.tileImageEnum = TileImageEnum.CHARGER;
+    public Charger(Integer row, Integer col) {
+        this(new Position(row, col));
     }
 
     @Override

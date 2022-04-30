@@ -13,8 +13,7 @@ public class Blank extends Tile {
         this.tileImageEnum = TileImageEnum.BLANK;
     }
 
-    public Blank(Integer x, Integer y) {
-        super(x, y);
-        this.tileImageEnum = TileImageEnum.BLANK;
+    public Blank(Integer row, Integer col) {
+        this(new Position(row, col));
     }
 }

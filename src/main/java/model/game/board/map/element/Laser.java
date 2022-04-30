@@ -14,9 +14,8 @@ public class Laser extends Tile implements Interactive {
         init(isVertical);
     }
 
-    public Laser(Integer x, Integer y, Boolean isVertical) {
-        super(x, y);
-        init(isVertical);
+    public Laser(Integer row, Integer col, Boolean isVertical) {
+        this(new Position(row, col), isVertical);
     }
 
     private void init(Boolean isVertical) {

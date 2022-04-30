@@ -19,8 +19,8 @@ public class Tile {
         this.position = position;
     }
 
-    public Tile(int x, int y) {
-        this.position = new Position(x, y);
+    public Tile(int row, int col) {
+        this.position = new Position(row, col);
     }
 }
 
