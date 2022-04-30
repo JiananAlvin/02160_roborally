@@ -15,7 +15,6 @@ import model.game.board.map.Position;
 import model.game.board.map.element.*;
 import model.game.card.*;
 import model.game.card.behaviour.Movement;
-import model.game.proxy.PhaseManager;
 import org.junit.After;
 
 import java.io.IOException;
@@ -210,8 +209,8 @@ public class MapElementStepsDefinition {
 
 
     //6.----------------------------------------------------------------
-    @Given("{string} and {string} are in a game with the map ADVANCED")
-    public void andAreInAGameWithTheMapADVANCED(String arg0, String arg1) {
+    @Given("{string} and {string} are in a game with the map {string}")
+    public void andAreInAGameWithTheMapADVANCED(String arg0, String arg1, String arg2) {
         this.p1 = new Player(arg0, new Robot(RobotNameEnum.SQUASH_BOT));
         this.p2 = new Player(arg1, new Robot(RobotNameEnum.ZOOM_BOT));
         ArrayList<Player> participants = new ArrayList<>() {
@@ -221,38 +220,38 @@ public class MapElementStepsDefinition {
             }
         };
         Game.getInstance().setParticipants(participants);
-        GameMap.getInstance().init(MapNameEnum.ADVANCED);
+        GameMap.getInstance().init(MapNameEnum.valueOf(arg2));
     }
 
     @And("playerA's robot has taken checkpoint tokens from all previous checkpoints numerically except {int}")
     public void playeraSRobotHasTakenCheckpointTokensFromAllPreviousCheckpointsNumericallyExceptPoint_number(int arg0) {
         int i = 1;
         for (CheckPoint checkPoint : GameMap.getInstance().getCheckPoints()) {
-            if (i < arg0)
-                this.p1.getObtainedCheckpointTokens().add(checkPoint);
+            if (i < arg0) {
+                this.p1.getRobot().setPosition(checkPoint.getPosition());
+                assertTrue(this.p1.getRobot().takeTokens());
+            }
             i++;
         }
-        assertEquals(arg0 - 1, this.p1.getObtainedCheckpointTokens().size());
+        assertEquals(arg0 - 1, this.p1.getRobot().getCheckpoints().size());
     }
 
     @When("playerA's turn ends and his robot stops on the checkpoint {int}")
     public void playeraSTurnEndsAndHisRobotStopsOnTheCheckpointPoint_number(int arg0) {
         this.p1.getRobot().setPosition(GameMap.getInstance().getCheckPoints().get(arg0 - 1).getPosition());
-        assertTrue(this.p1.takeToken(GameMap.getInstance().getCheckPoints().get(arg0 - 1)));
+        assertTrue(this.p1.getRobot().takeTokens());
     }
 
     @Then("playerA gets a checkpoint token from this checkpoint successfully and now has {int} checkpoint tokens")
     public void playeraGetsACheckpointTokenFromThisCheckpointSuccessfullyAndNowHasPoint_numberCheckpointTokens(int arg0) {
-        assertEquals(arg0, this.p1.getObtainedCheckpointTokens().size());
+        assertEquals(arg0, this.p1.getRobot().getCheckpoints().size());
     }
 
     @Then("this game checks game status and now the game status is {string}")
     public void thisGameChecksGameStatusAndNowTheGameStatusIs(String arg0) {
-        if (this.p1.getObtainedCheckpointTokens().size() == GameMap.getInstance().getCheckPoints().size())
-            Game.getInstance().setWinner(this.p1);
         if (arg0.equals("finished")) {
-            assertEquals(this.p1, Game.getInstance().getWinner());
-        } else assertNull(Game.getInstance().getWinner());
+            assertTrue(this.p1.checkWin());
+        } else assertFalse(this.p1.checkWin());
     }
 
 
@@ -375,7 +374,9 @@ public class MapElementStepsDefinition {
 
     @When("shooting phase starts")
     public void shootingPhaseStarts() {
-        PhaseManager.getInstance().executeRobotsShooting(Game.getInstance());
+        for (Player player1 : Game.getInstance().getParticipants()) {
+            player1.getRobot().shoot(Game.getInstance());
+        }
     }
 
     @Then("robot1 has {int} and robot2 has {int} and robot3 has {int}")

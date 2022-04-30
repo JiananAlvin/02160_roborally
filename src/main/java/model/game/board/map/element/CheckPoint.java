@@ -33,7 +33,5 @@ public class CheckPoint extends Tile {
         }
     }
 
-    public void robotInteraction(Robot robot) {
-        robot.checkIn(this);
-    }
+
 }

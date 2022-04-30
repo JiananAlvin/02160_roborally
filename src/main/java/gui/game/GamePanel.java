@@ -1,24 +1,15 @@
 package gui.game;
 
-import content.App;
-import content.MapNameEnum;
-import content.RobotNameEnum;
 import lombok.Data;
 import lombok.SneakyThrows;
 import model.Game;
-import model.game.Room;
 import model.game.Player;
-import model.game.board.map.GameMap;
-import model.game.board.map.element.Robot;
 import model.game.board.mat.ProgrammingDeck;
 import model.game.board.mat.RegisterArea;
 import model.game.card.Card;
-import model.game.proxy.PhaseManager;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import server.controller.ProgrammingRecordController;
-import server.controller.RoomController;
-import server.controller.UserController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -50,10 +41,11 @@ public class GamePanel extends JPanel {
     private Timer activationPhaseTimer;
     public static final int MAX_PROGRAMMING_TIME = 30;
     public static final int ACTIVATION_PHASE_TIME = 2000;
+    private JFrame frame;
 
-    public GamePanel() {
+    public GamePanel(JFrame frame) {
         super(true);
-
+        this.frame = frame;
         this.infoPanel = new InfoPanel(Game.getInstance().getParticipants(), Game.getInstance().getUser());
         this.boardPanel = new BoardPanel();
         this.setLayout(null);
@@ -83,7 +75,7 @@ public class GamePanel extends JPanel {
 
     public static void init(JFrame frame) {
         frame.getContentPane().removeAll();
-        frame.getContentPane().add(new GamePanel());
+        frame.getContentPane().add(new GamePanel(frame));
         //Display the window.
         frame.pack();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -188,11 +180,20 @@ public class GamePanel extends JPanel {
                 } else {
                     currentRegisterCard.actsOn(currentPlayer.getRobot());
                 }
+                if (currentPlayer.getRobot().takeTokens())
+                    if (currentPlayer.checkWin()) {
+                        System.out.println("main");
+                        //game finish
+                        JOptionPane.showMessageDialog(frame,
+                                currentPlayer.getName() + " wins this game!");
+                        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                    }
+
 
                 if ((currentPlayer.getName()).equals(game.getUser().getName())) {
                     infoPanel.addLogToLogPanel("Lives" + currentPlayer.getRobot().getLives(), null);
                     matPanel.getLblRobotLives().setText("Lives: " + currentPlayer.getRobot().getLives());
-                    matPanel.getLblCheckpointToken().setText("<html><br/>" + currentPlayer.getObtainedCheckpointTokens().size() + "</html>");
+                    matPanel.getLblCheckpointToken().setText("<html><br/>" + currentPlayer.getRobot().getCheckpoints().size() + "</html>");
                     matPanel.getLblDeckCards().setText("Programing Deck: " + game.getUser().getProgrammingDeck().getCards().size());
                     matPanel.getLblDiscardCards().setText("Discard Pile: " + game.getUser().getDiscardPile().getDiscards().size());
                 }
@@ -210,7 +211,10 @@ public class GamePanel extends JPanel {
                     game.setCurrentPlayerIndex(0);
 
                     infoPanel.addLogToLogPanel("Robots start shooting", null);
-                    PhaseManager.getInstance().executeRobotsShooting(game);
+
+                    for (Player player1 : game.getParticipants()) {
+                        player1.getRobot().shoot(game);
+                    }
 
                 }
                 if (registerIndex == RegisterArea.REGISTER_QUEUE_SIZE) {

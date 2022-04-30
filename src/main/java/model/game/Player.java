@@ -4,6 +4,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 import lombok.Data;
+import model.game.board.map.GameMap;
 import model.game.board.map.element.CheckPoint;
 import model.game.board.map.element.Tile;
 import model.game.board.mat.ProgrammingDeck;
@@ -17,7 +18,6 @@ public class Player {
 
     private String name;
     private Robot robot;
-    private ArrayList<Tile> obtainedCheckpointTokens;
     private ProgrammingDeck programmingDeck;
     private DiscardPile discardPile;
     private RegisterArea registerArea;
@@ -28,14 +28,12 @@ public class Player {
     public Player(String name, Robot robot) {
         this.name = name;
         this.robot = robot;
-        this.obtainedCheckpointTokens = new ArrayList<>();
         this.programmingDeck = new ProgrammingDeck();
         this.discardPile = new DiscardPile();
         this.registerArea = new RegisterArea();
     }
 
     public Player() {
-        this.obtainedCheckpointTokens = new ArrayList<>();
         this.programmingDeck = new ProgrammingDeck();
         this.discardPile = new DiscardPile();
         this.registerArea = new RegisterArea();
@@ -50,23 +48,14 @@ public class Player {
         return false;
     }
 
-    public boolean takeToken(CheckPoint checkPoint) {
-        int ownedTokens = this.obtainedCheckpointTokens.size();
-        if (this.robot.getPosition().equals(checkPoint.getPosition()) // robot at this checkPoint
-                && checkPoint.getCheckPointNum() == ownedTokens + 1 //robot has all the marks before current one
-        ) {
-            this.obtainedCheckpointTokens.add(checkPoint);
-            return true;
-        } else {
-            System.out.println(ownedTokens);
-            return false;
-        }
+    public boolean checkWin() {
+        System.out.println("now trying to check win");
+        return this.robot.getCheckpoints().size() == GameMap.getInstance().getCheckPoints().size();
     }
 
     /**
      * In each round, A player draws 9 cards from his programming deck. If there are fewer than 9 to draw from, he should take
      * what is available. Then shuffles the discard pile to replenish his programming deck, and draws until he has nine cards.
-     *
      */
     public void drawCards() {
         this.cardsInHand = new ArrayList<>();
