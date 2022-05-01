@@ -12,7 +12,23 @@ import java.nio.charset.StandardCharsets;
 public class ServerConnection {
     private String method;
     private String path;
-    private static final String SERVER_URL = "http://localhost:3000";
+    private static final String LOCAL_HOST = "http://localhost:3000";
+    private static final String PUBLIC_HOST = "https://dry-brushlands-54922.herokuapp.com";
+    private static final String SERVER_URL = checkOnline(LOCAL_HOST) ? LOCAL_HOST : PUBLIC_HOST;
+
+
+    private static boolean checkOnline(String localHost) {
+        try {
+            HttpURLConnection connection = (HttpURLConnection) new URL(localHost).openConnection();
+            connection.setRequestMethod("GET");
+            connection.setConnectTimeout(2000);
+            connection.connect();
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     private JSONObject response = new JSONObject();
     public static final String RESPONSE_STATUS = "status";
 
@@ -88,4 +104,5 @@ public class ServerConnection {
     protected void setMethod(String method) {
         this.method = method;
     }
+
 }
