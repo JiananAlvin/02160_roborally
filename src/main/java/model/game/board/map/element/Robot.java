@@ -124,7 +124,13 @@ public class Robot {
     }
 
     public boolean takeTokens() {
-        CheckPoint nextCheckPoint = GameMap.getInstance().getCheckPoints().get(this.checkpoints.size());
+        CheckPoint nextCheckPoint;
+        try {
+            nextCheckPoint = GameMap.getInstance().getCheckPoints().get(this.checkpoints.size());
+        } catch (IndexOutOfBoundsException e) {
+            return false; // game end
+        }
+
         if (this.position.equals(nextCheckPoint.getPosition())) {
             this.checkpoints.add(nextCheckPoint);
             return true;// successfully add new token

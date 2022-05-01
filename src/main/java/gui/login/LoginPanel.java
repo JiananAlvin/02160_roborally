@@ -2,8 +2,6 @@ package gui.login;
 
 import content.RobotImageEnum;
 import controller.game.GameManager;
-import gui.room.RoomPanel;
-import controller.server.UserController;
 
 import javax.swing.*;
 import java.awt.*;

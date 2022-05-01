@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.SneakyThrows;
 
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * This class is an entrance for our user application
@@ -15,6 +16,9 @@ public class ClientRunner {
     private final JFrame frame;
     private static ClientRunner clientRunnerInstance;
     public final static String APP_TITLE = "RoboRally Group10 v2.0";
+    @Getter
+    private final static GraphicsDevice device = GraphicsEnvironment
+            .getLocalGraphicsEnvironment().getScreenDevices()[0];
 
     private ClientRunner() {
         this.frame = new JFrame(APP_TITLE);
