@@ -12,6 +12,7 @@ import java.util.*;
 
 @Data
 public class RegisterArea {
+
     private ArrayList<Card> registers;
     public static final int REGISTER_QUEUE_SIZE = 5;
     private static final String FULLY_QUALIFIED_NAME_OF_PROGRAMMING = "model.game.card.";
@@ -19,14 +20,6 @@ public class RegisterArea {
     public RegisterArea() {
         this.registers = new ArrayList<>();
     }
-
-    /**
-     * The names of programming cards in five registers are stored in an arraylist in order when the user has finished
-     * programming.
-     * <p> This method converts the arraylist of cards' names to the arraylist of {@code Card} elements that is {@code registers}.
-     * @param cardNames the arraylist of names of cards in the 5 finished registers.
-     */
-
 
     /**
      * @param index an integer n

@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Random;
 
-
+@Data
 public class GameMap {
 
     private static GameMap INSTANCE;
@@ -79,33 +79,5 @@ public class GameMap {
 
     public Tile getTileAtPosition(Position position) {
         return content[position.getRow()][position.getCol()];
-    }
-
-    public String getMapName() {
-        return mapName;
-    }
-
-    public Tile[][] getContent() {
-        return content;
-    }
-
-    public ArrayList<StartPoint> getStartPoints() {
-        return startPoints;
-    }
-
-    public ArrayList<RebootPoint> getRebootPoints() {
-        return rebootPoints;
-    }
-
-    public ArrayList<CheckPoint> getCheckPoints() {
-        return checkPoints;
-    }
-
-    public int getHeight() {
-        return this.height;
-    }
-
-    public int getWidth() {
-        return this.width;
     }
 }

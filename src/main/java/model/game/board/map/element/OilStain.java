@@ -4,6 +4,7 @@ import content.TileImageEnum;
 import model.game.board.map.Position;
 
 public class OilStain extends Tile implements Interactive {
+
     private int damage = 2;
 
     public OilStain(Position position) {

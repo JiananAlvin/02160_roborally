@@ -159,7 +159,7 @@ public class InitializationStepsDefinition {
     //4.------------------------------------------------------------------------------------
     @When("the player creates a new room and chooses a map {string}")
     public void thePlayerCreatesANewRoomAndChoosesAMap(String mapName) throws IOException, InterruptedException {
-        this.room = new Room();
+        this.room = new Room(1023);
         Game.getInstance().setRoom(this.room);
         GameMap.getInstance().init(MapNameEnum.valueOf(mapName));
         assertEquals(mapName, GameMap.getInstance().getMapName());
@@ -185,8 +185,7 @@ public class InitializationStepsDefinition {
         Thread.sleep(200);
         this.response = new RoomController().createRoom(string, string2);
         assertEquals(200, this.response.get(ServerConnection.RESPONSE_STATUS));
-        this.room = new Room();
-        this.room.setRoomNumber((Integer) this.response.get(RoomController.RESPONSE_ROOM_NUMBER));
+        this.room = new Room((Integer) this.response.get(RoomController.RESPONSE_ROOM_NUMBER));
     }
 
     @When("the player gets the room number from room owner and join this room")
@@ -216,10 +215,8 @@ public class InitializationStepsDefinition {
         Thread.sleep(100);
         JSONObject createRoomResponse = new RoomController().createRoom(ownerName, mapName);
         assertEquals(200, createRoomResponse.get(ServerConnection.RESPONSE_STATUS));
-        this.room = new Room();
+        this.room = new Room(1023);
         GameMap.getInstance().init(MapNameEnum.valueOf(mapName));
-//        TODO
-//        this.game.setGameMap(new GameMap());
         this.room.setRoomNumber((Integer) createRoomResponse.get(RoomController.RESPONSE_ROOM_NUMBER));
     }
 

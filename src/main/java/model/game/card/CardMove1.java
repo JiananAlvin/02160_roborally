@@ -6,6 +6,7 @@ import model.game.board.map.element.Robot;
 import model.game.card.behaviour.Movement;
 
 public class CardMove1 extends Card {
+
     public CardMove1 actsOn(Robot robot) {
         OrientationEnum robotOrientation = robot.getOrientation();
         Position currentPos = robot.getPosition();

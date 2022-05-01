@@ -9,16 +9,17 @@ import model.game.board.map.Position;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class RotatingGear extends Tile implements Interactive {
+
     private boolean isClockwise; // true: clockwise; false: counterclockwise
 
     public RotatingGear(Position position, Boolean isClockwise) {
         super(position);
-        init(isClockwise);
+        this.init(isClockwise);
     }
 
     public RotatingGear(Integer x, Integer y, Boolean isClockwise) {
         super(new Position(x, y));
-        init(isClockwise);
+        this.init(isClockwise);
     }
 
     private void init(boolean isClockwise) {

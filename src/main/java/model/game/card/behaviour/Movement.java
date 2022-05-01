@@ -11,7 +11,6 @@ public class Movement {
 
     public static Position calculateNewPosition(OrientationEnum robotOrientation, Position currentPos, int amount) {
         Position newPos;
-
         //this switch takes the robot Orientation given by the Card class, and returns the newPosition based on this orientation
         switch (robotOrientation) {
             case N:

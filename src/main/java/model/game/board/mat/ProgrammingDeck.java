@@ -10,7 +10,6 @@ import java.util.Collections;
 
 @Data
 public class ProgrammingDeck {
-//TODO delete the Player player in this class
 
     private ArrayList<Card> cards;
     public static final int NUMBER_OF_CARDS_DRAWN_IN_EACH_ROUND = 9;
@@ -23,7 +22,6 @@ public class ProgrammingDeck {
     private static final int NUMBER_OF_CARDUTURN = 2;
     private static final int NUMBER_OF_CARDBACKUP = 2;
     private static final int NUMBER_OF_CARDPOWERUP = 2;
-
 
     public ProgrammingDeck() {
         this.init();

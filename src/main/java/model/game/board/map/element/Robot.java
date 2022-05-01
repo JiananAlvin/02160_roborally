@@ -1,7 +1,6 @@
 package model.game.board.map.element;
 
 import content.RobotNameEnum;
-import io.cucumber.java.bs.A;
 import lombok.Data;
 import model.Game;
 import content.OrientationEnum;
@@ -38,6 +37,11 @@ public class Robot {
         this.checkpoints = new ArrayList<>();
     }
 
+    @Override
+    public String toString() {
+        return this.name;
+    }
+
     public void setPosition(int row, int col) {
         this.position = new Position(row, col);
     }
@@ -48,7 +52,7 @@ public class Robot {
         }
     }
 
-    public void move(Position newPos, int movement) {
+    private void move(Position newPos, int movement) {
         Tile tile = GameMap.getInstance().getTileAtPosition(newPos);
         Robot robotAtPos = Game.getInstance().getRobotAtPosition(newPos);
         if (robotAtPos != null) {
@@ -73,11 +77,6 @@ public class Robot {
         return Math.abs(this.position.getRow() - Antenna.getInstance().getPosition().getRow()) + Math.abs(this.position.getCol() - Antenna.getInstance().getPosition().getCol());
     }
 
-    @Override
-    public String toString() {
-        return this.name;
-    }
-
     /**
      * @return: This function returns true if the robot is still alive after taking -some- damage
      */
@@ -98,8 +97,6 @@ public class Robot {
         this.position = GameMap.getInstance().getARandomRebootPoint().getPosition();
         this.restoreCheckpoints();
         this.setLives(5);
-        // clean register
-
     }
 
     public void setLives(int lives) {
@@ -116,8 +113,7 @@ public class Robot {
         return false; // fail to add new token
     }
 
-
-    public void restoreCheckpoints() {
+    private void restoreCheckpoints() {
         this.checkpoints = new ArrayList<CheckPoint>();
     }
 

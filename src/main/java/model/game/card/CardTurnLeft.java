@@ -5,6 +5,7 @@ import model.game.card.Card;
 import content.OrientationEnum;
 
 public class CardTurnLeft extends Card {
+
     public Card actsOn(Robot robot) {
         robot.setOrientation(robot.getOrientation().getLeft());
         return this;

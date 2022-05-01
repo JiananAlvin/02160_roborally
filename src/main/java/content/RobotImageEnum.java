@@ -11,8 +11,6 @@ public enum RobotImageEnum {
     SPIN_BOT("src/main/resources/images/robots/SPIN_BOT.png"),
     SQUASH_BOT("src/main/resources/images/robots/SQUASH_BOT.png"),
     TRUNDLE_BOT("src/main/resources/images/robots/TRUNDLE_BOT.png"),
-    TWITCH("src/main/resources/images/robots/TWITCH.png"),
-    TWONKY("src/main/resources/images/robots/TWONKY.png"),
     ZOOM_BOT("src/main/resources/images/robots/ZOOM_BOT.png"),
     COVER("src/main/resources/images/robots/cover.png");
 

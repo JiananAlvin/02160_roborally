@@ -6,6 +6,7 @@ import model.game.board.map.Position;
 
 @Data
 public class CheckPoint extends Tile {
+
     private int checkPointNum;
 
     public CheckPoint(Position position) {
@@ -32,6 +33,4 @@ public class CheckPoint extends Tile {
                 break;
         }
     }
-
-
 }

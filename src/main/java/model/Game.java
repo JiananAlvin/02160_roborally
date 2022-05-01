@@ -55,8 +55,7 @@ public class Game {
 
     public Player getUser() {
         for (Player participant : this.participants) {
-            Player user = new Player();
-            if (userName.equals(participant.getName())) {
+            if (this.userName.equals(participant.getName())) {
                 return participant;
             }
         }
@@ -119,7 +118,7 @@ public class Game {
      *                        It must be in JSON format data.
      *                        Its status should be 200. Otherwise there is not values for 'users'.
      */
-    public void initParticipants(JSONObject roomInfoReponse) {
+    private void initParticipants(JSONObject roomInfoReponse) {
         JSONArray users = (JSONArray) roomInfoReponse.get(RoomController.RESPONSE_USERS_IN_ROOM);
         List<Object> userList = users.toList();
         for (Object userName : userList) {
@@ -141,7 +140,7 @@ public class Game {
      * This method is called only when the user is the room owner.
      * Only the room owner has the privilege to assign random positions for all robots.
      */
-    public void generateRandomPositionsForAllParticipants() {
+    private void generateRandomPositionsForAllParticipants() {
         ArrayList<StartPoint> startPoints = new ArrayList<>(GameMap.getInstance().getStartPoints());
         for (Player player : this.participants) {
             StartPoint assignedStartPoint = startPoints.remove(new Random().nextInt(startPoints.size()));
@@ -153,7 +152,7 @@ public class Game {
     /**
      * Assign Colors to different participants according to their hash code.
      */
-    public void assignColorToParticipants() {
+    private void assignColorToParticipants() {
         this.participants.sort(new Comparator<Player>() {
             @Override
             public int compare(Player o1, Player o2) {
@@ -161,25 +160,17 @@ public class Game {
             }
         });
         int i = 0;
-        for (Player player : participants) {
+        for (Player player : this.participants) {
             player.setPlayerColor(GamePanel.userColors[i++]);
         }
     }
 
     public Robot getRobotAtPosition(Position newPos) {
-        for (Player player : participants) {
+        for (Player player : this.participants) {
             if (player.getRobot().getPosition().equals(newPos)) {
                 return player.getRobot();
             }
         }
         return null;
-    }
-
-    public void setParticipants(ArrayList<Player> orderOfPlayers) {
-        participants = orderOfPlayers;
-    }
-
-    public ArrayList<Player> getParticipants() {
-        return this.participants;
     }
 }

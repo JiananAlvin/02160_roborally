@@ -9,6 +9,7 @@ import model.game.card.Card;
 @Data
 //TODO delete the Player player in this class
 public class DiscardPile {
+
 	private ArrayList<Card> discards;
 
 	public DiscardPile() {
