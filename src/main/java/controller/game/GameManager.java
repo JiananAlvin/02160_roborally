@@ -417,6 +417,7 @@ public class GameManager {
                 gamePanel.getMatPanel().getLblDiscardCards().setText("Discard Pile: " + game.getUser().getDiscardPile().getDiscards().size());
             }
 
+            gamePanel.getInfoPanel().updateParticipantsInfo(registerIndex,currentPlayer);
             for (Player player: game.getParticipants()){
                 gamePanel.getBoardPanel().getBoard()[player.getRobot().getPosition().getRow()][player.getRobot().getPosition().getCol()].setRobot(player.getRobot().getOrientation(), player);
             }
@@ -438,9 +439,9 @@ public class GameManager {
                 }
 
             }
-            gamePanel.getInfoPanel().updateParticipantsInfo(registerIndex--,currentPlayer);
+
             if (registerIndex == RegisterArea.REGISTER_QUEUE_SIZE) {
-                gamePanel.getInfoPanel().removeCradInfo(currentPlayer);
+                gamePanel.getInfoPanel().removeCardInfo();
                 // one round finish
                 game.setCurrentRoundNum(++round);
                 game.setCurrentRegisterNum(0);

@@ -103,15 +103,14 @@ public class InfoPanel extends JPanel {
         }
     }
 
-    public void removeCradInfo(Player player) {
+    public void removeCardInfo() {
         for (ParticipantInfoPanel participantInfoPanel : participantsPanels) {
-            if (player.getName().equals(participantInfoPanel.getLabelUserName().getText())) {
-                participantInfoPanel.getRegisters()[0].setText("NaN");
-                participantInfoPanel.getRegisters()[1].setText("NaN");
-                participantInfoPanel.getRegisters()[2].setText("NaN");
-                participantInfoPanel.getRegisters()[3].setText("NaN");
-                participantInfoPanel.getRegisters()[4].setText("NaN");
-            }
+            participantInfoPanel.getRegisters()[0].setText("NaN");
+            participantInfoPanel.getRegisters()[1].setText("NaN");
+            participantInfoPanel.getRegisters()[2].setText("NaN");
+            participantInfoPanel.getRegisters()[3].setText("NaN");
+            participantInfoPanel.getRegisters()[4].setText("NaN");
+
         }
     }
 }
