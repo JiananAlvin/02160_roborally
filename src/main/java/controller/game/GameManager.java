@@ -6,6 +6,7 @@ import controller.server.ProgrammingRecordController;
 import controller.server.RobotController;
 import controller.server.RoomController;
 import controller.server.UserController;
+import exception.OutOfMaxRegisterSizeException;
 import gui.cover.CoverPanel;
 import gui.game.GamePanel;
 import gui.game.MatPanel;
@@ -311,7 +312,7 @@ public class GameManager {
                             getRegisterStr(game, 4)
                     );
                     programmingTimer.stop();
-                    excuteProgRecordsWorker(gamePanel);
+                    executeProgRecordsWorker(gamePanel);
                     remainingTime = MAX_PROGRAMMING_TIME;
                     gamePanel.getInfoPanel().addLogToLogPanel("Programming phase done and inform worker to communicate with server", null);
                 }
@@ -331,7 +332,7 @@ public class GameManager {
         gamePanel.repaint();
     }
 
-    private void excuteProgRecordsWorker(GamePanel gamePanel) {
+    private void executeProgRecordsWorker(GamePanel gamePanel) {
 
         progRecordSyncWorker = new SwingWorker<>() {
             @Override
@@ -350,95 +351,103 @@ public class GameManager {
             @SneakyThrows
             @Override
             protected void done() {
-                Game game = Game.getInstance();
                 updateParticipantRegisters(get());
-                gamePanel.getInfoPanel().addLogToLogPanel("ProgRecordsWorker done and start activation phase", null);
+                gamePanel.getInfoPanel().addLogToLogPanel("Activation phase starts", null);
                 activationPhaseTimer = invokeActivationPhaseTimer(gamePanel);
                 activationPhaseTimer.start();
             }
         };
         // executes the swingworker on worker thread
-        gamePanel.getInfoPanel().addLogToLogPanel("updateProgRecordsWorker starts", null);
+//        gamePanel.getInfoPanel().addLogToLogPanel("updateProgRecordsWorker starts", null);
         progRecordSyncWorker.execute();
     }
 
     private Timer invokeActivationPhaseTimer(GamePanel gamePanel) {
-        return new Timer(ACTIVATION_PHASE_TIME, new ActionListener() {
-            @SneakyThrows
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Game game = Game.getInstance();
-                int round = game.getCurrentRoundNum();
-                int registerIndex = game.getCurrentRegisterNum();
-                int currenPlayerIndex = game.getCurrentPlayerIndex();
-                if (registerIndex == 0 && currenPlayerIndex == 0) {
-                    // the game starts
-                    game.setParticipants(game.orderOfPlayers());
-                }
-                Player currentPlayer = game.getParticipants().get(currenPlayerIndex);
+        return new Timer(ACTIVATION_PHASE_TIME, e -> {
+            Game game = Game.getInstance();
+            int round = game.getCurrentRoundNum();
+            int registerIndex = game.getCurrentRegisterNum();
+            int currenPlayerIndex = game.getCurrentPlayerIndex();
+            if (registerIndex == 0 && currenPlayerIndex == 0) {
+                // the game starts
+                game.setParticipants(game.orderOfPlayers());
+            }
+            Player currentPlayer = game.getParticipants().get(currenPlayerIndex);
 
-                Card currentRegisterCard = currentPlayer.getRegisterArea().getCard(registerIndex);
-                gamePanel.getBoardPanel().getBoard()[currentPlayer.getRobot().getPosition().getRow()][currentPlayer.getRobot().getPosition().getCol()].unsetRobot();
-
-                // performing the card and updating the robot Lives and checkpoint tokens of the user
-                // If the Again card is put in the first register, perform nothing(the logic in CardAgain) on the robot.
-                // Otherwise, perform the previous card on the robot.
-                if ((currentRegisterCard.toString()).equals("CardAgain")) {
-                    if (registerIndex != 0)
+            Card currentRegisterCard = null;
+            try {
+                currentRegisterCard = currentPlayer.getRegisterArea().getCard(registerIndex);
+            } catch (OutOfMaxRegisterSizeException ex) {
+                ex.printStackTrace();
+            }
+            for (Player player: game.getParticipants()){
+                gamePanel.getBoardPanel().getBoard()[player.getRobot().getPosition().getRow()][player.getRobot().getPosition().getCol()].unsetRobot();
+            }
+            // performing the card and updating the robot Lives and checkpoint tokens of the user
+            // If the Again card is put in the first register, perform nothing(the logic in CardAgain) on the robot.
+            // Otherwise, perform the previous card on the robot.
+            if ((currentRegisterCard.toString()).equals("CardAgain")) {
+                if (registerIndex != 0) {
+                    try {
                         currentPlayer.getRegisterArea().getCard(registerIndex - 1).actsOn(currentPlayer.getRobot());
-                } else {
-                    currentRegisterCard.actsOn(currentPlayer.getRobot());
-                }
-                if (currentPlayer.getRobot().takeTokens())
-                    if (currentPlayer.checkWin()) {
-                        //game finish
-                        int i = JOptionPane.showOptionDialog(ClientRunner.getApplicationInstance().getFrame(),
-                                currentPlayer.getName() + " wins this game! The game will exist", "Game ends!",
-                                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
-                        if (i == JOptionPane.OK_OPTION || i == JOptionPane.DEFAULT_OPTION || i == JOptionPane.NO_OPTION) {
-                            ClientRunner.getApplicationInstance().getFrame().setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                            ClientRunner.getApplicationInstance().getFrame().dispose();
-                        }
+                    } catch (OutOfMaxRegisterSizeException ex) {
+                        ex.printStackTrace();
                     }
-
-
-                if ((currentPlayer.getName()).equals(game.getUser().getName())) {
-                    gamePanel.getInfoPanel().addLogToLogPanel("Lives" + currentPlayer.getRobot().getLives(), null);
-                    gamePanel.getMatPanel().getLblRobotLives().setText("Lives: " + currentPlayer.getRobot().getLives());
-                    gamePanel.getMatPanel().getLblCheckpointToken().setText("<html><br/>" + currentPlayer.getRobot().getCheckpoints().size() + "</html>");
-                    gamePanel.getMatPanel().getLblDeckCards().setText("Programing Deck: " + game.getUser().getProgrammingDeck().getCards().size());
-                    gamePanel.getMatPanel().getLblDiscardCards().setText("Discard Pile: " + game.getUser().getDiscardPile().getDiscards().size());
                 }
-
-                gamePanel.getBoardPanel().getBoard()[currentPlayer.getRobot().getPosition().getRow()][currentPlayer.getRobot().getPosition().getCol()].setRobot(currentPlayer.getRobot().getOrientation(), currentPlayer);
-                gamePanel.getBoardPanel().repaint();
-
-                gamePanel.getInfoPanel().addLogToLogPanel(currentPlayer.getRobot().getName() + ": " + currentPlayer.getRobot().getOrientation().toString(), currentPlayer);
-                game.setCurrentPlayerIndex(++currenPlayerIndex);
-
-                if (currenPlayerIndex == game.getParticipants().size()) {
-                    // all players' one register finish
-                    game.setCurrentRegisterNum(++registerIndex);
-
-                    game.setCurrentPlayerIndex(0);
-
-                    gamePanel.getInfoPanel().addLogToLogPanel("Robots start shooting", null);
-
-                    for (Player player1 : game.getParticipants()) {
-                        player1.getRobot().shoot(game);
+            } else {
+                currentRegisterCard.actsOn(currentPlayer.getRobot());
+            }
+            if (currentPlayer.getRobot().takeTokens())
+                if (currentPlayer.checkWin()) {
+                    //game finish
+                    int i = JOptionPane.showOptionDialog(ClientRunner.getApplicationInstance().getFrame(),
+                            currentPlayer.getName() + " wins this game! The game will exist", "Game ends!",
+                            JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
+                    if (i == JOptionPane.OK_OPTION || i == JOptionPane.DEFAULT_OPTION || i == JOptionPane.NO_OPTION) {
+                        ClientRunner.getApplicationInstance().getFrame().setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                        ClientRunner.getApplicationInstance().getFrame().dispose();
                     }
+                }
 
+            if ((currentPlayer.getName()).equals(game.getUser().getName())) {
+                gamePanel.getInfoPanel().addLogToLogPanel("Lives" + currentPlayer.getRobot().getLives(), null);
+                gamePanel.getMatPanel().getLblRobotLives().setText("Lives: " + currentPlayer.getRobot().getLives());
+                gamePanel.getMatPanel().getLblCheckpointToken().setText("<html><br/>" + currentPlayer.getRobot().getCheckpoints().size() + "</html>");
+                gamePanel.getMatPanel().getLblDeckCards().setText("Programing Deck: " + game.getUser().getProgrammingDeck().getCards().size());
+                gamePanel.getMatPanel().getLblDiscardCards().setText("Discard Pile: " + game.getUser().getDiscardPile().getDiscards().size());
+            }
+
+            for (Player player: game.getParticipants()){
+                gamePanel.getBoardPanel().getBoard()[player.getRobot().getPosition().getRow()][player.getRobot().getPosition().getCol()].setRobot(player.getRobot().getOrientation(), player);
+            }
+            gamePanel.getBoardPanel().repaint();
+
+            gamePanel.getInfoPanel().addLogToLogPanel(currentPlayer.getRobot().getName() + ": " + currentPlayer.getRobot().getOrientation().toString(), currentPlayer);
+            game.setCurrentPlayerIndex(++currenPlayerIndex);
+
+            if (currenPlayerIndex == game.getParticipants().size()) {
+                // all players' one register finish
+                game.setCurrentRegisterNum(++registerIndex);
+
+                game.setCurrentPlayerIndex(0);
+
+                gamePanel.getInfoPanel().addLogToLogPanel("Robots start shooting", null);
+
+                for (Player player1 : game.getParticipants()) {
+                    player1.getRobot().shoot(game);
                 }
-                if (registerIndex == RegisterArea.REGISTER_QUEUE_SIZE) {
-                    // one round finish
-                    game.setCurrentRoundNum(++round);
-                    // TODO debug
-                    game.setCurrentRegisterNum(0);
-                    activationPhaseTimer.stop();
-                    gamePanel.getInfoPanel().addLogToLogPanel("activation phase done and start programming phase", null);
-                    programmingTimer = invokeProgrammingTimer(gamePanel);
-                    programmingTimer.start();
-                }
+
+            }
+            gamePanel.getInfoPanel().updateParticipantsInfo(registerIndex--,currentPlayer);
+            if (registerIndex == RegisterArea.REGISTER_QUEUE_SIZE) {
+                gamePanel.getInfoPanel().removeCradInfo(currentPlayer);
+                // one round finish
+                game.setCurrentRoundNum(++round);
+                game.setCurrentRegisterNum(0);
+                activationPhaseTimer.stop();
+                gamePanel.getInfoPanel().addLogToLogPanel("activation phase done and start programming phase", null);
+                programmingTimer = invokeProgrammingTimer(gamePanel);
+                programmingTimer.start();
             }
         });
     }

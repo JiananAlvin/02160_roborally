@@ -43,15 +43,12 @@ public class Player {
     public boolean equals(Object obj) {
         if (obj instanceof Player) {
             Player p = (Player) obj;
-//            System.out.println(this.name == p.getName());
-
             return p.name.equals(this.name);
         }
         return false;
     }
 
     public boolean checkWin() {
-        System.out.println("now trying to check win");
         return this.robot.getCheckpoints().size() == GameMap.getInstance().getCheckPoints().size();
     }
 

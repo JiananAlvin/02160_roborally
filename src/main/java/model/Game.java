@@ -71,8 +71,6 @@ public class Game {
      * @param mapName
      */
     public void init(String userName, Room room, MapNameEnum mapName, JSONObject roomInfoResponse) {
-        System.out.println("Game init");
-        System.out.println("mapName: " + mapName.getMapName());
         this.participants = new ArrayList<>();
         this.room = room;
         this.userName = userName;

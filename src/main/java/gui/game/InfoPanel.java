@@ -92,4 +92,26 @@ public class InfoPanel extends JPanel {
             logContent = "[" + logFrom.getName() + "]:" + logContent + "\n\n";
         this.logArea.append(logContent);
     }
+
+    public void updateParticipantsInfo(int register, Player player) {
+        for (ParticipantInfoPanel participantInfoPanel : participantsPanels) {
+            if (player.getName().equals(participantInfoPanel.getLabelUserName().getText())) {
+                participantInfoPanel.getRegisters()[register].setText(player.getRegisterArea().getRegisters().get(register).getClass().getSimpleName().substring(4));
+                participantInfoPanel.getLabelLive().setText(player.getRobot().getLives() + "");
+                participantInfoPanel.getLabelTokenNumber().setText(player.getRobot().getCheckpoints().size() + "");
+            }
+        }
+    }
+
+    public void removeCradInfo(Player player) {
+        for (ParticipantInfoPanel participantInfoPanel : participantsPanels) {
+            if (player.getName().equals(participantInfoPanel.getLabelUserName().getText())) {
+                participantInfoPanel.getRegisters()[0].setText("NaN");
+                participantInfoPanel.getRegisters()[1].setText("NaN");
+                participantInfoPanel.getRegisters()[2].setText("NaN");
+                participantInfoPanel.getRegisters()[3].setText("NaN");
+                participantInfoPanel.getRegisters()[4].setText("NaN");
+            }
+        }
+    }
 }

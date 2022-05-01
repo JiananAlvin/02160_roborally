@@ -34,7 +34,7 @@ public class BoardPanel extends JPanel {
         loadBoard();
     }
 
-    private void loadBoard() {
+    public void loadBoard() {
         for (int j = 0; j < rows; j++) {
             for (int i = 0; i < cols; i++) {
                 TilePanel t = new TilePanel(mapMatrix[j][i]);

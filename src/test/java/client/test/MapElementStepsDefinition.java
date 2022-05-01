@@ -423,8 +423,6 @@ public class MapElementStepsDefinition {
     @When("robot lands on a conveyor belt with distance {string}")
     public void robotLandsOnAConveyorBeltWithDirection(String arg1) {
         Tile tile = (ConveyorBelt) GameMap.getInstance().getTileAtPosition(Movement.calculateNewPosition(this.robot.getOrientation(), this.robot.getPosition(), 1));
-        System.out.println("Conveyor belt with distance: " + ((ConveyorBelt) tile).getDistance());
-
         Card actionCard = new CardMove1();
         actionCard.actsOn(this.robot);
         this.conveyorDistance = Integer.parseInt(arg1);
