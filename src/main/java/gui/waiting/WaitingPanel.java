@@ -84,7 +84,7 @@ public class WaitingPanel extends JPanel {
                 UserController userController = new UserController();
                 userController.exitRoom(userName);
                 frame.getContentPane().removeAll();
-                frame.getContentPane().add(new RoomPanel(userName, frame));
+                frame.getContentPane().add(new RoomPanel(userName));
                 frame.setVisible(true);
             });
         }
@@ -119,7 +119,7 @@ public class WaitingPanel extends JPanel {
                     timer.stop();
                     SwingUtilities.invokeLater(() -> {
                         frame.getContentPane().removeAll();
-                        frame.getContentPane().add(new RoomPanel(userName, frame));
+                        frame.getContentPane().add(new RoomPanel(userName));
                         frame.setVisible(true);
                     });
                     return;

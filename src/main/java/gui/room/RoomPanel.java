@@ -1,5 +1,6 @@
 package gui.room;
 
+import controller.game.GameManager;
 import gui.login.LoginPanel;
 import gui.waiting.WaitingPanel;
 import controller.server.RoomController;
@@ -13,7 +14,7 @@ public class RoomPanel extends JPanel {
     private final JComboBox<String> jcbMapName;
     private final JTextField roomNumber;
 
-    public RoomPanel(String userName, JFrame frame) {
+    public RoomPanel(String userName) {
         JLabel lblMapName = new JLabel("Map");
         String[] mapNameList = {"STARTER", "BEGINNER", "INTERMEDIATE", "ADVANCED"};
         this.jcbMapName = new JComboBox<>(mapNameList);
@@ -40,42 +41,15 @@ public class RoomPanel extends JPanel {
 
         // adding listeners for "Create room" and "Join room" buttons
         btCreateRoom.addActionListener(e -> {
-            /*
-             fetching the map name when the "Create room" button is pressed
-             creating a room for the user through API
-             */
-            RoomController roomController = new RoomController();
-            JSONObject response = roomController.createRoom(userName, this.jcbMapName.getSelectedItem().toString());
-            String roomNumberStr = response.get("room_number").toString();
-            frame.getContentPane().removeAll();
-            frame.getContentPane().add(new WaitingPanel(roomNumberStr, "owner", frame, userName));
-            frame.setVisible(true);
+            GameManager.getInstance().processCreateRoom(userName, this.jcbMapName.getSelectedItem() + "");
         });
 
         btJoinRoom.addActionListener(e -> {
-            /*
-            fetching the room number when the "Join room" button is pressed
-            inserting the qplayer info into the room through API
-             */
-            UserController userController = new UserController();
-            String roomNumberStr = this.roomNumber.getText();
-            userController.joinRoom(userName, Integer.parseInt(roomNumberStr));
-            if (userController.getResponse().get("status").equals(200)) {
-                frame.getContentPane().removeAll();
-                frame.getContentPane().add(new WaitingPanel(roomNumberStr, "participant", frame, userName));
-                frame.setVisible(true);
-            } else if (userController.getResponse().get("status").equals(400)) {
-                JOptionPane.showMessageDialog(frame, "Room does not exist.", "Error", JOptionPane.ERROR_MESSAGE);
-            }
+            GameManager.getInstance().processJoinRoom(userName, this.roomNumber.getText());
         });
 
         btBack.addActionListener(e -> {
-            // deleting the user in database and returning to LoginPanel
-            UserController userController = new UserController();
-            userController.deleteUser(userName);
-            frame.getContentPane().removeAll();
-            frame.getContentPane().add(new LoginPanel(frame));
-            frame.setVisible(true);
+            GameManager.getInstance().backToLoginPanle(userName);
         });
     }
 }

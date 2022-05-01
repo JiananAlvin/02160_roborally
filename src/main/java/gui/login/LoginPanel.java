@@ -1,6 +1,7 @@
 package gui.login;
 
 import content.RobotImageEnum;
+import controller.game.GameManager;
 import gui.room.RoomPanel;
 import controller.server.UserController;
 
@@ -20,7 +21,7 @@ public class LoginPanel extends JPanel {
     private final JToggleButton btHulkX90;
     private final JToggleButton btTrundleBot;
 
-    public LoginPanel(JFrame frame) {
+    public LoginPanel() {
         this.userName = new JTextField();
         JLabel lblUserName = new JLabel("Player name");
         JLabel lblRobot = new JLabel("Robot");
@@ -76,30 +77,11 @@ public class LoginPanel extends JPanel {
 
         // Adding listeners for "Login" and "Cancel" buttons
         btOk.addActionListener(e -> {
-            /*
-            fetching the username from the JTextField userName and the chosen robot when the "Login" button is pressed
-            & inserting the username and the chosen robot's name into database through API
-            & loading the RoomPanel
-             */
-            UserController userController = new UserController();
-            userController.createUser(userName.getText());
-            if (userController.getResponse().get("status").equals(200)) {
-                if (lblChosenRobot.getText().equals("")) {
-                    JOptionPane.showMessageDialog(null, "Please choose a robot");
-                    userController.deleteUser(userName.getText());
-                } else {
-                    userController.chooseRobot(userName.getText(), lblChosenRobot.getText().replace(' ', '_'));
-                    frame.getContentPane().removeAll();
-                    frame.getContentPane().add(new RoomPanel(userName.getText(), frame));
-                    frame.setVisible(true);
-                }
-            } else {
-                JOptionPane.showMessageDialog(null, "Username already exists");
-            }
+            GameManager.getInstance().processLogin(userName.getText(), lblChosenRobot.getText());
         });
 
         btCancel.addActionListener(e -> {
-            frame.dispose();
+            GameManager.getInstance().closeJFrame();
         });
     }
 
