@@ -13,8 +13,8 @@ public class CheckPoint extends Tile {
         super(position);
     }
 
-    public CheckPoint(Integer x, Integer y) {
-        super(x, y);
+    public CheckPoint(Integer row, Integer col) {
+        super(row, col);
     }
 
     public void setCheckPointNum(int checkPointNum) {

@@ -59,7 +59,7 @@ public class ConveyorBelt extends Tile implements Interactive {
             if (Movement.validateMovement(r, newPos.getRow(), newPos.getCol(), 1)) {
                 Robot robotAtPos = Game.getInstance().getRobotAtPosition(newPos);
                 if (robotAtPos != null) {
-                    r.push(robotAtPos, 1);
+                    r.robotInteraction(robotAtPos, 1);
                 }
                 r.setPosition(newPos);
             }

@@ -181,8 +181,8 @@ public class MapElementStepsDefinition {
 
     @Then("the robot position is {string} {string}")
     public void theRobotPositionIs(String expectedRow, String expectedCol) {
-        assertEquals(Integer.parseInt(expectedRow), robot.getPosition().getRow());
-        assertEquals(Integer.parseInt(expectedCol), robot.getPosition().getCol());
+        Position pos = new Position(Integer.parseInt(expectedRow), Integer.parseInt(expectedCol));
+        assertEquals(pos, robot.getPosition());
     }
 
 

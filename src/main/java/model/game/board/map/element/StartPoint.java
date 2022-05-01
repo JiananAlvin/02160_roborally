@@ -10,8 +10,7 @@ public class StartPoint extends Tile {
         this.tileImageEnum = TileImageEnum.STARTPOINT;
     }
 
-    public StartPoint(Integer x, Integer y) {
-        super(x, y);
-        this.tileImageEnum = TileImageEnum.STARTPOINT;
+    public StartPoint(Integer row, Integer col) {
+        this(new Position(row, col));
     }
 }

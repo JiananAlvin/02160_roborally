@@ -12,9 +12,8 @@ public class OilStain extends Tile implements Interactive {
         this.tileImageEnum = TileImageEnum.OIL_STAIN;
     }
 
-    public OilStain(Integer x, Integer y) {
-        super(x, y);
-        this.tileImageEnum = TileImageEnum.OIL_STAIN;
+    public OilStain(Integer row, Integer col) {
+        this(new Position(row, col));
     }
 
     public void robotInteraction(Robot r) {

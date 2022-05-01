@@ -46,30 +46,50 @@ public class Robot {
         this.position = new Position(row, col);
     }
 
-    public void tryMove(Position newPos, int movement) {
+    public boolean tryMove(Position newPos, int movement) {
         if (Movement.validateMovement(this, newPos.getRow(), newPos.getCol(), movement)) {
             this.move(newPos, movement);
+            return true;
         }
+        return false;
     }
 
     private void move(Position newPos, int movement) {
         Tile tile = GameMap.getInstance().getTileAtPosition(newPos);
         Robot robotAtPos = Game.getInstance().getRobotAtPosition(newPos);
+
+        // there is a robot in the new position
         if (robotAtPos != null) {
-            this.push(robotAtPos, movement);
+            robotAtPos.robotInteraction(this, movement);
+            robotAtPos = Game.getInstance().getRobotAtPosition(newPos);
         }
-        this.position = newPos;
-        if (tile instanceof Interactive) {
-            Interactive element = (Interactive) tile;
-            element.robotInteraction(this);
+        if (robotAtPos == null) {
+            this.position = newPos;
+            if (tile instanceof Interactive) {
+                Interactive element = (Interactive) tile;
+                element.robotInteraction(this);
+            }
         }
     }
 
-    public void push(Robot robotAtPos, int movement) {
+    public void robotInteraction(Robot robot, int movement) {
+        // a robot tries to move in my position
+        // I move 1 position in the direction of the robot coming in my position if robot is moving forwards
+        // I move 1 position in the opposite direction of the robot coming in my position if robot is moving backwards
+        // I don't move in the new position if there is no valid movement
+
+        // calculate my new position depending on the described scenarios
+        Position newPos = new Position();
         if (movement == 1) {
-            robotAtPos.tryMove(Movement.calculateNewPosition(this.getOrientation(), robotAtPos.getPosition(), 1), 1);
+            newPos = Movement.calculateNewPosition(robot.getOrientation(), this.getPosition(), 1);
         } else if (movement == -1) {
-            robotAtPos.tryMove(Movement.calculateNewPosition(this.getOrientation().getOpposite(), robotAtPos.getPosition(), 1), -1);
+            newPos = Movement.calculateNewPosition(robot.getOrientation().getOpposite(), this.getPosition(), 1);
+        }
+        OrientationEnum initialOrientation = this.getOrientation();
+        this.orientation = robot.getOrientation();
+        // check if the new position is valid
+        if (this.tryMove(newPos, 1)) {
+            this.setOrientation(initialOrientation);
         }
     }
 
@@ -100,8 +120,7 @@ public class Robot {
     }
 
     public void setLives(int lives) {
-        if (lives <= 5)
-            this.lives = lives;
+        if (lives <= 5) this.lives = lives;
     }
 
     public boolean takeTokens() {
@@ -143,8 +162,7 @@ public class Robot {
                 for (Player player2 : game.getParticipants()) {
                     Robot r2 = player2.getRobot();
                     Position position2 = r2.getPosition();
-                    if (position2.getCol() == position1.getCol()
-                            && position1.getRow() > position2.getRow())
+                    if (position2.getCol() == position1.getCol() && position1.getRow() > position2.getRow())
                         closestRobot = closestRobot == null ? r2 : position2.getRow() > closestRobot.getPosition().getRow() ? r2 : closestRobot;
                 }
                 break;
@@ -162,8 +180,7 @@ public class Robot {
                 for (Player player2 : game.getParticipants()) {
                     Robot r2 = player2.getRobot();
                     Position position2 = r2.getPosition();
-                    if (position2.getCol() == position1.getCol()
-                            && position1.getRow() < position2.getRow())
+                    if (position2.getCol() == position1.getCol() && position1.getRow() < position2.getRow())
                         closestRobot = closestRobot == null ? r2 : position2.getRow() < closestRobot.getPosition().getRow() ? r2 : closestRobot;
                 }
                 break;
@@ -176,8 +193,7 @@ public class Robot {
                 for (Player player2 : game.getParticipants()) {
                     Robot r2 = player2.getRobot();
                     Position position2 = r2.getPosition();
-                    if (position2.getRow() == position1.getRow()
-                            && position1.getCol() < position2.getCol())
+                    if (position2.getRow() == position1.getRow() && position1.getCol() < position2.getCol())
                         closestRobot = closestRobot == null ? r2 : position2.getCol() < closestRobot.getPosition().getCol() ? r2 : closestRobot;
                 }
                 break;
@@ -190,8 +206,7 @@ public class Robot {
                 for (Player player2 : game.getParticipants()) {
                     Robot r2 = player2.getRobot();
                     Position position2 = r2.getPosition();
-                    if (position2.getRow() == position1.getRow()
-                            && position1.getCol() > position2.getCol())
+                    if (position2.getRow() == position1.getRow() && position1.getCol() > position2.getCol())
                         closestRobot = closestRobot == null ? r2 : position2.getCol() > closestRobot.getPosition().getCol() ? r2 : closestRobot;
                 }
                 break;
@@ -214,15 +229,12 @@ public class Robot {
                 int col = laserFrom.getPosition().getCol();
                 int rowStart = Math.min(laserFrom.getPosition().getRow(), laserTo.getPosition().getRow());
                 int rowEnd = Math.max(laserFrom.getPosition().getRow(), laserTo.getPosition().getRow());
-                if (mapContent[rowStart][col].getClass().getSimpleName().equals("Wall")
-                        && ((Wall) mapContent[rowStart][col]).getOrientation().equals(OrientationEnum.S))
+                if (mapContent[rowStart][col].getClass().getSimpleName().equals("Wall") && ((Wall) mapContent[rowStart][col]).getOrientation().equals(OrientationEnum.S))
                     return true;
                 for (int i = rowStart + 1; i < rowEnd; i++) {
-                    if (mapContent[i][col].getClass().getSimpleName().equals("Wall"))
-                        return true;
+                    if (mapContent[i][col].getClass().getSimpleName().equals("Wall")) return true;
                 }
-                if (mapContent[rowEnd][col].getClass().getSimpleName().equals("Wall")
-                        && ((Wall) mapContent[rowEnd][col]).getOrientation().equals(OrientationEnum.N))
+                if (mapContent[rowEnd][col].getClass().getSimpleName().equals("Wall") && ((Wall) mapContent[rowEnd][col]).getOrientation().equals(OrientationEnum.N))
                     return true;
                 break;
             }
@@ -231,15 +243,12 @@ public class Robot {
                 int row = laserFrom.getPosition().getRow();
                 int colStart = Math.min(laserFrom.getPosition().getCol(), laserTo.getPosition().getCol());
                 int colEnd = Math.max(laserFrom.getPosition().getCol(), laserTo.getPosition().getCol());
-                if (mapContent[row][colStart].getClass().getSimpleName().equals("Wall")
-                        && ((Wall) mapContent[row][colStart]).getOrientation().equals(OrientationEnum.E))
+                if (mapContent[row][colStart].getClass().getSimpleName().equals("Wall") && ((Wall) mapContent[row][colStart]).getOrientation().equals(OrientationEnum.E))
                     return true;
                 for (int i = colStart; i <= colEnd; i++) {
-                    if (mapContent[row][i].getClass().getSimpleName().equals("Wall"))
-                        return true;
+                    if (mapContent[row][i].getClass().getSimpleName().equals("Wall")) return true;
                 }
-                if (mapContent[row][colEnd].getClass().getSimpleName().equals("Wall")
-                        && ((Wall) mapContent[row][colEnd]).getOrientation().equals(OrientationEnum.W))
+                if (mapContent[row][colEnd].getClass().getSimpleName().equals("Wall") && ((Wall) mapContent[row][colEnd]).getOrientation().equals(OrientationEnum.W))
                     return true;
                 break;
             }

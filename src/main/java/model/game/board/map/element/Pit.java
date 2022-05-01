@@ -10,9 +10,8 @@ public class Pit extends Tile implements Interactive {
         this.tileImageEnum = TileImageEnum.PIT;
     }
 
-    public Pit(Integer x, Integer y) {
-        super(x, y);
-        this.tileImageEnum = TileImageEnum.PIT;
+    public Pit(Integer row, Integer col) {
+        this(new Position(row, col));
     }
 
     public void robotInteraction(Robot r) {

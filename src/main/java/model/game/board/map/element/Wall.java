@@ -17,9 +17,8 @@ public class Wall extends Tile {
         this.init(orientation);
     }
 
-    public Wall(Integer x, Integer y, OrientationEnum orientation) {
-        super(x, y);
-        this.init(orientation);
+    public Wall(Integer row, Integer col, OrientationEnum orientation) {
+        this(new Position(row, col), orientation);
     }
 
     private void init(OrientationEnum orientation) {

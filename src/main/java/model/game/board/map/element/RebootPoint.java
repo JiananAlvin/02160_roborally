@@ -10,8 +10,7 @@ public class RebootPoint extends Tile {
         this.tileImageEnum = TileImageEnum.REBOOTPOINT;
     }
 
-    public RebootPoint(Integer x, Integer y) {
-        super(x, y);
-        this.tileImageEnum = TileImageEnum.REBOOTPOINT;
+    public RebootPoint(Integer row, Integer col) {
+        this(new Position(row, col));
     }
 }
