@@ -1,6 +1,6 @@
 package client.test;
 
-import content.App;
+import App;
 import content.MapNameEnum;
 import content.RobotNameEnum;
 import io.cucumber.java.After;
@@ -18,13 +18,12 @@ import model.game.board.map.GameMap;
 import model.game.board.map.element.Robot;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import server.controller.ServerConnection;
-import server.controller.RobotController;
-import server.controller.RoomController;
-import server.controller.UserController;
+import controller.server.ServerConnection;
+import controller.server.RobotController;
+import controller.server.RoomController;
+import controller.server.UserController;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;

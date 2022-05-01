@@ -1,4 +1,4 @@
-package server.controller;
+package controller.server;
 
 import org.json.JSONObject;
 

@@ -8,9 +8,9 @@ import model.Game;
 import model.game.Room;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import server.controller.RobotController;
-import server.controller.RoomController;
-import server.controller.UserController;
+import controller.server.RobotController;
+import controller.server.RoomController;
+import controller.server.UserController;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;

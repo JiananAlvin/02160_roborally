@@ -9,7 +9,7 @@ import model.game.board.mat.RegisterArea;
 import model.game.card.Card;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import server.controller.ProgrammingRecordController;
+import controller.server.ProgrammingRecordController;
 
 import javax.swing.*;
 import java.awt.*;

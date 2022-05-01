@@ -1,11 +1,6 @@
-package content;
-
 import gui.cover.CoverPanel;
 import gui.login.LoginPanel;
 import lombok.SneakyThrows;
-import model.Game;
-import model.game.Player;
-import model.game.board.map.element.Interactive;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

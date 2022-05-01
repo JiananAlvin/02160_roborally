@@ -1,6 +1,5 @@
-package server.controller;
+package controller.server;
 
-import model.Game;
 import org.json.JSONObject;
 
 /**

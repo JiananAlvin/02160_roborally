@@ -1,7 +1,6 @@
-package server.controller;
+package controller.server;
 
 import org.json.JSONObject;
-import server.controller.ServerConnection;
 
 public class UserController extends ServerConnection {
 

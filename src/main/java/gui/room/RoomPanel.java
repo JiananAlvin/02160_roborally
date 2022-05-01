@@ -2,8 +2,8 @@ package gui.room;
 
 import gui.login.LoginPanel;
 import gui.waiting.WaitingPanel;
-import server.controller.RoomController;
-import server.controller.UserController;
+import controller.server.RoomController;
+import controller.server.UserController;
 import org.json.JSONObject;
 
 import javax.swing.*;

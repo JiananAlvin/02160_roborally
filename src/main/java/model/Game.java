@@ -1,7 +1,6 @@
 package model;
 
 import content.MapNameEnum;
-import content.OrientationEnum;
 import content.RobotNameEnum;
 import gui.game.GamePanel;
 import lombok.Data;
@@ -12,8 +11,8 @@ import model.game.board.map.element.*;
 import model.game.Player;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import server.controller.RobotController;
-import server.controller.RoomController;
+import controller.server.RobotController;
+import controller.server.RoomController;
 
 import java.util.*;
 

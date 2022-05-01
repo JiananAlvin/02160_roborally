@@ -1,7 +1,6 @@
-package server.controller;
+package controller.server;
 
 import org.json.JSONObject;
-import server.controller.ServerConnection;
 
 public class RobotController extends ServerConnection {
     public static final String RESPONSE_ROBOT_NAME = "name";

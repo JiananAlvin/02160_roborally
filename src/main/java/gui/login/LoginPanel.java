@@ -2,7 +2,7 @@ package gui.login;
 
 import content.RobotImageEnum;
 import gui.room.RoomPanel;
-import server.controller.UserController;
+import controller.server.UserController;
 
 import javax.swing.*;
 import java.awt.*;

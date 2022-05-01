@@ -1,8 +1,6 @@
-package server.controller;
+package controller.server;
 
-import io.cucumber.messages.JSON;
 import org.json.JSONObject;
-import server.controller.ServerConnection;
 
 public class RoomController extends ServerConnection {
     public static final String RESPONSE_ROOM_NUMBER = "room_number";
