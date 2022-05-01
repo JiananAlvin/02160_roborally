@@ -127,6 +127,7 @@ public class InteractionStepsDefinition {
     public void iCheckIfTheTwoPlayersAreTheSame() {
     }
 
+
     @Then("the result should be {string}")
     public void theResultShouldBe(String arg0) {
         assertEquals(Boolean.parseBoolean(arg0), this.p1.equals(this.p2));
@@ -147,17 +148,6 @@ public class InteractionStepsDefinition {
 
     @Then("the user should be {string}")
     public void theUserShouldBe(String arg0) {
-        System.out.println(this.p1.getName());
         assertEquals(arg0, this.p1.getName());
-    }
-
-    @When("register {string} is requested")
-    public void registerIsRequested(String arg0) {
-
-    }
-
-    @Then("i should get a register")
-    public void iShouldGetARegister() {
-
     }
 }

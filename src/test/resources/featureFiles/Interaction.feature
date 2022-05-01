@@ -46,13 +46,4 @@ Feature:
       | player1     |
       | player2     |
 
-    Scenario Outline: As a game driver I want to get a register from all available registers
-    Given a player with name "<player_name>"
-    When register "<register_no>" is requested
-    Then i should get a register
-      Examples:
-      | player_name | register_no |
-      | player1     | 1           |
-      | player1     | 2           |
-
 
