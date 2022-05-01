@@ -59,5 +59,4 @@ public class WaitingPanel extends JPanel {
         }
     }
 
-
 }

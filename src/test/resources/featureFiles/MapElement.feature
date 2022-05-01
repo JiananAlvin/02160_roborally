@@ -8,7 +8,7 @@ Feature:
     Examples: # (4,0) antenna
       | player1 | player2 | player3 | robot-name1 | robot-name2 | robot-name3 | row1 | col1 | row2 | col2 | row3 | col3 | result_name1 | result_name2 | result_name3 |
       | Raul    | Simona  | Durdija | SQUASH_BOT  | ZOOM_BOT    | HAMMER_BOT  | 5    | 3    | 7    | 5    | 12   | 4    | Raul         | Simona       | Durdija      |
-      | Wenjie  | Anna    | Ion     | SQUASH_BOT  | ZOOM_BOT    | HAMMER_BOT  | 5    | 3    | 5    | 5    | 12   | 4    | Wenjie         | Anna       | Ion          |
+      | Wenjie  | Anna    | Ion     | SQUASH_BOT  | ZOOM_BOT    | HAMMER_BOT  | 5    | 3    | 5    | 5    | 12   | 4    | Wenjie       | Anna         | Ion          |
 
  #####################             ROBOT SCENARIOS          #######################################
   Scenario Outline: A robot gets an initial position
@@ -42,6 +42,16 @@ Feature:
       | E                    | CardUTurn        | W               |
       | W                    | CardUTurn        | E               |
 
+  Scenario Outline: As a robot I want to get 1 life when i execute power up card
+    Given a robot "<robot_name>"
+    And robot has "<life_before>" lives
+    When robot execute power up card
+    Then the robot now has "<life_after>" lives
+    Examples:
+      | life_before | life_after | robot_name |
+      | 3           | 4          | SQUASH_BOT |
+      | 2           | 3          | ZOOM_BOT   |
+      | 5           | 5          | HAMMER_BOT |
 
   Scenario Outline: A robot moves according to the programming card
     Given there is a game with map "<map_name>"
@@ -70,7 +80,7 @@ Feature:
       | HULK_X90   | 2     | 1            | 1           |
       | SPIN_BOT   | 3     | 1            | 2           |
 
-
+# Global scenarios
   Scenario Outline: The game status is checked every time a checkpoint token is taken by a player on map
     Given "<playerA>" and "<playerB>" are in a game with the map "<mapName>"
     And playerA's robot has taken checkpoint tokens from all previous checkpoints numerically except <point_number>
@@ -104,13 +114,14 @@ Feature:
     Given there is a game with map "<map_name>"
     And a robot "<robot_name>" with position "<row>" "<col>"
     And robot has "<orientation>" orientation
-    When robot lands on a rotating gear
+    When robot lands on a rotating gear with direction "<direction>"
     Then robot has "<final_orientation>" orientation
     Examples:
-      | map_name     | robot_name | row | col | orientation | final_orientation |
-      | INTERMEDIATE | ZOOM_BOT   | 5   | 4   | E           | S                 |
-      | INTERMEDIATE | ZOOM_BOT   | 5   | 6   | E           | S                 |
-      | INTERMEDIATE | ZOOM_BOT   | 5   | 6   | W           | N                 |
+      | map_name     | robot_name | row | col | orientation | final_orientation | direction        |
+      | INTERMEDIATE | ZOOM_BOT   | 5   | 6   | E           | S                 | clockwise        |
+      | INTERMEDIATE | ZOOM_BOT   | 5   | 6   | W           | S                 | counterclockwise |
+      | INTERMEDIATE | ZOOM_BOT   | 5   | 4   | E           | N                 | counterclockwise |
+      | INTERMEDIATE | ZOOM_BOT   | 4   | 7   | E           | S                 | clockwise        |
 
   Scenario Outline: Robot lands on a pit
     Given there is a game with map "<map_name>"
@@ -139,6 +150,19 @@ Feature:
       | ZOOM_BOT   | 6   | 10  | W           | 2     | 1      | STARTER  |
       | ZOOM_BOT   | 7   | 6   | N           | 2     | 1      | STARTER  |
 
+  Scenario Outline: Robot lands on a conveyor belt
+    Given there is a game with map "<map_name>"
+    And a robot "<robot_name>" with position "<row>" "<col>"
+    And robot has "<orientation>" orientation
+    When robot lands on a conveyor belt with distance "<distance>"
+    Then robot moves forward according to the direction
+    Examples:
+      | map_name     | robot_name | row | col | orientation | distance |
+      | INTERMEDIATE | ZOOM_BOT   | 1   | 3   | E           | 1        |
+      | INTERMEDIATE | ZOOM_BOT   | 1   | 2   | E           | 1        |
+      | INTERMEDIATE | ZOOM_BOT   | 9   | 10  | E           | 1        |
+      | INTERMEDIATE | ZOOM_BOT   | 0   | 1   | E           | 1        |
+      | INTERMEDIATE | ZOOM_BOT   | 2   | 5   | S           | 2        |
 
   Scenario Outline: Robots cannot go through a wall when wall is at next position
     Given there is a game with map "<map_name>"

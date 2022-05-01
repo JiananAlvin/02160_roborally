@@ -215,7 +215,11 @@ public class GameManager {
                         break;
                     }
                     if (roomInfoResponse.get(RoomController.RESPONSE_ROOM_STATUS).equals(RoomController.ROOM_STATUS_START)) {
-                        if (!signal.equals("owner")) startGamePanel(roomNumber, roomInfoResponse, userName, signal);
+                        if (!signal.equals("owner"))
+                            try {
+                                startGamePanel(roomNumber, roomInfoResponse, userName, signal);
+                            } catch (Exception ignored) {
+                            }
                         break;
                     }
                     long timeStampResponse = roomInfoResponse.getLong(RoomController.RESPONSE_REQUEST_TIME);
@@ -264,7 +268,8 @@ public class GameManager {
             frame.pack();
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             // set full screen.
-            ClientRunner.getDevice().setFullScreenWindow(frame);
+//            ClientRunner.getDevice().setFullScreenWindow(frame);
+            frame.setBounds(0, 0, 1920, 1080);
             frame.setVisible(true);
         });
     }
@@ -390,8 +395,7 @@ public class GameManager {
                         int i = JOptionPane.showOptionDialog(ClientRunner.getApplicationInstance().getFrame(),
                                 currentPlayer.getName() + " wins this game! The game will exist", "Game ends!",
                                 JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
-                        if (i==JOptionPane.OK_OPTION||i==JOptionPane.DEFAULT_OPTION||i==JOptionPane.NO_OPTION)
-                        {
+                        if (i == JOptionPane.OK_OPTION || i == JOptionPane.DEFAULT_OPTION || i == JOptionPane.NO_OPTION) {
                             ClientRunner.getApplicationInstance().getFrame().setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                             ClientRunner.getApplicationInstance().getFrame().dispose();
                         }

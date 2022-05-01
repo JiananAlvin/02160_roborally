@@ -16,9 +16,9 @@ public class ClientRunner {
     private final JFrame frame;
     private static ClientRunner clientRunnerInstance;
     public final static String APP_TITLE = "RoboRally Group10 v2.0";
-    @Getter
-    private final static GraphicsDevice device = GraphicsEnvironment
-            .getLocalGraphicsEnvironment().getScreenDevices()[0];
+//    @Getter
+//    private final static GraphicsDevice device = GraphicsEnvironment
+//            .getLocalGraphicsEnvironment().getScreenDevices()[0];
 
     private ClientRunner() {
         this.frame = new JFrame(APP_TITLE);

@@ -43,6 +43,8 @@ public class Player {
     public boolean equals(Object obj) {
         if (obj instanceof Player) {
             Player p = (Player) obj;
+//            System.out.println(this.name == p.getName());
+
             return p.name.equals(this.name);
         }
         return false;

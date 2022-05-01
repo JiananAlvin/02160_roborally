@@ -26,8 +26,7 @@ public class RegisterArea {
      * @return the {@code Card} instance in the nth register.
      */
     public Card getCard(int index) throws OutOfMaxRegisterSizeException {
-        if (index < REGISTER_QUEUE_SIZE)
-            return this.registers.get(index);
+        if (index < REGISTER_QUEUE_SIZE) return this.registers.get(index);
         else throw new OutOfMaxRegisterSizeException(index);
     }
 

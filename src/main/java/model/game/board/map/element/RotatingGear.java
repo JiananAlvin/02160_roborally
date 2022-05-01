@@ -11,15 +11,13 @@ import model.game.board.map.Position;
 public class RotatingGear extends Tile implements Interactive {
 
     private boolean isClockwise; // true: clockwise; false: counterclockwise
-
     public RotatingGear(Position position, Boolean isClockwise) {
         super(position);
         this.init(isClockwise);
     }
 
-    public RotatingGear(Integer x, Integer y, Boolean isClockwise) {
-        super(new Position(x, y));
-        this.init(isClockwise);
+    public RotatingGear(Integer row, Integer col, Boolean isClockwise) {
+        this(new Position(row, col), isClockwise);
     }
 
     private void init(boolean isClockwise) {

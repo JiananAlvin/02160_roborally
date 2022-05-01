@@ -27,5 +27,23 @@ Feature:
       | 2                         | 5                             |
       | 0                         | 5                             |
 
+  Scenario Outline: As game driver I want to see if two players are the same
+    Given a player with name "<player_name_1>"
+    And another player with name "<player_name_2>"
+    When i check if the two players are the same
+    Then the result should be "<result>"
+    Examples:
+      | player_name_1 | player_name_2 | result |
+      | player1       | player1       | true   |
+      | player1       | player3       | false  |
+
+  Scenario Outline: As a game driver I want to get the user using the client app
+    Given a player with name "<player_name>"
+    When i get the user using the client app
+    Then the user should be "<player_name>"
+    Examples:
+      | player_name |
+      | player1     |
+      | player2     |
 
 

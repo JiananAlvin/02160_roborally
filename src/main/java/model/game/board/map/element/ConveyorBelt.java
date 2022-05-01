@@ -4,9 +4,8 @@ import content.TileImageEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import content.OrientationEnum;
-import model.Game;
 import model.game.board.map.Position;
-import model.game.card.behaviour.Movement;
+import model.game.card.*;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -15,14 +14,14 @@ public class ConveyorBelt extends Tile implements Interactive {
     private OrientationEnum orientation;
     private int distance;
 
-    public ConveyorBelt(Integer row, Integer col, OrientationEnum orientation, Integer distance) {
-        super(row, col);
-        this.init(orientation, distance);
-    }
 
     public ConveyorBelt(Position position, OrientationEnum orientation, Integer distance) {
         super(position);
         this.init(orientation, distance);
+    }
+
+    public ConveyorBelt(Integer row, Integer col, OrientationEnum orientation, Integer distance) {
+        this(new Position(row, col), orientation, distance);
     }
 
     private void init(OrientationEnum orientation, int distance) {
@@ -51,17 +50,17 @@ public class ConveyorBelt extends Tile implements Interactive {
     /**
      * conveyor belt: (1) The green one transmits robot to the next tile directly.
      * (2) When robot moves in the same direction as the blue conveyor belt, it moves twice fast.
+     *
      * @param r A robot
      */
+
+    @Override
     public void robotInteraction(Robot r) {
-        if (this.orientation.getAngle() == r.getOrientation().getAngle()) {
-            Position newPos = Movement.calculateNewPosition(r.getOrientation(), r.getPosition(), 1);
-            if (Movement.validateMovement(r, newPos.getRow(), newPos.getCol(), 1)) {
-                Robot robotAtPos = Game.getInstance().getRobotAtPosition(newPos);
-                if (robotAtPos != null) {
-                    r.robotInteraction(robotAtPos, 1);
-                }
-                r.setPosition(newPos);
+        if (this.orientation.equals(r.getOrientation())) {
+            if (this.distance == 1) {
+                new CardMove1().actsOn(r);
+            } else if(this.distance == 2){
+                new CardMove2().actsOn(r);
             }
         }
     }
