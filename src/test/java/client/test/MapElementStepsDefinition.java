@@ -84,8 +84,6 @@ public class MapElementStepsDefinition {
     @When("the robot gets an initial position randomly")
     public void the_robot_gets_an_initial_position_randomly() {
         this.robot.setPosition(0, 0);
-        // TODO:
-        this.robot.setOnBoard(true);
     }
 
     @Then("robot is now at a position {string} and {string}")
@@ -265,11 +263,23 @@ public class MapElementStepsDefinition {
 
 
     //8.----------------------------------------------------------------
-    @When("robot lands on a rotating gear")
-    public void robotLandsOnARotatingGear() {
-        // this.robot.tryMove();
+
+    @When("robot lands on a rotating gear with direction {string}")
+    public void robotLandsOnARotatingGearWithDirection(String arg0) {
         Card actionCard = new CardMove1();
         actionCard.actsOn(this.robot);
+        Tile tile = GameMap.getInstance().getTileAtPosition(this.robot.getPosition());
+        if (tile instanceof RotatingGear) {
+            switch (arg0) {
+                case "clockwise":
+                    assertTrue(((RotatingGear) tile).isClockwise());
+                    break;
+                case "counterclockwise":
+                    assertFalse(((RotatingGear) tile).isClockwise());
+                    break;
+            }
+        }
+
     }
 
 
@@ -406,6 +416,29 @@ public class MapElementStepsDefinition {
     @Then("robot does not move backward")
     public void robotDoesNotMoveBackward() {
         assertEquals(this.robot.getPosition(), this.initialRobotPosition);
+    }
+
+    private int conveyorDistance = -1;
+
+    @When("robot lands on a conveyor belt with distance {string}")
+    public void robotLandsOnAConveyorBeltWithDirection(String arg1) {
+        Tile tile = (ConveyorBelt) GameMap.getInstance().getTileAtPosition(Movement.calculateNewPosition(this.robot.getOrientation(), this.robot.getPosition(), 1));
+        System.out.println("Conveyor belt with distance: " + ((ConveyorBelt) tile).getDistance());
+
+        Card actionCard = new CardMove1();
+        actionCard.actsOn(this.robot);
+        this.conveyorDistance = Integer.parseInt(arg1);
+    }
+
+    @Then("robot moves forward according to the direction")
+    public void robotMovesForwardAccordingToTheDirection() {
+        assertTrue(Math.abs(this.robot.getPosition().getRow() - this.initialRobotPosition.getRow() - 1) == conveyorDistance || Math.abs(this.robot.getPosition().getCol() - this.initialRobotPosition.getCol() - 1) == conveyorDistance);
+    }
+
+    @When("robot execute power up card")
+    public void robotExecutePowerUpCard() {
+        Card actionCard = new CardPowerUp();
+        actionCard.actsOn(this.robot);
     }
 
 

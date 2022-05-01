@@ -15,7 +15,6 @@ import java.util.ArrayList;
 @Data
 public class Robot {
     private String name;
-    private boolean onBoard;
     private OrientationEnum orientation;
     private int lives = 5;
     private Position position;
@@ -23,7 +22,6 @@ public class Robot {
 
     public Robot(RobotNameEnum robotName) {
         this.name = robotName.getName();
-        this.onBoard = false;
         this.position = new Position();
         this.orientation = OrientationEnum.E;
         this.checkpoints = new ArrayList<>();
@@ -31,7 +29,6 @@ public class Robot {
 
     public Robot(RobotNameEnum robotName, int row, int col) {
         this.name = robotName.getName();
-        this.onBoard = false;
         this.position = new Position(row, col);
         this.orientation = OrientationEnum.E;
         this.checkpoints = new ArrayList<>();

@@ -15,12 +15,9 @@ public class Antenna extends Tile {
     }
 
     private Antenna() {
-        super(new Position(4, 0));
+        super(0,0);
         super.tileImageEnum = TileImageEnum.ANTENNA;
     }
 
-    public Position getPosition() {
-        return super.getPosition();
-    }
 }
 

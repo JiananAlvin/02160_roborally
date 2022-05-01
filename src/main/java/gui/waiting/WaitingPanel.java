@@ -94,7 +94,7 @@ public class WaitingPanel extends JPanel {
         timer = new Timer(300, new ActionListener() {
             long timeStamp;
 
-            @SneakyThrows
+
             @Override
             public void actionPerformed(ActionEvent e) {
                 // initializing the table of participants
@@ -127,7 +127,11 @@ public class WaitingPanel extends JPanel {
 
 
                 if ((!signal.equals("owner")) && roomInfoResponse.get(RoomController.RESPONSE_ROOM_STATUS).equals(RoomController.ROOM_STATUS_START)) {
-                    startGamePanel(roomNumber, roomInfoResponse, userName, frame, signal);
+                    try {
+                        startGamePanel(roomNumber, roomInfoResponse, userName, frame, signal);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
                 }
 
                 long timeStampResponse = roomInfoResponse.getLong(RoomController.RESPONSE_REQUEST_TIME);

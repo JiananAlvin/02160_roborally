@@ -115,4 +115,49 @@ public class InteractionStepsDefinition {
             assertNotEquals("null", register.getClass().getSimpleName());
         }
     }
+
+    Player p2 = new Player();
+
+    @Given("another player with name {string}")
+    public void anotherPlayerWithName(String arg0) {
+        this.p2 = new Player(arg0, new Robot(RobotNameEnum.ZOOM_BOT));
+    }
+
+    @When("i check if the two players are the same")
+    public void iCheckIfTheTwoPlayersAreTheSame() {
+    }
+
+    @Then("the result should be {string}")
+    public void theResultShouldBe(String arg0) {
+        assertEquals(Boolean.parseBoolean(arg0), this.p1.equals(this.p2));
+    }
+
+    @Given("a player with name {string}")
+    public void aPlayerWithName(String arg0) {
+        this.p1 = new Player(arg0, new Robot(RobotNameEnum.ZOOM_BOT));
+        Game.getInstance().setParticipants(new ArrayList<Player>());
+        Game.getInstance().getParticipants().add(this.p1);
+        Game.getInstance().setUserName(arg0);
+    }
+
+    @When("i get the user using the client app")
+    public void iGetTheUserUsingTheClientApp() {
+        this.p1 = Game.getInstance().getUser();
+    }
+
+    @Then("the user should be {string}")
+    public void theUserShouldBe(String arg0) {
+        System.out.println(this.p1.getName());
+        assertEquals(arg0, this.p1.getName());
+    }
+
+    @When("register {string} is requested")
+    public void registerIsRequested(String arg0) {
+
+    }
+
+    @Then("i should get a register")
+    public void iShouldGetARegister() {
+
+    }
 }

@@ -14,7 +14,7 @@ public class CheckPoint extends Tile {
     }
 
     public CheckPoint(Integer row, Integer col) {
-        super(row, col);
+        this(new Position(row, col));
     }
 
     public void setCheckPointNum(int checkPointNum) {

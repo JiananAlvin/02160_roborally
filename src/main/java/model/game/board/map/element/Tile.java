@@ -10,17 +10,14 @@ public class Tile {
 
     private Position position;
     protected TileImageEnum tileImageEnum;
-
-    public Tile() {
-        this.position = new Position(0,0);
-    }
+    public Tile() { this(0, 0); }
 
     public Tile(Position position) {
         this.position = position;
     }
 
     public Tile(int row, int col) {
-        this.position = new Position(row, col);
+        this(new Position(row, col));
     }
 }
 
