@@ -1,7 +1,7 @@
 package gui.waiting;
 
 
-import controller.game.GameManager;
+import controller.game.GameController;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -22,7 +22,7 @@ public class WaitingPanel extends JPanel {
             lblRoomNumber.setFont(new Font("Calibri", Font.BOLD, 20));
             JToggleButton btStart = new JToggleButton("Start");
             btQuit = new JToggleButton("Quit");
-            GameManager.getInstance().loadParticipantsTable(userName, roomNumberStr, signal, this);
+            GameController.getInstance().loadParticipantsTable(userName, roomNumberStr, signal, this);
 
             this.setLayout(null);
             lblRoomNumber.setBounds(100, 28, 780, 20);
@@ -32,12 +32,12 @@ public class WaitingPanel extends JPanel {
             this.add(btStart);
             this.add(btQuit);
             btQuit.addActionListener(e -> {
-                GameManager.getInstance().quitRoomForRoomOwner(roomNumberStr);
+                GameController.getInstance().quitRoomForRoomOwner(roomNumberStr);
             });
 
             btStart.addActionListener(e -> {
                 btStart.setEnabled(false);
-                GameManager.getInstance().startGameForRoomOwner(roomNumberStr, userName, signal);
+                GameController.getInstance().startGameForRoomOwner(roomNumberStr, userName, signal);
             });
         } else {
             lblRoomNumber = new JLabel("Room Number: " + roomNumberStr);
@@ -45,7 +45,7 @@ public class WaitingPanel extends JPanel {
             btQuit = new JToggleButton("Quit");
             JLabel lblTip = new JLabel("Please wait for the owner to start the game.");
             lblTip.setFont(new Font("Calibri", Font.PLAIN, 15));
-            GameManager.getInstance().loadParticipantsTable(userName, roomNumberStr, signal, this);
+            GameController.getInstance().loadParticipantsTable(userName, roomNumberStr, signal, this);
             this.setLayout(null);
             lblRoomNumber.setBounds(100, 28, 780, 20);
             btQuit.setBounds(100, 270, 80, 30);
@@ -54,7 +54,7 @@ public class WaitingPanel extends JPanel {
             this.add(btQuit);
             this.add(lblTip);
             btQuit.addActionListener(e -> {
-                GameManager.getInstance().quitRoomForParticipants(userName);
+                GameController.getInstance().quitRoomForParticipants(userName);
             });
         }
     }

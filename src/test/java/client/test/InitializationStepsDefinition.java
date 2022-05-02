@@ -96,7 +96,7 @@ public class InitializationStepsDefinition {
     @When("the player inputs a name {string}")
     public void thePlayerInputsAName(String arg0) throws InterruptedException {
         this.user.setName(arg0);
-        Thread.sleep(100);
+        Thread.sleep(200);
         this.response = new UserController().createUser(arg0);
     }
 

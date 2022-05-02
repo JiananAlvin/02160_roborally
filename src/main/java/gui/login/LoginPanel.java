@@ -1,7 +1,7 @@
 package gui.login;
 
 import content.RobotImageEnum;
-import controller.game.GameManager;
+import controller.game.GameController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -75,11 +75,11 @@ public class LoginPanel extends JPanel {
 
         // Adding listeners for "Login" and "Cancel" buttons
         btOk.addActionListener(e -> {
-            GameManager.getInstance().processLogin(userName.getText(), lblChosenRobot.getText());
+            GameController.getInstance().processLogin(userName.getText(), lblChosenRobot.getText());
         });
 
         btCancel.addActionListener(e -> {
-            GameManager.getInstance().closeJFrame();
+            GameController.getInstance().closeJFrame();
         });
     }
 

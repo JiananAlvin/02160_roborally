@@ -35,9 +35,9 @@ import java.util.Objects;
 
 import static java.lang.Integer.parseInt;
 
-public class GameManager {
+public class GameController {
 
-    private static GameManager INSTANCE;
+    private static GameController INSTANCE;
     SwingWorker<Void, Void> waitingPanelWorker;
     SwingWorker<JSONArray, Void> progRecordSyncWorker;
     private Timer programmingTimer;
@@ -45,13 +45,13 @@ public class GameManager {
     public static final int MAX_PROGRAMMING_TIME = 30;
     public static final int ACTIVATION_PHASE_TIME = 2000;
 
-    private GameManager() {
+    private GameController() {
     }
 
-    public static GameManager getInstance() {
-        if (GameManager.INSTANCE == null)
-            GameManager.INSTANCE = new GameManager();
-        return GameManager.INSTANCE;
+    public static GameController getInstance() {
+        if (GameController.INSTANCE == null)
+            GameController.INSTANCE = new GameController();
+        return GameController.INSTANCE;
     }
 
 
@@ -78,10 +78,10 @@ public class GameManager {
 
     public void processLogin(String userName, String robotName) {
         /*
-            fetching the username from the JTextField userName and the chosen robot when the "Login" button is pressed
-            & inserting the username and the chosen robot's name into database through API
-            & loading the RoomPanel
-             */
+        fetching the username from the JTextField userName and the chosen robot when the "Login" button is pressed
+        & inserting the username and the chosen robot's name into database through API
+        & loading the RoomPanel
+         */
         UserController userController = new UserController();
         userController.createUser(userName);
         if (userController.getResponse().get("status").equals(200)) {
@@ -119,9 +119,9 @@ public class GameManager {
 
     public void processJoinRoom(String userName, String roomNumber) {
         /*
-            fetching the room number when the "Join room" button is pressed
-            inserting the qplayer info into the room through API
-             */
+        fetching the room number when the "Join room" button is pressed
+        inserting the qplayer info into the room through API
+         */
         UserController userController = new UserController();
         userController.joinRoom(userName, Integer.parseInt(roomNumber));
         JFrame frame = ClientRunner.getApplicationInstance().getFrame();
@@ -174,13 +174,7 @@ public class GameManager {
 
 
     public void loadParticipantsTable(String userName, String roomNumberStr, String signal, WaitingPanel waitingPanel) {
-        // initializing the table of participants
-        // making a JTable non-editable
-        //all cells false
-        // updating the table of participants
-        // update the stored timeStamp
-        // centering all columns
-        // putting the JTable "tabParticipants" inside a JScrollPane to show the TableHeader
+
         waitingPanelWorker = new SwingWorker<Void, Void>() {
             long timeStamp;
 
@@ -268,8 +262,6 @@ public class GameManager {
             //Display the window.
             frame.pack();
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            // set full screen.
-//            ClientRunner.getDevice().setFullScreenWindow(frame);
             frame.setBounds(0, 0, 1920, 1080);
             frame.setVisible(true);
         });
@@ -358,7 +350,6 @@ public class GameManager {
             }
         };
         // executes the swingworker on worker thread
-//        gamePanel.getInfoPanel().addLogToLogPanel("updateProgRecordsWorker starts", null);
         progRecordSyncWorker.execute();
     }
 

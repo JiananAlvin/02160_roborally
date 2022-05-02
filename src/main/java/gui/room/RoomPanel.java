@@ -1,6 +1,6 @@
 package gui.room;
 
-import controller.game.GameManager;
+import controller.game.GameController;
 
 import javax.swing.*;
 
@@ -36,15 +36,15 @@ public class RoomPanel extends JPanel {
 
         // adding listeners for "Create room" and "Join room" buttons
         btCreateRoom.addActionListener(e -> {
-            GameManager.getInstance().processCreateRoom(userName, this.jcbMapName.getSelectedItem() + "");
+            GameController.getInstance().processCreateRoom(userName, this.jcbMapName.getSelectedItem() + "");
         });
 
         btJoinRoom.addActionListener(e -> {
-            GameManager.getInstance().processJoinRoom(userName, this.roomNumber.getText());
+            GameController.getInstance().processJoinRoom(userName, this.roomNumber.getText());
         });
 
         btBack.addActionListener(e -> {
-            GameManager.getInstance().backToLoginPanle(userName);
+            GameController.getInstance().backToLoginPanle(userName);
         });
     }
 }

@@ -1,24 +1,12 @@
 package gui.game;
 
-import app.ClientRunner;
-import controller.game.GameManager;
+import controller.game.GameController;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.SneakyThrows;
 import model.Game;
-import model.game.Player;
-import model.game.board.mat.ProgrammingDeck;
-import model.game.board.mat.RegisterArea;
-import model.game.card.Card;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import controller.server.ProgrammingRecordController;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 /*
  * The whole GamePanel is like this
@@ -57,6 +45,6 @@ public class GamePanel extends JPanel {
 
         this.setSize(1650, 1080);
 
-        GameManager.getInstance().startProgrammingTimer(this);
+        GameController.getInstance().startProgrammingTimer(this);
     }
 }
