@@ -6,22 +6,22 @@ import java.io.File;
 
 public enum CardImageEnum {
 
-    CardAgain("src/main/resources/images/programming_cards/CardAgain.png"),
-    CardBackUp("src/main/resources/images/programming_cards/CardBackUp.png"),
-    CardMove1("src/main/resources/images/programming_cards/CardMove1.png"),
-    CardMove2("src/main/resources/images/programming_cards/CardMove2.png"),
-    CardMove3("src/main/resources/images/programming_cards/CardMove3.png"),
-    CardPowerUp("src/main/resources/images/programming_cards/CardPowerUp.png"),
-    CardTurnLeft("src/main/resources/images/programming_cards/CardTurnLeft.png"),
-    CardTurnRight("src/main/resources/images/programming_cards/CardTurnRight.png"),
-    CardUTurn("src/main/resources/images/programming_cards/CardUTurn.png");
+    CardAgain("/images/programming_cards/CardAgain.png"),
+    CardBackUp("/images/programming_cards/CardBackUp.png"),
+    CardMove1("/images/programming_cards/CardMove1.png"),
+    CardMove2("/images/programming_cards/CardMove2.png"),
+    CardMove3("/images/programming_cards/CardMove3.png"),
+    CardPowerUp("/images/programming_cards/CardPowerUp.png"),
+    CardTurnLeft("/images/programming_cards/CardTurnLeft.png"),
+    CardTurnRight("/images/programming_cards/CardTurnRight.png"),
+    CardUTurn("/images/programming_cards/CardUTurn.png");
 
     private final BufferedImage image;
 
     private CardImageEnum(String fileName) {
         BufferedImage tempImage;
         try {
-            tempImage = ImageIO.read(new File(fileName));
+            tempImage = ImageIO.read(getClass().getResource(fileName));
         } catch (Exception e) {
             tempImage = null;
         }

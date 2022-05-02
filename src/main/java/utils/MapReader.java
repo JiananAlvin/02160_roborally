@@ -14,7 +14,7 @@ public class MapReader {
     /**
      * @ PATH_TO_MAP_FILE: The path to the folder storing maps.txt
      */
-    private static final String PATH_TO_MAP_FILE = "src/main/resources/maps/";
+    private static final String PATH_TO_MAP_FILE = "/maps/";
     private static final String FULLY_QUALIFIED_NAME_OF_ELEMENT = "model.game.board.map.element.";
     private static final String FULLY_QUALIFIED_NAME_OF_CHECKPOINT = "model.game.board.map.element.CheckPoint";
     private static final String FULLY_QUALIFIED_NAME_OF_CONVEYORBELT = "model.game.board.map.element.ConveyorBelt";
@@ -28,13 +28,12 @@ public class MapReader {
      */
     private static ArrayList<String> readLineToStringArray(MapNameEnum mapName) throws IOException {
         ArrayList<String> strList = new ArrayList<>();
-        FileReader reader = new FileReader(new File(PATH_TO_MAP_FILE + mapName.getMapName() + ".txt"));
-        BufferedReader readerBuf = new BufferedReader(reader);
+        InputStream is = (MapReader.class.getResourceAsStream(PATH_TO_MAP_FILE + mapName.getMapName() + ".txt"));
+        BufferedReader readerBuf = new BufferedReader(new InputStreamReader(is, "UTF-8"));
         String lineStr;
         while ((lineStr = readerBuf.readLine()) != null) {
             strList.add(lineStr);
         }
-        reader.close();
         readerBuf.close();
         return strList;
     }
