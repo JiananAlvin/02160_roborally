@@ -9,9 +9,11 @@ import model.game.board.mat.ProgrammingDeck;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ListSelectionEvent;
@@ -23,7 +25,6 @@ import javax.swing.table.DefaultTableModel;
 @Data
 public class MatPanel extends JPanel {
 
-    private final String PATH_TO_DECORATION_ICONS = "src/main/resources/images/decorations/";
     private JLabel lblRobot;
     private JLabel lblRobotLives;
     private JLabel lblInfo;
@@ -47,7 +48,7 @@ public class MatPanel extends JPanel {
     private JLabel lblTimer;
 
 
-    public MatPanel() {
+    public MatPanel() throws IOException {
         // adding the user's information
         Game game = Game.getInstance();
         Icon iconRobot = new ImageIcon(RobotImageEnum.valueOf(game.getUser().getRobot().getName()).getImage().getScaledInstance(109, 140, Image.SCALE_DEFAULT));
@@ -59,7 +60,7 @@ public class MatPanel extends JPanel {
         this.lblInfo = new JLabel("<html>Robot: " + game.getUser().getRobot().getName().replace('_', ' ') + "<br/>User: " + game.getUser().getName() + "</html>");
         this.lblInfo.setFont(new Font("Default", Font.BOLD, 15));
         this.lblCheckpointToken = new JLabel();
-        Icon iconCheckpointToken = new ImageIcon(new ImageIcon(PATH_TO_DECORATION_ICONS + "checkpoint_tokens.png").getImage().getScaledInstance(90, 90, Image.SCALE_DEFAULT));
+        Icon iconCheckpointToken = new ImageIcon(DecorationImageEnum.CHECKPOINT_TOKENS.getImage().getScaledInstance(90, 90, Image.SCALE_DEFAULT));
         this.lblCheckpointToken.setIcon(iconCheckpointToken);
         this.lblInfo.setFont(new Font("Default", Font.BOLD, 15));
         this.lblCheckpointToken.setText("<html><br/>" + game.getUser().getRobot().getCheckpoints().size() + "</html>");
@@ -67,9 +68,9 @@ public class MatPanel extends JPanel {
         this.lblCheckpointToken.setVerticalTextPosition(JLabel.CENTER);
         this.lblCheckpointToken.setForeground(Color.WHITE);
         this.lblCheckpointToken.setFont(new Font("Default", Font.BOLD, 20));
-        Icon iconDeck = new ImageIcon(new ImageIcon(PATH_TO_DECORATION_ICONS + "deck.png").getImage().getScaledInstance(100, 140, Image.SCALE_DEFAULT));
+        Icon iconDeck = new ImageIcon(DecorationImageEnum.DECK.getImage().getScaledInstance(100, 140, Image.SCALE_DEFAULT));
         this.lblDeck = new JLabel(iconDeck);
-        Icon iconDiscardPile = new ImageIcon(new ImageIcon(PATH_TO_DECORATION_ICONS + "discard.png").getImage().getScaledInstance(100, 140, Image.SCALE_DEFAULT));
+        Icon iconDiscardPile = new ImageIcon(DecorationImageEnum.DISCARD.getImage().getScaledInstance(100, 140, Image.SCALE_DEFAULT));
         this.lblDiscardPile = new JLabel(iconDiscardPile);
         this.lblDeckCards = new JLabel("Programing Deck: " + game.getUser().getProgrammingDeck().getCards().size());
         this.lblDiscardCards = new JLabel("Discard Pile: " + game.getUser().getDiscardPile().getDiscards().size());
@@ -84,7 +85,7 @@ public class MatPanel extends JPanel {
         this.lblDiscard = new JLabel("<html><span bgcolor=\"red\">|-------------------------Discard------------------------|</html>");
         this.lblRegister.setFont(new Font("Default", Font.BOLD, 15));
         this.lblDiscard.setFont(new Font("Default", Font.BOLD, 15));
-        Icon iconClock = new ImageIcon(new ImageIcon(PATH_TO_DECORATION_ICONS + "clock.png").getImage().getScaledInstance(105, 114, Image.SCALE_DEFAULT));
+        Icon iconClock = new ImageIcon(DecorationImageEnum.CLOCK.getImage().getScaledInstance(105, 114, Image.SCALE_DEFAULT));
         this.lblTimer = new JLabel();
         this.lblTimer.setIcon(iconClock);
         this.lblTimer.setHorizontalTextPosition(JLabel.CENTER);
@@ -200,29 +201,4 @@ public class MatPanel extends JPanel {
         public void columnSelectionChanged(ListSelectionEvent e) {
         }
     }
-
-//    public static void main(String[] args) throws IOException, IOException {
-//        Player user = new Player("SpongeBob", new Robot(RobotNameEnum.valueOf("SQUASH_BOT")));
-//        UserController userController = new UserController();
-//        userController.createUser("SpongeBob");
-//        userController.createUser("PatrickStar");
-////        RobotController robotController = new RobotController();
-//        userController.chooseRobot(user.getName(), user.getRobot().getName());
-//        userController.chooseRobot("PatrickStar", "ZOOM_BOT");
-//        RoomController roomController = new RoomController();
-//        int roomNumber = roomController.createRoom(user.getName(), "STARTER").getInt("room_number");
-//        userController.joinRoom("PatrickStar", roomNumber);
-//        GameMap gameMap = new GameMap(MapNameEnum.valueOf("STARTER"));
-//        Room room = new Room(roomNumber);
-//        Game game = new Game();
-//        game.init("SpongeBob", room, gameMap, roomController.roomInfo(roomNumber));
-//
-//        JFrame frame = new JFrame(App.APP_TITLE);
-//        frame.setSize(1650, 1080);
-//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        MatPanel MatPanel = new MatPanel(game);
-//        frame.add(MatPanel);
-//        frame.setVisible(true);
-//        roomController.deleteRoom(roomNumber);
-//    }
 }

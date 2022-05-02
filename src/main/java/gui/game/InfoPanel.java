@@ -34,10 +34,8 @@ import java.util.ArrayList;
 
 public class InfoPanel extends JPanel {
 
-    private ArrayList<ParticipantInfoPanel> participantsPanels;
-    private TextArea logArea;
-    private JLabel lblRules;
-    private TextArea taInstructions;
+    private final ArrayList<ParticipantInfoPanel> participantsPanels;
+    private final TextArea logArea;
 
     public InfoPanel(ArrayList<Player> participants, Player user) {
         super(true);
@@ -58,9 +56,9 @@ public class InfoPanel extends JPanel {
         // showing game logs on the right side of the ParticipantInfoPanel
         this.logArea = new TextArea("[System Log]:\n Welcome to this game!\n[System Log]:\n The programming phase of 1st rount starts!", 20, 55, TextArea.SCROLLBARS_VERTICAL_ONLY);
         this.logArea.setEditable(false);
-        this.lblRules = new JLabel("Instructions");
-        this.lblRules.setFont(new Font("Calibri", Font.BOLD, 20));
-        this.taInstructions = new TextArea("There are 9 cards in front of you.\n" +
+        JLabel lblRules = new JLabel("Instructions");
+        lblRules.setFont(new Font("Calibri", Font.BOLD, 20));
+        TextArea taInstructions = new TextArea("There are 9 cards in front of you.\n" +
                 "Look at the position of your robot\n" +
                 "and think fast about its moves for\n" +
                 "the incoming activation phase. You\n" +
@@ -74,15 +72,15 @@ public class InfoPanel extends JPanel {
                 "used in this round. Think and act\n" +
                 "fast, paying attention on the\n" +
                 "remaining time!", 13, 50, 3);
-        this.taInstructions.setBackground(Color.ORANGE);
-        this.taInstructions.setFont(new Font("Calibri", Font.PLAIN, 15));
+        taInstructions.setBackground(Color.ORANGE);
+        taInstructions.setFont(new Font("Calibri", Font.PLAIN, 15));
         this.logArea.setBounds(475, 0, 250, 300);
-        this.lblRules.setBounds(550, 320, 250, 20);
-        this.taInstructions.setBounds(475, 340, 250, 300);
+        lblRules.setBounds(550, 320, 250, 20);
+        taInstructions.setBounds(475, 340, 250, 300);
         this.add(this.logArea);
-        this.add(this.lblRules);
-        this.add(this.taInstructions);
-        this.add(this.lblRules);
+        this.add(lblRules);
+        this.add(taInstructions);
+        this.add(lblRules);
     }
 
     public void addLogToLogPanel(String logContent, Player logFrom) {
@@ -110,7 +108,6 @@ public class InfoPanel extends JPanel {
             participantInfoPanel.getRegisters()[2].setText("NaN");
             participantInfoPanel.getRegisters()[3].setText("NaN");
             participantInfoPanel.getRegisters()[4].setText("NaN");
-
         }
     }
 }

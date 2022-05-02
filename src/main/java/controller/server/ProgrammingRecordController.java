@@ -38,8 +38,4 @@ public class ProgrammingRecordController extends ServerConnection {
         this.postRequestWithBody(body);
         return this.getResponse();
     }
-
-//    public static void main(String[] args) {
-//    }
-
 }

@@ -3,6 +3,7 @@ package controller.server;
 import org.json.JSONObject;
 
 public class RobotController extends ServerConnection {
+
     public static final String RESPONSE_ROBOT_NAME = "name";
     public static final String RESPONSE_ROBOT_XCOORD = "x";
     public static final String RESPONSE_ROBOT_YCOORD = "y";

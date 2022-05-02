@@ -10,6 +10,7 @@ import java.net.*;
 import java.nio.charset.StandardCharsets;
 
 public class ServerConnection {
+
     private String method;
     private String path;
     private static final String LOCAL_HOST = "http://localhost:3000";
@@ -48,8 +49,7 @@ public class ServerConnection {
                 in.close();
                 if (content.length() > 0) {
                     this.response = new JSONObject(content.toString());
-                }
-                else this.response = new JSONObject();
+                } else this.response = new JSONObject();
                 this.response.put("status", 200);
             } else {
                 this.response.put("status", connection.getResponseCode());
@@ -104,5 +104,4 @@ public class ServerConnection {
     protected void setMethod(String method) {
         this.method = method;
     }
-
 }

@@ -1,5 +1,6 @@
 package gui.game;
 
+import content.RobotImageEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import model.game.Player;
@@ -33,6 +34,7 @@ import java.awt.*;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class ParticipantInfoPanel extends JPanel {
+
     private JLabel[] registers;
     private JLabel labelTokenNumber;
     private JLabel labelLive;
@@ -40,15 +42,16 @@ public class ParticipantInfoPanel extends JPanel {
     private JLabel labelRobotName;
     private JLabel lblRobot;
 
-
     public ParticipantInfoPanel(Player participant) {
         super(true);
         this.setLayout(null);
 
-        Icon iconRobot = new ImageIcon(new ImageIcon("src/main/resources/images/robots/" + participant.getRobot().getName() + ".png").getImage().getScaledInstance(100, 110, Image.SCALE_DEFAULT));
+        Icon iconRobot = new ImageIcon(RobotImageEnum.valueOf(participant.getRobot().getName()).getImage().getScaledInstance(100, 110, Image.SCALE_DEFAULT));
         this.lblRobot = new JLabel();
         this.lblRobot.setIcon(iconRobot);
+        this.lblRobot.setOpaque(true);
         this.lblRobot.setBorder(BorderFactory.createLineBorder(Color.gray));
+        this.lblRobot.setBackground(participant.getPlayerColor());
         this.registers = new JLabel[5];
         this.labelTokenNumber = new JLabel("Token:" + participant.getRobot().getCheckpoints().size());
         this.labelLive = new JLabel("Lives:" + participant.getRobot().getLives());
@@ -67,7 +70,6 @@ public class ParticipantInfoPanel extends JPanel {
         this.add(this.labelTokenNumber);
         this.add(this.labelLive);
 
-
         for (int i = 0; i < this.registers.length; i++) {
             Card registerContent;
             try {
@@ -83,5 +85,4 @@ public class ParticipantInfoPanel extends JPanel {
         this.setBorder(BorderFactory.createLineBorder(Color.gray));
         this.setPreferredSize(new Dimension(500, 100));
     }
-
 }

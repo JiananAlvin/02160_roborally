@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import static java.lang.Integer.parseInt;
-
+// previous name: GameManager
 public class GameController {
 
     private static GameController INSTANCE;
@@ -280,6 +280,7 @@ public class GameController {
         return new Timer(1000, new ActionListener() {
             int remainingTime = MAX_PROGRAMMING_TIME;
 
+            @SneakyThrows
             public void actionPerformed(ActionEvent e) {
                 if (remainingTime-- == MAX_PROGRAMMING_TIME) {
                     // the user draws cards
@@ -312,7 +313,7 @@ public class GameController {
         });
     }
 
-    private void reloadMatPanel(GamePanel gamePanel) {
+    private void reloadMatPanel(GamePanel gamePanel) throws IOException {
         if (gamePanel.getMatPanel() != null)
             gamePanel.remove(gamePanel.getMatPanel());
         MatPanel matPanel = new MatPanel();
@@ -479,6 +480,4 @@ public class GameController {
     public void closeJFrame() {
         ClientRunner.getApplicationInstance().getFrame().dispose();
     }
-
-
 }

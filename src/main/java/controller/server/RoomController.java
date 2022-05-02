@@ -3,6 +3,7 @@ package controller.server;
 import org.json.JSONObject;
 
 public class RoomController extends ServerConnection {
+
     public static final String RESPONSE_ROOM_NUMBER = "room_number";
     public static final String RESPONSE_USERS_IN_ROOM = "users";
     public static final String RESPONSE_ROOM_OWNER = "owner";

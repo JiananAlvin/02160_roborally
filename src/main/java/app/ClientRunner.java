@@ -14,7 +14,7 @@ public class ClientRunner {
     @Getter
     private final JFrame frame;
     private static ClientRunner clientRunnerInstance;
-    public final static String APP_TITLE = "RoboRally Group10 v3.0";
+    public final static String APP_TITLE = "RoboRally Group10 v3.0.2";
 
     private ClientRunner() {
         this.frame = new JFrame(APP_TITLE);

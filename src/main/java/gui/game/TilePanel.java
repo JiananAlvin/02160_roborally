@@ -17,8 +17,7 @@ import net.coobird.thumbnailator.Thumbnails;
 public class TilePanel extends JPanel {
 
     public static final int PIXEL_SIZE = 60;
-    private Tile tile;
-    private BufferedImage imageTile;
+    private final BufferedImage imageTile;
     private BufferedImage imageRobot;
     private boolean containsRobot = false;
     private OrientationEnum direction;
@@ -27,7 +26,6 @@ public class TilePanel extends JPanel {
     public TilePanel(Tile tile) {
         super(true);
         this.imageTile = tile.getTileImageEnum().getImage();
-        this.tile = tile;
         setMinimumSize(new Dimension(PIXEL_SIZE, PIXEL_SIZE));
         setMaximumSize(getMinimumSize());
         setPreferredSize(getMinimumSize());
@@ -62,8 +60,7 @@ public class TilePanel extends JPanel {
             g2d.setColor(this.backgroundColor);
             Ellipse2D.Double circle = new Ellipse2D.Double((int) (PIXEL_SIZE / 8), (int) (PIXEL_SIZE / 8), (int) (PIXEL_SIZE * 0.75), (int) (PIXEL_SIZE * 0.75));
             g2d.fill(circle);
-            // draw arrow
-
+            // draw robot
             g2d.rotate(Math.toRadians(direction.getAngle()), (int) (PIXEL_SIZE / 2), (int) (PIXEL_SIZE / 2));
             g2d.drawImage(this.imageRobot, (PIXEL_SIZE - this.imageRobot.getWidth()) / 2, (PIXEL_SIZE - this.imageRobot.getHeight()) / 2, null);
             g2d.setTransform(old2);
