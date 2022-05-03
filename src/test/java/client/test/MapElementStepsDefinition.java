@@ -195,9 +195,10 @@ public class MapElementStepsDefinition {
         this.robot.setLives(Integer.parseInt(arg0));
     }
 
-    @When("the robot lives are reduced {string} points of damage by the game")
-    public void theRobotLivesAreReducedPointsOfDamageByTheGame(String arg0) {
-        this.robot.takeDamage(Integer.parseInt(arg0));
+    @When("robot execute power up card")
+    public void robotExecutePowerUpCard() {
+        Card actionCard = new CardPowerUp();
+        actionCard.actsOn(this.robot);
     }
 
     @Then("the robot now has {string} lives")
@@ -207,6 +208,13 @@ public class MapElementStepsDefinition {
 
 
     //6.----------------------------------------------------------------
+    @When("the robot lives are reduced {string} points of damage by the game")
+    public void theRobotLivesAreReducedPointsOfDamageByTheGame(String arg0) {
+        this.robot.takeDamage(Integer.parseInt(arg0));
+    }
+
+
+    //7.----------------------------------------------------------------
     @Given("{string} and {string} are in a game with the map {string}")
     public void andAreInAGameWithTheMapADVANCED(String arg0, String arg1, String arg2) {
         this.p1 = new Player(arg0, new Robot(RobotNameEnum.SQUASH_BOT));
@@ -253,7 +261,7 @@ public class MapElementStepsDefinition {
     }
 
 
-    //7.----------------------------------------------------------------
+    //8.----------------------------------------------------------------
     @When("robot lands on an oil stain")
     public void robotLandsOnAnOilStain() {
         // Move according to the orientation
@@ -262,8 +270,7 @@ public class MapElementStepsDefinition {
     }
 
 
-    //8.----------------------------------------------------------------
-
+    //9.----------------------------------------------------------------
     @When("robot lands on a rotating gear with direction {string}")
     public void robotLandsOnARotatingGearWithDirection(String arg0) {
         Card actionCard = new CardMove1();
@@ -283,7 +290,7 @@ public class MapElementStepsDefinition {
     }
 
 
-    //9.----------------------------------------------------------------
+    //10.----------------------------------------------------------------
     @When("robot lands on a pit")
     public void robotLandsOnAPit() {
         // this.robot.tryMove();
@@ -297,15 +304,30 @@ public class MapElementStepsDefinition {
     }
 
 
-    //10.----------------------------------------------------------------
+    //11.----------------------------------------------------------------
     @When("robot lands on a laser tile")
     public void robotLandsOnALaserTile() {
         Card actionCard = new CardMove1();
         actionCard.actsOn(this.robot);
     }
 
+    //12.----------------------------------------------------------------
+    @When("robot lands on a conveyor belt and move forward {int} steps")
+    public void robotLandsOnAConveyorBeltAndMoveForwardSteps(int steps) {
+        if (steps == 1)
+            new CardMove1().actsOn(this.robot);
+        if (steps == 2)
+            new CardMove2().actsOn(this.robot);
+        if (steps == 3)
+            new CardMove3().actsOn(this.robot);
+    }
 
-    //10&11.----------------------------------------------------------------
+    @Then("robot is on the position {int} and {int}")
+    public void robotIsOnThePositionNew_rowAndNew_col(int new_row, int new_col) {
+        assertTrue(new_row == this.robot.getPosition().getRow() && new_col == this.robot.getPosition().getCol());
+    }
+
+    //13&14.----------------------------------------------------------------
     @When("robot tries to move forward and there is a wall")
     public void robotMovesForwardAndThereIsAWall() {
         Card actionCard = new CardMove1();
@@ -317,8 +339,19 @@ public class MapElementStepsDefinition {
         assertEquals(this.robot.getPosition(), this.initialRobotPosition);
     }
 
+    //15.----------------------------------------------------------------
+    @When("robot tries to move backward and there is a wall")
+    public void robotTriesToMoveBackwardAndThereIsAWall() {
+        Card actionCard = new CardBackUp();
+        actionCard.actsOn(this.robot);
+    }
 
-    //12.----------------------------------------------------------------
+    @Then("robot does not move backward")
+    public void robotDoesNotMoveBackward() {
+        assertEquals(this.robot.getPosition(), this.initialRobotPosition);
+    }
+
+    //16.----------------------------------------------------------------
     @When("robot tries to move forward and there is void")
     public void robotTriesToMoveForwardAndThereIsVoid() {
         Card actionCard = new CardMove1();
@@ -332,7 +365,7 @@ public class MapElementStepsDefinition {
     }
 
 
-    //13.----------------------------------------------------------------
+    //17.----------------------------------------------------------------
     @When("robot lands on a charger tile")
     public void robotLandsOnAChargerTile() {
         Card actionCard = new CardMove1();
@@ -340,7 +373,7 @@ public class MapElementStepsDefinition {
     }
 
 
-    //14.----------------------------------------------------------------
+    //18.----------------------------------------------------------------
     private Robot robot1;
 
     @When("there is a robot in the position first robot moves on")
@@ -364,7 +397,19 @@ public class MapElementStepsDefinition {
     }
 
 
-    //15.----------------------------------------------------------------
+    //19.----------------------------------------------------------------
+    @When("first robot moves back and there is a robot in the position")
+    public void firstRobotMovesBackAndThereIsARobotInThePosition() {
+        Position newPos = Movement.calculateNewPosition(this.robot.getOrientation(), this.robot.getPosition(), -1);
+        this.robot1 = new Robot(RobotNameEnum.HAMMER_BOT, newPos.getRow(), newPos.getCol());
+        Game.getInstance().getParticipants().add(new Player("test", this.robot1));
+        Card actionCard = new CardBackUp();
+        actionCard.actsOn(this.robot);
+        this.initialRobot2Position = newPos;
+    }
+
+
+    //20.----------------------------------------------------------------
     @And("a robot1 {string} with position {int} {int} and orientation {string} and robot2 {string} with position {int} {int} orientation {string} and robot3 {string} with position {int} {int} orientation {string}")
     public void aRobotWithPositionRowColAndOrientation(String arg1, int row, int col, String arg2, String arg3, int row2, int col2, String arg4, String arg5, int row3, int col3, String arg6) {
         Robot robot1 = new Robot(RobotNameEnum.valueOf(arg1), row, col);
@@ -395,48 +440,4 @@ public class MapElementStepsDefinition {
         assertEquals(arg1, Game.getInstance().getParticipants().get(1).getRobot().getLives());
         assertEquals(arg2, Game.getInstance().getParticipants().get(2).getRobot().getLives());
     }
-
-    //-------------------------------------------------------------------------
-    @When("first robot moves back and there is a robot in the position")
-    public void firstRobotMovesBackAndThereIsARobotInThePosition() {
-        Position newPos = Movement.calculateNewPosition(this.robot.getOrientation(), this.robot.getPosition(), -1);
-        this.robot1 = new Robot(RobotNameEnum.HAMMER_BOT, newPos.getRow(), newPos.getCol());
-        Game.getInstance().getParticipants().add(new Player("test", this.robot1));
-        Card actionCard = new CardBackUp();
-        actionCard.actsOn(this.robot);
-        this.initialRobot2Position = newPos;
-    }
-
-    @When("robot tries to move backward and there is a wall")
-    public void robotTriesToMoveBackwardAndThereIsAWall() {
-        Card actionCard = new CardBackUp();
-        actionCard.actsOn(this.robot);
-    }
-
-    @Then("robot does not move backward")
-    public void robotDoesNotMoveBackward() {
-        assertEquals(this.robot.getPosition(), this.initialRobotPosition);
-    }
-
-    @When("robot lands on a conveyor belt and move forward {int} steps")
-    public void robotLandsOnAConveyorBeltAndMoveForwardSteps(int steps) {
-        if (steps == 1)
-            new CardMove1().actsOn(this.robot);
-        if (steps == 2)
-            new CardMove2().actsOn(this.robot);
-        if (steps == 3)
-            new CardMove3().actsOn(this.robot);
-    }
-
-    @Then("robot is on the position {int} and {int}")
-    public void robotIsOnThePositionNew_rowAndNew_col(int new_row, int new_col) {
-        assertTrue(new_row == this.robot.getPosition().getRow() && new_col == this.robot.getPosition().getCol());
-    }
-
-    @When("robot execute power up card")
-    public void robotExecutePowerUpCard() {
-        Card actionCard = new CardPowerUp();
-        actionCard.actsOn(this.robot);
-    }
-    //16.----------------------------------------------------------------
 }

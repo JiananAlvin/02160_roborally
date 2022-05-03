@@ -257,8 +257,6 @@ public class InitializationStepsDefinition {
         List<Object> userList = users.toList();
         assertEquals(4, userList.size());
         Game.getInstance().init(roomOwner.getName(), this.room, MapNameEnum.valueOf(GameMap.getInstance().getMapName()),roomInfoResponse);
-//        Game.getInstance().initParticipants(roomInfoResponse);
-//        Game.getInstance().generateRandomPositionsForAllParticipants();
     }
 
     @Then("the client of room owner generates all the initial positions and puts them to server")
@@ -315,7 +313,7 @@ public class InitializationStepsDefinition {
     //8.------------------------------------------------------------------------------------
     @Then("the status of the room is {string}")
     public void theStatusOfTheRoomIs(String arg0) throws InterruptedException {
-        Thread.sleep(100);
+        Thread.sleep(200);
         assertEquals(new RoomController().roomInfo(this.room.getRoomNumber()).get(RoomController.RESPONSE_ROOM_STATUS), arg0);
     }
 
