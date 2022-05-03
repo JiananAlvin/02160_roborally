@@ -104,9 +104,9 @@ public class GameController {
     //    =====================================================ROOM START==================================
     public void processCreateRoom(String userName, String mapName) {
         /*
-             fetching the map name when the "Create room" button is pressed
-             creating a room for the user through API
-             */
+         fetching the map name when the "Create room" button is pressed
+         creating a room for the user through API
+         */
         RoomController roomController = new RoomController();
         JSONObject response = roomController.createRoom(userName, mapName);
         String roomNumberStr = response.get("room_number").toString();
@@ -360,8 +360,8 @@ public class GameController {
             int round = game.getCurrentRoundNum();
             int registerIndex = game.getCurrentRegisterNum();
             int currenPlayerIndex = game.getCurrentPlayerIndex();
-            if (registerIndex == 0 && currenPlayerIndex == 0) {
-                // the game starts
+            if (registerIndex == 0) {
+                // After all players executed the current register, reorder the players.
                 game.setParticipants(game.orderOfPlayers());
             }
             Player currentPlayer = game.getParticipants().get(currenPlayerIndex);
@@ -409,7 +409,7 @@ public class GameController {
                 gamePanel.getMatPanel().getLblDiscardCards().setText("Discard Pile: " + game.getUser().getDiscardPile().getDiscards().size());
             }
 
-            gamePanel.getInfoPanel().updateParticipantsInfo(registerIndex,currentPlayer);
+            gamePanel.getInfoPanel().updateParticipantsInfo(registerIndex, currentPlayer);
             for (Player player: game.getParticipants()){
                 gamePanel.getBoardPanel().getBoard()[player.getRobot().getPosition().getRow()][player.getRobot().getPosition().getCol()].setRobot(player.getRobot().getOrientation(), player);
             }

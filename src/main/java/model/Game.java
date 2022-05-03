@@ -93,14 +93,14 @@ public class Game {
         TreeMap<Integer, TreeMap<Integer, Player>> robotDistanceTree = new TreeMap<>();
         for (Player p : this.participants) {
             Integer dist = p.getRobot().distanceToAntenna();
-            Integer ycoord = p.getRobot().getPosition().getCol();
+            Integer row = p.getRobot().getPosition().getRow();
             if (robotDistanceTree.containsKey(dist)) {
-                robotDistanceTree.get(dist).put(ycoord, p);
+                robotDistanceTree.get(dist).put(row, p);
             } else {
-                // If two robots have the same distance to the antenna, the robot with larger ycoord has the priority.
-                TreeMap<Integer, Player> robotYcoordTree = new TreeMap<>(Comparator.reverseOrder());
-                robotYcoordTree.put(ycoord, p);
-                robotDistanceTree.put(dist, robotYcoordTree);
+                // If two robots have the same distance to the antenna, the robot with larger row has the priority.
+                TreeMap<Integer, Player> robotRowTree = new TreeMap<>(Comparator.reverseOrder());
+                robotRowTree.put(row, p);
+                robotDistanceTree.put(dist, robotRowTree);
             }
         }
         ArrayList<Player> order = new ArrayList<>();
