@@ -13,7 +13,7 @@ public class ServerConnection {
 
     private String method;
     private String path;
-    private static final String LOCAL_HOST = "http://localhost:3000";
+    private static final String LOCAL_HOST = "http://130.225.170.75:3000";
     private static final String PUBLIC_HOST = "https://dry-brushlands-54922.herokuapp.com";
     private static final String SERVER_URL = checkOnline(LOCAL_HOST) ? LOCAL_HOST : PUBLIC_HOST;
 

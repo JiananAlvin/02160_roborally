@@ -74,7 +74,6 @@ public class Robot {
         // I move 1 position in the direction of the robot coming in my position if robot is moving forwards
         // I move 1 position in the opposite direction of the robot coming in my position if robot is moving backwards
         // I don't move in the new position if there is no valid movement
-
         // calculate my new position depending on the described scenarios
         Position newPos = new Position();
         if (movement == 1) {

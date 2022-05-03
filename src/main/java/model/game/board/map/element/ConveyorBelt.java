@@ -4,8 +4,10 @@ import content.TileImageEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import content.OrientationEnum;
+import model.Game;
 import model.game.board.map.Position;
 import model.game.card.*;
+import model.game.card.behaviour.Movement;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -56,11 +58,14 @@ public class ConveyorBelt extends Tile implements Interactive {
 
     @Override
     public void robotInteraction(Robot r) {
-        if (this.orientation.equals(r.getOrientation())) {
-            if (this.distance == 1) {
-                new CardMove1().actsOn(r);
-            } else if(this.distance == 2){
-                new CardMove2().actsOn(r);
+        if (this.orientation.getAngle() == r.getOrientation().getAngle()) {
+            Position newPos = Movement.calculateNewPosition(r.getOrientation(), r.getPosition(), 1);
+            if (Movement.validateMovement(r, newPos.getRow(), newPos.getCol(), 1)) {
+                Robot robotAtPos = Game.getInstance().getRobotAtPosition(newPos);
+                if (robotAtPos != null) {
+                r.robotInteraction(robotAtPos, 1);
+                }
+                r.setPosition(newPos);
             }
         }
     }

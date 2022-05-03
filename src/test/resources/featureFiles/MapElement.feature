@@ -154,15 +154,15 @@ Feature:
     Given there is a game with map "<map_name>"
     And a robot "<robot_name>" with position "<row>" "<col>"
     And robot has "<orientation>" orientation
-    When robot lands on a conveyor belt with distance "<distance>"
-    Then robot moves forward according to the direction
+    When robot lands on a conveyor belt and move forward <steps> steps
+    Then robot is on the position <new_row> and <new_col>
     Examples:
-      | map_name     | robot_name | row | col | orientation | distance |
-      | INTERMEDIATE | ZOOM_BOT   | 1   | 3   | E           | 1        |
-      | INTERMEDIATE | ZOOM_BOT   | 1   | 2   | E           | 1        |
-      | INTERMEDIATE | ZOOM_BOT   | 9   | 10  | E           | 1        |
-      | INTERMEDIATE | ZOOM_BOT   | 0   | 1   | E           | 1        |
-      | INTERMEDIATE | ZOOM_BOT   | 2   | 5   | S           | 2        |
+      | map_name     | robot_name | row | col | orientation | steps | new_row | new_col |
+      | INTERMEDIATE | ZOOM_BOT   | 1   | 3   | E           | 1     | 1       | 4       |
+      | INTERMEDIATE | ZOOM_BOT   | 1   | 5   | W           | 1     | 1       | 3       |
+      | INTERMEDIATE | ZOOM_BOT   | 9   | 10  | E           | 2     | 9       | 12      |
+      | STARTER      | ZOOM_BOT   | 8   | 2   | E           | 2     | 8       | 6       |
+      | STARTER      | ZOOM_BOT   | 0   | 4   | S           | 3     | 6       | 4       |
 
   Scenario Outline: Robots cannot go through a wall when wall is at next position
     Given there is a game with map "<map_name>"

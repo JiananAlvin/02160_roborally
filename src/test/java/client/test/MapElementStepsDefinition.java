@@ -418,19 +418,19 @@ public class MapElementStepsDefinition {
         assertEquals(this.robot.getPosition(), this.initialRobotPosition);
     }
 
-    private int conveyorDistance = -1;
-
-    @When("robot lands on a conveyor belt with distance {string}")
-    public void robotLandsOnAConveyorBeltWithDirection(String arg1) {
-        Tile tile = (ConveyorBelt) GameMap.getInstance().getTileAtPosition(Movement.calculateNewPosition(this.robot.getOrientation(), this.robot.getPosition(), 1));
-        Card actionCard = new CardMove1();
-        actionCard.actsOn(this.robot);
-        this.conveyorDistance = Integer.parseInt(arg1);
+    @When("robot lands on a conveyor belt and move forward {int} steps")
+    public void robotLandsOnAConveyorBeltAndMoveForwardSteps(int steps) {
+        if (steps == 1)
+            new CardMove1().actsOn(this.robot);
+        if (steps == 2)
+            new CardMove2().actsOn(this.robot);
+        if (steps == 3)
+            new CardMove3().actsOn(this.robot);
     }
 
-    @Then("robot moves forward according to the direction")
-    public void robotMovesForwardAccordingToTheDirection() {
-        assertTrue(Math.abs(this.robot.getPosition().getRow() - this.initialRobotPosition.getRow() - 1) == conveyorDistance || Math.abs(this.robot.getPosition().getCol() - this.initialRobotPosition.getCol() - 1) == conveyorDistance);
+    @Then("robot is on the position {int} and {int}")
+    public void robotIsOnThePositionNew_rowAndNew_col(int new_row, int new_col) {
+        assertTrue(new_row == this.robot.getPosition().getRow() && new_col == this.robot.getPosition().getCol());
     }
 
     @When("robot execute power up card")
@@ -438,7 +438,5 @@ public class MapElementStepsDefinition {
         Card actionCard = new CardPowerUp();
         actionCard.actsOn(this.robot);
     }
-
-
     //16.----------------------------------------------------------------
 }
