@@ -9,7 +9,7 @@
 
 :warning: You may see `GameManager` in the report, now it has been renamed to `GameController`. In other word, `GameController `( = `GameManager`) refers to `.\src\main\java\controller\game\GameController.java`
 
-:warning: The  screencast shows what it looks like to run the release `Roborally-group10-v2.0`, which is a bit different from the [latest release](https://github.com/JiananAlvin/group10_roborally/releases/tag/v3.1/) we submitted. It's good to try the latest release, which will bring you a better game experience.
+:warning: The  screencast shows what it looks like to run the release `Roborally-group10-v2.0`, which is a bit different from the [latest release](https://github.com/JiananAlvin/group10_roborally/releases/tag/v3.1.1) we submitted. It's good to try the latest release, which will bring you a better game experience.
 
 ## 1. Introduction
 
@@ -78,7 +78,7 @@ io.cucumber.cucumber-junit == 7.2.3
 git clone https://github.com/JiananAlvin/02160_agile_OOSD_final_project.git
 ```
 
-(2)  Alternatively, you can download the `.jar` file from the [latest release](https://github.com/JiananAlvin/group10_roborally/releases/tag/v3.1/).
+(2)  Alternatively, you can download the `.jar` file from the [latest release](https://github.com/JiananAlvin/group10_roborally/releases/tag/v3.1.1).
 
 ![image-20220502164902635](https://raw.githubusercontent.com/JiananAlvin/image_bed/master/202205021905142.png)
 
